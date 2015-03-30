@@ -16,7 +16,7 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
 
 
 
-<solo-table make-sortable="3" ng-init="setDriver(<?= $isDriver ? 'true' : 'false' ?>)">
+<solo-table make-sortable="3" ng-init="setDriver(<?= $isDriver ? 'true' : 'false' ?>)"  ng-cloak>
 
 <div solo-table-data style="display: none;">
     [<?= $products ?>]
