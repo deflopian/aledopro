@@ -1,0 +1,56 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/blog') ?>">Блог</a>
+    >
+    Новости
+</h1>
+
+<div class="section">
+    <h3>Список новостей</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-entity">Добавить новость</button>
+
+        <div class="form-inline" id="adding-form" style="display: none">
+            <div class="form-group">
+                <label class="sr-only" for="inputName">Название</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Введите название..."/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="adding-complete">Добавить</button>
+            <button type="button" class="btn btn-default" id="adding-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название раздела</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+        <? foreach($entities as $entity){ ?>
+            <tr class="entity">
+                <td><?= $entity->id; ?></td>
+                <td><?= $entity->title; ?></td>
+                <td>
+                    <a href="#" class="editBtn">Редактировать</a>
+                    <a href="#" class="deleteBtn">Удалить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        catalog.baseUrl = '<?= $this->url('zfcadmin/news') ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::BLOG ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/news', array('action'=> 'view')) ?>';
+        catalog.init();
+    });
+</script>

@@ -1,0 +1,36 @@
+<?
+/** @var \Catalog\Model\Series $series */
+$series = $this->element;
+$min = $this->min;
+$hasBorder = $this->hasBorder;
+$url = $this->url('catalog', array(
+    'action' => 'series',
+    'id' => $series->id
+));
+?>
+
+<a href="<?= $url ?>">
+    <div class="tile-title-series" style="padding-left: 0"><?= $series->visible_title ?></div>
+    <? if (isset($series->previewName)) { ?>
+        <? $src = $series->previewName ? $this->basePath() . '/images/series/' . $series->previewName : $this->basePath() . '/images/empty-series.png' ?>
+    <? } else { ?>
+        <? $src = $series->img ? $this->basePath() . '/images/series/' . $series->img : $this->basePath() . '/images/empty-series.png' ?>
+    <? } ?>
+<!--    --><?// $src = $series->img ? $this->basePath() . '/images/series/' . $series->img : $this->basePath() . '/images/empty-series.png' ?>
+    <div class="row">
+        <? if ($min) { ?>
+        <div class="col-md-12 <?= $hasBorder ? 'bordered-link-element' : '' ?>">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+        <? } else { ?>
+        <div class="col-md-12">
+        <? } ?>
+            <img src="<?= $src ?>" alt="<?= $series->visible_title ?>"/>
+
+            <? if ($min) { ?>
+                    </div>
+                </div>
+            <? } ?>
+        </div>
+    </div>
+</a>

@@ -1,0 +1,301 @@
+<?
+$admin = $this->isAllowed('controller/CatalogAdmin');
+
+?>
+
+<div class="container-popup">
+<?= \Catalog\Service\CatalogService::renderPopupNav($sl, $prevSer, $nextSer, 'series', $this->robot); //навигация ?>
+    <div class="row" style="margin-top: 20px">
+        <div class="row">
+            <div class="col-md-12 text-left">
+                <h1><?= $series->visible_title; ?></h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="dotted-top"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row row-second-xs">
+        <? include 'part/series-gallery.phtml';  ?>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="further-more-line text-center">
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-second-xs">
+
+        <div class="col-md-8">
+            <? if (!empty($series->text)) { ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="dotted-bottom">
+                        <h2 class="series-title">Описание</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-second-xs">
+                <div class="col-md-12 series-description" >
+                    <?= (($num = strpos('<p>&nbsp;</p>', $series->text)) < 5 && $num !== false) ?
+                        substr($series->text, $num+13) : $series->text; ?>
+                </div>
+            </div>
+            <? } ?>
+        </div>
+
+        <? if ($docs) { ?>
+        <div class="col-md-3 col-md-offset-1">
+            <div class="row ">
+                <div class="col-md-12">
+                    <div class="dotted-bottom">
+                        <h2 class="series-title">Материалы для скачивания</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-second-small">
+                <div class="col-md-12">
+                <? foreach($docs as $doc){ ?>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="<?= $doc->url ? $this->basePath() . '/images/series_docs/' . $doc->url : ''?>"
+                               target="_blank"
+                               onclick="ga('send', 'event', 'button', 'click', 'download', '<?= $doc->url ?>');"
+                                >
+                                <? $type = substr($doc->url, -3); ?>
+
+                                <span class="icon-download icon-<?= $type?>"></span>
+                                <span class="icon-title" style="font-size: 11px; font-weight: bold"><?= $doc->title; ?> (<?= $type ?>)</span>
+                            </a>
+                        </div>
+                    </div>
+                <? } ?>
+                </div>
+            </div>
+        </div>
+        <? } ?>
+
+        <? if(false && $articles){ ?>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="dotted-bottom">
+                            <h2 class="series-title">Материалы по теме</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="<?= $this->url('blog') .'?btype=articles&bid='. $articles[0]->id ?>">
+                            <div class="tile-title tile-title-blog"><?= $articles[0]->title ?></div>
+                            <img src="<?= $this->basePath() . '/images/articles/' . $articles[0]->img ?>" alt="<?= $articles[0]->title ?>"/>
+                        </a>
+                    </div>
+                </div>
+                <? if(sizeof($articles)>1){ ?>
+                    <div class="row row-second-xs">
+                        <div class="col-md-12">
+                            <p>а также смотрите:</p>
+                            <? foreach($articles as $i=>$article){
+                                if($i==0){continue;}
+                                ?>
+                                <p><a class="link uppercase"
+                                      href="<?= $this->url('blog') .'?btype=articles&bid='. $article->id ?>"><?= $article->title ?></a></p>
+                            <? } ?>
+                        </div>
+                    </div>
+                <? } ?>
+            </div>
+        <? } ?>
+
+    </div>
+
+    <? if($series->text_exploit = trim($series->text_exploit)){ ?>
+        <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="dotted-bottom">
+                        <h2 class="series-title">Комплектация и условия эксплуатации</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-second-xs">
+                <div class="col-md-12 series-description">
+                    <?= (($num = strpos('<p>&nbsp;</p>', $series->text_exploit)) < 5 && $num !== false) ?
+                        substr($series->text_exploit, $num+13) : $series->text_exploit ?>
+                </div>
+            </div>
+        </div>
+        </div>
+    <? } ?>
+
+    <? if($view == \Catalog\Controller\CatalogController::POPUP_DEFAULT ){ ?>
+    <div class="series-pics" style="position: relative;  margin-top: 70px">
+        <div class="row row-second-xs equal-blocks-row" >
+            <? include 'part/equal-blocks-inline.phtml'; ?>
+        </div>
+    </div>
+    <? } ?>
+
+    <div class="series-pics " style="position: relative; <? $view == \Catalog\Controller\CatalogController::POPUP_DEFAULT ? '' : 'margin-top: 70px;' ?>">
+        <div class="row row-second-xs" id="serpopup-table-container">
+            <div class="col-md-12">
+                <?
+
+                switch($view){
+                    case \Catalog\Controller\CatalogController::POPUP_PROFILI:
+                        $tpl = 'product-table-profili';
+                        break;
+                    default:
+                        $tpl = 'product-table';
+                        break;
+                }
+                echo $this->partial(
+                    'catalog/catalog/part/part/'. $tpl .'.phtml',
+                    array(
+                        'products' => $this->products,
+                        'offeredIds'   => $this->offeredIds,
+                        'selectedProdId'   => $this->selectedProdId,
+                        'admin'   => $admin,
+                        'user' => $this->user,
+                        'hierarchies' => $this->hierarchies,
+                        'discounts' => $this->discounts
+                    )
+                ); ?>
+            </div>
+        </div>
+    </div>
+
+    <? foreach ($this->dopProducts as $oneGroup) { ?>
+    <div class="row row-second">
+        <div class="col-md-12">
+            <div class="dotted-bottom">
+                <h2 class="series-title"><?= $oneGroup['title'] ?></h2>
+            </div>
+        </div>
+    </div>
+    <div class="series-pics " style="position: relative">
+        <div class="row row-second" id="serpopup-table-container">
+            <div class="col-md-12">
+                <?
+
+                switch($oneGroup['view']){
+                    case 3: //це пиздец
+                        $tpl = 'product-table-profili';
+                        break;
+                    case 2: //це пиздец
+                        $tpl = 'product-table-pitaine';
+                        break;
+                    default:
+                        $tpl = 'product-table';
+                        break;
+                }
+
+                echo $this->partial(
+                    'catalog/catalog/part/part/'. $tpl .'.phtml',
+                    array(
+                        'products' => $oneGroup['products'],
+                        'offeredIds'   => $this->offeredIds,
+                        'selectedProdId'   => $this->selectedProdId,
+                        'user' => $this->user,
+                        'hierarchies' => $this->hierarchies,
+                        'discounts' => $this->discounts
+                    )
+                );
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <? } ?>
+    <? if (false) { ?>
+    <div class="row row-second">
+        <div class="col-md-12">
+            <div class="dotted-bottom">
+                <h2 class="series-title">С этим продуктом покупают</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-second">
+        <?
+        foreach($relatedSeries as $i=>$ser){
+            if($i+1%5 == 0){echo'</div><div class="row row-second-small">'; }
+            ?>
+            <div class="col-md-2 series-tile" data-id="<?= $ser->id ?>">
+                <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $ser); ?>
+            </div>
+        <? } ?>
+        <?
+        foreach($relatedProds as $i=>$prod){
+            if($i+1%5 == 0){echo'</div><div class="row row-second-small">'; }
+            ?>
+            <div class="col-md-2 series-tile" data-id="<?= $prod->id ?>">
+                <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $prod, true); ?>
+            </div>
+        <? } ?>
+    </div>
+    <? } ?>
+</div>
+<script>
+    $('table').css('width', 'auto');
+
+
+    <? if ($admin) : ?>
+        catalog.parentId = '<?= $series->id ?>';
+    <? endif; ?>
+    var pageTitle = "<?= !empty($series->visible_title) ? 'Купить ' . $series->visible_title . ' — цена, описание': 'Купить ' . $series->title . ' — цена, описание' ?>";
+
+        popup.pageTitle = pageTitle;
+        document.title = pageTitle;
+
+    <? if ($admin && $series->sorted_field) : ?>
+        $('[data-param = <?= $series->sorted_field ?>]').addClass('active-<?= $series->sorted_order ?>');
+
+    <? endif; ?>
+
+    var screenWidth = $("html").width();
+
+    var containerWidth = $('.container-popup').width();
+    var tableWidth = 0;
+    var wideBlocks = $('.series-pics');
+    wideBlocks.each(function() {
+        $(this).css('width', screenWidth-100);
+        tableWidth = $(this).width();
+        $(this).css('margin-left', - (screenWidth - tableWidth)/2);
+    });
+
+    setTimeout(function() {
+        containerWidth = $('.container-popup').width();
+        wideBlocks.each(function() {
+            tableWidth = $(this).find('.table-products').width();
+
+            if (tableWidth < containerWidth) {
+                $(this).find('.table-products').css('width', containerWidth);
+                $(this).find('.table-products').attr('width', containerWidth);
+                tableWidth = containerWidth;
+            }
+            $(this).css('margin-left', ($('.container-popup').width() - tableWidth)/2);
+        });
+
+        $('.equal-blocks-row').each(function() {
+            var series = $(this).parent().next('.series-pics');
+
+            tableWidth = series.find('.table-products').width();
+
+            $(this).parent('.series-pics').css('width', tableWidth);
+            $(this).parent('.series-pics').css('margin-left', ($('.container-popup').width() - tableWidth)/2);
+        });
+
+        popup.setFirstEqualBlockLength();
+    }, 300 );
+
+</script>

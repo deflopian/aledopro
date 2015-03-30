@@ -1,0 +1,26 @@
+<form name="login-form" id="login-form" action="<?= $this->url('cabinet', array('action' => 'login'))?>" method="post"
+      class="aledo-form form-horizontal row-second-small" role="form">
+    <div class="form-group">
+        <div class="col-md-12">
+            <input name="identity" placeholder="Ваш e-mail" type="text" class="form-control" data-required="yes">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <input name="credential" placeholder="Ваш пароль" type="password" class="form-control" data-required="yes">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-6">
+            <a id="popup-forgot" class="link" href="">забыли пароль?</a>
+        </div>
+        <div class="col-md-6">
+            <input type="hidden" name="redirect" value="<?= $url ?>"/>
+            <input type="submit" name="submit" class="btn btn-aledo-black" value="Войти" />
+        </div>
+    </div>
+</form>
+
+<iframe src="/cabinet/fakelogin" id="loginTarget" name="loginTarget" style="display:none">
+</iframe>

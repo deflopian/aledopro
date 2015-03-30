@@ -1,0 +1,16 @@
+<div class="col-md-6 equal-block">
+    <div class="bar-green">
+        <h3><?= $series->visible_title ?></h3>
+        <p class="text-grey">&nbsp;</p>
+    </div>
+</div>
+<? foreach($equalParameters as $field=>$val){
+    if(!in_array($field, $shownEqualParams)){ continue; }
+    ?>
+    <div class="col-md-3 equal-block">
+        <div class="bar-green">
+            <h3 <?= preg_match('[(\d)+]', $val) ? 'style="text-transform: none"' : '' ?>><?= isset($params[$field]) ? $params[$field]->pre_value . ' ' . $val.' <span style="text-transform: none;">'.$params[$field]->post_value . '</span>' : $val; ?></h3>
+            <p class="text-grey"><?= isset($params[$field]) ? $params[$field]->pre_value . ' ' . $params[$field]->title.' '.$params[$field]->post_value . $params[$field]->pre_value : $field ?></p>
+        </div>
+    </div>
+<? } ?>

@@ -1,0 +1,176 @@
+<h1>Специальные предложения</h1>
+
+
+<div class="section" ng-app="dflTree">
+    <div ng-controller="DflTreeCtrl">
+        <h3>Акции</h3>
+        <div class="col-md-6">
+        <dfl-tree parent-type="project">
+            <div dfl-tree-data ng-cloak><?= $treeDateByLvlJson ?></div>
+
+            <div dfl-tree-hierarchy ng-cloak><?= $treeHierarchyJson ?></div>
+
+            <div ng-repeat="(key, item) in items[1]">
+                <div class="row tree-row">
+                    <div class="col-md-1">
+                        <span
+                            class="btn small-icon glyphicon glyphicon-plus"
+                            ng-show="!items[1][key].shown"
+                            ng-click="items[1][key].shown = true"></span>
+                        <span
+                            class="btn small-icon glyphicon glyphicon-minus"
+                            ng-show="items[1][key].shown"
+                            ng-click="items[1][key].shown = false"></span>
+                    </div>
+                    <div class="col-md-10" ng-click="items[1][key].shown = !items[1][key].shown" ng-bind="items[1][key].title"></div>
+                    <div class="col-md-1 pull-right" style="text-align: right; padding-right: 0">
+                        <span
+                            class="glyphicon glyphicon-ok-circle"
+                            ng-show="items[1][key].is_offer == 0"
+                            style="color: #BBBBBB"
+                            ng-click="changeField('<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>', key, 'is_offer', 1)"></span>
+                        <span
+                            class="glyphicon glyphicon-ok-circle"
+                            style="color: #B5BD26"
+                            ng-show="items[1][key].is_offer > 0"
+                            ng-click="changeField('<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>', key, 'is_offer', 0)"></span>
+                    </div>
+                </div>
+
+                <div ng-if="hierarchy[key] && items[1][key].shown">
+                    <div ng-repeat="(subsectionId, series) in hierarchy[key]">
+                        <div style="margin-left: 15px;" class="row tree-row">
+                            <div class="col-md-1">
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-plus"
+                                    ng-show="!items[2][subsectionId].shown"
+                                    ng-click="items[2][subsectionId].shown = true"></span>
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-minus"
+                                    ng-show="items[2][subsectionId].shown"
+                                    ng-click="items[2][subsectionId].shown = false"></span>
+                            </div>
+                            <div class="col-md-10" ng-click="items[2][subsectionId].shown = !items[2][subsectionId].shown" ng-bind="items[2][subsectionId].title"></div>
+                            <div class="col-md-1 pull-right" style="text-align: right; padding-right: 0">
+                                <span
+                                    class="glyphicon glyphicon-ok-circle"
+                                    ng-show="items[2][subsectionId].is_offer == 0"
+                                    style="color: #BBBBBB"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::SUBSECTION_TABLE ?>', subsectionId, 'is_offer', 1)"></span>
+                                <span
+                                    class="glyphicon glyphicon-ok-circle"
+                                    style="color: #B5BD26"
+                                    ng-show="items[2][subsectionId].is_offer > 0"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::SUBSECTION_TABLE ?>', subsectionId, 'is_offer', 0)"></span>
+                            </div>
+                        </div>
+
+
+                        <div ng-if="series && items[2][subsectionId].shown">
+                            <div ng-repeat="(seriesId, products) in series">
+                                <div style="margin-left: 30px;" class="row tree-row">
+                                    <div class="col-md-1">
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-plus"
+                                    ng-show="!items[3][seriesId].shown"
+                                    ng-click="items[3][seriesId].shown = true"></span>
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-minus"
+                                    ng-show="items[3][seriesId].shown"
+                                    ng-click="items[3][seriesId].shown = false"></span>
+                                    </div>
+                                    <div class="col-md-10" ng-bind="items[3][seriesId].title" ng-click="items[3][seriesId].shown = !items[3][seriesId].shown"></div>
+                                    <div class="col-md-1 pull-right" style="text-align: right; padding-right: 0">
+                                        <span
+                                            class="glyphicon glyphicon-ok-circle"
+                                            style="color: #BBBBBB"
+                                            ng-show="items[3][seriesId].is_offer == 0"
+                                            ng-click="changeField('<?= \Catalog\Controller\AdminController::SERIES_TABLE ?>', seriesId, 'is_offer', 1)"></span>
+                                        <span
+                                            class="glyphicon glyphicon-ok-circle"
+                                            style="color: #B5BD26"
+                                            ng-show="items[3][seriesId].is_offer > 0"
+                                            ng-click="changeField('<?= \Catalog\Controller\AdminController::SERIES_TABLE ?>', seriesId, 'is_offer', 0)"></span>
+                                    </div>
+                                </div>
+                                <div ng-if="products && items[3][seriesId].shown">
+                                    <div ng-repeat="(productId, staff) in products">
+                                        <div style="margin-left: 45px;" class="row tree-row">
+                                            <div class="col-md-10 col-md-offset-1" ng-bind="items[4][productId].title"></div>
+                                            <div class="col-md-1 pull-right" style="text-align: right; padding-right: 0">
+                                                <span
+                                                    class="glyphicon glyphicon-ok-circle"
+                                                    style="color: #BBBBBB"
+                                                    ng-show="items[4][productId].is_offer == 0"
+                                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>', productId, 'is_offer', 1)"></span>
+                                                <span
+                                                    class="glyphicon glyphicon-ok-circle"
+                                                    style="color: #B5BD26"
+                                                    ng-show="items[4][productId].is_offer > 0"
+                                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>', productId, 'is_offer', 0)"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </dfl-tree>
+        </div>
+        <script type="application/javascript">
+            AppFactory("dflTree", "trees", ["dflTree"]);
+        </script>
+    </div>
+</div>
+<div class="section">
+    <h3>Список предложений</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-entity">Добавить предложение</button>
+
+        <div class="form-inline" id="adding-form" style="display: none">
+            <div class="form-group">
+                <label class="sr-only" for="inputName">Название</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Введите название..."/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="adding-complete">Добавить</button>
+            <button type="button" class="btn btn-default" id="adding-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+        <? foreach($entities as $entity){ ?>
+            <tr class="entity">
+                <td><?= $entity->id; ?></td>
+                <td><?= $entity->title; ?></td>
+                <td>
+                    <a href="#" class="editBtn">Редактировать</a>
+                    <a href="#" class="deleteBtn">Удалить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        catalog.baseUrl = '<?= $this->url('zfcadmin/offers') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/offers', array('action'=> 'view')) ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService:: OFFERS ?>';
+        catalog.init();
+    });
+</script>

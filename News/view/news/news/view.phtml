@@ -1,0 +1,54 @@
+<?
+/**
+ * @var \News\Model\News $news
+ * @var $sl
+ * @var \News\Model\News $prevProd
+ * @var \News\Model\News $nextProd
+ */
+?>
+
+<div class="series-pics" style="position: relative; top: -73px">
+    <?= \Catalog\Service\CatalogService::renderPopupNav($sl, $prevProd, $nextProd, 'news', true); //навигация ?>
+</div>
+    <div class="container" style="padding-bottom: 10px">
+            <div class="row">
+                <div class="col-md-12 text-center text-small">
+                    <?= \Application\Service\ApplicationService::getFormedDate($news->date) ?>
+                </div>
+            </div>
+            <? if ($news->img) { ?>
+                <div class="row">
+                    <div class="col-md-12 popup-gallery-img">
+                        <? $src = $this->basePath() . '/images/news/' . $news->img ?>
+                        <img style=" margin: 0 auto; width: auto; height: 360px;" src="<?= $src ?>" alt="<?= $news->title; ?>"/>
+                    </div>
+                </div>
+            <? } ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row" style="margin-top: 20px">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <h1><?=  $news->title; ?></h1>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="dotted-bottom"></div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3"><?= $news->text ?></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+<script>
+    popup.pageTitle = '<?= $this->seoData->title ? $this->seoData->title : $news->title ?>';
+
+</script>

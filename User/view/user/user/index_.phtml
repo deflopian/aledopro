@@ -1,0 +1,171 @@
+<div class="section">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="dotted-bottom">
+                        <h2>Персональные данные</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="<?= $this->url('cabinet',array('action'=>'updateRegisterInfo')) ?>" method="post"
+                          class="form-horizontal form-left row-second-small aledo-form" role="form">
+
+                        <div class="form-group">
+                            <label for="username" class="col-md-12 control-label">имя*</label>
+                            <div class="col-md-12">
+                                <input type="text" name="username" class="form-control" value="<?= $user->username ?>" required="yes" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="col-md-12 control-label">контактный телефон</label>
+                            <div class="col-md-12">
+                                <input type="text" name="phone" class="form-control" value="<?= $user->phone ?>" required="no" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="city" class="col-md-12 control-label">город</label>
+                            <div class="col-md-12">
+                                <input type="text" name="city" class="form-control" value="<?= $user->city ?>" />
+                            </div>
+                        </div>
+
+                        <div class="checkbox" style="padding-left: 0">
+                            <input id="reg-spam" name="is_spamed"  type="checkbox" <?= $user->is_spamed ? 'checked' : '' ?>>
+                            <label for="reg-spam">подписаться на рассылку
+                                <br>(информация о скидках, акциях)</label>
+                        </div>
+
+                        <div class="form-group row-second-small" style="padding-top: 20px">
+                            <label class="col-md-12 control-label">Текущий пароль*</label>
+                            <div class="col-md-12">
+                                <input style="display:none">
+                                <input type="password" autocomplete="off" name="password" class="form-control" required="yes">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="popup-reg-info-update" onclick="formajax.successPopup = 'reginfo-update';" type="submit" class="btn btn-aledo-black">Сохранить измененные данные</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="dotted-bottom">
+                        <h2>Сменить пароль</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="<?= $this->url('cabinet',array('action'=>'changepassword')) ?>" method="post"
+                          class="form-horizontal form-left row-second-small aledo-form" role="form">
+                        <div class="form-group row-second-small">
+                            <label class="col-md-12 control-label">Текущий пароль*</label>
+                            <div class="col-md-12">
+                                <input type="password" autocomplete="off" name="credential" class="form-control" required="yes">
+                            </div>
+                        </div>
+                        <div class="form-group row-second-small">
+                            <label class="col-md-12 control-label">Новый пароль*</label>
+                            <div class="col-md-12">
+                                <input type="password" autocomplete="off" name="newCredential" class="form-control" required="yes">
+                            </div>
+                        </div>
+                        <div class="form-group row-second-small">
+                            <label class="col-md-12 control-label">Повторите новый пароль*</label>
+                            <div class="col-md-12">
+                                <input type="password" autocomplete="off" name="newCredentialVerify" class="form-control" required="yes">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button id="popup-change-password" onclick="formajax.successPopup = 'change-password';" type="submit" class="btn btn-aledo-black">Сохранить пароль</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-offset-1">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="dotted-bottom">
+                        <h2>Список заказов</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover table-aledo">
+                        <thead>
+                        <tr>
+                            <th>Дата и время операции</th>
+                            <th>Сумма операции</th>
+                            <th>Описание</th>
+                            <th>Цена</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <? foreach($orders as $order){ ?>
+                            <tr class="dotted-bottom">
+                                <td><a href="/cabinet/editorder/<?= $order->id ?>"> <?= $order->date ?> </a></td>
+                                <td><?= $order->summ ?> р.</td>
+                                <td>
+                                    <?
+                                    if(isset($order->products)){
+                                        foreach($order->products as $product){ ?>
+                                            <p>
+                                                <a class="link" href="<?= $this->url('catalog', array('action'=>'product', 'id'=> $product->id)) ?>">
+                                                    <?= $product->title ?>
+                                                </a>
+                                            </p>
+                                        <? } ?>
+                                    <?} ?>
+                                </td>
+                                <td>
+                                    <? if(isset($order->products)){
+                                        foreach($order->products as $product){ ?>
+                                            <p><?= $product->order_price ?></p>
+                                        <? } ?>
+                                    <? } ?>
+                                </td>
+                                <td>
+                                    <? if(isset($order->products)){
+
+
+                                        foreach($order->products as $product){ ?>
+                                            <p>(<?= $product->order_count ?> шт)</p>
+                                        <? } ?>
+                                    <? } ?>
+                                </td>
+                                <td>
+                                    <a href="/cabinet/editorder/<?= $order->id ?>"><div class="btn btn-default" style="padding: 4px; font-size: 12px; margin: 4px"> ред. </div></a>
+                                </td>
+                            </tr>
+                        <? } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        formajax.init({changeUrl: false});
+    });
+</script>

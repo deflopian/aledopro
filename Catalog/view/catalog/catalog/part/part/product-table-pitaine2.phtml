@@ -1,0 +1,331 @@
+<?
+$hierarchies = $this->hierarchies;
+$discounts = $this->discounts;
+
+$fields = array('id', 'title', 'file_custom', 'controller_type', 'power', 'i_out', 'u_out', 'warranty', 'free_balance', 'price_without_nds', 'price_with_nds', 'length');
+$filteredFields = array('power', 'i_out', 'u_out', 'warranty');
+if ($user && $user->getIsPartner()) {
+    $fields[] = 'partner_price';
+}
+
+$posVals = \Catalog\Service\CatalogService::getValsJSON($products, $filteredFields);
+if (count($products)) {$isDriver = (reset($products)->type == 'Драйвер тока');}
+$products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS, $hierarchies, $discounts, $filteredFields);
+
+?>
+
+
+
+<solo-table make-sortable="3" >
+<div solo-table-data>
+    [<?= $products ?>]
+</div>
+<div solo-table-header-data>
+    [
+    {
+    "name": "id",
+    "label": "Артикул"
+    },
+    {
+    "name": "title",
+    "label": "Наименование"
+    },
+    {
+    "name": "file_custom",
+    "label": ""
+    },
+    {
+    "name": "electro_power",
+    "label": "Питание"
+    },
+    {
+    "name": "color_of_light",
+    "label": "Цвет свечения"
+    },
+    {
+    "name": "luminous_flux",
+    "label": "Световой поток"
+    },
+    {
+    "name": "power",
+    "label": "Мощность"
+    },
+    {
+    "name": "free_balance",
+    "label": "Наличие"
+    },
+    {
+    "name": "price_with_nds",
+    "label": "Цена"
+    }
+    <? if ($user && $user->getIsPartner()) { ?>
+        ,
+        {
+        "name": "partner_price",
+        "label": "Цена партнёра"
+        }
+    <? } ?>
+    ]
+</div>
+<div solo-table-pos-vals>
+    <?= $posVals ?>
+</div>
+<div class="row" >
+    <div class="col-md-12" style="background-color: #989898; color: #ffffff; margin-top: 20px; margin-bottom: 20px; padding: 20px">
+        <div class="row">
+            <div class="col-md-3 filter-before"><h2 style="font-weight: bold; margin-top: 0">Фильтр</h2></div>
+            <div class="col-md-2 filter-param"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder " >
+                <div class="row"  style="text-align: left">
+                    <div class="col-md-12">
+
+                        <div class="icon-filter"></div>
+                        <div style="border-bottom: 1px solid white; padding-bottom: 20px; margin-bottom: 10px" >{{paramNames[name]}}</div>
+                    </div>
+                </div>
+                <div class="row" ng-repeat="(i, val) in vals[name]" >
+                    <div class="col-md-12" ng-click="printScope()">
+                        <input id="f-<?=$serNum?>{{name}}-val-{{i}}" type="checkbox"
+                               name="{{name}}" value="{{val.value}}"
+                               ng-true-value="{{val.hash}}"
+                               ng-false-value="false"
+                               class="filter-checkbox"
+                               ng-model="possibleVals[name][i]"  ng-click="printScope()">
+                        <label for="f-<?=$serNum?>{{name}}-val-{{i}}"  ng-class="{disabledFilterParam: !checkVal(name, val.value)}" style="font-weight: normal">{{val.value}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        <!--            $('.filter-before').css('width', getWidthBeforeColumn("--><?//= reset($filteredFields) ?><!--")+4);-->
+        <!---->
+        <!--            $('.filter-param').each(function() {-->
+        <!---->
+        <!--                $(this).css('width', getWidthColumn($(this).data('name')));-->
+        <!--            });-->
+
+
+    });
+    function getWidthBeforeColumn(name) {
+        var width = 0;
+        $('.table-products:first').find('th').each(function() {
+            if ($(this).hasClass(name + '-header')) {
+                return false;
+            } else {
+                width += $(this).outerWidth();
+            }
+        });
+
+        return width;
+    }
+    function getWidthColumn(name) {
+        var width = 0;
+
+        $('.table-products:first').find('th').each(function() {
+            if ($(this).hasClass(name + '-header')) {
+                console.log(name);
+                console.log($(this).outerWidth());
+                width = $(this).outerWidth();
+            }
+        });
+
+        return width;
+    }
+</script>
+<table class="table table-hover table-aledo table-products">
+    <thead>
+    <tr>
+        <th class="{{th.name}}-header" ng-repeat="th in ths = tds" sort-by='{{th.name}}'>{{th.label}}</th>
+        <th class="buy-item-header"></th>
+        <th class="copy-link-header"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr
+        itemscope
+        itemtype="http://schema.org/Product"
+        ng-repeat="item in filtered = (original | possibleVals:this)"
+        ng-class="{selectedProd: item.id == selectedProdId}"
+        class="item product-line"
+        data-id="{{item.id}}"
+        class="product-line"
+        >
+        <!--        <tr itemscope itemtype="http://schema.org/Product"-->
+        <!--            class="item product-line --><?//= $this->selectedProdId == $prod->id ? 'selectedProd' : ''?><!--"-->
+        <!--            data-id="--><?//= $prod->id; ?><!--">-->
+        <td itemprop="productID" class="td-grey item-id">{{item.id}}</td>
+        <td itemprop="name" class="item-title">{{item.title}}</td>
+        <td class="file_custom">
+            <div ng-show="item.file_custom">
+                <a href="/images/product_docs/{{item.file_custom}}"
+                   target="_blank"
+                   ng-click="ga('send', 'event', 'button', 'click', 'download', '{{item.file_custom}}');">
+                    <span ng-init="type=item.file_custom.substr(-3, 3)" class="icon-download icon-{{type}}"></span>
+                </a>
+            </div>
+        </td>
+
+        <td class="controller_type">{{item.controller_type}}</td>
+        <td class="power">{{item.power}}</td>
+        <td class="td-grey <?= $isDriver ? 'i_out' : 'u_out'?>">{{item.<?= $isDriver ? 'i_out' : 'u_out' ?>}}  <span ng-if="!(item.luminous_flux.indexOf('A') + 1)"> A</span><span ng-if="!(item.luminous_flux.indexOf('В') + 1)"> В</span></td>
+        <td class="warranty" ng-show="false">{{item.warranty}}</td>
+            <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                <td class="td-grey free_balance">
+                    <div ng-if="item.free_balance">
+                        <span ng-if="item.free_balance == -1">
+                            <div class="icon-daw"></div><link itemprop="availability" href="http://schema.org/InStock"/>
+                        </span>
+                        <span ng-if="item.free_balance > 0">
+                            {{item.free_balance}}
+                        </span>
+
+                    </div>
+                    <div ng-if="item.free_balance == 0">
+                        <div title="Уточняйте наличие" class="icon-question"></div><link itemprop="availability" href="http://schema.org/OutOfStock"/>
+                    </div>
+                </td>
+
+                <td class="price-with-nds">
+                    <span itemprop="price">
+                        {{item.price_with_nds}}
+                    </span>
+                    <span>
+                        <span class="b-rub">Р</span>
+                    </span>
+                </td>
+
+                <? if ($user && $user->getIsPartner()) { ?>
+                    <td class="td-grey partner-price">
+                    <span itemprop="price">
+                        {{item.partner_price}}
+                    </span>
+                    <span ng-if="item.length > 0">
+                        <span class="b-rub">Р</span>/м
+                    </span>
+                    <span ng-if="item.length == 0">
+                        <span class="b-rub">Р</span>
+                    </span>
+                    </td>
+                <? } ?>
+            </span>
+        <!--                <td class="td-grey"></td>-->
+        <td class="but-item">
+            <a class="buy-btn" title="купить модель">
+                <span class="buy-arrow"></span>
+                    <span class="buy-body">
+                        <span class="buy-on">купить</span>
+                    </span>
+            </a>
+            <a href="<?= $this->url('cart') ?>" class="buy-to-cart" title="модель помещена в корзину">в корзине</a>
+        </td>
+        <td class="copy-link">
+            <!--                --><?// if(in_array($prod->id, $offeredIds)){ ?>
+            <span ng-if="false">
+                    <div class="icon-discount"></div>
+                </span>
+            <!--                --><?// } ?>
+
+            <a class="getlink-btn">
+                <div class="icon-getlink zeroclipboard"
+                     data-clipboard-text="/catalog/product/{{item.id}}/"></div>
+            </a>
+            <a class="buy-back-btn" title="убрать из корзины"><div class="icon-whitecross"></div></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</solo-table>
+<!--<table class="table table-hover table-aledo table-products">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th class="--><?//= $admin ? 'id-header sortable" data-param="id' : 'id-header' ?><!--">Артикул</th>-->
+<!--        <th class="--><?//= $admin ? 'title-header sortable" data-param="title' : 'title-header' ?><!--">Наименование</th>-->
+<!--        <th></th>-->
+<!--        <th class="--><?//= $admin ? 'controller-type-header sortable" data-param="controller_type' : 'controller-type-header' ?><!--" >Габариты</th>-->
+<!--        <th class="--><?//= $admin ? 'power-header sortable" data-param="power"' : 'power-header' ?><!--" >Мощность</th>-->
+<!--        <th class="--><?//= $admin ? ($isDriver ? 'i' : 'u') . '-out-header sortable" data-param="' . ($isDriver ? 'i_out' : 'u_out') . '' :  ($isDriver ? 'i' : 'u') . '-out-header' ?><!--">--><?//= $isDriver ? 'Выходной ток' : 'Выходное напряжение' ?><!--</th>-->
+<!--        <th class="--><?//= $admin ? 'warranty-header sortable" data-param="warranty' : 'warranty-header' ?><!--" >Гарантия</th>-->
+<!--        <th class="--><?//= $admin ? 'free-balance-header sortable" data-param="free_balance' : 'free-balance-header' ?><!--" >Наличие</th>-->
+<!--        <th class="--><?//= $admin ? 'price-with-nds-header sortable" data-param="price_without_nds' : 'price-with-nds-header' ?><!--" >Цена</th>-->
+<!---->
+<!--        --><?// if ($user && $user->getIsPartner()) { ?>
+<!--            <th class="partner-price-header">Цена партнёра</th>-->
+<!--        --><?// } ?>
+<!--        <!--                <th>Партнерская цена</th>-->-->
+<!--        <th class="but-item-header"></th>-->
+<!--        <th class="copy-link-header"></th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    --><?// foreach($products as $prod){ ?>
+<!--        <tr itemscope itemtype="http://schema.org/Product"-->
+<!--            class="item product-line --><?//= $this->selectedProdId == $prod->id ? 'selectedProd' : ''?><!--"-->
+<!--            data-id="--><?//= $prod->id; ?><!--">-->
+<!--            <td itemprop="productID" class="td-grey item-id">--><?//= $prod->id; ?><!--</td>-->
+<!--            <td itemprop="name" class="item-title">--><?//= $prod->title; ?><!--</td>-->
+<!--            <td class="file-custom">-->
+<!--                --><?// if($prod->file_custom){ ?>
+<!--                    <a href="--><?//= $prod->file_custom ? $this->basePath() . '/images/product_docs/' . $prod->file_custom : ''?><!--"-->
+<!--                       target="_blank"-->
+<!--                       onclick="ga('send', 'event', 'button', 'click', 'download', '--><?//= $prod->file_custom ?><!--');"-->
+<!--                    >-->
+<!--                        --><?// $type = substr($prod->file_custom, -3); ?>
+<!--                        <span class="icon-download icon---><?//= $type?><!--"></span>-->
+<!--                    </a>-->
+<!--                --><?// } ?>
+<!--            </td>-->
+<!--            <td class="controller-type td-grey">--><?//= \Catalog\Service\CatalogService::fillDimensionsWithTags($prod->controller_type); ?><!--</td>-->
+<!--            <td class="item-power">--><?//= ceil($prod->power); ?><!-- Вт</td>-->
+<!--            <td class="td-grey item---><?//= $isDriver ? 'i' : 'u' ?><!---out">--><?//= $isDriver ? $prod->i_out . (strpos($prod->i_out, 'A') ? '' : ' А') : $prod->u_out . ' В' ?><!--</td>-->
+<!--            <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">-->
+<!--                <td class="warranty"><span itemprop="warranty">--><?//= $prod->warranty ? $prod->warranty . ' ' . \Catalog\Service\CatalogService::getYearForm($prod->warranty): '' ?><!--</span></td>-->
+<!--                <td class="td-grey free-balance" style="padding-right: 8px">--><?//=
+//                    $prod->free_balance
+//                        ? ( ($user && $user->getIsPartner()) ?
+//                        $prod->free_balance : '<div class="icon-daw"></div><link itemprop="availability" href="http://schema.org/InStock"/>')
+//                        : '<div title="Уточняйте наличие" class="icon-question"></div><link itemprop="availability" href="http://schema.org/OutOfStock"/>';
+//                    ?><!--</td>-->
+<!--                <td class="price-with-nds">-->
+<!--                    <span itemprop="price">--><?//= \Catalog\Service\CatalogService::getTruePrice(
+//                        $prod->price_without_nds
+//                    ); ?><!--</span>&nbsp;<span class="b-rub">Р</span>-->
+<!--                </td>-->
+<!--                --><?// if ($user && $user->getIsPartner()) { ?>
+<!--                <td class="td-grey partner-price">-->
+<!--                    <span itemprop="discount-price">--><?//= \Catalog\Service\CatalogService::getTruePrice(
+//                            $prod->price_without_nds,
+//                            $user,
+//                            isset($hierarchies[$prod->id]) ? $hierarchies[$prod->id] : array(),
+//                            $discounts,
+//                            $prod->opt2
+//                        ); ?><!--</span> <span class="b-rub">Р</span>-->
+<!--                </td>-->
+<!--                --><?// } ?>
+<!--            </span>-->
+<!--                <!--                <td class="td-grey"></td>-->-->
+<!--            <td class="but-item" >-->
+<!--                <a class="buy-btn" title="купить модель">-->
+<!--                    <span class="buy-arrow"></span>-->
+<!--                    <span class="buy-body">-->
+<!--                        <span class="buy-on">купить</span>-->
+<!--                    </span>-->
+<!--                </a>-->
+<!--                <a href="--><?//= $this->url('cart') ?><!--" class="buy-to-cart" title="модель помещена в корзину">в корзине</a>-->
+<!--            </td>-->
+<!--            <td class="copy-link">-->
+<!--                --><?// if(in_array($prod->id, $offeredIds)){ ?>
+<!--                    <div class="icon-discount"></div>-->
+<!--                --><?// } ?>
+<!---->
+<!--                <a class="getlink-btn">-->
+<!--                    <div class="icon-getlink zeroclipboard"-->
+<!--                         data-clipboard-text="--><?//= $this->url('catalog', array('action'=>'product', 'id'=>$prod->id)); ?><!--"></div>-->
+<!--                </a>-->
+<!--                <a class="buy-back-btn" title="убрать из корзины"><div class="icon-whitecross"></div></a>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--    --><?// } ?>
+<!--    </tbody>-->
+<!--</table>-->

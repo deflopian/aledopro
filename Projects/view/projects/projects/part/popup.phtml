@@ -1,0 +1,141 @@
+<div class="container-popup">
+    <?= \Catalog\Service\CatalogService::renderPopupNav($sl, $prevProd, $nextProd, 'projects', $this->robot); //навигация ?>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <div class="row" style="margin-top: 20px">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <h1><?= $project->title; ?></h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="dotted-bottom"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row  row-second-xs">
+        <div class="col-md-12 scrollbar" id="ex3" style="overflow: auto;">
+            <div class="row bad-pics-container" style="width: <?= (count($imgs)-1)*700 ?>px;">
+                <? $i = 0; ?>
+                <? foreach($imgs as $img) { ?>
+                    <? if ($i++ == 0) continue; ?>
+                    <div style="height: 300px; float: left; padding-right: 5px" >
+                            <a class="project-image-fancybox" rel="group1"  href="<?= $this->basePath() . '/images/projects/' . $img->url ?>">
+
+                                <img style="height: 300px; width: auto;" class="bad-pics" src="<?= $this->basePath() . '/images/projects/' . $img->url; ?>" alt="" />
+
+                            </a>
+                    </div>
+                <? } ?>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row row-second">
+        <div class="col-md-3 col-md-offset-1">
+            <div>адрес:</div>
+            <div><?= $project->adress ?></div>
+
+            <? if($members){ ?>
+                <div class="row-second">участники:</div>
+                <? foreach($members as $member){?>
+                    <div class="row-second-xs">
+                        <div><?= $member->title ?></div>
+
+                        <?= $member->role ? '<div>'. $member->role. '</div>' : ''?>
+                        <? if($member->link){ ?>
+                            <div><a href="<?= $member->link ?>"><?= $member->link_text ? $member->link_text : $member->link?></a></div>
+                        <? }?>
+                    </div>
+                <? }?>
+            <? }?>
+        </div>
+        <div class="col-md-6 col-md-offset-1">
+            <?= $project->text ?>
+        </div>
+    </div>
+
+    <div class="row row-second-big">
+        <div class="col-md-3 col-md-offset-1">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bar-grey">
+                        <h2>Похожие проекты</h2>
+                    </div>
+                </div>
+            </div>
+
+            <? foreach($relatedProjects as $proj){ ?>
+                <div class="row row-second">
+                    <a href="/projects/view/<?= $proj->id ?>">
+                        <div class="col-md-12">
+                            <div class="tile-title"><?= $proj->title ?></div>
+                            <? $src = $proj->img ? $this->basePath() . '/images/projects/' . $proj->img : $this->basePath() . '/images/empty-series.png' ?>
+                            <img src="<?= $src ?>" alt='<?= $proj->title ?>'/>
+                        </div>
+                    </a>
+                </div>
+            <? } ?>
+        </div>
+
+        <div class="col-md-6 col-md-offset-1">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="bar-grey">
+                        <h2>Продукты в проекте</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-second">
+                <? foreach($relatedSeries as $i=>$series){
+                    if($i%3==0&&$i!=0){ echo '</div><div class="row row-second">'; }
+                    ?>
+                    <div class="col-md-4 series-tile">
+                        <?= \Catalog\Service\CatalogService::renderSeriesTile( $sl, $series); ?>
+                    </div>
+                <? }?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    popup.pageTitle = '<?= $this->seoData->title ? $this->seoData->title : $project->title ?>';
+
+    var fullWidth = 0;
+    var count = 0;
+    var trueWidth = 0;
+    var trueHeight = 0;
+    $('.bad-pics').load(function(){
+        count++;
+        trueWidth = $(this)[0].naturalWidth;
+        trueHeight = $(this)[0].naturalHeight;
+        var ascpect = trueWidth/trueHeight;
+        fullWidth += 305*ascpect;
+
+        if (count == <?= count($imgs)-1 ?>) {
+            $('.bad-pics-container').css('width', fullWidth);
+        }
+    });
+
+
+
+
+
+     $("a.project-image-fancybox").fancybox({
+         'transitionIn'	:	'elastic',
+         'transitionOut'	:	'elastic',
+         'overlayShow'	:	false,
+         'minWidth'     : 800,
+         'maxWidth'     : 800
+     });
+
+
+</script>

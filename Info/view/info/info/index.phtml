@@ -1,0 +1,394 @@
+<?
+/** @var $entity \Info\Model\About */
+?>
+<div class="b-about-page">
+    <div class="b-section">
+        <div class="b-section__content text-center">
+            <br /><br />
+            <h2 class="text-center">
+                <?= $entity->title1 ?>
+            </h2>
+            <br /><br />
+
+            <div class="b-tabs-wrapper b-tabs-wrapper_about">
+                <div class="b-about-tabs">
+                    <ul class="b-tabs list-unstyled b-tabs_about">
+                        <li class="b-tabs__tab active">
+                            <a class="b-tabs__link " href="#about_1" data-toggle="tab"><?= $entity->btn_1_header ?></a>
+                        </li>
+                        <li class="b-tabs__tab">
+                            <a class="b-tabs__link " href="#about_2" data-toggle="tab"><?= $entity->btn_2_header ?></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="b-tabs-content b-tabs-content_about">
+                    <div class="b-tabs-content__item fade in active" id="about_1">
+                        <?= $entity->text_1 ?>
+
+                    </div>
+                    <div class="b-tabs-content__item fade" id="about_2">
+                        <h4><?= $entity->text_2_header_1 ?></h4>
+                        <?= $entity->text_2_text_1 ?>
+                        <h4><?= $entity->text_2_header_2 ?></h4>
+                        <?= $entity->text_2_text_2 ?>
+                        <h4><?= $entity->text_2_header_3 ?></h4>
+                        <?= $entity->text_2_text_3 ?>
+                    </div>
+                </div>
+                <hr class="dotted-separator"/>
+            </div>
+            <br/><br /><br />
+        </div>
+    </div>
+    <div class="b-section b-section_principles">
+        <div class="b-section__content">
+            <br />
+            <h1 class="text-center"><?= $entity->title2 ?></h1>
+            <br />
+            <hr class="dotted-separator b-mb2" />
+            <br />
+            <div class="b-principles">
+                <div class="b-principles-cell">
+                    <div class="text-center">
+                        <?= $entity->block_2_text_1 ?>
+                        <img class="b-principles-cell__icon" src="/images/about/<?= $entity->block_2_img_1_name ?>" />
+                    </div>
+                </div>
+                <div class="b-principles-cell">
+                    <div class="text-center">
+                        <?= $entity->block_2_text_2 ?>
+                        <img class="b-principles-cell__icon" src="/images/about/<?= $entity->block_2_img_2_name ?>" />
+                    </div>
+                </div>
+                <div class="b-principles-cell">
+                    <div class="text-center">
+                        <?= $entity->block_2_text_3 ?>
+                        <img class="b-principles-cell__icon" src="/images/about/<?= $entity->block_2_img_3_name ?>" />
+                    </div>
+                </div>
+            </div>
+            <hr class="dotted-separator" />
+        </div>
+    </div>
+    <div class="b-section b-section_reviews" image-responsive="{
+                             default : {
+             src: '/images/about/<?=$entity->img_name ?>',
+                                 css : {
+
+                                }
+                             }, 1001 : {
+              src: '/images/about/<?=$entity->img_min_name ?>',
+                  css : {
+
+
+             }
+                 }}">
+        <div class="b-section__content">
+            <div class="b-downloads b-downloads_reviews">
+                <div class="b-downloads-table">
+                    <div class="b-downloads-table__cell b-downloads-table__cell_l" align="left">
+                        <img class="b-downloads__image" src="/Content/images/about/icon_reviews.svg" />
+                    </div>
+                    <div class="b-downloads-table__cell b-downloads-table__cell_r">
+                        <div class="b-downloads-slider">
+                            <? foreach ($this->comments as $comment) { ?>
+                                <div class="b-downloads-slider__item">
+                                    <a class="b-downloads-slider__link b-downloads-slider__link_review" href="/images/documents/<?= $comment->file_name ?>">
+                                        <img class="b-downloads-slider__image" src="/images/documents/<?= $comment->img_name ?>" />
+                                    </a>
+                                </div>
+                            <? } ?>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="b-slider-outer b-section">
+        <div id="imagesLoadedProjects" style="display:none">
+            <? foreach ($linkedProjects as $project) { ?>
+                <div class="b-slider__item">
+                    <img class="b-slider__image" src="/images/projects/<?= $project[1]->preview_name ?>" />
+                </div>
+            <? } ?>
+        </div>
+        <div class="b-slider b-slider_our-projects">
+
+        </div>
+        <div class="b-section__content">
+            <div class="b-slider-arrows b-slider-arrows_projects">
+                <img class="b-slider-image" src="/Content/images/about/icon_projects.svg" />
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        (function() {
+            var _options = {
+                    $slider: jQuery('.b-slider_our-projects'),
+                    slidesToShow: 1,
+                    animatingSpeed: browser.mobile ? 300 : 500,
+                    imagesContainer: "#imagesLoadedProjects",
+                    noSliderClass: "b-slider_no-slider"
+                },
+                _ = _options,
+                _init = function() {
+                    _initSlider();
+                },
+                _initSlider = function() {
+                    _.$slider.slick({
+                        accessibility: false,
+                        dots: false,
+                        infinite: true,
+                        speed: _.animatingSpeed,
+                        slidesToShow: _.slidesToShow,
+                        touchThreshold: browser.mobile ? 5 : 50,
+                        centerMode: true,
+                        centerPadding: "0px",
+                        variableWidth: true,
+                        appendArrows: jQuery(".b-slider-arrows_projects"),
+                        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_prev\"></a>",
+                        nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_next\"></a>"
+                    });
+
+                    var imgLoad = imagesLoaded(_.imagesContainer);
+
+                    imgLoad.on("always", function(instance) {
+                        var loadedImages = jQuery.grep(imgLoad.images, function(a) {
+                            return a.isLoaded == true;
+                        });
+                        _slideAdd(loadedImages);
+
+                    });
+
+                },
+
+                _slideAdd = function(images) {
+                    if (!images.length) return;
+                    var slideElements = "";
+                    for (var i = 0; i < images.length; ++i) {
+                        slideElements += jQuery(images[i].img).parentsUntil(_.imagesContainer).last()[0].outerHTML;
+                    }
+
+
+                    _.$slider.slick("slickAdd", slideElements);
+                    if (images.length <= _.slidesToShow) {
+                        _.$slider.slick("unslick");
+                        _.$slider.addClass(_.noSliderClass);
+                    }
+
+                };
+
+            _init();
+
+
+        })();
+    </script>
+
+    <div class="b-slider-outer b-section">
+        <div style="display:none" id="imagesLoadedShowRoom">
+            <? foreach ($showRoom as $banner) { ?>
+                <div class="b-slider__item">
+                    <img class="b-slider__image" src="/images/banner/<?= $banner->img_name ?>" />
+                </div>
+            <? } ?>
+        </div>
+        <div class="b-slider b-slider_show-room">
+
+        </div>
+        <div class="b-section__content">
+            <div class="b-slider-arrows b-slider-arrows_show-room">
+                <img class="b-slider-image b-slider-image_show-room" src="/Content/images/about/icon_show-room.svg" />
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        (function () {
+            var _options = {
+                    $slider: jQuery('.b-slider_show-room'),
+                    slidesToShow: 1,
+                    animatingSpeed: browser.mobile ? 300 : 500,
+                    imagesContainer: "#imagesLoadedShowRoom",
+                    noSliderClass: "b-slider_no-slider"
+                },
+                _ = _options,
+                _init = function () {
+                    _initSlider();
+                },
+                _initSlider = function () {
+                    _.$slider.slick({
+                        accessibility: false,
+                        dots: false,
+                        infinite: true,
+                        speed: _.animatingSpeed,
+                        slidesToShow: _.slidesToShow,
+                        touchThreshold: browser.mobile ? 5 : 50,
+                        centerMode: true,
+                        centerPadding: "0px",
+                        variableWidth: true,
+                        appendArrows: jQuery(".b-slider-arrows_show-room"),
+                        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_show-room b-slider-arrows__arrow_show-room_prev\"></a>",
+                        nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_show-room b-slider-arrows__arrow_show-room_next\"></a>"
+                    });
+
+                    var imgLoad = imagesLoaded(_.imagesContainer);
+
+                    imgLoad.on("always", function (instance) {
+                        var loadedImages = jQuery.grep(imgLoad.images, function (a) {
+                            return a.isLoaded == true;
+                        });
+                        _slideAdd(loadedImages);
+
+                    });
+
+                },
+
+                _slideAdd = function (images) {
+                    if (!images.length) return;
+                    var slideElements = "";
+                    for (var i = 0; i < images.length; ++i) {
+                        slideElements += jQuery(images[i].img).parentsUntil(_.imagesContainer).last()[0].outerHTML;
+                    }
+
+
+                    _.$slider.slick("slickAdd", slideElements);
+                    if (images.length <= _.slidesToShow) {
+                        _.$slider.slick("unslick");
+                        _.$slider.addClass(_.noSliderClass);
+                    }
+
+                };
+
+            _init();
+
+
+        })();
+    </script>
+
+    <div class="b-slider-outer b-section">
+        <div style="display: none" id="imagesLoadedTeam">
+            <? foreach ($team as $worker) { ?>
+                <div class="b-slider__item">
+                    <img class="b-slider__image" src="/images/team/<?= $worker->img_name ?>" />
+                </div>
+            <? } ?>
+        </div>
+        <div class="b-slider b-slider_our-team">
+
+        </div>
+
+        <div class="b-section__content">
+            <div class="b-slider-arrows b-slider-arrows_our-team">
+                <img class="b-slider-image b-slider-image_our-team" src="/Content/images/about/icon_team.svg" />
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        (function () {
+            var _options = {
+                    $slider: jQuery('.b-slider_our-team'),
+                    slidesToShow: 3,
+                    animatingSpeed: browser.mobile ? 300 : 500,
+                    imagesContainer: "#imagesLoadedTeam",
+                    noSliderClass: "b-slider_no-slider"
+                },
+                _ = _options,
+                _init = function () {
+                    _initSlider();
+                },
+                _initSlider = function () {
+                    _.$slider.slick({
+                        accessibility: false,
+                        dots: false,
+                        infinite: true,
+                        speed: _.animatingSpeed,
+                        slidesToShow: _.slidesToShow,
+                        touchThreshold: browser.mobile ? 5 : 50,
+                        centerMode: true,
+                        centerPadding: "0px",
+                        variableWidth: true,
+                        appendArrows: jQuery(".b-slider-arrows_our-team"),
+                        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_prev\"></a>",
+                        nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_next\"></a>"
+                    });
+
+                    var imgLoad = imagesLoaded(_.imagesContainer);
+
+                    imgLoad.on("always", function (instance) {
+                        var loadedImages = jQuery.grep(imgLoad.images, function (a) {
+                            return a.isLoaded == true;
+                        });
+                        _slideAdd(loadedImages);
+
+                    });
+
+                },
+
+                _slideAdd = function (images) {
+                    if (!images.length) return;
+                    var slideElements = "";
+                    for (var i = 0; i < images.length; ++i) {
+                        slideElements += jQuery(images[i].img).parentsUntil(_.imagesContainer).last()[0].outerHTML;
+                    }
+
+
+                    _.$slider.slick("slickAdd", slideElements);
+                    if (images.length <= _.slidesToShow) {
+                        _.$slider.slick("unslick");
+                        _.$slider.addClass(_.noSliderClass);
+                    }
+
+                };
+
+            _init();
+
+
+        })();
+    </script>
+</div>
+<script type="text/javascript">
+    (function() {
+        var $this = jQuery('.b-downloads-slider'),
+            $slides = $this.find(".b-downloads-slider__item"),
+            noSliderClass = "b-slider_no-slider";
+        if ($slides.length == 1) {
+            return;
+        }
+        $this.removeClass(noSliderClass);
+
+        $this.slick({
+            dots: false,
+            infinite: true,
+            speed: browser.mobile ? 300 : 500,
+            touchThreshold: browser.mobile ? 5 : 50,
+            slidesToShow: 1,
+            centerMode: true,
+            variableWidth: true,
+            responsive: [
+                {
+                    breakpoint: 991,
+                    settings: {
+                        fade: true
+                    }
+                }
+            ],
+            prevArrow: "<a href=\"javascript:void(0)\" class=\"b-downloads-slider-arrow b-downloads-slider-arrow_prev\">" +
+            "<img class=\"b-downloads-slider-arrow__image\" src=\"/Content/images/button-arrow-white.png\"/>" +
+            "</a>",
+            nextArrow: "<a href=\"javascript:void(0)\" class=\"b-downloads-slider-arrow b-downloads-slider-arrow_next\">" +
+            "<img class=\"b-downloads-slider-arrow__image\" src=\"/Content/images/button-arrow-white.png\"/>" +
+            "</a>"
+        });
+
+
+    })();
+    jQuery(".b-downloads-slider__link_review").fancybox({
+        'opacity': true,
+        padding: 20,
+        'overlayShow': true,
+        'transitionIn': 'elastic',
+        'transitionOut': 'elastic'
+    });
+
+</script>

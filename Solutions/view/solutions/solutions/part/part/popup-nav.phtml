@@ -1,0 +1,51 @@
+<div class="popup-nav-solutions" style="margin-top: 14px">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-left popup-nav-block" id="prev" data-id="<?= $this->prevEntity->id ?>" style="min-width: 90px; width: 15%; max-width: 140px; padding-left: 30px;">
+                <a href="/solutions/view/<?= $this->prevEntity->id ?>" <? if (!$this->robot) : ?> onclick="return false;" <? endif; ?>>
+                <div class="row">
+                    <div class="arrow-aledo-big-solutions arrow-left" style="float:right"></div>
+                </div>
+                <div class="row" style="margin-top: 13px">
+                    <div class="col-md-12">
+                        <div class="dotted-bottom"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="popup-nav-tile-title-solutions" style="text-align: right">
+                            <?= $this->prevEntity->title ?>
+                        </div>
+                        <div class="popup-nav-darkner"></div>
+                        <? $src = $this->prevEntity->img ? $this->basePath() . '/images/solutions/' . $this->prevEntity->img : $this->basePath() . '/images/empty-series.png' ?>
+                        <img src="<?= $src ?>" alt="<?= $this->prevEntity->title ?>"/>
+                    </div>
+                </div>
+                </a>
+            </div>
+
+            <div class="pull-right popup-nav-block" id="next" data-id="<?= $this->nextEntity->id ?>" style="min-width: 90px; width: 15%; max-width: 140px; padding-right: 30px">
+                <a href="/solutions/view/<?= $this->nextEntity->id ?>" <? if (!$this->robot) : ?> onclick="return false;" <? endif; ?>>
+                <div class="row">
+                    <div class="arrow-aledo-big-solutions arrow-right"></div>
+                </div>
+                <div class="row" style="margin-top: 13px">
+                    <div class="col-md-12">
+                        <div class="dotted-bottom"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="popup-nav-tile-title-solutions">
+                            <?= $this->nextEntity->title ?>
+                        </div>
+                        <div class="popup-nav-darkner"></div>
+                        <? $src = $this->nextEntity->img ? $this->basePath() . '/images/solutions/' . $this->nextEntity->img : $this->basePath() . '/images/empty-series.png' ?>
+                        <img src="<?= $src ?>" alt="<?= $this->nextEntity->title ?>"/>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

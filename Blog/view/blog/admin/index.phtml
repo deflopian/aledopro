@@ -1,0 +1,10 @@
+<h1>Блог</h1>
+
+<a href="<?= $this->url('zfcadmin/news') ?>" class="admin-tile">Новости</a>
+<a href="<?= $this->url('zfcadmin/articles') ?>" class="admin-tile">Статьи</a>
+<a href="<?= $this->url('zfcadmin/terms') ?>" class="admin-tile">Термины</a>
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>

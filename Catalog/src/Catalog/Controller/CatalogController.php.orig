@@ -1,0 +1,756 @@
+<?php
+namespace Catalog\Controller;
+
+use Application\Service\ApplicationService;
+use Catalog\Service\CatalogService;
+use Info\Service\SeoService;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\EventManager\EventManagerInterface;
+use Zend\View\Model\ViewModel;
+
+class CatalogController extends BaseController
+{
+    const POPUP_DEFAULT = 1;
+    const POPUP_PROFILI = 2;
+
+    public function setEventManager(EventManagerInterface $events)
+    {
+        parent::setEventManager($events);
+
+        $controller = $this;
+        $events->attach('dispatch', function ($e) use ($controller) {
+            $viewHelper = $controller->getServiceLocator()->get('viewhelpermanager');
+            $viewHelper->get('headlink')
+                ->prependStylesheet('/css/libs/jquery.nouislider.css')
+                ->prependStylesheet('/css/catalog.css');
+
+            $viewHelper->get('headscript')
+                ->prependFile('/js/libs/jquery.nouislider.js')
+                ->prependFile('/js/libs/ZeroClipboard.min.js')
+                ->prependFile('/js/catalog.js');
+        }, 100); // execute before executing action logic
+    }
+
+    public function indexAction()
+    {
+        $sections = $this->getSectionTable()->fetchAll('order asc');
+        $subsections = $this->getSubSectionTable()->fetchAll('order asc');
+
+        $subsecs = array();
+        foreach($subsections as $sub){
+            $subsecs[$sub->section_id][] = $sub;
+        }
+
+        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::CATALOG_INDEX, 1 );
+        $this->layout()->seoData = $seoData;
+
+        $this->layout()->pageTitle = 'Каталог';
+
+        return array(
+            'seoData' => $seoData,
+            'sections' => $sections,
+            'subsections' => $subsecs,
+        );
+    }
+
+    public function sectionAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('catalog');
+        }
+        $sl = $this->getServiceLocator();
+        $section = $this->getSectionTable()->find($id);
+        $subsections = $this->getSubSectionTable()->fetchByCond('section_id', $id, 'order asc');
+
+        if ($section === false || $subsections === false) {
+            return $this->redirect()->toRoute('catalog');
+        }
+
+        $subsections = ApplicationService::makeIdArrayFromObjectArray($subsections);
+
+        if($subsections){
+            $subSecIds = $seriesIds = array();
+            foreach($subsections as $subsec){
+                $subSecIds[] = $subsec->id;
+            }
+            $series = $this->getSeriesTable()->fetchByCond('subsection_id', $subSecIds, 'order asc');
+            foreach($series as $ser){
+                $seriesIds[] = $ser->id;
+                $subsections[$ser->subsection_id]->series[] = $ser;
+            }
+        }
+
+        $filterData = $this->getFilterData( $section->id );
+        $seoData = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SECTION, $section->id);
+
+        $this->layout()->setVariables(array(
+            'seoData' => $seoData,
+            'pageTitle' => $section->title,
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('catalog'), 'text'=>'каталог')
+            ),
+        ));
+
+        $view = new ViewModel();
+        $return = array(
+            'seoData' => $seoData,
+            'section' => $section,
+            'subsections' => $subsections,
+            'filterData' => $filterData['filter'],
+            'slidersData' => \Zend\Json\Json::encode($filterData['sliders']),
+            'postVals' => \Zend\Json\Json::encode($filterData['postVals']),
+            'qtexts' => \Zend\Json\Json::encode($filterData['qtexts']),
+        );
+
+
+        if($section->display_style){
+            list($return['allSeries'], $tmpl) = $this->getDisplaySortedSeries($section->display_style, $series, $seriesIds);
+            $return['offeredIds'] = $sl->get('OfferContentTable')->fetchAll('', true);
+            $view->setTemplate($tmpl);
+
+            if($section->display_style == 2)
+            {
+                $return['params'] = $sl->get('Catalog\Model\ProductParamsTable')->fetchAll();
+            }
+        }
+
+        $view->setVariables($return);
+        return $view;
+    }
+
+    public function subsectionAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('catalog');
+        }
+        $subsection = $this->getSubSectionTable()->find($id);
+        if ($subsection === false) {
+            return $this->redirect()->toRoute('catalog');
+        }
+        $section = $this->getSectionTable()->find($subsection->section_id);
+        if($section->display_style && $section->display_style != 3){
+            $url = $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->id));
+            if($section->display_style == 2){
+                $url .= '?subsec='.$subsection->id;
+            }
+            return $this->redirect()->toUrl($url);
+        }
+
+        $series = $this->getSeriesTable()->fetchByCond('subsection_id', $subsection->id, 'order asc');
+
+        $filterData = $this->getFilterData( $section->id, $subsection->id );
+        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::CATALOG_SUBSECTION, $subsection->id );
+
+        $this->layout()->setVariables(array(
+            'seoData' => $seoData,
+            'pageTitle' => $subsection->title,
+            'breadCrumbs'  => array(
+                array(
+                    'link'=> $this->url()->fromRoute('catalog'),
+                    'text'=>'каталог'
+                ),
+                array(
+                    'link'=> $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->id)),
+                    'text'=>$section->title
+                ),
+            ),
+        ));
+
+        $return = array(
+            'seoData' => $seoData,
+            'subsection' => $subsection,
+            'series' => $series,
+            'section' => $section,
+            'filterData' => $filterData['filter'],
+            'slidersData' => \Zend\Json\Json::encode($filterData['sliders']),
+            'postVals' => \Zend\Json\Json::encode($filterData['postVals']),
+            'qtexts' => \Zend\Json\Json::encode($filterData['qtexts']),
+        );
+
+        $view = new ViewModel();
+        if($section->display_style && $section->display_style == 3 ){
+            $view->setTemplate('catalog/catalog/subection_profili');
+        }
+
+        $view->setVariables($return);
+        return $view;
+    }
+
+    public function seriesAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) { return $this->redirect()->toRoute('catalog'); }
+
+        $series = $this->getSeriesTable()->find($id);
+        if(!$series){ return $this->redirect()->toRoute('catalog'); }
+
+        $subsection = $this->getSubSectionTable()->find($series->subsection_id);
+        if(!$subsection){ return $this->redirect()->toRoute('catalog'); }
+
+        $section = $this->getSectionTable()->find($subsection->section_id);
+
+        if(!$section->display_style || $section->display_style==3){
+            $baseUrl = $this->url()->fromRoute('catalog', array('action'=>'subsection', 'id'=>$subsection->id));
+            $url = $baseUrl.'?btype=catalog&bid='.$series->id;
+        } else {
+            $baseUrl = $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->id));
+            $url = $baseUrl.'?series='.$series->id;
+        }
+        //todo: технически, сюда надо сео-дату пихать, но я жутко хочу спать и не понимаю, как это сделать
+        return $this->redirect()->toUrl($url);
+    }
+
+    public function productAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) { return $this->redirect()->toRoute('catalog'); }
+
+        $product = $this->getProductTable()->find($id);
+
+        if($product === false){ return $this->redirect()->toRoute('catalog'); }
+
+        $series = $this->getSeriesTable()->find($product->series_id);
+        if($series === false){ return $this->redirect()->toRoute('catalog'); }
+
+        $subsection = $this->getSubSectionTable()->find($series->subsection_id);
+        if($subsection === false){ return $this->redirect()->toRoute('catalog'); }
+
+        $section = $this->getSectionTable()->find($subsection->section_id);
+
+        if(!$section->display_style || $section->display_style==3){
+            $baseUrl = $this->url()->fromRoute('catalog', array('action'=>'subsection', 'id'=>$subsection->id));
+            $url = $baseUrl.'?btype=catalog&bid='.$series->id.'&prod='.$product->id;
+        } else {
+            $baseUrl = $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->id));
+            $url = $baseUrl.'?series='.$series->id.'&prod='.$product->id;
+        }
+
+        return $this->redirect()->toUrl($url);
+    }
+
+    public function getPopupContentAction()
+    {
+        $request = $this->getRequest();
+        if ($request->isXmlHttpRequest()) {
+            $id = $request->getPost('id', false);
+            $nextId = $request->getPost('nextid', false);
+            $prevId = $request->getPost('previd', false);
+            $view = $request->getPost('view', false);
+
+            $success = 0;
+            $content = '';
+
+            if ($id) {
+                $sl = $this->getServiceLocator();
+
+                $series = $this->getSeriesTable()->find($id);
+                $products = $this->getProductTable()->fetchByCond('series_id', $id, 'order asc');
+                $products = CatalogService::changeIntParamsWithStringVals($products, $this->getFilterParamTable());
+
+                $imgs = $sl->get('Catalog\Model\SeriesImgTable')->fetchByCond('parent_id', $id, 'order asc');
+                $docs = $sl->get('Catalog\Model\SeriesDocTable')->fetchByCond('parent_id', $id, 'order asc');
+                $relatedSeriesIds = $sl->get('Catalog\Model\StoSTable')->find($id);
+                $relatedSeries = array();
+                foreach($relatedSeriesIds as $rsid){
+                    $relatedSeries[] = $this->getSeriesTable()->find($rsid);
+                }
+
+                $nextSer = $this->getSeriesTable()->find($nextId);
+                $prevSer = $this->getSeriesTable()->find($prevId);
+
+                $dopProducts = $this->getDopProdsSorted($id);
+
+                $articles = $this->getArticles($id);
+
+                $equalParameters = CatalogService::findEqualParams($products);
+                $params = $sl->get('Catalog\Model\ProductParamsTable')->fetchAll();
+                $shownEqualParams = $sl->get('Catalog\Model\EqualParamsTable')->find($id);
+
+                $offeredIds = $sl->get('OfferContentTable')->fetchAll('', true);
+
+                $seoData = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SERIES, $id );
+
+                $htmlViewPart = new ViewModel();
+                $htmlViewPart->setTerminal(true)
+                    ->setTemplate('catalog/catalog/part/series-popup')
+                    ->setVariables(array(
+                        'series'   => $series,
+                        'products' => $products,
+                        'imgs'     => $imgs,
+                        'docs'     => $docs,
+                        'relatedSeries'     => $relatedSeries,
+                        'nextSer'  => $nextSer,
+                        'prevSer'  => $prevSer,
+                        'dopProducts' => $dopProducts,
+                        'articles' => $articles,
+                        'params'             => $params,
+                        'equalParameters'    => $equalParameters,
+                        'shownEqualParams'   => $shownEqualParams ? $shownEqualParams : array(),
+                        'offeredIds'   => $offeredIds,
+                        'seoData'   => $seoData,
+
+                        'view' => $view,
+
+                        'sl'       => $sl
+                    ));
+
+                $content = $sl->get('viewrenderer')->render($htmlViewPart);
+
+                $success = 1;
+            }
+
+
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode(array(
+                'success' => $success,
+                'content' => $content,
+            )));
+            return $response;
+        }
+        return $this->redirect()->toRoute('catalog');
+    }
+
+    /** ajaxAction
+     * фильтрует \Catalog\Model\Product по параметрам
+     * в случае успеха возвращает массив айдишек продуктов
+     * array('success', 'error', 'count', 'series_ids' = array(), 'all')
+     */
+    public function getproductsAction()
+    {
+        $request = $this->getRequest();
+
+        /** @var \Zend\Http\Request $request */
+        if ($request->isPost()) {
+            $post = $request->getPost()->toArray();
+
+            if (isset($post['ajax']) && $post['ajax']) {
+
+
+                //если запрос пришёл из подраздела, ищем все серии,
+                //собираем абсолютный min и max и формируем общий запрос
+                $section = false;
+                $sectionId = 0;
+                if (isset($post['subsection_id']) && $post['subsection_id'] != 0) {
+                    $section = false;
+                    $sectionId = $post['subsection_id'];
+                } else {
+                    $section = true;
+                    $sectionId = $post['section_id'];
+                }
+
+                //получаем абсолютные мин/максы по нужному разделу. $section - маркер, показывает раздел это или подраздел
+                list($seriesParams, $seriesIds) = $this->getDiapasonByName($sectionId, $section, null);
+                /** @var \Catalog\Model\PopularSeries $offers */
+                $offerProdsIds = array();
+                $activeOffers = $this->getServiceLocator()->get('OffersTable')->fetchByCond('active', 1);
+                $activeOffersIds = array();
+                foreach ($activeOffers as $activeOffer) {
+                    $activeOffersIds[] = $activeOffer->id;
+                }
+                $offers = $this->getServiceLocator()->get('OfferContentTable')->fetchByCond('offer_id', $activeOffersIds);
+                foreach ($offers as $offer) {
+                    $offerProdsIds[] = $offer->product_id;
+                }
+
+                if($seriesIds){
+                    $query = CatalogService::getFilterQuery($post, $seriesParams, $seriesIds, $offerProdsIds);
+                    /** @var \Catalog\Model\ProductTable $productsTable */
+                    $productsTable = $this->getProductTable();
+                    $select = $productsTable->getSql()->select()->where($query);
+
+                    $results = $productsTable->selectWith($select);
+                    $resultSet = new ResultSet();
+                    $resultSet->initialize($results);
+                    $response = array();
+                    if (count($results) > 0) {
+                        $response = array(
+                            'success' => 1,
+                            'error' => '',
+                            'count_series' => 0,
+                            'count_products' => count($results)
+                        );
+                        /** @var \Catalog\Model\Product $oneResult */
+                        foreach ($results as $oneResult) {
+                            if ($oneResult->series_id != 0) {
+
+                                if (!isset($response['series_ids'][$oneResult->series_id])) {
+                                    $response['count_series']++;
+                                }
+                                $response['series_ids'][$oneResult->series_id][] = $oneResult->id;
+
+                            }
+
+                            $response['all'][] = $oneResult->id;
+                        }
+                    } else {
+                        $response = array(
+                            'success' => 1,
+                            'error' => 'There are not any results for your query, sorry',
+                            'count_series' => 0,
+                            'count_products' => 0
+                        );
+                    }
+                } else {
+                    $response = array(
+                        'success' => 0,
+                        'error' => 'Series Ids not found',
+                    );
+                }
+
+
+            } else {
+                $response = array(
+                    'success' => 0,
+                    'error' => 'Ajax index does not set',
+                );
+
+            }
+            echo json_encode($response);
+        }
+
+        return $this->getResponse();
+    }
+
+
+    private function getSeriesMinMax($seriesId) {
+        $filterTable = $this->getSeriesParamsTable();
+        $newSeriesMinMax = $filterTable->fetchByCond('series_id', $seriesId);
+        if (!$newSeriesMinMax && !isset($newSeriesMinMax[0])) {
+            return false;
+        }
+
+        return $newSeriesMinMax[0];
+    }
+
+
+    private function getFilterParams($sectionId, $isSection = false, $paramName = null)
+    {
+        $paramToSeriesTable = $this->getParamToSeriesTable();
+        $filterParamsTable = $this->getFilterParamTable();
+        $data = array();
+        $seriesIds = array();
+        if ($isSection) {
+            $subsectionBySectionId = $this->getSubSectionTable()->fetchByCond('section_id', $sectionId, 'order asc');
+
+            foreach($subsectionBySectionId as $oneSubsection) {
+                $seriesBySubSectionId = $this->getSeriesTable()->fetchByCond('subsection_id', $oneSubsection->id, 'order asc');
+
+                foreach($seriesBySubSectionId as $oneSeries) {
+                    $seriesIds[] = $oneSeries->id;
+                }
+            }
+        } else {
+            $seriesBySubSectionId = $this->getSeriesTable()->fetchByCond('subsection_id', $sectionId, 'order asc');
+
+            foreach($seriesBySubSectionId as $oneSeries) {
+                $seriesIds[] = $oneSeries->id;
+            }
+        }
+
+
+        if (count($seriesIds) == 0) {
+            return array();
+        }
+
+        $paramIds = array();
+        //var_dump($seriesIds);
+        $possibleParams = array();
+        $possibleParams = $paramToSeriesTable->fetchByCond('series_id', $seriesIds);
+
+        foreach ($possibleParams as $possibleParam) {
+            $paramIds[] = $possibleParam->param_id;
+        }
+
+        /** @var \Catalog\Model\FilterParam[] $data */
+        if($paramIds){
+            $data = $filterParamsTable->fetchByCond('id', $paramIds);
+        }
+
+        //data = CatalogService::getFilterMinMax($sectionMinMax);
+
+        if (!isset($data) || !is_array($data) || count($data) <= 0) {
+            return array();
+        }
+
+        $params = array();
+
+        if (is_null($paramName)) {
+            foreach ($data as $obj) {
+                $params[$obj->field][$obj->id] = $obj->value;
+            }
+        } else {
+            if (is_string($paramName)) {
+                $i = 0;
+                foreach ($data as $obj) {
+
+                    if ($obj->field == $paramName) {
+                        $params[$obj->id] = $obj->value;
+                        //$paramMasks[$obj->id] =
+                    }
+
+                }
+            } else if (is_array($paramName)) {
+                foreach ($paramName as $oneParam) {
+                    if (!is_string($oneParam)) {
+                        continue;
+                    }
+
+                    foreach ($data as $obj) {
+                        if ($obj->field == $paramName) {
+                            $params[$obj->field][$obj->id] = $obj->value;
+                        }
+                    }
+                }
+            }
+        }
+
+        return array($params, $paramIds);
+    }
+
+
+    /**
+     * @param int $sectionId
+     * @param bool $isSection
+     * @param null|string|array $diapasonName
+     * @return array
+     */
+    private function getDiapasonByName($sectionId, $isSection = false, $diapasonName = null) {
+        $params = array();
+        $sectionMinMax = array();
+        $seriesIds = array();
+        
+        /** @var \Catalog\Model\FilterParam[] $data */
+
+        if ($isSection) {
+            $subsectionBySectionId = $this->getSubSectionTable()->fetchByCond('section_id', $sectionId, 'order asc');
+
+            foreach($subsectionBySectionId as $oneSubsection) {
+                $seriesBySubSectionId = $this->getSeriesTable()->fetchByCond('subsection_id', $oneSubsection->id, 'order asc');
+
+                foreach($seriesBySubSectionId as $oneSeries) {
+                    $newSeriesMinMax = $this->getSeriesMinMax($oneSeries->id);
+                    if ($newSeriesMinMax !== false) {
+                        $sectionMinMax[] = $newSeriesMinMax;
+                        $seriesIds[] = $oneSeries->id;
+                    }
+                }
+            }
+        } else {
+            $seriesBySubSectionId = $this->getSeriesTable()->fetchByCond('subsection_id', $sectionId, 'order asc');
+
+            if ($seriesBySubSectionId && count($seriesBySubSectionId) > 0) {
+                foreach($seriesBySubSectionId as $oneSeries) {
+                    $newSeriesMinMax = $this->getSeriesMinMax($oneSeries->id);
+                    if ($newSeriesMinMax !== false) {
+                        $sectionMinMax[] = $newSeriesMinMax;
+                        $seriesIds[] = $oneSeries->id;
+                    }
+
+                }
+            }
+        }
+
+        $data = CatalogService::getFilterMinMax($sectionMinMax);
+
+        if (!is_array($data) || count($data) <= 0) {
+            return array(array(), array());
+        }
+
+        if (is_null($diapasonName)) {
+            $params = $data;
+        } else {
+            if (is_string($diapasonName)) {
+                if (array_key_exists($diapasonName, $data)) {
+                    $params = $data[$diapasonName];
+                }
+            } else if (is_array($diapasonName)) {
+                foreach ($diapasonName as $oneParam) {
+                    if (!is_string($oneParam)) {
+                        continue;
+                    }
+
+                    if (array_key_exists($oneParam, $data)) {
+                        $params[$oneParam] = $data[$oneParam];
+                    }
+                }
+            }
+        }
+
+        return array($params, $seriesIds);
+    }
+
+    public function updatefieldsAction()
+    {
+        /** @var \Zend\Http\Request $request */
+        $request = $this->getRequest();
+        if (!$request->isPost()) {
+            echo 'error: request is not Post';
+            return array();
+        }
+
+        $content = $request->getPost()->toArray();
+
+        if (isset($content['field']) && !empty($content['field'])) {
+            $field = $content['field'];
+            $isSlider = true;
+        } else {
+            echo 'error: field is empty';
+        }
+
+        return $this->getResponse();
+    }
+
+
+    private function getFilterData( $section_id, $subsection_id = null)
+    {
+        $filterData = $slidersData = $postVals = $qtexts = array();
+        $filterFields = CatalogService::getFilterFields();
+        $prodParams = $this->getServiceLocator()->get('Catalog\Model\ProductParamsTable');
+
+        foreach($filterFields as $id=>$isSlider){
+            $term = $prodParams->find($id);
+            $term->is_slider = $isSlider;
+            if ($isSlider) {
+                $params = $this->getDiapasonByName(($subsection_id == 0) ? $section_id : $subsection_id, ($subsection_id == 0) ? true : false, $term->field);
+            } else {
+                $params = $this->getFilterParams(($subsection_id == 0) ? $section_id : $subsection_id, ($subsection_id == 0) ? true : false, $term->field);
+            }
+            if ($params[0] !== false) {
+                if(isset($params[0])){
+                    $term->values = $params[0];
+                }
+
+                $filterData[] = $term;
+                $qtexts[$term->id]['text'] = $term->text;
+
+                if($isSlider){
+                    $slidersData[$term->field] = $term->values;
+                    $postVals[$term->field] = $term->post_value;
+                }
+            }
+        }
+
+        return array(
+            'filter'   => $filterData,
+            'sliders'  => $slidersData,
+            'postVals' => $postVals,
+            'qtexts'   => $qtexts,
+        );
+    }
+
+    private function getDopProdsSorted($id)
+    {
+        $sl = $this->getServiceLocator();
+        $res = array();
+
+        $dopProdGroups = $sl->get('Catalog\Model\DopProdGroupTable')->fetchByCond('series_id', $id, 'order asc');
+        foreach($dopProdGroups as $dpgroup){
+            $dopprods = $sl->get('Catalog\Model\DopProdTable')->fetchByCond('dopprod_group_id', $dpgroup->id);
+            $dpids = array();
+            foreach($dopprods as $dp) { $dpids[] = $dp->product_id; }
+            if($dpids){
+                $dopProducts = $this->getProductTable()->fetchByCond('id', $dpids);
+                $res[] = array(
+                    'title' => $dpgroup->title,
+                    'products' => $dopProducts,
+                );
+            }
+        }
+
+        return $res;
+    }
+
+    private function getArticles($id)
+    {
+        $articles = array();
+        $sl = $this->getServiceLocator();
+        $articlesLinks = $sl->get('SeriesToArticlesTable')->fetchByCond('series_id', $id);
+        if($articlesLinks){
+            $articlesIds = array();
+            foreach($articlesLinks as $link){
+                $articlesIds[] = $link->article_id;
+            }
+            $articles = $sl->get('ArticlesTable')->fetchByCond('id', $articlesIds);
+        }
+
+        return $articles;
+    }
+
+    private function getDisplaySortedSeries($display_style, $series, $seriesIds)
+    {
+        $sl = $this->getServiceLocator();
+        $sortedSeries = array();
+
+        if($seriesIds){
+            switch($display_style){
+                case 1:
+                    $tmpl = 'catalog/catalog/section_lenta';
+                    $products = $this->getProductTable()->fetchByCond('series_id', $seriesIds, 'order asc');
+                    $products = CatalogService::changeIntParamsWithStringVals($products, $this->getFilterParamTable());
+                    $imgs = $sl->get('Catalog\Model\SeriesImgTable')->fetchByCond('parent_id', $seriesIds, 'order asc');
+                    foreach($series as $ser){
+                        $dopProducts = $this->getDopProdsSorted($ser->id);
+                        if($dopProducts){
+                            $ser->dopProducts = $dopProducts;
+                        }
+                        $sortedSeries[$ser->id] = $ser;
+                    }
+                    if($products){
+                        foreach($products as $prod){
+                            $sortedSeries[$prod->series_id]->products[] = $prod;
+                        }
+                    }
+
+                    if($imgs){
+                        foreach($imgs as $img){
+                            $sortedSeries[$img->parent_id]->imgs[] = $img;
+                        }
+                    }
+                    break;
+
+                case 2:
+                    $tmpl = 'catalog/catalog/section_pitanie';
+                    $products = $this->getProductTable()->fetchByCond('series_id', $seriesIds, 'order asc');
+                    $products = CatalogService::changeIntParamsWithStringVals($products, $this->getFilterParamTable());
+                    $justSeries = array();
+                    foreach($series as $ser){
+                        $dopProducts = $this->getDopProdsSorted($ser->id);
+                        if($dopProducts){
+                            $ser->dopProducts = $dopProducts;
+                        }
+                        $sortedSeries[$ser->subsection_id][$ser->id] = $ser;
+                        $justSeries[$ser->id] = $ser;
+                    }
+                    if($products){
+                        foreach($products as $prod){
+                            $sortedSeries[$justSeries[$prod->series_id]->subsection_id][$prod->series_id]->products[] = $prod;
+                        }
+                    }
+
+                    $equalParamsTable = $sl->get('Catalog\Model\EqualParamsTable');
+                    foreach($sortedSeries as &$subsecSeries){
+                        foreach($subsecSeries as &$ser){
+                            $ser->equalParams = CatalogService::findEqualParams($ser->products);
+                            $shown = $equalParamsTable->find($ser->id);
+                            $ser->shownEqualParams = $shown ? $shown : array();
+                        }
+                    }
+                    break;
+
+                case 3:
+                    $tmpl = 'catalog/catalog/section_profili';
+                    break;
+            }
+        }
+
+        return array($sortedSeries,$tmpl);
+    }
+
+    public static function getSections($sl)
+    {
+        $sections = $sl->get('Catalog/Model/SectionTable')->fetchAll('order asc');
+        return $sections;
+    }
+}

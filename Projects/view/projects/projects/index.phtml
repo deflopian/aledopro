@@ -1,0 +1,18 @@
+<div class="b-projects b-section">
+    <div class="b-section__content">
+
+        <div class="b-projects__row">
+            <? foreach($this->projects as $i=>$project){ ?>
+            <div class="b-projects-item">
+                <a class="b-projects-item__link" href="/projects/view/<?= $project->id ?>/">
+                    <img class="b-projects-item__image" src="/images/projects/<?= $project->previewName ?>" />
+                    <div class="b-button b-button_projects">
+                        <span class="b-button__text"><?= $project->title ?></span>
+                        <i class="b-button__icon"></i>
+                    </div>
+                </a>
+            </div>
+            <? } ?>
+        </div>
+    </div>
+</div>

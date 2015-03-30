@@ -1,0 +1,79 @@
+<?php
+use \Catalog\Controller\AdminController;
+$links = $this->links;
+$forWhat = $this->forWhat;
+?>
+<div class="section">
+    <div class="row">
+        <div class="col-md-12">
+            <h2><?=$forWhat?>:</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class=" dotted-bottom"></div>
+        </div>
+    </div>
+    <div class="row">
+        <? $i = 0; ?>
+
+        <? foreach ($links as $link) { ?>
+            <?
+            $uri = "series";
+
+            $query = "";
+            $url = "url";
+            $uriId = $link[1]->id;
+            if ($link[0] == AdminController::SECTION_TABLE) {
+                $folder = 'section';
+                $uri = "section";
+                $url = "url";
+            } elseif ($link[0] == AdminController::SUBSECTION_TABLE) {
+                $folder = 'subsections';
+                $uri = "subsection";
+                $url = "url";
+            } elseif ($link[0] == AdminController::SECTION_TABLE) {
+                $folder = 'series';
+                $uri = "series";
+                $url = "img";
+            } elseif ($link[0] == AdminController::PRODUCT_TABLE) {
+                $folder = 'series';
+                $uri = "product";
+                $uriId = $link[1]->id;
+                $url = "img";
+            } else {
+                $folder = 'series';
+                $url = "img";
+            }
+
+            $href= "/catalog/" . $uri . "/" . $uriId . "/" . $query;
+
+            ?>
+
+        <a href="<?= $href ?>">
+        <div class="col-md-2">
+            <div class="row">
+                <div class="subsection-link col-md-12" style="height: 50px">
+                    <? if ($link[0] == \Catalog\Controller\AdminController::SERIES_TABLE) { ?>
+                        <?= $link[1]->visible_title ? $link[1]->visible_title : $link[1]->title ?>
+                    <? } else { ?>
+                        <?= $link[1]->title ?>
+                    <? }?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="padding-bottom: 10px">
+                    <div class=" dotted-bottom"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <? $src = $link[1]->$url ? $this->basePath() . '/images/' . $folder . '/' . $link[1]->$url : $this->basePath() . '/images/empty-series.png' ?>
+                    <img src="<?= $src ?>" alt="<?= $link[1]->title ?>"/>
+                </div>
+            </div>
+        </div>
+        </a>
+        <? } ?>
+    </div>
+</div>

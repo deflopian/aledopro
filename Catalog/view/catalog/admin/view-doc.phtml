@@ -1,0 +1,67 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/catalog') ?>">Каталог</a>
+    >
+    <a href="<?= $this->url('zfcadmin/catalog', array('action'=> 'section', 'id'=>$section->id));?>"><?= $section->title; ?></a>
+    >
+    <a href="<?= $this->url('zfcadmin/catalog', array('action'=> 'subsection', 'id'=>$subsection->id));?>"><?= $subsection->title; ?></a>
+    >
+    <a href="<?= $this->url('zfcadmin/catalog', array('action'=> 'series', 'id'=>$series->id));?>"><?= $series->visible_title; ?></a>
+    >
+    Документ: <span id="title"><?= $doc->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table  admin-table table-striped">
+        <tbody>
+        <tr>
+            <td>Название</td>
+            <td>
+                <a href="#" data-type="text" data-name="title" class="editable-param">
+                    <?= $doc->title; ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Документ</td>
+            <td>
+                <div class="admin-banner-img-container" style="<?= $doc->url ? 'height:30px' : 'display:none' ?>">
+                    <a href="<?= $doc->url ? $this->basePath() . '/images/series_docs/' . $doc->url : ''?>"
+                       target="_blank"
+                    ><?= $doc->original_name ?></a>
+                </div>
+
+                <button type="button" class="btn btn-default" id="add-img"> <?= $doc->url ? 'Редактировать' : 'Добавить' ?> файл</button>
+
+                <div class="form-inline" id="adding-form-img" style="display: none">
+                    <form id="img-form" method="post" enctype="multipart/form-data">
+                        <p>
+                            <input type="file" name="image"/>
+                            <input type="hidden" name="id" value="<?= $doc->id ?>"/>
+                        </p>
+
+                        <p>
+                            <input type="submit" class="btn btn-default"/>
+                            <button type="button" class="btn btn-default" id="adding-cancel-img">Отмена</button>
+                        </p>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentType = '<?= \Catalog\Controller\AdminController::DOC_TABLE ?>';
+        catalog.parentId = '<?= $doc->id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/catalog') ?>';
+        catalog.initEditables();
+
+        imgUploader.init({
+            type: 'single',
+            imgUrl: '<?= $this->basePath() . '/images/series_docs/' ?>'
+        });
+    });
+</script>

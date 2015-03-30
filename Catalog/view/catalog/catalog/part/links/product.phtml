@@ -1,0 +1,22 @@
+<?
+$product = $this->element;
+$min = $this->min;
+$url = $this->url('catalog', array(
+    'action' => 'product',
+    'id' => $product->id
+));
+?>
+
+<a href="<?= $url ?>">
+    <div class="tile-title-series" style="padding-left: 0"><?= $product->title ?></div>
+    <? $src = $product->img ? $this->basePath() . '/images/series/' . $product->img : $this->basePath() . '/images/empty-series.png' ?>
+    <div class="row">
+        <? if ($min) { ?>
+        <div class="col-md-8 col-md-offset-2">
+        <? } else { ?>
+        <div class="col-md-12">
+        <? } ?>
+            <img src="<?= $src ?>" alt="<?= $product->title ?>"/>
+        </div>
+    </div>
+</a>

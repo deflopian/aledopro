@@ -1,0 +1,97 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/documents') ?>">Документы</a>
+    >
+    <span id="title"><?= $entity->title; ?></span>
+</h1>
+
+<h2>Каталоги</h2>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <div id="entityMapper">
+        <div ng-controller="EntityCtrl">
+
+            <div
+                ng-entity
+                entity-id="<?= $entity->id ?>"
+                entity-type="<?= \Catalog\Controller\AdminController::DOCUMENT_TABLE?>"
+                >
+
+                <div ng-entity-data>
+                    <?= $entityJson ?>
+                </div>
+                <div ng-entity-schema>
+                    [
+                        {
+                            "title" : "title",
+                            "type" : "text",
+                            "default" : "",
+                            "label" : "Название"
+                        },
+                        {
+                            "title" : "img",
+                            "type" : "image",
+                            "default" : "",
+                            "label" : "Изображение"
+                        },
+                        {
+                            "title" : "file",
+                            "type" : "file",
+                            "default" : "",
+                            "label" : "Документ"
+                        },
+                        {
+                            "title" : "type",
+                            "type" : "hidden",
+                            "default" : "",
+                            "label" : "Тип"
+                        }
+                    ]
+                </div>
+
+                <table class="table admin-table table-striped">
+                    <tbody>
+                    <tr ng-repeat="description in schema">
+                        <td>{{description.label}}</td>
+                        <td>
+                            <div ng-if="description.type == 'text'">
+                                <div ng-text-field></div>
+                            </div>
+                            <div ng-if="description.type == 'image'">
+                                <div ng-controller="ImageCtrl">
+                                    <div
+                                        ng-single-image-upload
+                                        parent-type="document"
+                                        folder="documents"
+                                        field="img"
+                                        ></div>
+                                </div>
+                            </div>
+                            <div ng-if="description.type == 'file'">
+                                <div>
+                                    <div
+                                        ng-single-file-upload
+                                        parent-type="document"
+                                        folder="documents"
+                                        field="file"
+                                        ></div>
+                                </div>
+
+                                <!--                                        img="entity.fileName"-->
+                                <!--                                        img-id ="{{entity.file}}"-->
+                            <!--                                        parent-id="entity.id"-->
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+
+            <script type="application/javascript">
+                AppFactory("entityMapper", "entityMapper2", ["entityMapper", "imageMapper", "fileMapper"]);
+            </script>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,108 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/discounts') ?>">Партнёры</a>
+    >
+    <a href="<?= $this->url('zfcadmin/discounts', array('action' => 'partners', 'id' => $user->user_id)) ?>">Пользователь: <?= $user->username ?></a>
+    >
+    <span id="title"><?= $section->title; ?></span>
+</h1>
+
+
+<div class="section">
+    <div>
+        <a href="/admin/discounts/partners/<?= $user->user_id; ?>/">Скидки на разделы</a>
+    </div>
+    <div>
+        <a href="/admin/discounts/sections/<?= $user->user_id; ?>/">Скидки на подразделы</a>
+    </div>
+    <div>
+        <a href="/admin/discounts/subsections/<?= $user->user_id; ?>/">Скидки на серии</a>
+    </div>
+    <div>
+        <a href="/admin/discounts/series/<?= $user->user_id; ?>/">Скидки на продукты</a>
+    </div>
+</div>
+
+<? if ($this->currentDiscount) { ?>
+<div class="section">
+    <div>Скидка: </div>
+    <div>
+        <a href="#" data-type="text" data-name="discount" class="editable-param">
+            <?= $this->currentDiscount->discount ?>
+        </a>%
+    </div>
+</div>
+<? } ?>
+<div class="section">
+    <h3>Разделы со скидкой:</h3>
+
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="tagit-add">Добавить подраздел</button>
+
+        <div id="tagit-form" style="display: none">
+            <ul id="tagit-subsections" ></ul>
+            <input type="hidden" id="tagit-subsections-res" name="subsectionsIds"/>
+
+            <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <? if ($entity->partner_group) { ?>
+        <div class="col-md-12 alert alert-warning">
+            Этот пользователь состоит в группе партнёров.
+            <br>Для редактирования скидок группы перейдите по <a href="/admin/discounts/viewGroup/<?= $entity->partner_group ?>/">этой ссылке</a>.
+        </div>
+    <? } ?>
+
+    <table class="table admin-table  table-striped">
+        <tbody>
+        <? foreach ($sections as $oneSec) { ?>
+        <tr>
+            <td><?= $oneSec->id ?></td>
+            <td><?= $oneSec->title ?></td>
+            <td>
+                <? $isInherited = $this->discounts[$oneSec->id]->is_group; ?>
+                <a href="#"
+                   data-id="<?= $this->discounts[$oneSec->id]->id ?>"
+                   data-type="text"
+                   data-name="discount"
+                    <?= $isInherited ? 'style="color: #aaa"' : 'class="editable-param"' ?> >
+                    <?= array_key_exists($oneSec->id, $this->discounts) ? $this->discounts[$oneSec->id]->discount : 0 ?>
+                </a>%
+            </td>
+            <td>
+                <? if (!$isInherited) { ?>
+                <a href="#" class="editBtn">Редактировать</a>
+                <a href="#" class="removeBtn" title="Уберёт все скидки из этого раздела">
+                    Отменить скидку
+                </a>
+                <? } ?>
+            </td>
+        </tr>
+        <? } ?>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.type = '<?= \Catalog\Controller\AdminController::SUBSECTION_TABLE ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/discounts') ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::INDEX ?>';
+        catalog.parentId = '<?= $this->currentDiscount->id ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/discounts', array('action'=> 'subsections')) ?>';
+        catalog.userId = '<?= $user->user_id ?>';
+        catalog.init();
+        catalog.initEditables();
+
+
+        tagit.init({
+            tags: <?= $tags; ?>,
+            min: 1,
+            type: '<?= \Catalog\Controller\AdminController::SUBSECTION_TABLE ?>',
+            inputField: $("#tagit-subsections"),
+            outputField: $('#tagit-subsections-res'),
+            placeholder: 'Введите id или название подраздела'
+        });
+    });
+
+</script>

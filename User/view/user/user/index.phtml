@@ -1,0 +1,559 @@
+
+
+<div class="b-cabinet b-section">
+    <div class="b-section__content">
+        <div class="b-tabs-wrapper b-tabs-wrapper_cabinet">
+            <ul class="b-tabs list-unstyled">
+                <li class="b-tabs__tab active">
+                    <a class="b-tabs__link  text-left" href="#orders_history" data-toggle="tab">История заказов</a>
+                </li>
+                <li class="b-tabs__tab">
+                    <a class="b-tabs__link  text-left" href="#personal_data" data-toggle="tab">Персональные данные</a>
+                </li>
+            </ul>
+            <div class="b-tabs-content">
+                <div class="b-tabs-content__item fade in active" id="orders_history">
+                    <table cellpadding="0" cellspacing="0" border="0" class="b-order-history">
+                        <colgroup>
+                            <col style="width:28%" />
+                            <col style="width:27%" />
+                            <col style="width:30%" />
+                            <col style="width:auto" />
+                        </colgroup>
+                        <tr class="b-order-history__row">
+                            <th class="b-order-history__cell b-order-history__cell_header-cell">
+                                Номер заказа
+                            </th>
+                            <th class="b-order-history__cell b-order-history__cell_header-cell">Дата и время операции</th>
+                            <td class="b-order-history__cell b-order-history__cell_header-cell" colspan="2">Сумма операции</td>
+                        </tr>
+
+                        <? foreach($orders as $order){ ?>
+                        <tr class="b-order-history__row ">
+                            <td class="b-order-history__cell">
+                                <a href="javascript:void(0)" class="b-order-history__order-number"><?= $order->id ?></a>
+                            </td>
+                            <td class="b-order-history__cell"><?= $order->date ?></td>
+                            <td class="b-order-history__cell"><?= $order->summ ?><span class="b-rub">Р</span></td>
+                            <td class="b-order-history__cell text-right">
+                                <a class="b-button b-button_small b-order-history__button ">
+                                    <span class="b-button__text">Открыть</span>
+                                </a>
+                                <a class="b-button b-button_small b-order-history__button b-order-history__button_active ">
+                                    <span class="b-button__text">Скрыть</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="b-order-history__row">
+                            <td colspan="4">
+                                <div class="b-order-table-w">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="b-order-table">
+                                        <colgroup>
+                                            <col style="width:13%" />
+                                            <col style="width:50%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:auto" />
+                                        </colgroup>
+                                        <tr>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Артикул</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Наименование</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Кол-во</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Цена</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Сумма</th>
+                                        </tr>
+                                        <?
+                                        if(isset($order->products)){
+                                            foreach($order->products as $product){ ?>
+                                                <tr>
+                                                    <td class="b-order-table__cell"><a href="<?= $this->url('catalog', array('action'=>'product', 'id'=> $product->id)) ?>"><?= $product->id ?></a></td>
+                                                    <td class="b-order-table__cell"><a href="<?= $this->url('catalog', array('action'=>'product', 'id'=> $product->id)) ?>"><?= $product->title ?></a></td>
+                                                    <td class="b-order-table__cell"><?= $product->order_count ?> шт</td>
+                                                    <td class="b-order-table__cell"><?= $product->order_price ?>&nbsp;<span class="b-rub">Р</span></td>
+                                                    <td class="b-order-table__cell"><?= $product->order_price*$product->order_count ?>&nbsp;<span class="b-rub">Р</span></td>
+                                                </tr>
+                                            <? } ?>
+                                        <?} ?>
+                                        <tr>
+                                            <td colspan="4" class="text-right b-order-table__cell">
+                                                <strong>Сумма заказа с НДС 18%</strong>
+                                            </td>
+                                            <td class="b-order-table__cell"><strong><?= $order->summ ?></strong>&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <? } ?>
+                        <tr class="b-order-history__row ">
+                            <td class="b-order-history__cell">
+                                <a href="javascript:void(0)" class="b-order-history__order-number">669990006655</a>
+                            </td>
+                            <td class="b-order-history__cell">2014-04-04 14:27:40</td>
+                            <td class="b-order-history__cell">22670<span class="b-rub">Р</span></td>
+                            <td class="b-order-history__cell text-right">
+                                <a class="b-button b-button_small b-order-history__button ">
+                                    <span class="b-button__text">Открыть</span>
+                                </a>
+                                <a class="b-button b-button_small b-order-history__button b-order-history__button_active ">
+                                    <span class="b-button__text">Скрыть</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="b-order-history__row">
+                            <td colspan="4">
+                                <div class="b-order-table-w">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="b-order-table">
+                                        <colgroup>
+                                            <col style="width:13%" />
+                                            <col style="width:50%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:auto" />
+                                        </colgroup>
+                                        <tr>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Артикул</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Наименование</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Кол-во</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Цена</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Сумма</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" class="text-right b-order-table__cell">
+                                                <strong>Сумма заказа с НДС 18%</strong>
+                                            </td>
+                                            <td class="b-order-table__cell"><strong>20045</strong>&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr><tr class="b-order-history__row ">
+                            <td class="b-order-history__cell">
+                                <a href="javascript:void(0)" class="b-order-history__order-number">669990006655</a>
+                            </td>
+                            <td class="b-order-history__cell">2014-04-04 14:27:40</td>
+                            <td class="b-order-history__cell">22670<span class="b-rub">Р</span></td>
+                            <td class="b-order-history__cell text-right">
+                                <a class="b-button b-button_small b-order-history__button ">
+                                    <span class="b-button__text">Открыть</span>
+                                </a>
+                                <a class="b-button b-button_small b-order-history__button b-order-history__button_active ">
+                                    <span class="b-button__text">Скрыть</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="b-order-history__row">
+                            <td colspan="4">
+                                <div class="b-order-table-w">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="b-order-table">
+                                        <colgroup>
+                                            <col style="width:13%" />
+                                            <col style="width:50%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:auto" />
+                                        </colgroup>
+                                        <tr>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Артикул</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Наименование</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Кол-во</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Цена</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Сумма</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" class="text-right b-order-table__cell">
+                                                <strong>Сумма заказа с НДС 18%</strong>
+                                            </td>
+                                            <td class="b-order-table__cell"><strong>20045</strong>&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr><tr class="b-order-history__row ">
+                            <td class="b-order-history__cell">
+                                <a href="javascript:void(0)" class="b-order-history__order-number">669990006655</a>
+                            </td>
+                            <td class="b-order-history__cell">2014-04-04 14:27:40</td>
+                            <td class="b-order-history__cell">22670<span class="b-rub">Р</span></td>
+                            <td class="b-order-history__cell text-right">
+                                <a class="b-button b-button_small b-order-history__button ">
+                                    <span class="b-button__text">Открыть</span>
+                                </a>
+                                <a class="b-button b-button_small b-order-history__button b-order-history__button_active ">
+                                    <span class="b-button__text">Скрыть</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="b-order-history__row">
+                            <td colspan="4">
+                                <div class="b-order-table-w">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="b-order-table">
+                                        <colgroup>
+                                            <col style="width:13%" />
+                                            <col style="width:50%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:auto" />
+                                        </colgroup>
+                                        <tr>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Артикул</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Наименование</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Кол-во</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Цена</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Сумма</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" class="text-right b-order-table__cell">
+                                                <strong>Сумма заказа с НДС 18%</strong>
+                                            </td>
+                                            <td class="b-order-table__cell"><strong>20045</strong>&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr><tr class="b-order-history__row ">
+                            <td class="b-order-history__cell">
+                                <a href="javascript:void(0)" class="b-order-history__order-number">669990006655</a>
+                            </td>
+                            <td class="b-order-history__cell">2014-04-04 14:27:40</td>
+                            <td class="b-order-history__cell">22670<span class="b-rub">Р</span></td>
+                            <td class="b-order-history__cell text-right">
+                                <a class="b-button b-button_small b-order-history__button ">
+                                    <span class="b-button__text">Открыть</span>
+                                </a>
+                                <a class="b-button b-button_small b-order-history__button b-order-history__button_active ">
+                                    <span class="b-button__text">Скрыть</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="b-order-history__row">
+                            <td colspan="4">
+                                <div class="b-order-table-w">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="b-order-table">
+                                        <colgroup>
+                                            <col style="width:13%" />
+                                            <col style="width:50%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:auto" />
+                                        </colgroup>
+                                        <tr>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Артикул</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Наименование</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Кол-во</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Цена</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Сумма</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" class="text-right b-order-table__cell">
+                                                <strong>Сумма заказа с НДС 18%</strong>
+                                            </td>
+                                            <td class="b-order-table__cell"><strong>20045</strong>&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr><tr class="b-order-history__row ">
+                            <td class="b-order-history__cell">
+                                <a href="javascript:void(0)" class="b-order-history__order-number">669990006655</a>
+                            </td>
+                            <td class="b-order-history__cell">2014-04-04 14:27:40</td>
+                            <td class="b-order-history__cell">22670<span class="b-rub">Р</span></td>
+                            <td class="b-order-history__cell text-right">
+                                <a class="b-button b-button_small b-order-history__button ">
+                                    <span class="b-button__text">Открыть</span>
+                                </a>
+                                <a class="b-button b-button_small b-order-history__button b-order-history__button_active ">
+                                    <span class="b-button__text">Скрыть</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="b-order-history__row">
+                            <td colspan="4">
+                                <div class="b-order-table-w">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="b-order-table">
+                                        <colgroup>
+                                            <col style="width:13%" />
+                                            <col style="width:50%" />
+                                            <col style="width:12%" />
+                                            <col style="width:12%" />
+                                            <col style="width:auto" />
+                                        </colgroup>
+                                        <tr>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Артикул</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Наименование</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Кол-во</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Цена</th>
+                                            <th class="b-order-table__cell b-order-table__cell_header-cell">Сумма</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell"><a href="javascript:void(0)">108000</a></td>
+                                            <td class="b-order-table__cell">1 шт</td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                            <td class="b-order-table__cell">20045&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4" class="text-right b-order-table__cell">
+                                                <strong>Сумма заказа с НДС 18%</strong>
+                                            </td>
+                                            <td class="b-order-table__cell"><strong>20045</strong>&nbsp;<span class="b-rub">Р</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="b-tabs-content__item fade " id="personal_data">
+                    <div class="b-change-data">
+                        <h4 class="b-change-data__heading">ИЗМЕНИТЬ ПЕРСОНАЛЬНЫЕ ДАННЫЕ</h4>
+                        <hr class="dotted-separator"/>
+                        <form name="changeData" class="b-change-data-form" ng-submit="submit()"  novalidate ng-controller="ChangeDataController">
+                            <div class="b-form-group b-form-group_change-data">
+                                <div class="b-change-data__cell b-change-data__cell_left">
+                                    <label for="change_name">Имя*</label>
+                                </div>
+                                <div class="b-change-data__cell b-change-data__cell_right">
+                                    <input type="text" class="b-form-control" id="change_name"
+                                           ng-model="change_name"
+                                           autocomplete="off" required value="<?= $user->username ?>" >
+                                </div>
+                            </div>
+                            <div class="b-form-group b-form-group_change-data">
+                                <div class="b-change-data__cell b-change-data__cell_left">
+                                    <label for="change_tel">Контактный телефон*</label>
+                                </div>
+                                <div class="b-change-data__cell b-change-data__cell_right">
+                                    <input type="text" class="b-form-control" id="change_tel"
+                                           ng-model="change_tel"
+                                           autocomplete="off" required value="<?= $user->phone ?>" >
+                                </div>
+                            </div>
+                            <div class="b-form-group b-form-group_change-data">
+                                <div class="b-change-data__cell b-change-data__cell_left">
+                                    <label for="change_password">Текущий пароль*</label>
+                                </div>
+                                <div class="b-change-data__cell b-change-data__cell_right">
+                                    <input type="text" class="b-form-control
+
+                                           " id="change_password"
+                                           ng-model="change_password"
+                                           autocomplete="off" required >
+                                </div>
+                            </div>
+                            <div class="b-form-group b-form-group_change-data">
+                                <input type="checkbox" id="change_delivery" <?= $user->is_spamed ? 'checked' : '' ?> />
+                                <label for="change_delivery">
+                                    *подписаться на рассылку (информация о скидках, акциях)
+                                </label>
+                            </div>
+                            <div class="b-form-group b-form-group_change-data text-right">
+                                <button class="b-button b-button_gray" ng-disabled="changeData.$invalid">
+                                    <span class="b-button__text">
+                                        Сохранить измененные данные
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                        <hr class="dotted-separator" />
+                        <h4 class="b-change-data__heading">ИЗМЕНИТЬ ПАРОЛЬ</h4>
+                        <hr class="dotted-separator" />
+                        <form name="changePassword" class="b-change-pwd-form" novalidate ng-submit="submit()" ng-controller="ChangePwdController">
+                            <div class="b-form-group b-form-group_change-data">
+                                <div class="b-change-data__cell b-change-data__cell_left">
+                                    <label for="change_pwd_password">Текущий пароль*</label>
+                                </div>
+                                <div class="b-change-data__cell b-change-data__cell_right" align="right">
+                                    <input type="password" class="b-form-control
+
+                                           " id="change_pwd_password"
+                                           ng-model="change_pwd_password"
+                                           autocomplete="off" required />
+                                </div>
+                            </div>
+                            <div class="b-form-group b-form-group_change-data">
+                                <div class="b-change-data__cell b-change-data__cell_left">
+                                    <label for="change_pwd_new_password">Новый пароль*</label>
+                                </div>
+                                <div class="b-change-data__cell b-change-data__cell_right" align="right">
+                                    <input type="text" class="b-form-control
+
+                                           " id="change_pwd_new_password"
+                                           ng-model="change_pwd_new_password"
+                                           autocomplete="off" required />
+                                </div>
+                            </div>
+                            <div class="b-form-group b-form-group_change-data">
+                                <div class="b-change-data__cell b-change-data__cell_left">
+                                    <label for="change_pwd_new_password_repeat">Повторите новый<br /> пароль*</label>
+                                </div>
+                                <div class="b-change-data__cell b-change-data__cell_right" align="right" style="vertical-align: top">
+                                    <input type="text" class="b-form-control
+
+                                           " id="change_pwd_new_password_repeat"
+                                           ng-model="change_pwd_new_password_repeat"
+                                           autocomplete="off" required />
+                                </div>
+                            </div>
+
+                            <div class="b-form-group b-form-group_change-data text-right" >
+                                <button class="b-button b-button_gray" ng-disabled="changePassword.$invalid">
+                                    <span class="b-button__text">
+                                        Сохранить пароль
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            jQuery(".b-order-history__button, .b-order-history__order-number").on("click", function() {
+                var $this = jQuery(this),
+                    $row = $this.closest("tr");
+                if ($row.hasClass("b-order-history__row_active")) {
+                    jQuery(".b-order-history__row").removeClass("b-order-history__row_active");
+                } else {
+                    jQuery(".b-order-history__row").removeClass("b-order-history__row_active");
+                    $row.addClass("b-order-history__row_active");
+                }
+            })
+        </script>
+    </div>
+</div>

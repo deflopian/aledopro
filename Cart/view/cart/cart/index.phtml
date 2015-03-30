@@ -1,0 +1,233 @@
+
+<div class="b-cart b-section">
+
+    <div class="b-section__content">
+        <table cellpadding="0" cellspacing="0" border="0" class="b-cart-table">
+            <colgroup>
+                <col style="width:16rem;" />
+                <col style="width:10rem;" />
+                <col style="width:100%" />
+                <col style="width:7.5rem;" />
+                <col style="width:10.8rem;" />
+                <col style="width:10.8rem;" />
+                <col style="width:1.3rem;" />
+            </colgroup>
+            <tr>
+                <th class="b-cart-header-cell">&nbsp;</th>
+                <th class="b-cart-header-cell">&nbsp;</th>
+                <th class="b-cart-header-cell">&nbsp;</th>
+                <th class="b-cart-header-cell">&nbsp;</th>
+                <th class="b-cart-header-cell">&nbsp;</th>
+                <th class="b-cart-header-cell">&nbsp;</th>
+                <th class="b-cart-header-cell">&nbsp;</th>
+            </tr>
+            <?
+            foreach($this->prodsInCart as $data) {
+                $prod = $data['product'];
+                $count = floor($data['count']);
+            ?>
+            <tr class="cart-line" data-id="<?= $prod->id ?>">
+                <td class="b-cart-product-cell  b-cart-product-cell_image">
+                    <a href="<?= $this->url('catalog', array('action' => 'product', 'id' => $prod->id)) ?>" class="b-cart-product-cell_image__inner">
+                        <?
+                        $src = $prod->preview_img
+                            ? $this->basePath() . '/images/series/'. $prod->preview_img
+                            : $this->basePath() . '/images/empty-series.png';
+                        ?>
+                        <img class="b-cart-product-cell__image" src="<?= $src ?>" alt="<?= $prod->title ?>" />
+                    </a>
+                </td>
+                <td class="b-cart-product-cell  b-cart-product-cell_article">
+                    <div class="b-cart-product-cell_article__inner">
+                        <?= $prod->id ?>
+                    </div>
+                </td>
+                <td class="b-cart-product-cell  b-cart-product-cell_title">
+                    <h5 class="b-cart-product-cell__title">
+                        <a href="<?= $this->url('catalog', array('action' => 'product', 'id' => $prod->id)) ?>"><?= $prod->title ?></a>
+                    </h5>
+                    <? foreach ($prod->mainParams as $paramKey => $paramVal) { ?>
+                        <? if ($prod->$paramKey) { ?>
+                            <p><?= $paramVal ?> - <?= $prod->$paramKey ?></p>
+                        <? } ?>
+                    <? } ?>
+                </td>
+
+                <? //высчитываем обычную цену, цену со скидкой и скидку:
+
+                $price = \Catalog\Service\CatalogService::getTruePrice($prod->price_without_nds);
+
+                if ($user && $user->getIsPartner()) {
+                    $discountPrice = \Catalog\Service\CatalogService::getTruePrice(
+                        $prod->price_without_nds,
+                        $user,
+                        $this->hierarchies[$prod->id] ? $this->hierarchies[$prod->id] : array(),
+                        $this->discounts,
+                        $prod->opt2
+                    );
+
+                    $realDiscount = round((1 - ($discountPrice / $price))*100);
+                }
+
+
+                ?>
+
+                <td class="b-cart-product-cell  b-cart-product-cell_price">
+                    <div class="b-cart-product-cell_price__inner">
+                        <span class="b-cart-product-cell__price"><?= $price ?></span>
+                        <span class="b-rub">Р</span>
+                    </div>
+                </td>
+                <td class="b-cart-product-cell  b-cart-product-cell_count">
+                    <div class="b-cart-product-cell_count__inner">
+                        <div class="b-cart-product-counter">
+                            <input class="b-form-control b-cart-product-counter__input" name="count" value="<?= $count ?>" />
+                            <span class="b-cart-product-counter__button b-cart-product-counter__button_up font-icon-arrow-2"></span>
+                            <span class="b-cart-product-counter__button b-cart-product-counter__button_down font-icon-arrow"></span>
+                        </div>
+                    </div>
+                </td>
+                <? if ($user && $user->getIsPartner()) { ?>
+                    <? $totalPrice += $count*$discountPrice; ?>
+                <? } else { ?>
+                    <? $totalPrice += $count*$price; ?>
+
+                <? } ?>
+                <td class="b-cart-product-cell  b-cart-product-cell_result-price">
+                    <div class="b-cart-product-cell_result-price__inner">
+                        <span class="b-cart-product-cell__result-price"><?= $count*$price ?></span>
+                        <span class="b-rub">Р</span>
+                    </div>
+                </td>
+                <td class="b-cart-product-cell  b-cart-product-cell_delete">
+                    <div class="b-cart-product-cell_delete__inner">
+                        <button type="button" class="b-cart-product_delete close">
+                            &times;
+                        </button>
+                    </div>
+                </td>
+
+            </tr>
+            <? } ?>
+
+            <tr>
+                <td colspan="2" rowspan="4" class="hidden-xs hidden-sm"></td>
+                <td class="b-cart-bottom-cell " colspan="7">
+                    <div class="b-clearfix text-right">
+                        Итого:<strong><span class="b-card-table__products-total-price"> 9855</span><span class="b-rub">Р</span></strong>
+                    </div>
+                    <br />
+                    <hr class="dotted-separator" />
+                    <form name="cartBuy" class="b-clearfix b-order-place " ng-controller="OrderPlaceController">
+                        <div class="b-form-group b-form-group_order-place  b-clearfix">
+                            <strong class="b-left">Я покупаю как</strong>
+                            <div class="b-cart-select-type b-right">
+                                <div class="b-cart-select-type__cell">
+                                    <input type="radio" name="buyType" id="buyType_1" data-figure="square" />
+                                    <label for="buyType_1">Физическое лицо</label>
+
+                                </div>
+                                <div class="b-cart-select-type__cell">
+                                    <input type="radio" name="buyType" id="buyType_2" data-figure="square" class="b-order-place__input" />
+                                    <label for="buyType_2">Юридическое лицо</label>
+                                    <div class="b-order-place__file-zone" ng-class="{'b-order-place__file-zone_file-uploaded' : fileName.length }">
+                                        <div><input type="file" id="orderDetails" onchange="angular.element(this).scope().showFileName(this)" /></div>
+                                        <div ng-hide="fileName.length">
+                                            <script type="text/javascript">
+                                                if (browser.msie9) {
+                                                    document.write("<u>Загрузите</u> файл с реквизитами<br/>(TXT, DOC, PDF)");
+                                                } else {
+                                                    document.write("Перетащите файл с реквизитами<br/>(TXT, DOC, PDF) " +
+                                                    "сюда или <u>загрузите файл</u>");
+                                                }
+
+                                            </script>
+                                        </div>
+                                        <div ng-show="fileName.length">
+                                            <span ng-bind="fileName"></span>
+                                            <div>
+                                                <button type="button" class="b-order-place__file-reset close" ng-click="resetFile(angular.element(this))">
+                                                    &times;
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="dotted-separator" />
+                        <div class="b-form-group b-form-group_order-place">
+                            <label><strong>Написать комментарии к заказу</strong></label>
+                            <textarea class="b-form-control b-order-place__comment"></textarea>
+                        </div>
+                        <hr class="dotted-separator" />
+                        <div class="b-form-group b-form-group_order-place b-clearfix">
+                            <button type="submit" class="b-button b-button_small b-button_gray-colored b-button_yellow-background b-right" id="order_place">
+                                <span class="b-button__text">Оформить заказ</span>
+                            </button>
+                        </div>
+                        <hr class="dotted-separator" />
+                        <br class="b-mb1" />
+                        <div>
+                            <p>При заказе на сумму свыше 30 000 рублей доставка по Санкт-Петербургу бесплатная.</p>
+                            <p>
+                                Доставка по России предоставляется юридическим лицам и индивидуальным предпринимателям. Отгрузка товара производится только после получения 100% предоплаты по безналичному расчёту.
+                            </p>
+                            <a href="/paymentinfo">Узнать подробнее об условиях доставки и оплаты</a>
+                        </div>
+
+                    </form>
+
+
+
+                </td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function(){
+        cart.initCart();
+
+        formajax.form = $('#cart-form');
+        formajax.page = 'cart';
+        formajax.initFileInput();
+
+    });
+
+    $(changeFileInputAvailable(1));
+
+    function changeFileInputAvailable(val)
+    {
+        if (val == 1) {
+            $('.form-file').attr('disabled', 'disabled');
+            $('.form-file-button .icon-clip').css('background-color', '#FFFFFF');
+            $('.form-file-button .icon-clip').css('border-width', '1px');
+            $('#cart-input-file').css('opacity', '0.3');
+        } else if (val == 2) {
+            $('.form-file').removeAttr('disabled');
+            $('.form-file-button .icon-clip').css('background-color', 'rgba(160, 171, 47, 0.7)');
+            $('.form-file-button .icon-clip').css('border-width', '0');
+            $('#cart-input-file').css('opacity', '1');
+        }
+    }
+</script>
+
+
+<!-- Google Code for &#1055;&#1086;&#1082;&#1091;&#1087;&#1082;&#1072; Conversion Page -->
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var google_conversion_id = 966821971;
+    var google_conversion_language = "ru";
+    var google_conversion_format = "3";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = "lugyCJLD5lgQ05CCzQM";
+    var google_remarketing_only = false;
+    /* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>

@@ -1,0 +1,14 @@
+<?
+/** @var \Solutions\Model\Solution $solution */
+$solution = $this->element;
+$url = $this->url('solutions', array(
+    'action' => 'view',
+    'id' => $solution->id
+));
+?>
+
+<a href="<?= $url ?>">
+    <div class="tile-title-series" style="padding-left: 0"><?= $solution->title ?></div>
+    <? $src = $solution->round_image ? $this->basePath() . '/images/solutions/' . $solution->round_image : $this->basePath() . '/images/empty-series.png' ?>
+    <img src="<?= $src ?>" alt="<?= $solution->title ?>"/>
+</a>

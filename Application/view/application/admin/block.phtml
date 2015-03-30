@@ -1,0 +1,114 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/index') ?>">Главная</a>
+    >
+    <span id="title"><?= $entity->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <div id="entityMapper">
+        <div ng-controller="EntityCtrl">
+
+            <div
+                ng-entity
+                entity-id="<?= $entity->id ?>"
+                entity-type="<?= \Catalog\Controller\AdminController::MAINPAGE_BLOCK_TABLE?>"
+                >
+
+                <div ng-entity-data>
+                    <?= $entityJson ?>
+                </div>
+                <div ng-entity-schema>
+                    [
+                        {
+                            "title" : "description",
+                            "type" : "text",
+                            "default" : "Описание для идентификации",
+                            "label" : "Описание"
+                        }
+                    ]
+                </div>
+
+                <table class="table admin-table table-striped">
+                    <tbody>
+                    <tr ng-repeat="description in schema">
+                        <td>{{description.label}}</td>
+                        <td>
+                            <div ng-if="description.type == 'text'">
+                                <div ng-text-field></div>
+                            </div>
+                            <div ng-if="description.type == 'image'">
+                                <div ng-controller="ImageCtrl">
+                                    <div
+                                        ng-single-image-upload
+                                        parent-type="block"
+                                        folder="blocks"
+                                        field="img"
+                                        ></div>
+                                </div>
+                            </div>
+                            <div ng-if="description.type == 'file'">
+                                <div>
+                                    <div
+                                        ng-single-file-upload
+                                        parent-type="block"
+                                        folder="blocks"
+                                        field="file"
+                                        ></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+
+            <script type="application/javascript">
+                AppFactory("entityMapper", "entityMapper2", ["entityMapper", "imageMapper", "fileMapper"]);
+            </script>
+        </div>
+    </div>
+</div>
+
+<h2>Изображения в блоке</h2>
+<div id="entityMapper_catalog">
+    <div ng-controller="EntitiesCtrl">
+        <div nd-entities-list-data>
+            <?= $entitiesJson ?>
+        </div>
+        <div nd-entities-list-pattern>
+            {
+                "title" : {
+                    "type" : "text",
+                    "default" : "",
+                    "label" : "Название"
+                },
+                "url" : {
+                    "type" : "text",
+                    "default" : "",
+                    "label" : "Ссылка"
+                },
+                "parentId" : {
+                    "type" : "hidden",
+                    "default" : "<?= $entity->id ?>",
+                    "label" : "Родительский раздел"
+                }
+            }
+        </div>
+        <div
+            ng-entities-list
+            parent-type="0"
+            parent-id="0"
+            controller="index"
+            action="blockimage"
+            type="<?= \Catalog\Controller\AdminController::MAINPAGE_BLOCK_IMAGE_TABLE?>"
+            rights="00111"
+            ></div>
+
+        <script type="application/javascript">
+            AppFactory("entityMapper_catalog", "entityMapper2", ["entitiesMapper"]);
+        </script>
+    </div>
+</div>

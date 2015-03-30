@@ -1,0 +1,257 @@
+<?
+/**
+ * @var $solution \Solutions\Model\Solution
+ */
+?>
+<div class="b-solution b-section">
+    <img class="b-solution-header__image" src="/images/solutions/<?= $solution->img_name ?>" />
+    <div class="b-section__content">
+        <div class="b-solution-header__table">
+            <div class="b-solution-header__cell b-solution-header__cell_left">
+                <img class="b-solution-header__cell-image" src="/images/solutions/<?= $solution->light_img_name ?>" />
+            </div>
+            <div class="b-solution-header__cell b-solution-header__cell_right">
+                <div class="b-brand-block">
+                    <?= $solution->text ?>
+
+
+
+                    <div class="b-brand-block__lt">
+                        <i class="b-brand-block__border b-brand-block__border_t  b-brand-block__border_t_inner"></i>
+                        <i class="b-brand-block__border b-brand-block__border_l b-brand-block__border_l_inner"></i>
+                        <i class="b-brand-block__border b-brand-block__border_b"></i>
+                    </div>
+                    <div class="b-brand-block__rb">
+
+                        <i class="b-brand-block__border b-brand-block__border_t  b-brand-block__border_t_inner"></i>
+                        <i class="b-brand-block__border b-brand-block__border_b"></i>
+                        <i class="b-brand-block__border b-brand-block__border_r  b-brand-block__border_r_inner"></i>
+                    </div>
+                    <i class="b-brand-block__border b-brand-block__border_t"></i>
+                    <i class="b-brand-block__border b-brand-block__border_l"></i>
+                    <i class="b-brand-block__border b-brand-block__border_b"></i>
+                    <i class="b-brand-block__border b-brand-block__border_r"></i>
+                </div>
+
+            </div>
+        </div>
+
+        <br />
+        <hr class="dotted-separator" />
+        <h4 class="b-solution__heading">
+            используемый светодиодный источник света
+            <a href="<?= $solution->light_link ?>"><strong><?= $solution->light_name ?></strong></a>
+
+        </h4>
+        <div class="b-solution__main-characteristics-table">
+
+            <div class="b-solution__main-characteristics-cell">
+                <div class="inline-block">
+                    <?= $solution->attr_equiv ?>
+                </div>
+
+            </div>
+            <div class="b-solution__main-characteristics-cell text-center">
+                <div class="inline-block text-left">
+                    Световая эффективность<br /> <div class="text-yellow text-bigger"><strong><?= $solution->attr_effectiveness ?></strong></div>
+                </div>
+
+            </div><div class="b-solution__main-characteristics-cell text-center">
+                <div class="inline-block  text-left">
+                    Световой поток достигает <br /> <?= $solution->attr_lux_value ?>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <hr class="dotted-separator" /><br />
+        <div class="b-solution__main-characteristics-table">
+            <div class="b-solution__main-characteristics-cell">Питание:<br /> <?= $solution->attr_electric_power ?></div>
+            <div class="b-solution__main-characteristics-cell">Мощность:<br /><?= $solution->attr_power ?></div>
+            <div class="b-solution__main-characteristics-cell">Вес:<br /><?= $solution->attr_weight ?></div>
+            <div class="b-solution__main-characteristics-cell">Цветовая температура:<br /><?= $solution->attr_color_temperature ?></div>
+            <div class="b-solution__main-characteristics-cell">CRI:<br /><?= $solution->attr_cri ?></div>
+            <? if ($solution->attr_construction) { ?>
+            <div class="b-solution__main-characteristics-cell">Конструкция корпуса:<br /><?= $solution->attr_construction ?></div>
+            <? } ?>
+        </div>
+        <br />
+        <hr class="dotted-separator" />
+        <h4 class="b-solution__heading">
+            используемый светодиодный источник света
+            <a href="<?= $solution->light_link ?>"><strong><?= $solution->light_name ?></strong></a>
+
+        </h4>
+        <table cellspacing="0" cellpadding="0" border="0" class="b-compare-table">
+
+            <tr>
+                <td class="b-compare-table__cell">
+                    <hr class="dotted-separator b-compare-table__separator" />
+                </td>
+                <td class="b-compare-table__cell ">
+                    <div class="b-compare-table__product-cell b-compare-item">
+                        <div class="b-compare-item__heading"><?= $solution->compare_name_1 ?></div>
+                        <div class="b-compare-item__image-wrapper">
+                            <img class="b-compare-item__image" src="/images/solutions/<?= $solution->compare_img_1_name ?>" />
+                        </div>
+                    </div>
+                    <hr class="dotted-separator b-compare-table__separator" />
+                </td>
+                <td class="b-compare-table__cell ">
+                    <div class="b-compare-table__product-cell b-compare-item">
+                        <div class="b-compare-item__heading"><?= $solution->compare_name_2 ?></div>
+                        <div class="b-compare-item__image-wrapper">
+                            <img class="b-compare-item__image" src="/images/solutions/<?= $solution->compare_img_2_name ?>" />
+                        </div>
+                    </div>
+                    <hr class="dotted-separator b-compare-table__separator" />
+                </td>
+            </tr>
+            <? if ($solution->compare_power_kwh_1 && $solution->compare_power_kwh_2) { ?>
+            <tr>
+                <td class="b-compare-table__cell ">Потребление в год одного светильника кВт ч</td>
+                <td class="b-compare-table__cell "><?= $solution->compare_power_kwh_1 ?></td>
+                <td class="b-compare-table__cell "><?= $solution->compare_power_kwh_2 ?></td>
+            </tr>
+            <? } ?>
+            <? if ($solution->compare_lifetime_1 && $solution->compare_lifetime_2) { ?>
+            <tr>
+                <td class="b-compare-table__cell ">Срок службы, часов</td>
+                <td class="b-compare-table__cell "><?= $solution->compare_lifetime_1 ?></td>
+                <td class="b-compare-table__cell "><?= $solution->compare_lifetime_2 ?></td>
+            </tr>
+            <? } ?>
+            <? if ($solution->compare_color_index_1 && $solution->compare_color_index_2) { ?>
+            <tr>
+                <td class="b-compare-table__cell ">Индекс светопередачи</td>
+                <td class="b-compare-table__cell "><?= $solution->compare_color_index_1 ?></td>
+                <td class="b-compare-table__cell "><?= $solution->compare_color_index_2 ?></td>
+            </tr>
+            <? } ?>
+            <? if ($solution->compare_electric_power_1 && $solution->compare_electric_power_2) { ?>
+            <tr>
+                <td class="b-compare-table__cell ">Удельное энергопотребление, Вт/м<sup>2</sup></td>
+                <td class="b-compare-table__cell "><?= $solution->compare_electric_power_1 ?></td>
+                <td class="b-compare-table__cell "><?= $solution->compare_electric_power_2 ?></td>
+            </tr>
+            <? } ?>
+            <? if ($solution->compare_exposition_1 && $solution->compare_exposition_2) { ?>
+            <tr>
+                <td class="b-compare-table__cell ">Средняя освещенность экспозиции, лк</td>
+                <td class="b-compare-table__cell "><?= $solution->compare_exposition_1 ?></td>
+                <td class="b-compare-table__cell "><?= $solution->compare_exposition_2 ?></td>
+            </tr>
+            <? } ?>
+        </table>
+        <script type="text/javascript">
+            (function () {
+                var $compareCells = jQuery(".b-compare-item"),
+                    maxWidth = 0;
+                $compareCells.each(function () {
+                    var $this = jQuery(this);
+                    maxWidth = $this.width() > maxWidth ? $this.width() : maxWidth;
+                });
+                $compareCells.width(maxWidth);
+            })();
+        </script>
+        <h4 class="b-solution__heading text-center">
+            <?= $solution->light_name ?>
+        </h4>
+        <div class="b-characteristic-table">
+            <div class="b-characteristic-table__row">
+                <? if ($solution->diagram_1_name) { ?>
+                <div class="b-characteristic-table__cell b-characteristic-table__cell_header">
+                    <div class="b-characteristic-table__heading">Удельное энергопотребление, Вт/м<sup>2</sup></div>
+                    <hr class="dotted-separator" />
+                </div>
+                <? } ?>
+                <? if ($solution->diagram_2_name) { ?>
+                <div class="b-characteristic-table__cell b-characteristic-table__cell_header">
+                    <div class="b-characteristic-table__heading">Освещенность, лк, %</div>
+                    <hr class="dotted-separator" />
+                </div>
+                <? } ?>
+                <? if ($solution->diagram_3_name) { ?>
+                <div class="b-characteristic-table__cell b-characteristic-table__cell_header">
+                    <div class="b-characteristic-table__heading">Стоимость владения, руб/год, %</div>
+                    <hr class="dotted-separator" />
+                </div>
+                <? } ?>
+            </div>
+            <div class="b-characteristic-table__row">
+                <? if ($solution->diagram_1_name) { ?>
+                <div class="b-characteristic-table__cell text-center">
+                    <img src="/images/solutions/<?= $solution->diagram_1_name ?>" />
+                </div>
+                <? } ?>
+                <? if ($solution->diagram_2_name) { ?>
+                <div class="b-characteristic-table__cell text-center">
+                    <img src="/images/solutions/<?= $solution->diagram_2_name ?>" />
+                </div>
+                <? } ?>
+                <? if ($solution->diagram_3_name) { ?>
+                <div class="b-characteristic-table__cell text-center">
+                    <img src="/images/solutions/<?= $solution->diagram_3_name ?>" />
+                </div>
+                <? } ?>
+            </div>
+        </div>
+        <h4 class="b-solution__heading">
+            ключевые преимущества
+        </h4>
+        <div class="b-solution__advantages-table">
+            <? if ($solution->key_advantage_first) { ?>
+            <div class="b-solution__advantages-cell">
+                <div class="b-solution__advantages-item">
+                    <?= $solution->key_advantage_first ?>
+                </div>
+            </div>
+            <? } ?>
+            <? if ($solution->key_advantage_second) { ?>
+            <div class="b-solution__advantages-cell">
+                <div class="b-solution__advantages-item">
+                    <?= $solution->key_advantage_second ?>
+                </div>
+            </div>
+            <? } ?>
+            <? if ($solution->key_advantage_third) { ?>
+            <div class="b-solution__advantages-cell">
+                <div class="b-solution__advantages-item">
+                    <?= $solution->key_advantage_third ?>
+                </div>
+            </div>
+            <? } ?>
+            <? if ($solution->key_advantage_fourth) { ?>
+            <div class="b-solution__advantages-cell">
+                <div class="b-solution__advantages-item">
+                    <?= $solution->key_advantage_fourth ?>
+                </div>
+            </div>
+            <? } ?>
+        </div>
+        <br />
+        <hr class="dotted-separator" />
+        <div class="b-solution__conclusion-table">
+            <div class="b-solution__conclusion-cell">
+                <?= $solution->comment_1 ?>
+            </div>
+            <div class="b-solution__conclusion-cell">
+                <? if ($solution->comment_2) { ?>
+                    <?= $solution->comment_2 ?>
+                <? } else { ?>
+                Если Вам интересны исходные данные по
+                приведенным выше расчетам, или Вы хотите, чтобы мы
+                рассчитали выгоду внедрения для вашего объекта,
+                свяжитесь с нашими специалистами по телефонам:
+                8 (800) 555 56 72 или 8 (812) 448 58 49
+                <? } ?>
+            </div>
+        </div>
+        <hr class="dotted-separator" />
+        <div class="text-center">
+            <a href="/catalog/" class="b-button b-button_yellow-bordered b-button_underlined b-solution__button">
+                <span class="b-button__text">ПЕРЕЙТИ В КАТАЛОГ</span>
+            </a>
+        </div>
+    </div>
+</div>

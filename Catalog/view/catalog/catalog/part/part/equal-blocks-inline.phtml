@@ -1,0 +1,21 @@
+
+<div class="col-md-12" >
+    <div class="row black2-top" style="margin-left: 0; margin-right: 0; height: 10px; ">
+    </div>
+    <div class="equal-block-name equal-block" style="padding-top: 0; float: left; padding-left: 0">
+        <h3 style="font-size: 18px; margin: 0; margin-top: 13px"><?= $series->visible_title ?></h3>
+    </div>
+
+    <? foreach($equalParameters as $field=>$val){
+        if(!in_array($field, $shownEqualParams)){ continue; }
+        ?>
+        <div class="equal-block dotted-left" >
+            <p class="text-grey" style="font-size: 13px"><?= isset($params[$field]) ? $params[$field]->title . ' ' . $params[$field]->post_value . $params[$field]->pre_value : $field ?></p>
+            <h3 <?= preg_match('[(\d)+]', $val) ? 'style="text-transform: none"' : '' ?>><?= isset($params[$field]) ? $params[$field]->pre_value . ' ' . $val.' '.$params[$field]->post_value : $val; ?></h3>
+
+        </div>
+    <? } ?>
+    <div class="row row-second-xs dotted-bottom" style="margin-left: 0; margin-right: 0; margin-top: 5px">
+
+    </div>
+</div>

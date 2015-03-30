@@ -1,0 +1,459 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/catalog') ?>">Каталог</a>
+    >
+    <? if($section){ ?>
+        <a href="<?= $this->url('zfcadmin/catalog', array('action'=> 'section', 'id'=>$section->id));?>"><?= $section->title; ?></a>
+    <? } else {?>
+        Нет раздела
+    <? }?>
+    >
+    <? if($subsection){ ?>
+        <a href="<?= $this->url('zfcadmin/catalog', array('action'=> 'subsection', 'id'=>$subsection->id));?>"><?= $subsection->title; ?></a>
+    <? } else {?>
+        Нет подраздела
+    <? }?>
+    >
+    <span id="title"><?= $series->visible_title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table  admin-table table-striped">
+        <tbody>
+        <tr>
+            <td>Отображаемое название</td>
+            <td>
+                <a href="#" data-type="text" data-name="visible_title" class="editable-param">
+                    <?= $series->visible_title; ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Название в базе</td>
+            <td>
+                <a href="#" data-type="text" data-name="title" class="editable-param">
+                    <?= $series->title; ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Кнопка «Перейти к блокам питания»</td>
+            <td>
+                <a href="#" data-type="text" data-name="show_scroll_btn" class="editable-param">
+                    <?= $series->show_scroll_btn; ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Описание</td>
+            <td>
+                <div class="editor-get-btn" data-name="text"><?= $series->text; ?></div>
+            </td>
+        </tr>
+        <tr>
+            <td>Комплектация и условия эксплуатации</td>
+            <td>
+                <div class="editor-get-btn" data-name="text_exploit"><?= $series->text_exploit; ?></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h3>Список продуктов</h3>
+    <? if (false) { //временно отключаем ручное добавление продуктов ?>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-entity">Добавить продукт</button>
+
+        <div class="form-inline" id="adding-form" style="display: none">
+            <div class="form-group">
+                <label class="sr-only" for="inputName">Название продукта</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Введите название..."/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="adding-complete">Добавить</button>
+            <button type="button" class="btn btn-default" id="adding-cancel">Отмена</button>
+        </div>
+    </div>
+    <? } ?>
+    <form action="/admin/catalog/sortparam/" method="post" id="sortparamForm">
+        <div class="row">
+                <div class="col-md-12">
+                <div  class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="">
+                                <label for="param">Сортировать по параметру: </label>
+                            </div>
+                            <div class="">
+                                <select name="param"  class="form-control">
+                                    <? foreach ($this->params as $oneParam) { ?>
+                                        <option value="<?= $oneParam->field ?>" <?= $oneParam->field == $series->sorted_field ? 'selected' : '' ?>><?= $oneParam->title ?></option>
+                                    <? } ?>
+                                </select>
+                            </div>
+                            <input type="hidden" name="seriesId" value="<?= $series->id ?>" />
+                        </div>
+                        <div class="col-md-3">
+                            <div>
+                                <label for="ordnung">Порядок сортировки: </label>
+                            </div>
+                            <div>
+                                <select name="ordnung" class="form-control">
+                                   <option value="1" <?= $series->sorted_order == 1 ? 'selected' : '' ?>>По возрастанию</option>
+                                   <option value="2" <?= $series->sorted_order == 2 ? 'selected' : '' ?>>По убыванию</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div><label for="submit">&nbsp;</label></div>
+                            <div>
+                                <input name="submit" type="submit" class="sortBtn btn btn-default form-control" value="Применить" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+        <? foreach($products as $prod){ ?>
+            <tr class="entity">
+                <td><?= $prod->id; ?></td>
+                <td><?= $prod->title; ?></td>
+                <td>
+                    <a href="#" class="editBtn">Редактировать</a>
+                    <a href="#" class="deleteBtn">Удалить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h3>Группы дополнительных продуктов</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-dopprod-entity">Добавить группу</button>
+        <div class="form-inline" id="adding-dopprod-form" style="display: none">
+            <div class="form-group">
+                <label class="sr-only" for="inputName">Название продукта</label>
+                <input type="text" class="form-control" id="inputName-dopprod" placeholder="Введите название..."/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="adding-dopprod-complete">Добавить</button>
+            <button type="button" class="btn btn-default" id="adding-dopprod-cancel">Отмена</button>
+        </div>
+    </div>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable-dopgroup">
+        <? foreach($dopProdGroups as $dopprodgroup){ ?>
+            <tr class="entity-dopprod">
+                <td><?= $dopprodgroup->id; ?></td>
+                <td><?= $dopprodgroup->title; ?></td>
+                <td>
+                    <a href="#" class="editBtn-dopprod">Редактировать</a>
+                    <a href="#" class="deleteBtn-dopprod">Удалить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="section" ng-app="imageMapper">
+    <div ng-controller="ImageCtrl">
+        <h3>Превью</h3>
+
+        <div
+            ng-single-image-upload
+            parent-type="series"
+            parent-id="<?= $series->id ?>"
+            folder="series"
+            field="preview"
+            img="<?= $series->previewName ? $series->previewName : "" ?>"
+            img-id ="<?= $series->preview ? $series->preview : "" ?>"
+            ></div>
+
+        <script type="application/javascript">
+            AppFactory("imageMapper", "images", ["imageMapper", "ur.file"]);
+        </script>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Изображения</h3>
+
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-img">Добавить изображения</button>
+
+        <div class="form-inline" id="adding-form-img" style="display: none">
+            <form id="img-form" method="post" enctype="multipart/form-data">
+                <p>
+                    <input type="file" name="images[]" multiple="multiple"/>
+                    <input type="hidden" name="id" value="<?= $series->id ?>"/>
+                    <input type="hidden" name="type" value="series"/>
+                </p>
+
+                <p>
+                    <input type="submit" class="btn btn-default"/>
+                    <button type="button" class="btn btn-default" id="adding-cancel-img">Отмена</button>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <div id="images-container">
+        <? foreach($imgs as $img){ ?>
+            <div class="admin-img" data-id="<?= $img->id ?>" >
+                <div class="admin-img-del">
+                    <button class="btn btn-xs btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                </div>
+
+                <? if($img->type == \Application\Service\ApplicationService::MEDIA_TYPE_IMG){ ?>
+                    <img style="height: 100%" src="<?= $this->basePath() . '/images/series/' . $img->url ?>" alt=""/>
+                <? } ?>
+            </div>
+        <? } ?>
+    </div>
+
+    <div class="sample admin-img" data-id="" style="display: none">
+        <div class="admin-img-del">
+            <button class="btn btn-xs btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+        </div>
+        <img style="height: 100%" src="" alt=""/>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Документы</h3>
+
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-doc">Добавить документ</button>
+
+        <div class="form-inline" id="adding-form-doc" style="display: none">
+            <div class="form-group">
+                <label class="sr-only" for="inputDocName">Название продукта</label>
+                <input type="text" class="form-control" id="inputDocName" placeholder="Введите название..."/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="adding-doc-complete">Добавить</button>
+            <button type="button" class="btn btn-default" id="adding-doc-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="doc-container">
+        <? foreach($docs as $doc){ ?>
+            <tr class="entity-doc">
+                <td><?= $doc->id; ?></td>
+                <td><?= $doc->title; ?></td>
+                <td>
+                    <a href="#" class="editDocBtn">Редактировать</a>
+                    <a href="#" class="deleteDocBtn">Удалить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h3>Общие поля</h3>
+
+    <div class="row">
+        <? if($equalParameters){ ?>
+            <? foreach($equalParameters as $field=>$val){ ?>
+                <div class="col-md-2 equal-block">
+                    <label for="eq-<?=$field?>">
+                        <?= isset($params[$field]) ? $params[$field]->title : $field ?><br>
+                        <strong><?= isset($params[$field]) ? $val.' '.$params[$field]->post_value : $val; ?></strong>
+                    </label>
+                    <br>
+                    <input id="eq-<?=$field?>" type="checkbox" data-field="<?=$field?>"
+                        <?= in_array($field, $shownEqualParams) ? 'checked' : '' ?>>
+                </div>
+            <? } ?>
+        <? } else { ?>
+            <div class="col-md-2">
+                отсутствуют
+            </div>
+        <? } ?>
+    </div>
+</div>
+
+<div class="section">
+    <h3>С этим продуктом покупают</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="tagit-add">Добавить серию или продукт</button>
+
+        <div id="tagit-form" style="display: none">
+            <ul id="tagit-series"></ul>
+            <input type="hidden" id="tagit-series-res" name="seriesIds"/>
+
+            <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
+        </div>
+    </div>
+    <div>
+        Серии:
+    </div>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody>
+        <? foreach($relatedSeries as $ser){ ?>
+            <tr>
+                <td><?= $ser->id; ?></td>
+                <td><?= $ser->visible_title; ?></td>
+                <td>
+                    <a href="#" class="removeBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+    <div>
+        Продукты:
+    </div>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody>
+        <? foreach($relatedProds as $prod){ ?>
+            <tr>
+                <td><?= $prod->id; ?></td>
+                <td><?= $prod->title; ?></td>
+                <td>
+                    <a href="#" class="removeBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="section">
+    <h3>Связи</h3>
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-3">
+            <label for="linkType">Тип элемента</label>
+            <select name="linkType" class="form-control" onchange="catalog.getTagsByType($(this).val())">
+                <option value="<?=\Catalog\Controller\AdminController::PRODUCT_TABLE ?>">Продукт</option>
+                <option value="<?=\Catalog\Controller\AdminController::SERIES_TABLE ?>">Серия</option>
+                <option value="<?=\Catalog\Controller\AdminController::SUBSECTION_TABLE ?>">Подраздел</option>
+                <option value="<?=\Catalog\Controller\AdminController::SECTION_TABLE ?>" selected>Раздел</option>
+                <option value="<?=\Catalog\Controller\AdminController::SOLUTION_TABLE ?>">Решение</option>
+                <option value="<?=\Catalog\Controller\AdminController::PROJECT_TABLE ?>">Проект</option>
+            </select>
+        </div>
+    </div>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="linktagit-add">Добавить существующий элемент</button>
+
+        <div id="linktagit-form" style="display: none">
+            <ul id="tagit-links" ></ul>
+            <input type="hidden" id="tagit-links-res" name="linksIds"/>
+
+            <button type="button" class="btn btn-default" id="linktagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="linktagit-cancel">Отмена</button>
+        </div>
+    </div>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Тип</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+
+        <? /** @var $links array */
+        foreach($links as $link){ ?>
+            <tr class="entity" data-linktype="<?= $link[0] ?>">
+                <td><?= $link[1]->id ?></td>
+                <td><?= $link[3] ?></td>
+                <td><?= $link[1]->title ?></td>
+                <td>
+                    <a href="#" class="removeLinkBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.type = '<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>';
+        catalog.parentType = '<?= \Catalog\Controller\AdminController::SERIES_TABLE ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService:: CATALOG_SERIES ?>';
+        catalog.parentId = '<?= $series->id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/catalog') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/catalog', array('action'=> 'product')) ?>';
+        catalog.init();
+        catalog.initEditables();
+        catalog.sendSortparamAjax();
+
+        catalogDocs.init();
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.editablesSave
+        });
+
+        imgUploader.init({
+            type: 'multiple',
+            delFunction: imgUploader.editablesDel,
+            imgUrl: '<?= $this->basePath() . '/images/series/' ?>'
+        });
+
+        tagit.init({
+            tags: <?= $tags; ?>,
+            type: 'stos',
+            min: 3,
+            inputField: $("#tagit-series"),
+            outputField: $('#tagit-series-res'),
+            placeholder: 'Введите название или ID серии'
+        });
+
+        catalog.initDopProds({
+            type: <?= \Catalog\Controller\AdminController::SERIES_DOPPROD_GROUP_TABLE ?>
+        });
+
+        catalog.initEqualSeriesParams();
+
+        catalog.link_type_1 = '<?= \Catalog\Controller\AdminController::SERIES_TABLE ?>';
+        catalog.getTagsByType(<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>);
+    });
+</script>

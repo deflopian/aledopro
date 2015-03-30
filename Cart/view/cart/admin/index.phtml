@@ -1,0 +1,46 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/requests') ?>">Заявки</a>
+    >
+    Заказы
+</h1>
+
+<div class="section">
+    <h3>Список заказов</h3>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Покупатель</th>
+            <th>Почта</th>
+            <th>Сумма</th>
+            <th>Дата заказа</th>
+            <th>Управление</th>
+        </tr>
+        <tbody>
+        <? foreach($entities as $entity){ ?>
+            <tr class="entity">
+                <td><?= $entity->id; ?></td>
+                <td><?= $entity->user_id ? $users[$entity->user_id]->username : $unregUsers[$entity->id]->username; ?></td>
+                <td><?= $entity->user_id ? $users[$entity->user_id]->email : $unregUsers[$entity->id]->email; ?></td>
+                <td><?= $entity->summ; ?> р.</td>
+                <td><?= \Application\Service\ApplicationService::getFormedDate($entity->date); ?></td>
+                <td>
+                    <a href="#" class="editBtn">Смотреть</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.baseUrl = '<?= $this->url('zfcadmin/order') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/order', array('action'=> 'view')) ?>';
+        catalog.init();
+    });
+</script>

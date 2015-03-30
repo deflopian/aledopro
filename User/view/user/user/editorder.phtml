@@ -1,0 +1,147 @@
+<div class="section">
+
+    <div class="row">
+        <? $totalPrice = 0; ?>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="dotted-bottom">
+                        <h2>Заказ номер <?= $order->id ?></h2>
+                    </div>
+                </div>
+            </div>
+            <form action="/cabinet/saveOrder/<?= $order->id ?>/" method="post">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div>Дата и время операции: <?= $order->date ?></div>
+                    <div>Сумма операции: <span id="price-total"><?= $order->summ ?></span> <span class="b-rub" style="font-weight: bold">Р</span></div>
+                    <div><label for="comment"> Комментарий:</label></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="comment"> <?= $order->comment ?></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table>
+                        <tbody>
+                        <? foreach ($order->products as $prod) { ?>
+                            <? $count = $prod->order_count; ?>
+                        <tr class="cart-line row" data-id="<?= $prod->id ?>">
+                            <td class="col-md-2">
+                                <?
+                                $src = $prod->preview_img
+                                    ? $this->basePath() . '/images/series/'. $prod->preview_img
+                                    : $this->basePath() . '/images/empty-series.png';
+                                ?>
+                                <a href="<?= $this->url('catalog', array('action' => 'product', 'id' => $prod->id)) ?>" class="incart-preview">
+                                    <img src="<?= $src ?>" alt="<?= $prod->title ?>"/>
+                                </a>
+                            </td>
+                            <td class="col-md-1">
+                                <a href="<?= $this->url('catalog', array('action' => 'product', 'id' => $prod->id)) ?>">
+                                    <h2><?= $prod->id ?></h2>
+                                </a>
+                            </td>
+                            <td class="cart-description col-md-4" style="padding-left: 28px">
+                                <h2>
+                                    <a class="link" href="<?= $this->url('catalog', array('action' => 'product', 'id' => $prod->id)) ?>">
+                                        <?= $prod->title ?>
+                                    </a>
+                                </h2>
+                            </td>
+
+                            <? //высчитываем обычную цену, цену со скидкой и скидку:
+
+                            $price = \Catalog\Service\CatalogService::getTruePrice($prod->price_without_nds);
+
+                            if ($user && $user->getIsPartner()) {
+                                $discountPrice = \Catalog\Service\CatalogService::getTruePrice(
+                                    $prod->price_without_nds,
+                                    $user,
+                                    $this->hierarchies[$prod->id] ? $this->hierarchies[$prod->id] : array(),
+                                    $this->discounts,
+                                    $prod->opt2
+                                );
+
+                                $realDiscount = round((1 - ($discountPrice / $price))*100);
+                            }
+
+
+                            ?>
+
+                            <td class="table-padding price" style="text-align: center">
+                                <span class="price-one"><?= $price ?></span>
+                                <span class="b-rub">Р</span>
+                            </td>
+
+                            <td>
+                                <div class="row form-group" style="width: 100px">
+                                    <input type="hidden" class="form-control" name="products[][id]" value="<?= $prod->id ?>">
+                                    <div class="col-md-11">
+                                        <input type="text" class="form-control" name="products[][count]" value="<?= $count ?>">
+                                    </div>
+                                    <div class="cart-arrow-container">
+                                        <div class="arrow-aledo arrow-top"></div>
+                                        <div class="arrow-aledo arrow-bot" style="margin-top: 20px"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-padding" style="text-align: center">
+                            <span class="price-full">
+                                <? if ($user && $user->getIsPartner()) { ?>
+                                    <? $totalPrice += $count*$discountPrice; ?>
+                                <? } else { ?>
+                                    <? $totalPrice += $count*$price; ?>
+
+                                <? } ?>
+                                <span><?= $count*$price ?></span>
+
+                                <span class="b-rub">Р</span>
+                            </span>
+                            </td>
+
+
+                            <? if ($user && $user->getIsPartner()) { ?>
+
+
+                                <td class="table-padding" style="text-align: center">
+                                    <span class="real-discount"><?= $realDiscount ?></span>
+                                    <span>%</span>
+                                </td>
+
+                                <td class="table-padding price" style="text-align: center">
+                                    <span class="price-discount"><?= $discountPrice*$count ?></span>
+                                    <span class="b-rub">Р</span>
+                                </td>
+
+                            <? } ?>
+
+                            <td class="table-padding">
+                                <div class="aledo-cross" title="удалить продукт из заказа"></div>
+                            </td>
+                        </tr>
+                        <? } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <input class="pull-right btn btn-default" type="submit" value="Сохранить" />
+                </div>
+            </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    cart.countFieldName = "products[][count]";
+    cart.initCart();
+
+</script>

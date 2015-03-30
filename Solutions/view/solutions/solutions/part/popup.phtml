@@ -1,0 +1,276 @@
+<?
+/** @var \Solutions\Model\Solution $solution */
+$solution = $this->solution;
+$sl = $this->sl;
+$prevSol = $this->prevSol;
+$nextSol = $this->nextSol;
+?>
+
+
+<div class="container-popup">
+    <?= \Solutions\Service\SolutionService::renderPopupNav($sl, $prevSol, $nextSol, 'solutions', $this->robot); //навигация ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row" style="margin-top: 20px">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <h1><?= $solution->title; ?></h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="dotted-bottom"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row row-second">
+                        <div class="col-md-4" style="padding-bottom: 40px">
+                            <img src="<?= $this->basePath() . '/images/solutions/' . $solution->round_image ?>">
+                        </div>
+                        <div class="col-md-8">
+                            <? if ($solution->annotation) { ?>
+                            <div class="row solution-popup">
+                                <div class="col-md-6 annotation">
+                                    <?= $solution->annotation ?>
+                                </div>
+                            </div>
+                            <? } ?>
+
+                            <? if ($solution->top_text_1) { ?>
+                            <div class="row"><div class="col-md-12"><div class="black2-top"></div></div></div>
+                            <div class="row solution-popup">
+                                <div class="col-md-12 top-text-1">
+                                    <?= $solution->top_text_1 ?>
+                                </div>
+                            </div>
+                            <div class="row"><div class="col-md-12"><div class="black2-bottom"></div></div></div>
+                            <? } ?>
+
+                            <? if ($solution->column_1 || $solution->column_2) { ?>
+                                <div class="row solution-popup">
+                                    <? if ($solution->column_1) { ?>
+                                        <div class="<?= $solution->column_2 ? 'col-md-6' : 'col-md-12' ?> column">
+                                            <div class="dotted-top" style="padding-bottom: 20px"></div>
+                                            <?= $solution->column_1 ?>
+                                        </div>
+                                    <? } ?>
+                                    <? if ($solution->column_2) { ?>
+                                        <div class="<?= $solution->column_1 ? 'col-md-6' : 'col-md-12' ?> column">
+                                            <div class="dotted-top" style="padding-bottom: 20px"></div>
+                                            <?= $solution->column_2 ?>
+                                        </div>
+                                    <? } ?>
+                                </div>
+                            <? } ?>
+
+                            <? if ($solution->top_text_2) { ?>
+                                <div class="row solution-popup">
+                                    <div class="col-md-12 top-text-2">
+                                        <div class="dotted-top" style="padding-bottom: 20px"></div>
+                                        <?= $solution->top_text_2 ?>
+                                        <div class="dotted-bottom" style="padding-top: 20px"></div>
+                                    </div>
+                                </div>
+                            <? } ?>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <? if ($solution->list_title) { ?>
+                                <div class="row"><div class="col-md-12"><div class="black2-top"></div></div></div>
+                                <div class="row solution-popup">
+                                    <div class="col-md-12 list-title">
+                                        <?= $solution->list_title ?>
+                                    </div>
+                                </div>
+                                <div class="dotted-bottom"></div>
+                            <? } ?>
+                        </div>
+                    </div>
+                    <div class="row solution-popup">
+                        <div class="col-md-4">
+                            <? for ($i=1; $i<8; $i+=3 ) { ?>
+                                <? $varName = 'list_item_' . $i; ?>
+                                <? if ($solution->$varName) { ?>
+                                <div class="row">
+                                    <div class="col-md-12 list-item">
+                                        <div class="row">
+                                            <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px"><div class=" popup-list-item"><div class="popup-list-number"><?= $i ?></div></div></div>
+                                        </div>
+                                        <div class="dotted-bottom"></div>
+
+                                        <div class="row">
+                                            <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px">
+                                                <?= $solution->$varName ?>
+                                            </div>
+                                        </div>
+                                        <div class="bottom-bold-yellow-line"></div>
+                                    </div>
+                                </div>
+                                <? } ?>
+                            <? } ?>
+                        </div>
+                        <div class="col-md-4">
+                            <? for ($i=2; $i<8; $i+=3 ) { ?>
+                                <? $varName = 'list_item_' . $i; ?>
+                                <? if ($solution->$varName) { ?>
+                                    <div class="row">
+                                        <div class="col-md-12 list-item">
+                                            <div class="row">
+                                                <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px"><div class=" popup-list-item"><div class="popup-list-number"><?= $i ?></div></div></div>
+                                            </div>
+                                            <div class="dotted-bottom"></div>
+
+                                            <div class="row">
+                                                <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px">
+                                                    <?= $solution->$varName ?>
+                                                </div>
+                                            </div>
+                                            <div class="bottom-bold-yellow-line"></div>
+                                        </div>
+                                    </div>
+                                <? } ?>
+                            <? } ?>
+                        </div>
+                        <div class="col-md-4">
+                            <? for ($i=3; $i<8; $i+=3 ) { ?>
+                                <? $varName = 'list_item_' . $i; ?>
+                                <? if ($solution->$varName) { ?>
+                                    <div class="row">
+                                        <div class="col-md-12 list-item">
+                                            <div class="row">
+                                                <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px"><div class=" popup-list-item"><div class="popup-list-number"><?= $i ?></div></div></div>
+                                            </div>
+                                            <div class="dotted-bottom"></div>
+
+                                            <div class="row">
+                                                <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px">
+                                                    <?= $solution->$varName ?>
+                                                </div>
+                                            </div>
+                                            <div class="bottom-bold-yellow-line"></div>
+                                        </div>
+                                    </div>
+                                <? } ?>
+                            <? } ?>
+                        </div>
+
+                    </div>
+                    <? if ($this->relatedProjs) { ?>
+                    <div class="row row-second-big">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2>ПРОЕКТЫ</h2>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="dotted-bottom"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-md-12">
+                        <div style="position: relative; margin-right: -30px; margin-left: 0;">
+                            <ul class="bxslider_popup" style="background: none; overflow: auto">
+                                <? foreach($this->relatedProjs as $proj){ ?>
+                                    <? if ($proj) { ?>
+                                    <li class="" style="padding-left: 0">
+                                        <a href="/projects/index/<?= $proj->id ?>">
+<!--                                            <div class="col-md-12 popup-buttton project-tile" data-id="--><?//= $proj->id ?><!--">-->
+<!--                                                <div class="tile-title"  style="top: 15%">--><?//= $proj->title ?><!--</div>-->
+<!--                                                --><?// $src = $proj->img ? $this->basePath() . '/images/projects/' . $proj->img : $this->basePath() . '/images/empty-series.png' ?>
+<!--                                                <img src="--><?//= $src ?><!--" alt="--><?//= $proj->title ?><!--" onload="countOfLoadedPictures++; launchCarousel()"/>-->
+<!--                                            </div>-->
+                                            <div class="col-md-12 popup-buttton project-tile" data-id="<?= $proj->id ?>">
+                                                <div class="tile-title-project" style="top: 15px;">
+                                                    <span class="backgrounded" style="display: inline"><?= $proj->title ?>&nbsp;&nbsp;</span>
+                                                </div>
+                                                <img src="<?= $this->basePath() . '/images/projects/' . $proj->img ?>" alt="<?= $proj->title ?>"/>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <? } ?>
+                                <? } ?>
+                            </ul>
+                            <div id="next-client-control-2" style="position: absolute; right: 0; top: 42%; overflow: auto"></div>
+                            <div id="prev-client-control-2" style="position: absolute; left: -60px; top: 42%; overflow: auto"></div>
+                        </div>
+                        </div>
+                        </div>
+
+                    </div>
+                    <? } ?>
+                    <? if ($this->relatedProds) { ?>
+                    <div class="row row-second-big">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2>ПОПУЛЯРНЫЕ ПРОДУКТЫ</h2>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="dotted-bottom"></div>
+                            </div>
+
+                        </div>
+
+                        <div class="row row-second" style="padding-bottom: 100px">
+
+                            <? /** @var $prod \Catalog\Model\Product параметр img внезапно берётся из серии (см. SolutionsController) */ ?>
+                            <? foreach($this->relatedProds as $i=>$prod){
+                                if($i%6==0&&$i!=0){ echo '</div><div class="row row-second">'; }
+                                ?>
+                                <div class="col-md-2 series-tile">
+                                    <? $url = $this->url('catalog', array(
+                                        'action' => 'product',
+                                        'id' => $prod->id
+                                    )) ?>
+
+
+                                    <a href="<?= $url ?>">
+                                        <div class="tile-title-series-solutions" <?= $prod->img ? '' : 'style="color: #fff"' ?>><?= $prod->title ?></div>
+
+                                        <? $src = $prod->img ? $this->basePath() . '/images/series/' . $series->img : $this->basePath() . '/images/empty-series.png' ?>
+                                        <img src="<?= $src ?>" alt="<?= $prod->title ?>"/>
+                                    </a>
+                                </div>
+                            <? }?>
+                        </div>
+                    </div>
+                <? } ?>
+                </div>
+            </div>
+
+        </div>
+
+        <?= \Catalog\Service\CatalogService::renderSeoTextBlock($sl, $solution); ?>
+    </div>
+</div>
+
+<script>
+    countOfLoadedPictures = 0;
+    var allPictures = <?= count($this->relatedProjs)?>;
+
+    $('.bxslider_popup').delay(250).queue(function() {$('.bxslider_popup').bxSlider({
+        minSlides: 3,
+        maxSlides: 3,
+        moveSlides: 1,
+
+        nextSelector: '#next-client-control-2',
+        prevSelector: '#prev-client-control-2',
+        nextText: '<div class="arrow-aledo-big arrow-right"></div>',
+        prevText: '<div class="arrow-aledo-big arrow-left"></div>',
+        slideWidth: 370,
+
+        slideMargin: 10
+
+    })
+    });
+
+    var pageTitle = "<?= !empty($solution->title) ? $solution->title : '' ?>";
+    if (popup.pageTitle != '') {
+        document.title = pageTitle;
+    }
+
+</script>

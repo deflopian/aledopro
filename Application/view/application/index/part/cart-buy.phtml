@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="col-md-12 text-center"><h1>Оформление заказа</h1></div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <div class="dotted-bottom"></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2>Вход</h2>
+                <div class="dotted-bottom"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <? include'part/form-login.phtml' ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2>Я покупаю впервые</h2>
+                <div class="dotted-bottom"></div>
+            </div>
+        </div>
+        <div class="row row-second-small">
+            <div class="col-md-12">
+                <button id="popup-register" class="btn btn-aledo-black" href="#">Зарегистрироваться</button>
+            </div>
+        </div>
+        <div class="row row-second-small">
+            <div class="col-md-12">
+                <span style="font-size: 12px">
+                    Регистрация позволит получать бонусы и экономить время при следующих покупках. Это займет не более минуты.
+                </span>
+            </div>
+        </div>
+        <div class="row row-second-small">
+            <div class="col-md-12">
+                <a id="buy-without-register" class="btn btn-aledo-black" href="#">Купить без регистрации</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        window.setTimeout( function(){
+            formajax.init({
+                changeUrl: false
+            });
+        }, 100);
+
+        $('#popup-forgot').on('click', function(e){
+            e.preventDefault();
+            showFooBarPopup('forgot');
+        });
+        $('#popup-register').on('click', function(e){
+            e.preventDefault();
+            showFooBarPopup('registerFromCart');
+        });
+        $('#buy-without-register').on('click', function(e){
+            e.preventDefault();
+            showFooBarPopup('cart-buy-without-register');
+        });
+    });
+</script>

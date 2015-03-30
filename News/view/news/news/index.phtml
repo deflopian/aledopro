@@ -1,0 +1,86 @@
+<div class="section">
+    <div class="row row-second popup-buttons-container" data-type="news" data-action="index">
+        <? if (count($news1)) { ?>
+        <div class="col-md-4" style="max-width: 360px">
+
+                <? foreach($news1 as $i=>$n){ ?>
+                    <a href="/news/view/<?= $n->id ?>">
+                    <div class="row row-second-small popup-buttons-container" data-type="news" data-action="index" >
+                        <div class="col-md-12 project-tile-other news-tile-other" data-id="<?= $n->id ?>">
+                            <!--                <div class="tile-title"  style="top: 15%">--><?//= $project->title ?><!--</div>-->
+                            <div class="tile-date text-small">
+                                <?= \Application\Service\ApplicationService::getFormedDate($n->date, false) ?>
+                            </div>
+                            <div class="tile-project" style="max-width: 100%">
+                                <div class="tile-title-project" style="position: relative; max-width: 100%"  style="top: 15px;">
+                                    <span class="backgrounded" style="display: inline"><?= $n->title ?>&nbsp;&nbsp;</span>
+                                </div>
+                                <div class="tile-text-projects"><?= $n->text_short  ?></div>
+                            </div>
+                            <img src="<?= $this->basePath() . '/images/news/' . $n->img ?>" alt="<?= $n->title ?>"/>
+                        </div>
+                    </div>
+                    </a>
+                <? } ?>
+            </div>
+
+            <div class="col-md-4" style="max-width: 360px">
+                <? foreach($news2 as $i=>$n){ ?>
+                    <a href="/news/view/<?= $n->id ?>">
+                    <div class="row row-second-small popup-buttons-container" data-type="news" data-action="index" >
+                        <div class="col-md-12 project-tile-other news-tile-other" data-id="<?= $n->id ?>">
+                            <!--                <div class="tile-title"  style="top: 15%">--><?//= $project->title ?><!--</div>-->
+                            <div class="tile-date text-small">
+                                <?= \Application\Service\ApplicationService::getFormedDate($n->date, false) ?>
+                            </div>
+                            <div class="tile-project" style="max-width: 100%">
+                                <div class="tile-title-project" style="position: relative; max-width: 100%"  style="top: 15px;">
+                                    <span class="backgrounded" style="display: inline"><?= $n->title ?>&nbsp;&nbsp;</span>
+                                </div>
+                                <div class="tile-text-projects"><?= $n->text_short  ?></div>
+                            </div>
+                            <img src="<?= $this->basePath() . '/images/news/' . $n->img ?>" alt="<?= $n->title ?>"/>
+                        </div>
+                    </div>
+                    </a>
+                <? } ?>
+            </div>
+
+            <div class="col-md-4">
+                <? foreach($news3 as $i=>$n){?>
+                <a href="/news/view/<?= $n->id ?>">
+                    <div class="row row-second-small popup-buttons-container" data-type="news" data-action="index" >
+                        <div class="col-md-12 project-tile-other news-tile-other" data-id="<?= $n->id ?>">
+                            <!--                <div class="tile-title"  style="top: 15%">--><?//= $project->title ?><!--</div>-->
+                            <div class="tile-date text-small">
+                                <?= \Application\Service\ApplicationService::getFormedDate($n->date, false) ?>
+                            </div>
+                            <div class="tile-project" style="max-width: 100%">
+                                <div class="tile-title-project" style="position: relative; max-width: 100%"  style="top: 15px;">
+                                    <span class="backgrounded" style="display: inline"><?= $n->title ?>&nbsp;&nbsp;</span>
+                                </div>
+                                <div class="tile-text-projects"><?= $n->text_short  ?></div>
+                            </div>
+                            <img src="<?= $this->basePath() . '/images/news/' . $n->img ?>" alt="<?= $n->title ?>"/>
+                        </div>
+                    </div>
+                </a>
+            <? } ?>
+        </div>
+        <? } else { ?>
+            <div class="col-md-6 col-md-offset-4"><h2>Здесь пока нет записей</h2></div>
+        <? } ?>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        popup.robot = <?= $this->robot ? "true" : "false" ?>;
+        popup.init({
+            bid: <?= $this->bid ?>,
+            btype: "news",
+            baction: "index",
+            parentUrl: "/news/"
+        });
+    });
+</script>

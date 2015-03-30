@@ -1,0 +1,92 @@
+<div class="col-md-12 popup-gallery" style="min-width: 640px;">
+    <div class="row  row-second-xs">
+        <div class="col-md-12 scrollbar" id="ex3" style="overflow: auto;">
+            <div class="row bad-pics-container" style="width: <?= (count($imgs)-1)*700 ?>px; height: 415px; margin: 0 auto">
+                <? $i = 0; ?>
+                <? if (!$series->preview && $series->img_gallery) { ?>
+                <div style="height: 360px; float: left; padding-right: 5px;" >
+                    <? $src = $series->img_gallery ? $this->basePath() . '/images/series/' . $series->img_gallery : $this->basePath() . '/images/empty-series.png' ?>
+                    <a class="project-image-fancybox" rel="group1"  href="<?= $src ?>">
+
+                        <img style="height: 360px; width: auto;" class="bad-pics" src="<?= $src ?>" alt="<?= $series->visible_title; ?> img_gallery" />
+
+                    </a>
+                </div>
+                <? } ?>
+                <? foreach($imgs as $img) { ?>
+                    <? if (!$series->preview && $series->img_gallery == $img->url) continue; ?>
+                    <? if (!$series->preview && $i++ == 0) continue; ?>
+                    <div style="height: 360px; float: left; padding-right: 5px" >
+                        <? $src = $img->url ? $this->basePath() . '/images/series/' . $img->url : $this->basePath() . '/images/empty-series.png' ?>
+                        <a class="project-image-fancybox" rel="group1"  href="<?= $src ?>">
+
+                            <img style="height: 360px; width: auto;" class="bad-pics" src="<?= $src ?>" alt="<?= $series->visible_title; ?> url" />
+
+                        </a>
+                    </div>
+                <? } ?>
+            </div>
+        </div>
+    </div>
+<!--    <div class="row">-->
+<!--        <div class="col-md-12 popup-gallery-img">-->
+<!--            --><?// $src = $series->img_gallery ? $this->basePath() . '/images/series/' . $series->img_gallery : $this->basePath() . '/images/empty-series.png' ?>
+<!--            <img style=" margin: 0 auto; width: auto; height: 360px;" src="--><?//= $src ?><!--" alt="--><?//= $series->visible_title; ?><!--"/>-->
+<!--        </div>-->
+<!--    </div>-->
+<!---->
+<!--    <div class="row row-second">-->
+<!--        <div class="col-md-12" id="gallery-preview-line">-->
+<!--            --><?// foreach($imgs as $i=>$img){
+//                if($i==0){ continue; }
+//                ?>
+<!--                <div class="popup-gallery-preview">-->
+<!--                    <img src="--><?//= $this->basePath() . '/images/series/' . $img->url; ?><!--" alt=""/>-->
+<!--                </div>-->
+<!--            --><?// } ?>
+<!--        </div>-->
+<!--    </div>-->
+</div>
+
+<script>
+    var fullWidth = 0;
+    var count = 0;
+    var trueWidth = 0;
+    var trueHeight = 0;
+    $('.bad-pics').load(function(){
+        count++;
+        trueWidth = $(this)[0].naturalWidth;
+        trueHeight = $(this)[0].naturalHeight;
+        var ascpect = trueWidth/trueHeight;
+        fullWidth += 365*ascpect;
+
+        if (count == <?= $series->preview ? count($imgs) : (count($imgs)-1) ?>) {
+            $('.bad-pics-container').css('width', fullWidth);
+        }
+    });
+
+    $("a.project-image-fancybox").fancybox({
+        'transitionIn'	:	'elastic',
+        'transitionOut'	:	'elastic',
+        'overlayShow'	:	false,
+        'minWidth'     : 400,
+        'maxWidth'     : 800
+    });
+//
+//    $('#ex3')
+//        .mousewheel(function (event, delta) {
+//            if ( (!this.scrollLeft && delta > 0) || (this.scrollLeft == $(this).data('scrollLeft') && delta < 0) ) {
+//                return true; //данный блок необходим для того, чтобы перестать блокировать вертикальный скролл, если горизонтальный закончился
+//            }
+//
+//            $(this).data('scrollLeft', this.scrollLeft); //сохраняем текущий скролл слева
+//
+//            this.scrollLeft -= (delta * $(this).width() * 0.05); //на сколько прокрутить блок? (размер скролла)
+//            return false; //отключить вертикальный
+//        })
+//    ;
+
+    <? if (count($imgs)-1 <= 1) { ?>
+        $(function(){$('.further-more-line').addClass('dotted-bottom')});
+    <? } ?>
+</script>

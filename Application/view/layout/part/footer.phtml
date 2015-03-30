@@ -1,0 +1,194 @@
+﻿<footer class="b-layout-footer b-section">
+    <div class="b-section__content">
+        <div class="row b-footer-mobile-table">
+            <div class="col-xs-6  col-md-3 b-footer-mobile-col b-footer-mobile-col_left">
+                <div class="b-footer-mobile-col__inner">
+                    <p>
+                        <?= $contacts->adress ?>
+                    </p>
+                    <br />
+                    <p>
+                        <?= $contacts->work_time ?>
+                    </p>
+                    <br />
+                    <p>
+                        <?= $contacts->phone ?>
+                    </p>
+                    <p>
+                        <a href="mailto:<?= $contacts->mail ?>"><?= $contacts->mail ?></a>
+                    </p>
+                </div>
+            </div>
+            <div class="b-footer-mobile-col b-footer-mobile-col_decoration visible-sm-table-cell visible-xs-table-cell"></div>
+            <div class=" col-xs-6 col-md-9 b-footer-mobile-col b-footer-mobile-col_right">
+                <div class="row">
+                    <div class="b-footer-mobile-col__inner b-footer-mobile-col_right__inner" id="footer_collapse">
+                        <div class="col-md-4 panel">
+                            <h5 class="text-darker b-layout-footer__col-heading hidden-xs hidden-sm"><strong>Клиентам</strong></h5>
+
+                            <h5 class="text-darker b-layout-footer__col-heading visible-sm-block visible-xs-block">
+                                <a href="#collapse_clients" data-parent="#footer_collapse"
+                                   data-toggle="collapse" class="collapsed"><strong>Клиентам</strong></a>
+                            </h5>
+                            <ul class="list-unstyled  collapse" id="collapse_clients">
+                                <li><a class="b-highlighted-link" href="/guarantee">Сервис и гарантия</a></li>
+                                <li><a class="b-highlighted-link" href="/info/delivery">Оплата и доставка</a></li>
+                                <li><a class="b-highlighted-link" href="/catalog/section/1/">LED лампы</a></li>
+                                <li><a class="b-highlighted-link" href="/catalog/section/17/">LED светильники</a></li>
+                                <li><a class="b-highlighted-link" href="/catalog/section/3/">Профили для LED</a></li>
+                                <li><a class="b-highlighted-link" href="/catalog/section/29/">LED ленты</a></li>
+                                <li><a class="b-highlighted-link" href="/catalog/section/33/">Питание LED</a></li>
+                            </ul>
+                        </div>
+                        <div class=" col-md-3 panel">
+                            <h5 class="text-darker b-layout-footer__col-heading hidden-xs hidden-sm"><strong>О нас</strong></h5>
+                            <h5 class="text-darker b-layout-footer__col-heading visible-sm-block visible-xs-block">
+                                <a href="#collapse_about" class="collapsed"  data-parent="#footer_collapse" data-toggle="collapse"><strong>О нас</strong></a>
+                            </h5>
+
+                            <ul class="list-unstyled collapse" id="collapse_about">
+                                <li><a class="b-highlighted-link" href="/info"> О комании</a></li>
+                                <li><a class="b-highlighted-link" href="/files">Отзывы</a></li>
+                                <li><a class="b-highlighted-link" href="/projects">Проекты</a></li>
+                                <li><a class="b-highlighted-link" href="/pluses">Преимущества</a></li>
+                                <li><a class="b-highlighted-link" href="/job">Работа у нас</a></li>
+                            </ul>
+                        </div>
+                        <div class=" col-md-3 panel ">
+                            <h5 class="text-darker b-layout-footer__col-heading hidden-xs hidden-sm"><strong>Скачать</strong></h5>
+                            <h5 class="text-darker b-layout-footer__col-heading visible-sm-block visible-xs-block">
+                                <a href="#collapse_download" data-parent="#footer_collapse" data-toggle="collapse" class="collapsed"><strong>Скачать</strong></a>
+                            </h5>
+                            <ul class="list-unstyled  collapse" id="collapse_download">
+                                <li><a class="b-highlighted-link" href="/files">IES файлы</a></li>
+                                <li><a class="b-highlighted-link" href="/files">Сертификаты</a></li>
+                                <li><a class="b-highlighted-link" href="/files">Каталоги</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2 ">
+                            <ul class="list-unstyled">
+                                <? if ($user = $this->zfcUserIdentity()){ ?>
+                                    <li><a class="b-highlighted-link" href="/cabinet">Личный кабинет</a></li>
+                                    <li><a class="b-highlighted-link" href="javascript:void(0)">Выйти</a></li>
+                                <? } ?>
+                                <li><a class="b-highlighted-link" href="/sitemap/">Карта сайта</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <br/>
+
+        <hr class="dotted-separator" />
+        <div class="b-footer-link-nav">
+            <a class="b-footer-link-nav__link b-footer-link-nav__link_left">
+                <img src="/Content/images/footer-logo-left.svg"/>
+                <img src="/Content/images/footer-logo-left-hover.svg" />
+            </a>
+            <div class="b-footer-link-nav__link-separator"></div>
+            <a class="b-footer-link-nav__link b-footer-link-nav__link_right">
+                <img src="/Content/images/footer-logo-right.svg" />
+                <img src="/Content/images/footer-logo-right-hover.svg" />
+            </a>
+        </div>
+        <!-- <hr class="dotted-separator" />
+         <div class="b-footer-social-link-nav">
+             <a class="b-footer-social-link-nav__link b-footer-social-link-nav__link_vk"></a>
+             <a class="b-footer-social-link-nav__link b-footer-social-link-nav__link_fb"></a>
+         </div> -->
+    </div>
+</footer>
+<!---->
+<!--<footer class="panel-footer">-->
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-3 footer-contacts">-->
+<!--                <div>--><?//= $contacts->adress ?><!--</div>-->
+<!---->
+<!--                <div class="row-second-small">--><?//= $contacts->work_time ?><!--</div>-->
+<!--                <div class="row-second-small">--><?//= $contacts->phone ?><!--</div>-->
+<!--                <div>--><?//= $contacts->fax ?><!--</div>-->
+<!--                <div class="row-second-small">--><?//= $contacts->mail ?><!--</div>-->
+<!--            </div>-->
+<!---->
+<!--            <div class="col-md-2">-->
+<!--                <ul>-->
+<!--                    <li><a href="--><?//= $this->url('sitemap'); ?><!--">Карта сайта</a></li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!---->
+<!--            <div class="col-md-2">-->
+<!--                <ul>-->
+<!--                    --><?// foreach($sections as $section){ ?>
+<!--                        <li>-->
+<!--                            <a href="--><?//= empty($section->display_name) ?
+//                                $this->url('catalog', array('action'=>'section', 'id'=>$section->id)) :
+//                                $this->url('catalog', array('action'=>'section', 'id'=>$section->display_name)); ?><!--">-->
+<!--                                --><?//= $section->title ?>
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    --><?// } ?>
+<!--                </ul>-->
+<!--            </div>-->
+<!---->
+<!--            <div class="col-md-3">-->
+<!--                <ul>-->
+<!--                    <li><a href="--><?//= $this->url('projects'); ?><!--">Проекты</a></li>-->
+<!--                    <li><a href="--><?//= $this->url('news'); ?><!--">Новости компании</a></li>-->
+<!--                    <li><a href="--><?//= $this->url('offers'); ?><!--">Спецпредложения</a></li>-->
+<!--                    <li><a href="--><?//= $this->url('vacancies'); ?><!--">Вакансии</a></li>-->
+<!--			<li style="display: block; padding: 5px 15px"><a  class="catalog-ledionopto" href="/uploads/catalogue_aledo_S_.pdf" style="padding: 0; background-color: transparent !important;">Скачать каталог продукции Ledionopto</a></li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!---->
+<!--            <div class="col-md-2">-->
+<!--                <ul>-->
+<!--                    --><?// if ($this->zfcUserIdentity()){ ?>
+<!--                        <li><a href="--><?//= $this->url('cabinet'); ?><!--">Личный кабинет</a></li>-->
+<!--                        <li><a id="footer-logout" href="--><?//= $this->url('zfcuser/logout'); ?><!--">Выйти</a></li>-->
+<!--                    --><?// } else { ?>
+<!--                        <li><a id="footer-login" href="#">Войти</a></li>-->
+<!--                        <li><a id="popup-register" href="#">Зарегистрироваться</a></li>-->
+<!--                    --><?// } ?>
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!---->
+<!--        <div class="row row-second-big">-->
+<!--            <div class="col-md-6 col-md-offset-3 text-center">-->
+<!--                <a class="footer-logos" href="#"><img src="--><?//= $this->basePath() . '/images/aledo-logo-med-white.png' ?><!--" alt="Карта проезда"/></a>-->
+<!--                <div id="logos-line" class="dotted-left-white" ></div>-->
+<!--                <a class="footer-logos" href="http://www.kaledoscop.ru"><img src="--><?//= $this->basePath() . '/images/kaledoscop-logo-med-white.png' ?><!--" alt="Карта проезда"/></a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row row-second-small">-->
+<!--            <div class="col-md-6 col-md-offset-3"><div class="dotted-bottom-white"></div></div>-->
+<!--        </div>-->
+<!---->
+<!--        <div class="row row-second">-->
+<!--            <div class="col-md-4 col-md-offset-4 text-center">-->
+<!--                <a href="http://vk.com/kaledoscop"-->
+<!--                   target="_blank"-->
+<!---->
+<!--                   onclick="ga('send', 'event', 'button', 'click', 'social btns', 'http://vk.com/kaledoscop', {'nonInteraction': 1});"-->
+<!--                ><span class="soc-icon soc-icon-vk"></span></a>-->
+<!---->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-4 col-md-offset-4 text-center">-->
+<!--                <span id="copyright">© 2011–--><?//= date("Y"); ?><!-- aledo kaledoscop Планар</span>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</footer>-->
+<script>
+    $('#popup-register').on('click', function(e){
+        e.preventDefault();
+        showFooBarPopup('register');
+    });
+</script>

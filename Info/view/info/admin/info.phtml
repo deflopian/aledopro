@@ -1,0 +1,90 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/info') ?>">Информация</a>
+    >
+    <?= $entity->title ?>
+</h1>
+
+<table class="table admin-table ">
+    <tbody>
+    <tr>
+        <td>Название</td>
+        <td>
+            <a href="#" data-type="text" data-name="title1" class="editable-param"><?= $entity->title1; ?></a>
+        </td>
+    </tr>
+    <tr>
+        <td>Описание</td>
+        <td>
+            <div class="editor-get-btn" data-wid="1" data-id="<?= $id ?>">
+                <?= $entity->text1; ?>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Название</td>
+        <td>
+            <a href="#" data-type="text" data-name="title2" class="editable-param"><?= $entity->title2; ?></a>
+        </td>
+    </tr>
+    <tr>
+        <td>Описание</td>
+        <td>
+            <div class="editor-get-btn" data-wid="2" data-id="<?= $id ?>">
+                <?= $entity->text2; ?>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Название</td>
+        <td>
+            <a href="#" data-type="text" data-name="title3" class="editable-param"><?= $entity->title3; ?></a>
+        </td>
+    </tr>
+    <tr>
+        <td>Описание</td>
+        <td>
+            <div class="editor-get-btn" data-wid="3" data-id="<?= $id ?>">
+                <?= $entity->text3; ?>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Название</td>
+        <td>
+            <a href="#" data-type="text" data-name="title4" class="editable-param"><?= $entity->title4; ?></a>
+        </td>
+    </tr>
+    <tr>
+        <td>Описание</td>
+        <td>
+            <div class="editor-get-btn" data-wid="4" data-id="<?= $id ?>">
+                <?= $entity->text4; ?>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentId = '<?= $entity->id ?>';
+        catalog.type = 'prmember';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/info') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/info', array('action'=> 'viewMember')) ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::INFO ?>';
+        catalog.init();
+        catalog.initEditables();
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.infoSave,
+            config: 'config-info'
+        })
+    });
+</script>

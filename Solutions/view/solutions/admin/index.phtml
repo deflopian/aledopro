@@ -1,0 +1,46 @@
+<h1>Решения</h1>
+
+<div class="section">
+    <h3>Список решений</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-entity">Добавить решение</button>
+
+        <div class="form-inline" id="adding-form" style="display: none">
+            <div class="form-group">
+                <label class="sr-only" for="inputName">Название</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Введите название..."/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="adding-complete">Добавить</button>
+            <button type="button" class="btn btn-default" id="adding-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+        <? foreach($entities as $entity){ ?>
+            <tr class="entity">
+                <td><?= $entity->id; ?></td>
+                <td><?= $entity->title; ?></td>
+                <td>
+                    <a href="#" class="editBtn">Редактировать</a>
+                    <a href="#" class="deleteBtn">Удалить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        catalog.baseUrl = '<?= $this->url('zfcadmin/solutions') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/solutions', array('action'=> 'view')) ?>';
+        catalog.init();
+    });
+</script>

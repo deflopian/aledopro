@@ -1,0 +1,103 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/discounts') ?>">Партнёры</a>
+    >
+    <a href="<?= $this->url('zfcadmin/discounts', array('action' => 'viewGroup', 'id' => $group->id)) ?>">Группа: <?= $group->name ?></a>
+    >
+    <a href="<?= $this->url('zfcadmin/discounts', array('action' => 'sectionsGroups', 'id' => $parents[1]->id)) ?>"><?= $parents[1]->title ?></a>
+    >
+    <a href="<?= $this->url('zfcadmin/discounts', array('action' => 'subsectionsGroups', 'id' => $parents[2]->id, 'userId' => $group->id)) ?>"><?= $parents[2]->title ?></a>
+    >
+    <span id="title"><?= $section->title; ?></span>
+</h1>
+
+
+<div class="section">
+    <div>
+        <a href="/admin/discounts/viewGroup/<?= $group->id; ?>/">Скидки на разделы</a>
+    </div>
+    <div>
+        <a href="/admin/discounts/sectionsGroups/<?= $group->id; ?>/">Скидки на подразделы</a>
+    </div>
+    <div>
+        <a href="/admin/discounts/subsectionsGroups/<?= $group->id; ?>/">Скидки на серии</a>
+    </div>
+    <div>
+        <a href="/admin/discounts/seriesGroups/<?= $group->id; ?>/">Скидки на продукты</a>
+    </div>
+</div>
+
+<? if ($this->currentDiscount) { ?>
+<div class="section">
+    <div>Скидка: </div>
+    <div>
+        <a href="#" data-type="text" data-name="discount" class="editable-param">
+            <?= $this->currentDiscount->discount ?>
+        </a>%
+    </div>
+</div>
+<? } ?>
+<div class="section">
+    <h3>Продукты со скидкой:</h3>
+
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="doptagit-add">Добавить продукт</button>
+
+        <div id="doptagit-form" style="display: none">
+            <ul id="tagit-products" ></ul>
+            <input type="hidden" id="tagit-products-res" name="productsIds"/>
+
+            <button type="button" class="btn btn-default" id="doptagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="doptagit-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tbody>
+        <? foreach ($sections as $oneSec) { ?>
+        <tr>
+            <td><?= $oneSec->id ?></td>
+            <td><?= $oneSec->title ?></td>
+            <td>
+                <a href="#"
+                   data-id="<?= $this->discounts[$oneSec->id]->id ?>"
+                   data-type="text"
+                   data-name="discount"
+                   class="editable-param" >
+                    <?= array_key_exists($oneSec->id, $this->discounts) ? $this->discounts[$oneSec->id]->discount : 0 ?>
+                </a>%
+            </td>
+            <td>
+                <a href="#" class="editBtn">Редактировать</a>
+                <a href="#" class="removeBtn" title="Отменить скидку на этот продукт">
+                    Отменить скидку
+                </a>
+            </td>
+        </tr>
+        <? } ?>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.type = '<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/discounts') ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::INDEX ?>';
+        catalog.parentId = '<?= $this->currentDiscount->id ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/discounts', array('action'=> 'productsGroups')) ?>';
+        catalog.userId = '<?= $group->id ?>';
+        catalog.init();
+        catalog.initEditables();
+
+
+        additionalTagit.init({
+            tags: <?= $tags; ?>,
+            min: 3,
+            type: '<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>',
+            inputField: $("#tagit-products"),
+            outputField: $('#tagit-products-res'),
+            placeholder: 'Введите артикул или название продукта',
+            isGroup: true
+        });
+    });
+
+</script>

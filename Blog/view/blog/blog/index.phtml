@@ -1,0 +1,142 @@
+<div class="section">
+    <div class="row">
+        <? if ($news && count($news) > 0) { ?>
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <a href="<?= $this->url('news') ?>"><h2 class="link">Новости компании</h2></a>
+                </div>
+            </div>
+
+            <? foreach($news as $i=>$n){ ?>
+                <div class="row popup-buttons-container <?= $i!=0?'row-second-small':''?>" data-type="news"  data-action="view">
+                    <a href="/news/view/<?= $n->id ?>">
+                    <div class="col-md-12" data-id="<?= $n->id ?>">
+                        <div class="tile-date text-small">
+                            <?= \Application\Service\ApplicationService::getFormedDate($n->date) ?>
+                        </div>
+                        <div class="tile-title"><?= $n->title ?></div>
+                        <img src="<?= $this->basePath() . '/images/news/' . $n->img ?>" alt="<?= $n->title ?>"/>
+                    </div>
+                    </a>
+                </div>
+            <? } ?>
+        </div>
+        <? } else { ?>
+        <? } ?>
+        <? if ($articles) { ?>
+        <div class="col-md-<?= count($news) > 0 ? 6 : 9 ?> col-md-offset-05">
+            <div class="row popup-buttons-container" data-type="articles"  data-action="index">
+                <? if ($articles) { ?>
+                <? $article = $articles[0]; ?>
+                <a href="/articles/view/<?= $article->id ?>">
+                    <div class="col-md-12" data-id="<?= $article->id ?>">
+                        <div class="tile-date text-small">
+                            <?= \Application\Service\ApplicationService::getFormedDate($article->date) ?>
+                        </div>
+                        <div class="tile-title tile-title-blog"><?= $article->title ?></div>
+                        <div class="tile-text"><?= $article->text_short ?></div>
+                        <img src="<?= $this->basePath() . '/images/articles/' . $article->img ?>" alt="<?= $article->title ?>"/>
+                    </div>
+                </a>
+                <? } ?>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <? foreach($articles as $i=>$article){
+                        if($i==0 || $i%2==0){ continue; }
+                        ?>
+
+                        <div class="row row-second-small popup-buttons-container" data-type="articles" data-action="index">
+                            <a href="/articles/view/<?= $article->id ?>">
+                            <div class="col-md-12" data-id="<?= $article->id ?>">
+                                <div class="tile-date text-small">
+                                    <?= \Application\Service\ApplicationService::getFormedDate($article->date) ?>
+                                </div>
+                                <div class="tile-title tile-title-blog"><?= $article->title ?></div>
+                                <div class="tile-text"><?= $article->text_short ?></div>
+                                <img src="<?= $this->basePath() . '/images/articles/' . $article->img ?>" alt="<?= $article->title ?>"/>
+                            </div>
+                            </a>
+                        </div>
+
+                    <? } ?>
+                </div>
+
+                <div class="col-md-6">
+                    <? foreach($articles as $i=>$article){
+                        if($i==0 || $i%2!=0){ continue; }
+                        ?>
+                        <div class="row row-second-small popup-buttons-container" data-type="articles" data-action="index">
+                            <a href="/articles/view/<?= $article->id ?>">
+                            <div class="col-md-12" data-id="<?= $article->id ?>">
+                                <div class="tile-date text-small">
+                                    <?= \Application\Service\ApplicationService::getFormedDate($article->date) ?>
+                                </div>
+                                <div class="tile-title tile-title-blog"><?= $article->title ?></div>
+                                <div class="tile-text"><?= $article->text_short ?></div>
+                                <img src="<?= $this->basePath() . '/images/articles/' . $article->img ?>" alt="<?= $article->title ?>"/>
+                            </div>
+                            </a>
+                        </div>
+                    <? } ?>
+                </div>
+            </div>
+        </div>
+        <? } else { ?>
+                <? if (!$news || count($news) == 0) { ?>
+                    <div class="col-md-<?= count($news) > 0 ? 6 : 9 ?> col-md-offset-05">
+                        <div class="col-md-6 col-md-offset-4" style="padding-left: 7%"><h2>В блоге пока нет записей</h2></div>
+                    </div>
+                <? } else { ?>
+                    <div class="col-md-<?= count($news) > 0 ? 6 : 9 ?> col-md-offset-05">
+                    </div>
+                <? } ?>
+        <? } ?>
+
+        <div class="col-md-2 col-md-offset-05">
+            <div class="row">
+                <div class="col-md-12 text-center"><h2>Словарь терминов</h2></div>
+            </div>
+            <? foreach($sortedTerms as $letter=>$terms){ ?>
+                <div class="letter popupsmall-container wide-popup" data-type="term" data-action="index"
+                     style="margin-bottom: 30px; width: 100%; border-top: 1px dotted #000000"
+                    >
+                    <h3>- <?= $letters[$letter] ?></h3>
+                    <? foreach($terms as $term){ ?>
+                        <p style="padding-left: 15px;">
+                            <a data-id="<?= $term->id ?>" class="blog-term popupsmall-button"><?= $term->title ?></a>
+                        </p>
+                    <? } ?>
+                </div>
+            <? } ?>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        popup.robot = <?= $this->robot ? "true" : "false" ?>;
+        popup.init({
+            bid: <?= $this->bid ?>,
+            btype: "<?= $this->btype ?>",
+            baction: "index",
+            parentUrl: "/blog/"
+        });
+
+
+        var content = [];
+        content['term'] = {
+            content: <?= $IdTerms; ?>,
+            data: {
+                placement: 'left',
+                trigger: 'click'
+            }
+        };
+
+        popupsmall.init({
+            content: content
+        });
+    })
+</script>

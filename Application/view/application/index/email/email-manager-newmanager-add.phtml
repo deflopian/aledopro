@@ -1,0 +1,88 @@
+<table cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="border-collapse:collapse; margin:0 auto">
+    <tbody>
+    <tr>
+        <td align="center">
+            <table width="600" height="200" cellpadding="0" cellspacing="0" style="margin:0 auto;font-family:'Lato',Arial,Helvetica,sans-serif;border-collapse:collapse">
+                <tbody>
+                <tr height="10">
+                    <td height="10" colspan="4">
+                        <p style="border-bottom: 1px dotted black"></p>
+                    </td>
+                </tr>
+                <tr height="20">
+                    <td width="20" height="20">&nbsp;</td>
+                    <td width="220" height="20">
+                        <p>
+                            Здравствуйте, <?= $this->username ?>!
+                        </p>
+                    </td>
+                    <td height="20" align="right">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <img src="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?>/images/aledo-logo-without-title.png" width="212" height="40" alt="Aledo <8 (800) 555 56 72>" />
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td width="18">&nbsp;</td>
+                                <td>
+                                    8 (800) 555 56 72
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </td>
+
+                    <td width="1" height="20">&nbsp;</td>
+                </tr>
+
+                <tr height="10">
+                    <td height="10" colspan="4">
+                        <p style="border-bottom: 1px dotted black"></p>
+                    </td>
+                </tr>
+                <tr height="20">
+                    <td height="20">&nbsp;</td>
+                    <td height="20" colspan="2">
+                        <p>
+                            Вам был назначен новый клиент.
+                        </p>
+                    </td>
+                    <td height="20">&nbsp;</td>
+                </tr>
+                <tr height="20">
+                    <td height="20">&nbsp;</td>
+                    <td height="20" colspan="2" bgcolor="white" align="left">
+                        <table width="600" border="0" cellpadding="0" cellspacing="0" align="left">
+                            <tbody>
+                            Данные:<br>
+                            <? foreach ($this->params as $paramKey => $oneParam) : ?>
+                                <tr height="30">
+                                    <td width="180" style="color: #666666">
+                                        <?= $paramKey ?>:
+                                    </td>
+                                    <td>
+                                        <?= $oneParam ?>
+                                    </td>
+                                </tr>
+                            <? endforeach; ?>
+                            </tbody>
+                        </table>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr height="10">
+                    <td height="10" colspan="4">
+                        <p style="border-bottom: 1px dotted black"></p>
+                    </td>
+                </tr>
+
+
+                </tbody></table>
+        </td>
+    </tr>
+    </tbody>
+</table>

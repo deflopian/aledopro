@@ -1,0 +1,109 @@
+<div class="b-site-map b-section">
+    <div class="b-section__content">
+        <br />
+        <h4>КАРТА САЙТА</h4>
+        <hr class="solid-separator" />
+        <div class="b-site-map__blocks-container">
+            <? if ($user = $this->zfcUserIdentity()){ ?>
+            <ul class="list-unstyled b-site-map__list b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/cabinet/" class="b-site-map__link">Вход в личный кабинет</a>
+                    <ul class="list-unstyled b-site-map__list">
+                        <li class="b-site-map__list-item">
+                            <a href="/cabinet/" class="b-site-map__link">История заказов</a>
+                        </li>
+                        <li class="b-site-map__list-item">
+                            <a href="/cabinet/" class="b-site-map__link">Персональные данные</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <? } ?>
+
+            <ul class="list-unstyled b-site-map__list b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/info/delivery/" class="b-site-map__link">Доставка и оплата</a>
+                </li>
+            </ul>
+
+            <ul class="list-unstyled b-site-map__list b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/catalog/" class="b-site-map__link">Каталог</a>
+                    <ul class="list-unstyled b-site-map__list">
+                        <? foreach($sections as $i=>$section){ ?>
+                        <li class="b-site-map__list-item">
+                            <a href="<?= empty($section->display_name) ?
+                                $this->url('catalog', array('action'=>'section', 'id'=>$section->id)) :
+                                $this->url('catalog', array('action'=>'section', 'id'=>$section->display_name))?>" class="b-site-map__link"><?= $section->title ?></a>
+                        </li>
+                        <? } ?>
+                    </ul>
+
+                </li>
+            </ul>
+            <ul class="list-unstyled b-site-map__list b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/contacts/" class="b-site-map__link">Контакты</a>
+                </li>
+            </ul>
+            <ul class="list-unstyled b-site-map__list b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/cart/" class="b-site-map__link">Корзина</a>
+                </li>
+            </ul>
+            <ul class="list-unstyled b-site-map__list b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/info/" class="b-site-map__link">О компании</a>
+                    <ul class="list-unstyled b-site-map__list">
+                        <li class="b-site-map__list-item">
+                            <a href="/files/" class="b-site-map__link">Отзывы</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="list-unstyled b-site-map__list  b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/projects/" class="b-site-map__link">Проекты</a>
+                </li>
+            </ul>
+            <ul class="list-unstyled b-site-map__list b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/pluses/" class="b-site-map__link">Преимущества</a>
+                </li>
+            </ul>
+            <ul class="list-unstyled b-site-map__list b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/job/" class="b-site-map__link">Работа у нас</a>
+                </li>
+            </ul>
+            <ul class="list-unstyled b-site-map__list b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/solutions/" class="b-site-map__link">Решения</a>
+                </li>
+            </ul>
+            <ul class="list-unstyled b-site-map__list b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/files/" class="b-site-map__link">Скачать</a>
+                    <ul class="list-unstyled b-site-map__list">
+                        <li class="b-site-map__list-item">
+                            <a href="/files/" class="b-site-map__link">IES  файлы</a>
+                        </li>
+                        <li class="b-site-map__list-item">
+                            <a href="/files/" class="b-site-map__link">Сертификаты</a>
+                        </li>
+                        <li class="b-site-map__list-item">
+                            <a href="/files/" class="b-site-map__link">Каталоги</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="list-unstyled b-site-map__list b-site-map__block">
+                <li class="b-site-map__list-item">
+                    <a href="/guarantee/" class="b-site-map__link">Сервис и гарантия</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+

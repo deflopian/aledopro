@@ -1,0 +1,55 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/discounts') ?>">Партнёры</a>
+    >
+    <a href="<?= $this->url('zfcadmin/discounts', array('action' => 'partners', 'id' => $user->user_id)) ?>">Пользователь: <?= $user->username ?></a>
+    >
+    <a href="<?= $this->url('zfcadmin/discounts', array('action' => 'sections', 'id' => $parents['section']->id)) ?>"><?= $parents['section']->title ?></a>
+    >
+    <a href="<?= $this->url('zfcadmin/discounts', array('action' => 'subsections', 'id' => $parents['subsection']->id, 'userId' => $user->user_id)) ?>"><?= $parents['subsection']->title ?></a>
+    >
+    <a href="<?= $this->url('zfcadmin/discounts', array('action' => 'series', 'id' => $parents['series']->id, 'userId' => $user->user_id)) ?>"><?= $parents['series']->title ?></a>
+    >
+    <span id="title"><?= $section->title; ?></span>
+</h1>
+
+
+<div class="section">
+    <div>
+        <a href="/admin/discounts/partners/<?= $user->user_id; ?>/">Скидки на разделы</a>
+    </div>
+    <div>
+        <a href="/admin/discounts/sections/<?= $user->user_id; ?>/">Скидки на подразделы</a>
+    </div>
+    <div>
+        <a href="/admin/discounts/subsections/<?= $user->user_id; ?>/">Скидки на серии</a>
+    </div>
+    <div>
+        <a href="/admin/discounts/series/<?= $user->user_id; ?>/">Скидки на продукты</a>
+    </div>
+</div>
+
+<? if ($this->currentDiscount) { ?>
+<div class="section">
+    <div>Скидка: </div>
+    <div>
+        <a href="#" data-type="text" data-name="discount" class="editable-param">
+            <?= $this->currentDiscount->discount ?>
+        </a>%
+    </div>
+</div>
+<? } ?>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.type = '<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/discounts') ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::INDEX ?>';
+        catalog.parentId = '<?= $this->currentDiscount->id ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/discounts', array('action'=> 'products')) ?>';
+        catalog.userId = '<?= $user->user_id ?>';
+        catalog.init();
+        catalog.initEditables();
+
+    });
+
+</script>

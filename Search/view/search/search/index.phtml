@@ -1,0 +1,153 @@
+<? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+
+<div class="section">
+
+    <?
+    if(isset($count) && $count['total']) { ?>
+        <ul class="nav nav-tabs">
+            <?
+            $blogActive = $projectsActive = true;
+            if($catalog['series'] || $catalog['products']){
+                $blogActive = $projectsActive = false;
+                ?>
+                <li class="active"><a href="#tab-catalog" class="btn-aledo-tab"  data-toggle="tab">В каталоге</a></li>
+            <? } ?>
+
+            <? if($news || $articles){
+                $projectsActive = false;
+                ?>
+                <li <?= $blogActive ? 'class="active"' : ''?>><a href="#tab-blog" class="btn-aledo-tab" data-toggle="tab">В блоге</a></li>
+            <? } ?>
+
+            <? if($projects){ ?>
+                <li <?= $projectsActive ? 'class="active"' : ''?>><a href="#tab-projects" class="btn-aledo-tab" data-toggle="tab">В проектах</a></li>
+            <? } ?>
+            <!--            <li><a href="#tab-proejcts" class="btn-aledo-tab" data-toggle="tab">В проектах</a></li>-->
+        </ul>
+
+        <div class="tab-content">
+            <? if($catalog['series'] || $catalog['products']){ ?>
+                <div class="tab-pane active" id="tab-catalog">
+                    <? if($catalog['series']){ ?>
+                        <div class="row row-second-big">
+                            <div class="col-md-12"><h3>Найдено серий: <?= $count['series']; ?></h3></div>
+                        </div>
+                        <div class="row row-second-small" data-type="catalog">
+                            <? foreach($catalog['series'] as $i=>$series){ ?>
+                                <div class="col-md-2 series-tile popup-buttton mobile-left-margin-1" data-id="<?= $series->id ?>">
+                                    <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $series, false, true); ?>
+                                </div>
+                                <? if(($i+1)%6 == 0) { echo'</div><div class="row row-second" data-type="catalog">'; } ?>
+                            <? } ?>
+                        </div>
+                    <? } ?>
+
+                    <? if($catalog['products']){ ?>
+                        <div class="row row-second-big">
+                            <div class="col-md-12"><h3>Найдено продуктов: <?= $count['products']; ?></h3></div>
+                        </div>
+                        <div class="row row-second-small">
+                            <?
+                            $i = 0;
+                            foreach($catalog['products'] as $product){ ?>
+                                <div class="col-md-2 series-tile mobile-left-margin-1">
+                                    <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $product, true); ?>
+                                </div>
+                                <? if(($i+1)%6 == 0) { echo'</div><div class="row row-second">'; } ?>
+                                <? $i++; ?>
+                            <? } ?>
+                        </div>
+                    <? } ?>
+                </div>
+            <? } ?>
+
+            <? if($news || $articles){ ?>
+                <div class="tab-pane <?= $blogActive?'active':''?>" id="tab-blog">
+                    <? if($count['news']){ ?>
+                        <div class="row row-second-big">
+                            <div class="col-md-12"><h3>Найдено новостей: <?= $count['news']; ?></h3></div>
+                        </div>
+                        <div class="row row-second-small">
+                            <? foreach($news as $newsCol){ ?>
+                                <div class="col-md-4">
+                                    <? foreach($newsCol as $onenews){ ?>
+                                        <div class="row row-second-small popup-buttons-container" data-type="news">
+                                            <div class="col-md-12 popup-buttton" data-id="<?= $onenews->id ?>">
+                                                <div class="tile-date text-small">
+                                                    <?= \Application\Service\ApplicationService::getFormedDate($onenews->date) ?>
+                                                </div>
+                                                <div class="tile-title tile-title-blog"><?= $onenews->title ?></div>
+                                                <div class="tile-text"><?= $onenews->text_short ?></div>
+                                                <img src="<?= $this->basePath() . '/images/news/' . $onenews->img ?>" alt="<?= $onenews->title ?>"/>
+                                            </div>
+                                        </div>
+                                    <? } ?>
+                                </div>
+                            <? } ?>
+                        </div>
+                    <? } ?>
+
+                    <? if($count['articles']){ ?>
+                        <div class="row row-second-big">
+                            <div class="col-md-12"><h3>Найдено статей: <?= $count['articles']; ?></h3></div>
+                        </div>
+                        <div class="row row-second-small">
+                            <? foreach($articles as $articlesCol){ ?>
+                                <div class="col-md-4">
+                                    <? foreach($articlesCol as $article){ ?>
+                                        <div class="row row-second-small" data-type="articles">
+                                            <div class="col-md-12 popup-buttton" data-id="<?= $article->id ?>">
+                                                <div class="tile-date text-small">
+                                                    <?= \Application\Service\ApplicationService::getFormedDate($article->date) ?>
+                                                </div>
+                                                <div class="tile-title tile-title-blog"><?= $article->title ?></div>
+                                                <div class="tile-text"><?= $article->text_short ?></div>
+                                                <img src="<?= $this->basePath() . '/images/articles/' . $article->img ?>" alt="<?= $article->title ?>"/>
+                                            </div>
+                                        </div>
+                                    <? } ?>
+                                </div>
+                            <? } ?>
+                        </div>
+                    <? } ?>
+                </div>
+            <? } ?>
+
+            <? if($projects){ ?>
+                <div class="tab-pane <?= $projectsActive ?'active':''?>" id="tab-projects">
+                    <div class="row row-second-big">
+                        <div class="col-md-12"><h3>Найдено проектов: <?= $count['projects']; ?></h3></div>
+                    </div>
+                    <div class="row row-second-small popup-buttons-container" data-type="projects">
+                        <? foreach($projects as $i=>$project){ ?>
+                            <div class="col-md-4 popup-buttton project-tile-other" data-id="<?= $project->id ?>">
+                                <div class="tile-title"><?= $project->title ?></div>
+                                <div class="tile-text"><?= $project->adress ?></div>
+                                <img src="<?= $this->basePath() . '/images/projects/' . $project->img ?>" alt="<?= $project->title ?>"/>
+                            </div>
+                            <? if(($i+1)%3==0){echo'</div><div class="row row-second popup-buttons-container" data-type="projects">';} ?>
+                        <? } ?>
+                    </div>
+                </div>
+            <? } ?>
+        </div>
+    <? } else { ?>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2>К сожалению ничего не найдено :(</h2>
+                <p>Cвяжитесь с нами и мы поможем найти интересующую Вас продукцию</p>
+            </div>
+        </div>
+    <? } ?>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        //popup.init({});
+
+        $('.btn-aledo-tab').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show');
+        })
+    })
+</script>

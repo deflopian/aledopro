@@ -1,0 +1,134 @@
+<? $serNum = isset($serNum) ? $serNum : 1;
+
+?>
+<? if (!$nonFilter) { ?>
+
+<div class="row" >
+    <div class="col-md-12" >
+        <div style="background-color: #989898; color: #ffffff; margin-top: 10px; margin-bottom: 20px; padding: 12px">
+
+            <div data-toggle="collapse" ng-click="toggleTags()" data-parent="#accordion" href="#collapse<?= $serNum ?>" style="cursor: pointer" >
+                <div class="row">
+                    <div class="col-md-3 filter-before-<?= $serNum ?>">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2 style="font-weight: bold; margin:0; padding: 0; margin-top: 3px">Фильтр</h2>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
+                        <div class="row"  style="text-align: left">
+                            <div class="col-md-12">
+                                <div class="icon-filter"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-2 pull-right"  ng-show="showTags"><h2 style="font-weight: bold; margin:0; padding: 0; margin-top: 3px; text-align: right">Показать</h2></div>
+                </div>
+            </div>
+            <div>
+                <div class="row">
+                    <div class="col-md-3 filter-before-<?= $serNum ?>"> </div>
+                    <div class="col-md-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
+                        <div class="row" ng-repeat="tag in getTags(name)" ng-show="showTags">
+                            <div class="col-md-12">
+                                <input id="f-<?=$serNum?>{{name}}-val-{{tag.key}}" type="checkbox"
+                                       name="{{name}}" value="{{tag.value}}"
+                                       ng-true-value="'{{tag.hash}}'"
+                                       ng-false-value="false"
+                                       class="filter-checkbox"
+                                       ng-model="possibleVals[name][tag.key]">
+                                <label for="f-<?=$serNum?>{{name}}-val-{{tag.key}}" style="font-weight: normal">{{tag.value}}</label>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="collapse<?= $serNum ?>" class="panel-collapse collapse">
+                <div class="row" style="position: relative">
+                    <div class="col-md-3 filter-before-<?= $serNum ?>" style="margin-top: 3px">
+                            <div style="padding-left: 0; padding-top: 0">
+                                <input type="checkbox" id="f-<?= $serNum ?>-instock" ng-model="instock" ng-checked="{{instock}}" class="little-gray-checkbox">
+                                <label for="f-<?= $serNum ?>-instock">в наличии</label>
+                            </div>
+                            <div style="padding-left: 0; padding-top: 0">
+                                <input type="checkbox" id="f-<?= $serNum ?>-offers" ng-model="offers" ng-checked="{{offers}}" class="little-gray-checkbox">
+                                <label for="f-<?= $serNum ?>-offers">спецпредложения</label>
+                            </div>
+
+                    </div>
+                    <div class="col-md-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div style="border-bottom: 1px solid white; padding-bottom: 20px; margin-bottom: 10px" >
+                                    {{paramNames[name]}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-repeat="(i, val) in vals[name]" >
+                            <div class="col-md-12">
+                                <input id="f-<?=$serNum?>{{name}}-val-{{i}}" type="checkbox"
+                                       name="{{name}}" value="{{val.value}}"
+                                       ng-true-value="'{{val.hash}}'"
+                                       ng-false-value="false"
+                                       class="filter-checkbox"
+                                       ng-model="possibleVals[name][i]">
+                                <label for="f-<?=$serNum?>{{name}}-val-{{i}}"  ng-class="{disabledFilterParam: !checkVal(name, val.value)}" style="font-weight: normal">{{printValue(val, name, i)}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 pull-right" style="position: absolute; bottom: 0; right: 0; cursor: pointer; text-align: right" ng-show="!showTags">
+                        <div data-toggle="collapse" ng-click="toggleTags()" data-parent="#accordion" href="#collapse<?= $serNum ?>" style="">
+                            <h2 style="font-weight: bold; margin:0; padding: 0">Скрыть</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    function getWidthBeforeColumn(name, num) {
+        var width = 0;
+        $('#table-products_' + num).find('th').each(function() {
+            if ($(this).hasClass(name + '-header')) {
+                return false;
+            } else {
+                width += $(this).outerWidth();
+                $(this).css('width', $(this).outerWidth());
+            }
+        });
+
+        return width;
+    }
+    function getWidthColumn(name, num) {
+        var width = 0;
+
+        $('#table-products_' + num).find('th').each(function() {
+
+            if ($(this).hasClass(name + '-header')) {
+                width = $(this).outerWidth();
+                $(this).css('width', $(this).outerWidth());
+            }
+        });
+
+        return width;
+    }
+
+    $(function(){
+        $('.filter-before-<?= $serNum ?>').css('width', getWidthBeforeColumn("<?= reset($filteredFields) ?>", "<?= $serNum ?>")-12);
+
+        $('.filter-param-<?= $serNum ?>').each(function() {
+
+            $(this).css('width', getWidthColumn($(this).data('name'), "<?= $serNum ?>"));
+
+        });
+    });
+</script>
+<? } ?>

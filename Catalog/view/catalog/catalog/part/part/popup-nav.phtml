@@ -1,0 +1,88 @@
+<?
+$navPath = "";
+
+    switch ($this->folder) {
+        case 'projects' :
+            $navPath = '/projects/view/';
+            break;
+        case 'catalog' :
+            $navPath = '/catalog/series/';
+            break;
+        case 'series' :
+            $navPath = '/catalog/series/';
+            break;
+        case 'solutions' :
+            $navPath = '/solutions/view/';
+            break;
+        case 'articles' :
+            $navPath = '/articles/view/';
+    }
+?>
+<div class="popup-nav-solutions" style="height: 0; overflow: visible">
+    <div class="row" style="height: 0; overflow: visible">
+        <div class="col-md-2">
+            <a href="<?= $navPath . $this->prevEntity->id ?>">
+<div class="pull-left popup-nav-block" id="prev" data-id="<?= $this->prevEntity->id ?>" style="min-width: 90px; max-width: 140px; padding-left: 30px;">
+
+        <div class="row">
+            <div class="arrow-aledo-big-solutions arrow-left" style="float:right"></div>
+        </div>
+        <div class="row" style="margin-top: 13px">
+            <div class="col-md-12">
+                <div class="dotted-bottom"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="popup-nav-tile-title-solutions" style="text-align: right">
+                    <?= !empty($this->prevEntity->visible_title) ? $this->prevEntity->visible_title : $this->prevEntity->title ?>
+                </div>
+                <div class="popup-nav-darkner"></div>
+                <? $src = $this->prevEntity->img ? $this->basePath() . '/images/' . $this->folder . '/' . $this->prevEntity->img : $this->basePath() . '/images/empty-series.png' ?>
+                <img src="<?= $src ?>" alt="<?= !empty($this->prevEntity->visible_title) ? $this->prevEntity->visible_title : $this->prevEntity->title ?>"/>
+            </div>
+        </div>
+
+            </div>
+            </a>
+        </div>
+        <div class="col-md-2 pull-right">
+            <a href="<?= $navPath . $this->nextEntity->id ?>">
+<div class="pull-right popup-nav-block" id="next" data-id="<?= $this->nextEntity->id ?>" style="min-width: 90px; max-width: 140px; padding-right: 30px">
+
+        <div class="row">
+            <div class="arrow-aledo-big-solutions arrow-right"></div>
+        </div>
+        <div class="row" style="margin-top: 13px">
+            <div class="col-md-12">
+                <div class="dotted-bottom"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="popup-nav-tile-title-solutions">
+                    <?= !empty($this->nextEntity->visible_title) ? $this->nextEntity->visible_title : $this->nextEntity->title ?>
+                </div>
+                <div class="popup-nav-darkner"></div>
+                <? $src = $this->nextEntity->img ? $this->basePath() . '/images/' . $this->folder . '/' . $this->nextEntity->img : $this->basePath() . '/images/empty-series.png' ?>
+                <img src="<?= $src ?>" alt="<?= !empty($this->nextEntity->visible_title) ? $this->nextEntity->visible_title : $this->nextEntity->title ?>"/>
+            </div>
+        </div>
+
+</div>
+            </a>
+</div>
+</div>
+</div>
+
+<script type="application/javascript">
+    $(window).keyup(function(event) {
+        if(event.ctrlKey){
+            if (event.keyCode==37) {
+                document.location = "<?= $navPath . $this->prevEntity->id ?>";
+            } else if (event.keyCode==39) {
+                document.location = "<?= $navPath . $this->nextEntity->id ?>";
+            }
+        }
+    });
+</script>

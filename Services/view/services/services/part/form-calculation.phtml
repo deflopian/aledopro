@@ -1,0 +1,148 @@
+<? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h1>Запрос на расчет</h1>
+    </div>
+</div>
+
+<div class="row row-second">
+    <div class="col-md-12">
+        <p>Если у вас появилось желание точнее узнать о стоимости освещения для конкретного проекта, пожалуйста, заполните данную форму, мы сделаем расчет и свяжемся с вами.</p>
+        <p>Или сами свяжитесь с нами по телефону или e-mail, это позволит сэкономить ваше время, а нам даст всю необходимую для расчета информацию</p>
+    </div>
+</div>
+
+<div class="row"> <div class="col-md-12"><div class="dotted-bottom"></div></div></div>
+
+<div class="row">
+    <form class="form-horizontal aledo-form" role="form" method="post" action="<?= $this->url('services') ?>">
+        <div style="overflow: auto">
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h2>Контактная информация</h2>
+                    <div class="dotted-bottom"></div>
+                </div>
+            </div>
+            <div class="row row-second">
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="calc-name" class="col-md-3 control-label">ФИО*</label>
+                        <div class="col-md-9">
+                            <input class="form-control" id="calc-name" name="name"
+                                <?= ($this->isRegistered && $this->user->getUsername()) ?
+                                    'type="text" data-required="yes" value="' . $this->user->getUsername() . '"' :
+                                    'type="text" data-required="yes"'
+                                ?>>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="calc-phone" class="col-md-5 control-label">Номер телефона*</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="calc-phone" name="phone"
+                                <?= ($this->isRegistered && $this->user->getPhone()) ?
+                                    'type="text" data-required="yes" value="' . $this->user->getPhone() . '"' :
+                                    'type="text" data-required="yes"'
+                                ?>>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="calc-mail" class="col-md-3 control-label">E-mail*</label>
+                        <div class="col-md-9">
+                            <input  class="form-control" id="calc-mail" name="mail"
+                                <?= ($this->isRegistered && $this->user->getEmail()) ?
+                                    'type="text" data-required="yes" value="' . $this->user->getEmail() . '"' :
+                                    'type="text" data-required="yes"'
+                                ?>>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="calc-city" class="col-md-3 control-label">Город</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="calc-city" name="city">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h2>Техническая информация</h2>
+                    <div class="dotted-bottom"></div>
+                </div>
+            </div>
+            <div class="row row-second">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="calc-w" class="col-md-4 control-label">Ширина помещения, м</label>
+                        <div class="col-md-2 small-input">
+                            <input type="text" class="form-control" id="calc-w" name="w">
+                        </div>
+
+                        <label for="calc-h" class="col-md-4 control-label">Высота помещения, м</label>
+                        <div class="col-md-2 small-input">
+                            <input type="text" class="form-control" id="calc-h" name="h">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="calc-l" class="col-md-4 control-label">Длина помещения, м</label>
+                        <div class="col-md-2 small-input">
+                            <input type="text" class="form-control" id="calc-l" name="l">
+                        </div>
+                    </div>
+                    <div class="form-group" style="padding-left: 15px; cursor: pointer">
+                        <?= \Application\Service\ApplicationService::renderFormFileInput($sl, 'Прикрепить чертёж', '(DWG, PDF, JPG, DOC)', true); ?>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-12">
+            <? $goals = \Services\Controller\ServicesController::getGoals(); ?>
+            <div class="form-group">
+                <label for="calc-goal" class="col-md-6 col-md-offset-6 control-label">Назначение помещения</label>
+                <div class="col-md-7 col-md-offset-5">
+                    <select class="form-control" id="calc-goal" name="goal">
+                        <? foreach($goals as $id=>$title){ ?>
+                            <option value="<?= $id ?>"><?= $title ?></option>
+                        <? } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label for="calc-comment" class="control-label">Комментарии</label>
+                    <textarea class="form-control" id="calc-comment" rows="3" name="comment"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-6 text-center">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="hidden" name="form-type"
+                                   value="<?= \Services\Controller\ServicesController::CALCULATION_FORM?>"/>
+                            <button type="submit" class="btn btn-aledo-black">Отправить запрос</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    $(function(){
+        formajax.init({});
+        var popover = $('.wide-wide-popup').children('.popover');
+        popover.css('margin-left', '55%');
+        window.setTimeout( function(){ popover.children('.arrow').css('left', '20%') }, 100 );
+    });
+</script>

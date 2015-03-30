@@ -1,0 +1,48 @@
+<?php
+$links = $this->links;
+$forWhat = $this->forWhat;
+
+foreach ($links as $type => $linksByType) {
+    switch ($type) {
+        case \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS:
+
+            echo $this->partial(
+                "catalog/catalog/part/links/profiles.phtml",
+                array(
+                    'links' => $linksByType,
+                    'forWhat' => "LED-ленты для " . $forWhat
+                )
+            );
+            break;
+        case \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER:
+
+            echo $this->partial(
+                "catalog/catalog/part/links/profiles.phtml",
+                array(
+                    'links' => $linksByType,
+                    'forWhat' => "Блоки питания для " . $forWhat
+                )
+            );
+            break;
+        case \Catalog\Service\CatalogService::DISPLAY_STYLE_DEFAULT:
+
+            echo $this->partial(
+                "catalog/catalog/part/links/profiles.phtml",
+                array(
+                    'links' => $linksByType,
+                    'forWhat' => "Аксессуары для " . $forWhat
+                )
+            );
+            break;
+        case \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES:
+
+            echo $this->partial(
+                "catalog/catalog/part/links/profiles.phtml",
+                array(
+                    'links' => $linksByType,
+                    'forWhat' => "Профили для " . $forWhat
+                )
+            );
+            break;
+    }
+}

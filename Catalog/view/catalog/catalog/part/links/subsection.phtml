@@ -1,0 +1,30 @@
+<?
+/** @var \Catalog\Model\SubSection $subsection */
+$subsection = $this->element;
+$min = $this->min;
+$hasBorder = $this->hasBorder;
+$url = $this->url('catalog', array(
+    'action' => 'subsection',
+    'id' => $subsection->id
+));
+?>
+
+<a href="<?= $url ?>">
+    <div class="tile-title-series" style="padding-left: 0"><?= $subsection->title ?></div>
+    <? $src = $subsection->url ? $this->basePath() . '/images/subsections/' . $subsection->url : $this->basePath() . '/images/empty-series.png' ?>
+    <div class="row">
+        <? if ($min) { ?>
+        <div class="col-md-12 <?= $hasBorder ? 'bordered-link-element' : '' ?>">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+        <? } else { ?>
+        <div class="col-md-12">
+        <? } ?>
+            <img src="<?= $src ?>" alt="<?= $subsection->title ?>"/>
+            <? if ($min) { ?>
+                </div>
+            </div>
+            <? } ?>
+        </div>
+    </div>
+</a>

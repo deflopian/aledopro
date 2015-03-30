@@ -1,0 +1,67 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/requests') ?>">Заявки</a>
+    >
+    <a href="<?= $this->url('zfcadmin/order') ?>">Заказы</a>
+    >
+    <span id="title">Заказ <?= $entity->id; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table admin-table  table-striped">
+        <tbody>
+        <tr>
+            <td>Покупатель</td>
+            <td><?= $user->username ?></td>
+        </tr>
+        <tr>
+            <td>Покупатель</td>
+            <td><?= $user->phone ?></td>
+        </tr>
+        <tr>
+            <td>Почта</td>
+            <td><?= $user->email ?></td>
+        </tr>
+        <tr>
+            <td>Комментарий</td>
+            <td><?= $entity->comment; ?></td>
+        </tr>
+        <tr>
+            <td>Дата заказа</td>
+            <td><?= \Application\Service\ApplicationService::getFormedDate($entity->date); ?></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h3>Продукты в заказе</h3>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+        </tr>
+        <tbody>
+        <? $totalPrice = 0; ?>
+        <? foreach($relatedProds as $prod){ ?>
+            <?
+                $price = $prod->price;
+                $count = $prod->count;
+            ?>
+            <tr>
+                <td><?= $prod->title ?></td>
+                <td><span><?= $price ?></span><span class="b-rub"> руб.</span></td>
+                <td><?= $count ?></td>
+                <? $totalPrice += $count*$price; ?>
+                <td><span><?= $price*$count ?></span><span class="b-rub"> руб.</span></td>
+            </tr>
+        <? } ?>
+            <tr>
+                <td colspan="3">Всего: </td>
+                <td style="font-weight: bold"><?= $totalPrice ?> руб.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

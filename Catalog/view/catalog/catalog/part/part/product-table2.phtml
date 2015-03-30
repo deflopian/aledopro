@@ -1,0 +1,196 @@
+<?
+    $hierarchies = $this->hierarchies;
+    $discounts = $this->discounts;
+    $fields = array('id', 'title', 'file_custom', 'case_color', 'color_of_light', 'luminous_flux', 'viewing_angle', 'free_balance', 'price_without_nds', 'price_with_nds', 'length');
+    $filteredFields = array('case_color', 'color_of_light', 'luminous_flux', 'viewing_angle');
+    if ($user && $user->getIsPartner()) {
+        $fields[] = 'partner_price';
+    }
+
+    $posVals = \Catalog\Service\CatalogService::getValsJSON($products, $filteredFields, $prevProdCount);
+
+    $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS, $hierarchies, $discounts, $filteredFields, true);
+
+?>
+
+
+
+<solo-table make-sortable="3" >
+    <div solo-table-data>
+        [<?= $products ?>]
+    </div>
+    <div solo-table-header-data>
+        [
+        {
+        "name": "id",
+        "label": "Артикул"
+        },
+        {
+        "name": "title",
+        "label": "Наименование"
+        },
+        {
+        "name": "file_custom",
+        "label": ""
+        },
+        {
+        "name": "case_color",
+        "label": "Цвет корпуса"
+        },
+        {
+        "name": "color_of_light",
+        "label": "Цвет свечения"
+        },
+        {
+        "name": "luminous_flux",
+        "label": "Световой поток"
+        },
+        {
+        "name": "viewing_angle",
+        "label": "Угол пучка"
+        },
+        {
+        "name": "free_balance",
+        "label": "Наличие"
+        },
+        {
+        "name": "price_with_nds",
+        "label": "Цена"
+        }
+        <? if ($user && $user->getIsPartner()) { ?>
+            ,
+            {
+            "name": "partner_price",
+            "label": "Цена партнёра"
+            }
+        <? } ?>
+        ]
+    </div>
+    <div solo-table-pos-vals>
+        <?= $posVals ?>
+    </div>
+    <? include 'series-filter-angular.phtml'; ?>
+<table class="table table-hover table-aledo table-products" id=" table-products-<?= $serNum ?>">
+    <thead>
+    <tr class="item-header">
+        <th class="<?= $admin ? 'id-header sortable" data-param="id' : 'id-header' ?>">Артикул</th>
+        <th class="<?= $admin ? 'title-header sortable" data-param="title' : 'title-header' ?>">Наименование</th>
+        <th class="<?= $admin ? 'case-color-header sortable" data-param="case_color' : 'case-color-header' ?>" >Цвет корпуса</th>
+        <th class="<?= $admin ? 'color-of-light-header sortable" data-param="color_of_light' : 'color-of-light-header' ?>" >Цвет свечения</th>
+        <th class="<?= $admin ? 'luminous-flux-header sortable" data-param="luminous_flux' : 'luminous-flux-header' ?>" >Световой поток</th>
+        <th class="<?= $admin ? 'viewing-angle-header sortable" data-param="viewing_angle' : 'viewing-angle-header' ?>" >Угол пучка</th>
+        <th class="<?= $admin ? 'free-balance-header sortable" data-param="free_balance' : 'free-balance-header' ?>" >Наличие</th>
+        <th class="<?= $admin ? 'price-with-nds-header sortable" data-param="price_without_nds' : 'price-with-nds-header' ?>" >Цена</th>
+        <? if ($user && $user->getIsPartner()) { ?>
+            <th class="partner-price-header">Цена партнёра</th>
+        <? } ?>
+        <!--                <th>Партнерская цена</th>-->
+        <th class="buy-item-header"></th>
+        <th class="copy-link-header"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <? foreach($products as $prod){ ?>
+        <tr itemscope itemtype="http://schema.org/Product"
+            class="product-line item <?= $this->selectedProdId == $prod->id ? 'selectedProd' : ''?>"
+            data-id="<?= $prod->id; ?>" >
+            <td itemprop="productID" class="td-grey item-id"><?= $prod->id; ?></td>
+            <td class="item-title" itemprop="name"><?= $prod->title; ?></td>
+
+            <td class="case-color" itemprop="color">
+                <?
+                switch($prod->case_color){
+                    case 'Белый':
+                        $color = 'fff; border: 1px solid #D0D0D1;';
+                        break;
+                    case 'Серебристый':
+                        $color = 'D2D3D3;';
+                        break;
+                    case 'Черный':
+                    case 'Чёрный':
+                        $color = '777; color:#fff';
+                        break;
+                    case 'Полир. алюминий':
+                        $color = 'd4d0c7; color:#D2D3D3';
+                        break;
+                    case 'Золотой':
+                        $color = 'efe4a3; color:#D2D3D3';
+                        break;
+                    case 'Красный':
+                        $color = 'd0453a; color:#fff';
+                        break;
+                    case 'Оранжевый':
+                        $color = 'e18a27; color:#fff';
+                        break;
+                    case 'Зелёный':
+                        $color = '61b943; color:#fff';
+                        break;
+                    case 'Фиолетовый':
+                        $color = '4696ed; color:#fff';
+                        break;
+                    default:
+                        $color = 'D6CEBD;';
+                        break;
+                }
+                ?>
+                <span class="color-bar" style="background-color:#<?=$color?>"><?= $prod->case_color; ?></span>
+            </td>
+            <td class="color-of-light"><?= $prod->color_of_light; ?></td>
+            <td class="td-grey luminous-flux"><?= $prod->luminous_flux . (strpos($prod->luminous_flux, 'лм') ? '' : ' лм') ?></td>
+            <td class="viewing-angle"><?= $prod->viewing_angle; ?> ⁰</td>
+
+            <span itemprop="offers" itemscope itemtype="http://schema.org/Offer" >
+            <td class="td-grey free-balance">
+
+                <?=
+                $prod->free_balance
+                    ? ( ($this->user && $this->user->getIsPartner()) ?
+                    $prod->free_balance : '<div class="icon-daw"></div><link itemprop="availability" href="http://schema.org/InStock"/>')
+                    : '<div title="Уточняйте наличие" class="icon-question"></div><link itemprop="availability" href="http://schema.org/OutOfStock" />';
+                ?>
+            </td>
+            <td class="price-with-nds">
+                <span class="price" itemprop="price"><?= \Catalog\Service\CatalogService::getTruePrice(
+                        $prod->price_without_nds); ?></span>&nbsp;<span class="b-rub">Р</span>
+            </td>
+
+            <? if ($user && $user->getIsPartner()) { ?>
+            <td class="td-grey partner-price">
+                <span class="discount-price"><?= \Catalog\Service\CatalogService::getTruePrice(
+
+                        $prod->price_without_nds,
+                        $user,
+                        $hierarchies[$prod->id] ? $hierarchies[$prod->id] : array(),
+                        $discounts,
+                        $prod->opt2
+                    ); ?></span>&nbsp;<span class="b-rub">Р</span>
+            </td>
+            <? } ?>
+            <!--                <td class="td-grey"></td>-->
+            </span>
+            <td class="buy-item">
+                <a class="buy-btn" title="купить модель">
+                    <span class="buy-arrow"></span>
+                    <span class="buy-body">
+                        <span class="buy-on">купить</span>
+                    </span>
+                </a>
+                <a href="<?= $this->url('cart') ?>" class="buy-to-cart" title="модель помещена в корзину">в корзине</a>
+            </td>
+            <td class="copy-link">
+                <? if(in_array($prod->id, $offeredIds)){ ?>
+                    <div class="icon-discount"></div>
+                <? } ?>
+                <link itemprop="url" href="<?= $this->url('catalog', array('action'=>'product', 'id'=>$prod->id)); ?>"/>
+                <a class="getlink-btn" >
+                    <div class="icon-getlink zeroclipboard"
+                         data-clipboard-text="<?= $this->url('catalog', array('action'=>'product', 'id'=>$prod->id)); ?>"></div>
+                </a>
+                <a class="buy-back-btn" title="убрать из корзины"><div class="icon-whitecross"></div></a>
+            </td>
+        </tr>
+    <? } ?>
+    <script>
+    </script>
+    </tbody>
+</table>

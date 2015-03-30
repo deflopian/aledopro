@@ -1,0 +1,120 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/blog') ?>">Блог</a>
+    >
+    <a href="<?= $this->url('zfcadmin/articles') ?>">Статьи</a>
+    >
+    <span id="title"><?= $entity->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table admin-table  table-striped">
+        <tbody>
+        <tr>
+            <td>Название</td>
+            <td>
+                <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Изображение</td>
+            <td>
+                <div class="admin-banner-img-container" <?= $entity->img ? '' : 'style="display:none"' ?>>
+                    <img style="height: 100%" src="<?= $entity->img ? $this->basePath() . '/images/articles/' . $entity->img : ''?>" alt=""/>
+                </div>
+
+                <button type="button" class="btn btn-default" id="add-img"> <?= $entity->img ? 'Редактировать' : 'Добавить' ?> изображение</button>
+
+                <div class="form-inline" id="adding-form-img" style="display: none">
+                    <form id="img-form" method="post" enctype="multipart/form-data">
+                        <p>
+                            <input type="file" name="image"/>
+                            <input type="hidden" name="id" value="<?= $entity->id ?>"/>
+                        </p>
+
+                        <p>
+                            <input type="submit" class="btn btn-default"/>
+                            <button type="button" class="btn btn-default" id="adding-cancel-img">Отмена</button>
+                        </p>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Краткое описание</td>
+            <td>
+                <div class="editor-get-btn" data-name="text_short"><?= $entity->text_short; ?></div>
+            </td>
+        </tr>
+        <tr>
+            <td>Полное описание</td>
+            <td>
+                <div class="editor-get-btn" data-name="text"><?= $entity->text; ?></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h3>Упомянутые серии</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="tagit-add">Добавить серию</button>
+
+        <div id="tagit-form" style="display: none">
+            <ul id="tagit-series"></ul>
+            <input type="hidden" id="tagit-series-res" name="seriesIds"/>
+
+            <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody>
+        <? foreach($relatedSeries as $ser){ ?>
+            <tr>
+                <td><?= $ser->id; ?></td>
+                <td><?= $ser->visible_title; ?></td>
+                <td>
+                    <a href="#" class="removeBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+<script type="text/javascript">
+    $(function(){
+        catalog.parentId = '<?= $entity->id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/articles') ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::ARTICLES ?>';
+        catalog.initEditables();
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.editablesSave
+        });
+
+        imgUploader.init({
+            type: 'single',
+            imgUrl: '<?= $this->basePath() . '/images/articles/' ?>'
+        });
+
+        tagit.init({
+            tags: <?= $tags; ?>,
+            inputField: $("#tagit-series"),
+            outputField: $('#tagit-series-res'),
+            placeholder: 'Введите название или ID серии'
+        });
+    });
+</script>

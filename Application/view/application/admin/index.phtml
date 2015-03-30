@@ -1,0 +1,42 @@
+<h1>Главная страница</h1>
+
+<h2>Блоки</h2>
+<div id="entityMapper_catalog">
+    <div ng-controller="EntitiesCtrl">
+        <div nd-entities-list-data>
+            <?= $entitiesJson ?>
+        </div>
+        <div nd-entities-list-pattern>
+        {
+            "title" : {
+                "type" : "text",
+                "default" : "",
+                "label" : "Название"
+            }
+        }
+        </div>
+        <div
+            ng-entities-list
+            parent-type="0"
+            parent-id="0"
+            action="block"
+            controller="index"
+            type="<?= \Catalog\Controller\AdminController::MAINPAGE_BLOCK_TABLE?>"
+            rights="00111"
+            ></div>
+
+        <script type="application/javascript">
+            AppFactory("entityMapper_catalog", "entityMapper2", ["entitiesMapper"]);
+        </script>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        catalog.baseUrl = '<?= $this->url('zfcadmin/index') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/index', array('action'=> 'block')) ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::INDEX ?>';
+        catalog.init();
+    });
+</script>

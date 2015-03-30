@@ -1,0 +1,79 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/info') ?>">О компании</a>
+    >
+    <? /** @var \Info\Model\Job $entity */ ?>
+    <?= $entity->title ?>
+</h1>
+
+<table class="table admin-table ">
+    <tbody>
+    <tr>
+        <td>Название</td>
+        <td>
+            <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
+        </td>
+    </tr>
+    <tr id="imageMapper1">
+        <td>Наши принципы работы. Изображение слева</td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="job"
+                parent-id="<?= $entity->id ?>"
+                folder="job"
+                field="img"
+                img="<?= $entity->img_name ? $entity->img_name : "" ?>"
+                img-id ="<?= $entity->img ? $entity->img : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper1", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+
+    <tr id="imageMapper2">
+        <td>Наши принципы работы. Изображение по центру</td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="job"
+                parent-id="<?= $entity->id ?>"
+                folder="job"
+                field="img_1000"
+                img="<?= $entity->img_1000_name ? $entity->img_1000_name : "" ?>"
+                img-id ="<?= $entity->img_1000 ? $entity->img_1000 : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper2", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentId = '<?= \Info\Service\SeoService::JOB ?>';
+        catalog.type = 'prmember';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/info') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/info', array('action'=> 'viewMember')) ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::INFO ?>';
+        catalog.init();
+        catalog.initEditables();
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.infoSave,
+            config: 'config-info'
+        });
+    });
+</script>

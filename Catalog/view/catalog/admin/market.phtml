@@ -1,0 +1,76 @@
+<h1>
+    <span id="title">Продукты на Яндекс.Маркет</span>
+</h1>
+<div class="section">
+    <h4>Количество продуктов на Маркете: <span style="color: <?= count($this->products) < 200 ? '#000' : 'red' ?>"><?=count($this->products)?></span></h4>
+    <a href="/cron/makeYMLFile?token=fae6e2bf570d0443c8d51cd7b30d49fe"><button class="btn btn-default">Обновить YML-файл</button></a>
+    <a href="/cron/removeYMLFile?token=fae6e2bf570d0443c8d51cd7b30d49fe"><button class="btn btn-default">Удалить YML-файл</button></a>
+</div>
+<div class="section">
+    <a href="/cron/makeGMCFile?token=fae6e2bf570d0443c8d51cd7b30d49fe"><button class="btn btn-default">Обновить GMC-файл</button></a>
+    <a href="/cron/removeGMCFile?token=fae6e2bf570d0443c8d51cd7b30d49fe"><button class="btn btn-default">Удалить GMC-файл</button></a>
+</div>
+<div class="section">
+    <a href="/cron/makeElecFile?token=fae6e2bf570d0443c8d51cd7b30d49fe"><button class="btn btn-default">Обновить Elec-файл</button></a>
+    <a href="/cron/removeElecFile?token=fae6e2bf570d0443c8d51cd7b30d49fe"><button class="btn btn-default">Удалить Elec-файл</button></a>
+</div>
+<div class="section">
+    <h3>Список продуктов</h3>
+
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="tagit-add">Добавить существующий продукт</button>
+
+        <div id="tagit-form" style="display: none">
+            <ul id="tagit-products" ></ul>
+            <input type="hidden" id="tagit-products-res" name="tagitIds"/>
+
+            <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Стоимость клика</th>
+            <th>Участие в программе "Покупка на Маркете"</th>
+            <th></th>
+        </tr>
+        <tbody id="sortable">
+        <? foreach($this->products as $prod){ ?>
+            <tr class="entity">
+                <td><?= $prod->id ?></td>
+                <td><?= $prod->title ?></td>
+                <td><?= $prod->bid ?></td>
+                <td><?= $prod->purchase ?></td>
+                <td>
+                    <a href="#" class="editBtn">Редактировать</a>
+                    <a href="#" class="removeBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.type = '<?= \Catalog\Controller\AdminController::PRODUCT_IN_MARKET_TABLE ?>';
+        catalog.parentId = 1; //костыль
+        catalog.baseUrl = '<?= $this->url('zfcadmin/market') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/market', array('action'=> 'productInMarket')) ?>';
+        catalog.init();
+        catalog.initEditables();
+
+        tagit.init({
+            tags: <?= $this->tags; ?>,
+            min: 3,
+
+            type: <?= \Catalog\Controller\AdminController::PRODUCT_IN_MARKET_TABLE ?>,
+            inputField: $("#tagit-products"),
+            outputField: $('#tagit-products-res'),
+            placeholder: 'Введите название или ID продукта'
+        });
+    });
+</script>

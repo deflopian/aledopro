@@ -1,0 +1,445 @@
+﻿<?
+/**
+ * @var array $members
+ * @var \Catalog\Model\SeriesDoc[] $docs
+ * @var boolean $admin
+ * @var integer $view
+ * @var \Articles\Model\Article[] $articles
+ * @var \Catalog\Model\Series $series
+ * @var \Catalog\Model\Product[] $relatedProds
+ * @var \Catalog\Model\Series[] $relatedSeries
+ * @var $sl
+ * @var \Projects\Model\Project $prevProd
+ * @var \Projects\Model\Project $nextProd
+ * @var \Projects\Model\ProjectImg[] $imgs
+ */
+?>
+<?
+/** @var integer $scrollToProduct*/
+
+?>
+
+
+
+
+<script src="/Scripts/jquery.dragscroll.js"></script>
+<script src="/Scripts/imagesloaded.pkgd.js"></script>
+
+
+<div class="b-goods b-section">
+    <div class="b-section__content">
+
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+            <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+    </div>
+    <div class="b-goods-gallery">
+        <? $i = 0; ?>
+        <? foreach($imgs as $img) { ?>
+            <? if (!$series->preview && $series->img_gallery == $img->url) continue; ?>
+            <? if (!$series->preview && $i++ == 0) continue; ?>
+            <div class="b-goods-gallery-item"><i class="b-goods-gallery-item__layout"></i>
+                <? $src = $img->url ? $this->basePath() . '/images/series/' . $img->url : $this->basePath() . '/images/empty-series.png' ?>
+                <a class="b-goods-gallery-item__link" href="<?= $src ?>" rel="gallery">
+                    <img class="b-goods-gallery-item__image" src="<?= $src ?>" alt="<?= $series->visible_title; ?> url" />
+                </a>
+            </div>
+        <? } ?>
+    </div>
+
+    <div class="b-section__content">
+        <div class="b-goods-flexiable-table">
+
+            <div class="b-goods-flexiable-table__cell" align="left">
+                <div class="b-goods-title">
+                    <?= $series->visible_title ? $series->visible_title : $series->title; ?>
+                </div>
+            </div>
+
+
+            <div class="b-goods-flexiable-table__cell">
+                <ul class="b-clearfix b-goods-characteristics-list list-unstyled">
+                    <? foreach($equalParameters as $field=>$val){
+                        if(!in_array($field, $shownEqualParams)){ continue; }
+
+                        ?>
+
+                        <li class="b-goods-characteristics-list__item">
+                            <div><?= isset($params[$field]) ? $params[$field]->title . ' ' . $params[$field]->post_value . $params[$field]->pre_value : $field ?></div>
+                            <div><?= isset($params[$field]) ? $params[$field]->pre_value . ' ' . $val.' '.$params[$field]->post_value : $val; ?></div>
+                        </li>
+                    <? } ?>
+
+                </ul>
+            </div>
+        </div>
+        <div class="b-tabs-wrapper b-tabs-wrapper_goods "  role="tabpanel">
+            <div class="b-goods-tabs">
+                <ul class="b-tabs list-unstyled b-tabs_goods" role="tablist">
+                    <li class="b-tabs__tab  active">
+                        <a class="b-tabs__link " role="tab" href="#goods_1" data-toggle="tab" aria-controls="goods_1" >Цены и модификации</a>
+                    </li>
+                    <li class="b-tabs__tab">
+                        <a class="b-tabs__link " role="tab" href="#goods_2"  data-toggle="tab" aria-controls="goods_2">Описание продукта</a>
+                    </li>
+                    <li class="b-tabs__tab">
+                        <a class="b-tabs__link " role="tab" href="#goods_3" data-toggle="tab" aria-controls="goods_3">Материалы для скачивания</a>
+                    </li>
+                    <? $dopgtitle = "Блоки питания";
+                    switch($view){
+                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES:
+                            $dopgtitle = "Аксессуары";
+                            break;
+                        default:
+                            $dopgtitle = "Блоки питания";
+                            break;
+                    } ?>
+                    <li class="b-tabs__tab">
+                        <a class="b-tabs__link "  role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4"><?= $dopgtitle ?></a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="b-tabs-content b-tabs-content_goods tab-content">
+                <div class="b-tabs-content__item fade in active tab-pane" role="tabpanel" id="goods_1">
+                    <div class="catalog" style="position: relative; <?= $view !== \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES ? '' : 'margin-top: 70px;' ?>">
+                        <div class="row row-second-xs" id="serpopup-table-container">
+                            <div class="col-md-12" id="testApp_<?= $series->id ?>" >
+<!--                                <div ng-controller="SoloTableCtrl">-->
+                                <?
+
+                                switch($view){
+                                    case \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES:
+                                        $tpl = 'product-table-profili';
+                                        break;
+                                    default:
+                                        $tpl = 'product-table';
+                                        break;
+                                }
+
+                                $displayStyle = $view;
+                                $serNum = 1;
+                                echo $this->partial(
+                                    'catalog/catalog/part/part/'. $tpl .'.phtml',
+                                    array(
+                                        'products' => $this->products,
+                                        'offeredIds'   => $this->offeredIds,
+                                        'selectedProdId'   => $this->selectedProdId,
+                                        'admin'   => $admin,
+                                        'series'    => $series,
+                                        'user' => $this->user,
+                                        'params' => $this->params,
+                                        'hierarchies' => $this->hierarchies,
+                                        'discounts' => $this->discounts,
+                                        'displayStyle' => $displayStyle
+                                    )
+                                ); ?>
+
+<!--                                </div>-->
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+
+
+                    <?=
+                    $this->partial(
+                        "catalog/catalog/part/links-block.phtml",
+                        array(
+                            'links' => $this->links,
+                            'forWhat' => $series->visible_title ? $series->visible_title : $series->title
+                        )
+                    );
+                    ?>
+                </div>
+
+                <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_2" style="padding-left: 30px">
+                    <div class="row">
+                        <div class="col-md-12">
+                    <?= (($num = strpos('<p>&nbsp;</p>', $series->text)) < 5 && $num !== false) ?
+                        substr($series->text, $num+13) : $series->text; ?>
+                        </div>
+                    </div>
+
+
+                    <? if($series->text_exploit = trim($series->text_exploit)){ ?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="dotted-bottom">
+                                            <h2 class="series-title">Комплектация и условия эксплуатации</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-second-xs">
+                                    <div class="col-md-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_exploit)) < 5 && $num !== false) ?
+                                            substr($series->text_exploit, $num+13) : $series->text_exploit ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <? } ?>
+                </div>
+                <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_3">
+                    <? if ($docs) { ?>
+                        <div class="row row-second-small">
+                            <div class="col-md-12">
+                                <? foreach($docs as $doc){ ?>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <? $type = strtolower(substr($doc->url, -3)); ?>
+                                            <a href="<?= $doc->url ? $this->basePath() . '/images/series_docs/' . $doc->url . '?originalName=' . urlencode($doc->original_name) : ''?>"
+                                               target="_blank"
+                                                <? if ($type != 'jpg' && $type != 'png' && $type != 'bmp' && $type != 'pdf' ) { ?>
+
+                                                <? } ?>
+                                               onclick="ga('send', 'event', 'button', 'click', 'download', '<?= $doc->url ?>');"
+                                                >
+
+
+                                                <span class="icon-download icon-<?= $type?>"></span>
+                                                <span class="icon-title" style="font-size: 11px; font-weight: bold"><?= $doc->title; ?> (<?= $type ?>)</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                <? } ?>
+                            </div>
+                        </div>
+                    <? } ?>
+                </div>
+                <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_4">
+                    <? foreach ($dopProducts as $oneGroup) { ?>
+                        <div class="row row-second <?= (strpos($oneGroup['title'], 'тока') || strpos($oneGroup['title'], 'питания') || strpos($oneGroup['title'], 'блоки') || strpos($oneGroup['title'], 'источники')) ? ' scrollable_power' : ''?>" >
+                            <div class="col-md-12">
+                                <div class="dotted-bottom">
+                                    <h2 class="series-title"><?= $oneGroup['title'];?></h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="position: relative">
+                            <div class="row row-second" id="serpopup-table-container">
+                                <div class="col-md-12" id="testApp_<?= $oneGroup['id'] ?>">
+                                    <?
+                                    $view = ($oneGroup['display_style'] > 0 ? $oneGroup['display_style'] : $oneGroup['view'] );
+                                    switch($view){
+                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES: //це пиздец
+                                            $tpl = 'product-table-profili';
+                                            break;
+                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER: //це пиздец
+                                            $tpl = 'product-table-pitaine';
+                                            break;
+                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS: //це пиздец
+                                            $tpl = 'product-table-lenti';
+                                            break;
+                                        default:
+                                            $tpl = 'product-table';
+                                            break;
+                                    }
+
+                                    echo $this->partial(
+                                        'catalog/catalog/part/part/'. $tpl .'.phtml',
+                                        array(
+                                            'products' => $oneGroup['products'],
+                                            'offeredIds'   => $this->offeredIds,
+                                            'selectedProdId'   => $this->selectedProdId,
+                                            'user' => $this->user,
+                                            'hierarchies' => $this->hierarchies,
+                                            'discounts' => $this->discounts,
+                                            'nonFilter' => true,
+                                        )
+                                    );
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+
+                    <? } ?>
+
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            (function () {
+                var $comparingElements = jQuery(".b-goods-characteristics-list, .b-goods-title"),
+                    $table = jQuery(".b-goods-flexiable-table"),
+                    rowableClass = "b-goods-flexiable-table_rowable",
+                    $contentSection = $comparingElements.parents(".b-section__content"),
+                    elementsComputedWidth = 0,
+                    _getSizes =  function() {
+                        elementsComputedWidth = 0;
+                        $comparingElements.each(function () {
+                            elementsComputedWidth += jQuery(this).outerWidth();
+                        });
+                    },
+                    _compareWidth = function () {
+                        var contentWidth = $contentSection.width() - (parseInt($contentSection.css("padding-right")) + parseInt($contentSection.css("padding-left")));
+                        return contentWidth < elementsComputedWidth;
+
+                    },
+
+                    setDisplay = function () {
+                        _compareWidth() && $table.addClass(rowableClass) || $table.removeClass(rowableClass);
+                    };
+                _getSizes();
+                setDisplay();
+                jQuery(window).on("resize.goods.flexible", function () {
+                    setDisplay();
+                });
+            })();
+        </script>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $('a.b-tabs__link').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    });
+
+    function Goods() {
+        var _options = {
+                gallery: "b-goods-gallery",
+                imagesLinks: jQuery(".b-goods-gallery-item__link"),
+                $imagesLayout: jQuery(".b-goods-gallery-item__layout"),
+                animatingSpeed: browser.mobile ? 300 : 500,
+                fancyIsOpen: false,
+                imagesOffsets: [],
+                fancySwipingClass: "fancybox-swiping"
+            },
+            _ = jQuery.extend(_options,{ $gallery : jQuery("."+_options.gallery)}),
+            $document = jQuery(document),
+            $html = jQuery("html"),
+            _init = function () {
+                _.$imagesLinks = jQuery(_.imagesLinks);
+                _initGallery();
+                _initFancy();
+                _bindEvents();
+            },
+            _bindEvents = function () {
+                _.$gallery.clickOrNot().on("clickOrNot", function (e) {
+                    var $layout = jQuery(e.target);
+                    $layout.siblings(_.imagesLinks).trigger("click");
+                });
+                $document.on("ng.swipe.right", function () {
+                    $.fancybox.prev();
+                }).on("ng.swipe.left", function () {
+                    $.fancybox.next();
+                });
+
+            },
+            _initFancy = function () {
+                _.$imagesLinks.fancybox({
+                    opacity: true,
+                    loop: false,
+                    padding: 20,
+                    overlayShow: true,
+                    transitionIn: 'elastic',
+                    transitionOut: 'elastic',
+                    parent: ".swipe-layout",
+                    helpers: {
+                        overlay: {
+                            closeClick: false
+                        }
+                    },
+                    prevSpeed: _.animatingSpeed,
+                    nextSpeed: _.animatingSpeed,
+                    beforeLoad: function () {
+
+                    },
+                    keys: {
+                        next: {
+                            39: 'left'
+                        },
+                        prev: {
+                            37: 'right'
+                        }
+                    },
+                    afterLoad: function (current, previous) {
+                    },
+                    afterShow: function () {
+                        _.fancyIsOpen = true;
+                        $html.addClass(_.fancySwipingClass);
+                        //отменяем перетаскивание при свайпе
+                        jQuery(".fancybox-overlay").on("mousedown.preventDrag", function(e) {
+                            e.preventDefault();
+                        });
+                    },
+                    afterClose: function () {
+                        _.fancyIsOpen = false;
+                        $html.removeClass(_.fancySwipingClass);
+                        jQuery(".fancybox-overlay").off("mousedown.preventDrag");
+                    }
+                });
+
+            },
+            _watchOnImageUploading = function () {
+                _.$gallery.imagesLoaded()
+                    .progress(function () {
+                        _.$scroller.data("dragscroll").reInit();
+                    });
+            },
+            _initGallery = function () {
+                if (browser.mobile) return;
+
+                _.$scroller = _.$gallery.dragscroll({
+                    autoFadeBars: false,
+                    scrollBars: true,
+                    smoothness: 15,
+                    mouseWheelVelocity: 0,
+                    mouseWheelEnabled: false,
+                    onRebuild: function (dragscroll) {
+                        var noScrollClass = _.gallery + "_no-scroll";
+                        if (dragscroll.barIndex.X[0] == 1) {
+                            this.addClass(noScrollClass);
+                        } else {
+                            this.removeClass(noScrollClass);
+                        }
+                    }
+                });
+                _watchOnImageUploading();
+            };
+        return { init: _init };
+    }
+
+    var goods = Goods();
+    goods.init();
+
+</script>
+
+
+<script>
+    popup.renderCartedLines();
+    catalogClient.scrollToProduct = <?= $scrollToProduct ? $scrollToProduct : 'false'  ?>;
+    catalogClient.initUrl();
+
+
+    <? if ($admin) : ?>
+    catalog.parentId = '<?= $series->id ?>';
+    <? endif; ?>
+    var pageTitle = "<?= !empty($series->visible_title) ? 'Купить ' . $series->visible_title . ' — цена, описание': 'Купить ' . $series->title . ' — цена, описание' ?>";
+
+    popup.pageTitle = pageTitle;
+    document.title = pageTitle;
+    <? if ($admin && $series->sorted_field) : ?>
+    $('[data-param = <?= $series->sorted_field ?>]').addClass('active-<?= $series->sorted_order ?>');
+
+    <? endif; ?>
+
+
+    function scrollToPower() {
+        mainpage.scrollTo($('.scrollable_power:first'));
+    }
+
+</script>

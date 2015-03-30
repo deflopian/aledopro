@@ -1,0 +1,108 @@
+<h1>Каталог</h1>
+
+<div class="section">
+    <h3>Список разделов</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-entity">Добавить раздел</button>
+
+        <div class="form-inline" id="adding-form" style="display: none">
+            <div class="form-group">
+                <label class="sr-only" for="inputName">Название раздела</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Введите название..."/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="adding-complete">Добавить</button>
+            <button type="button" class="btn btn-default" id="adding-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название раздела</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+        <? foreach($sections as $section){ ?>
+            <tr class="entity" <?= $section->deleted ? 'style="color: #BBB"' : '' ?>>
+                <td><?= $section->id; ?></td>
+                <td><?= $section->title; ?></td>
+                <td>
+                    <a href="#" class="editBtn">Редактировать</a>
+                    <a href="#" class="deleteBtn">Удалить</a>
+                    <a href="#" class="showBtn" <?= $section->deleted ? '' : 'style="display: none"' ?>>Показать</a>
+                    <a href="#" class="hideBtn" <?= $section->deleted ? 'style="display: none"' : '' ?>>Скрыть</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="section" ng-app="dflTree">
+    <div ng-controller="DflTreeCtrl">
+        <h3>Фильтры</h3>
+        <div class="col-md-6">
+
+            <dfl-tree section-id="0" section-type="1">
+                <div dfl-tree-data ng-cloak><?= $treeDataByLvlJson ?></div>
+
+                <div dfl-tree-hierarchy ng-cloak>[]</div>
+                <div ng-init="list = items[23];"></div>
+                <style>
+                    #sortable2 { list-style-type: none; margin: 0; padding: 0; width: 450px; }
+
+                </style>
+                <ul id="sortable2">
+                    <li ng-repeat="(key, item) in items[23]" data-id="{{item.id}}">
+                        <div class="row tree-row">
+                            <div class="col-md-10" ng-click="item.shown = !item.shown" ng-bind="item.title"></div>
+                            <div class="col-md-1" style="text-align: right; padding-right: 0">
+                                <span
+                                    class="glyphicon glyphicon-folder-open"
+                                    ng-show="item.open == 1"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'open', 0, {}, 'filterCallback')"></span>
+                                <span
+                                    class="glyphicon glyphicon-folder-close"
+                                    ng-show="item.open == 0"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'open', 1, {}, 'filterCallback')"></span>
+                            </div>
+                            <div class="col-md-1" style="text-align: right; padding-right: 0">
+                                <span
+                                    class="glyphicon glyphicon-eye-open"
+                                    ng-show="item.hidden == 0"
+                                    style="color: #B5BD26"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'hidden', 1, {}, 'filterCallback')"></span>
+                                <span
+                                    class="glyphicon glyphicon-eye-close"
+                                    style="color: #BBBBBB"
+                                    ng-show="item.hidden > 0"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'hidden', 0, {}, 'filterCallback')"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </dfl-tree>
+        </div>
+        <script type="application/javascript">
+            AppFactory("dflTree", "trees", ["dflTree"]);
+
+        </script>
+    </div>
+</div>
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        catalog.type = '<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/catalog') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/catalog', array('action'=> 'section')) ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService:: CATALOG_INDEX ?>';
+        catalog.init();
+    });
+</script>

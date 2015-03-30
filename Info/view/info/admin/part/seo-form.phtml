@@ -1,0 +1,61 @@
+<div class="section">
+    <h3>СЕО информация</h3>
+    <form class="form-horizontal form-left" method="post" id="seo-form"
+          action="<?= $this->url('zfcadmin/info', array('action'=> 'saveSeo')) ?>">
+        <div class="form-group">
+            <label for="consult-phone" class="col-md-2 control-label">Title</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="consult-phone" name="title"
+                       value="<?= $seoData->title ?>">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="consult-mail" class="col-md-2 control-label">Description</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="consult-mail" name="description"
+                       value="<?= $seoData->description ?>">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="consult-city" class="col-md-2 control-label">KeyWords</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="consult-city" name="keywords"
+                       value="<?= $seoData->keywords ?>">
+            </div>
+        </div>
+        <? if ($seoData->type == \Info\Service\SeoService::CATALOG_INDEX) { ?>
+            <div class="form-group">
+                <label for="consult-city" class="col-md-2 control-label">SEO-заголовок</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="consult-city" name="seo_title"
+                           value="<?= $seoData->seo_title ?>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="consult-city" class="col-md-2 control-label">SEO-текст</label>
+                <div class="col-md-9">
+                    <input type="textarea" class="form-control" id="consult-city" name="seo_text"
+                           value="<?= $seoData->seo_text ?>">
+                </div>
+            </div>
+        <? } ?>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="hidden" name="type" value="<?= $seoData->type; ?>"/>
+                <input type="hidden" name="entity_id" value="<?= $seoData->entity_id; ?>"/>
+                <button type="submit" class="btn btn-default">Сохранить</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        seoData.init();
+    });
+</script>

@@ -1,0 +1,350 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/discounts') ?>">Каталог</a>
+    >
+    Группа: <span id="name"><?= $group->name; ?></span>
+</h1>
+
+<!--<div class="section">-->
+<!--    <div>-->
+<!--        <a href="/admin/discounts/viewGroup/--><?//= $group->id; ?><!--/">Скидки на разделы</a>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <a href="/admin/discounts/sectionsGroups/--><?//= $group->id; ?><!--/">Скидки на подразделы</a>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <a href="/admin/discounts/subsectionsGroups/--><?//= $group->id; ?><!--/">Скидки на серии</a>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <a href="/admin/discounts/seriesGroups/--><?//= $group->id; ?><!--/">Скидки на продукты</a>-->
+<!--    </div>-->
+<!--</div>-->
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table  admin-table table-striped">
+        <tbody>
+        <tr>
+            <td>Название</td>
+            <td>
+                <a href="#" data-type="text" data-name="name" class="editable-param">
+                    <?= $group->name; ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td> Сбросить персональные скидки пользователей в группе</td>
+            <td>
+                <div class="btn btn-default"
+                     ng-ajax
+                     clear-discounts="group"
+                     parent-id="<?= $group->id ?>"
+                     onclick="clearDiscount('<?= $group->id ?>', '<?= \Discount\Mapper\DiscountMapper::GROUP_DISCOUNT ?>')">
+                    Сбросить скидки
+                </div>
+                <div id="clearDiscountsAlert" style="display: none" class="alert alert-success" role="alert">Успех!</div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h3>Партнёры в группе</h3>
+
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="tagit-add">Добавить партнёра</button>
+
+        <div id="tagit-form" style="display: none">
+            <ul id="tagit-users" ></ul>
+            <input type="hidden" id="tagit-users-res" name="usersIds"/>
+
+            <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
+        </div>
+    </div>
+
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Имя</th>
+            <th>Псевдоним</th>
+            <th>Менеджер</th>
+            <th>Город</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+        <? foreach($partners as $partner){ ?>
+            <tr class="entity">
+                <td><?= $partner->user_id; ?></td>
+                <td><?= $partner->username; ?></td>
+                <td><?= $partner->alias; ?></td>
+                <td><?= $managers[$partner->manager_id] ?></td>
+                <td><?= $partner->city; ?></td>
+                <td>
+                    <a href="#" class="editBtn">Редактировать</a>
+                    <a href="#" class="removeBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+
+</div>
+
+<!---->
+<!--<div class="section">-->
+<!---->
+<!--    <h3>Разделы со скидкой:</h3>-->
+<!--    <div class="addPanel">-->
+<!--        <button type="button" class="btn btn-default" id="doptagit-add">Добавить раздел</button>-->
+<!---->
+<!--        <div id="doptagit-form" style="display: none">-->
+<!--            <ul id="tagit-sections" ></ul>-->
+<!--            <input type="hidden" id="tagit-sections-res" name="sectionsIds"/>-->
+<!---->
+<!--            <button type="button" class="btn btn-default" id="doptagit-save">Добавить</button>-->
+<!--            <button type="button" class="btn btn-default" id="doptagit-cancel">Отмена</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <table class="table admin-table table-striped">-->
+<!--        <tbody>-->
+<!--        --><?// foreach ($sections as $oneSec) { ?>
+<!--            <tr>-->
+<!--                <td>--><?//= $oneSec->id ?><!--</td>-->
+<!--                <td>--><?//= $oneSec->title ?><!--</td>-->
+<!--                <td>-->
+<!--                    <a href="#"-->
+<!--                       data-id="--><?//= $this->discounts[$oneSec->id]->id ?><!--"-->
+<!--                       data-type="text"-->
+<!--                       data-name="discount"-->
+<!--                       class="editable-param" >-->
+<!--                        --><?//= array_key_exists($oneSec->id, $this->discounts) ? $this->discounts[$oneSec->id]->discount : 0 ?>
+<!--                    </a>%-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <a href="#" class="dopEditBtn">Редактировать</a>-->
+<!--                    <a href="#" class="removeBtn" title="Уберёт скидку на это раздел">-->
+<!--                        Отменить скидку-->
+<!--                    </a>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        --><?// } ?>
+<!--    </table>-->
+<!--</div>-->
+<!---->
+
+<div class="section" ng-app="dflTree">
+    <div ng-controller="DflTreeCtrl">
+        <h3>Скидки</h3>
+        <div class="col-md-8">
+            <dfl-tree parent-type="project">
+                <div dfl-tree-data ng-cloak><?= $treeDateByLvlJson ?></div>
+
+                <div dfl-tree-hierarchy ng-cloak><?= $treeHierarchyJson ?></div>
+
+                <div class="tree" ng-repeat="(key, item) in items[1]">
+                    <div class="row tree-row">
+                        <div class="col-md-1">
+                        <span
+                            class="btn small-icon glyphicon glyphicon-plus"
+                            ng-show="!items[1][key].shown"
+                            ng-click="items[1][key].shown = true"></span>
+                        <span
+                            class="btn small-icon glyphicon glyphicon-minus"
+                            ng-show="items[1][key].shown"
+                            ng-click="items[1][key].shown = false"></span>
+                        </div>
+                        <div class="col-md-8" ng-click="items[1][key].shown = !items[1][key].shown" ng-bind="items[1][key].title"></div>
+                        <div class="col-md-3 pull-right" style="text-align: right; padding-right: 0; padding-top: 0">
+                        <span>
+                            <input type="text"
+                                   ng-class="{pristineDiscount: (items[1][key].inherited == 0 && !items[1][key].discount)}"
+                                   ng-model="items[1][key].discount"
+                                   ng-keypress="enterpress($event, '<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', '<?= $group->id ?>', 'discount', items[1][key].discount, {discountType:<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>, sectionId:key, isGroup: <?= $group->id ?>}, 'discountCallback')"
+                                />
+                        </span>
+                        <span
+                            class="btn glyphicon glyphicon-ok-circle"
+                            style="color: #BBBBBB"
+                            ng-click="changeField('<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', '<?= $group->id ?>', 'discount', items[1][key].discount, {discountType:<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>, sectionId:key, isGroup: <?= $group->id ?>}, 'discountCallback')"></span>
+                        <span
+                            class="btn glyphicon glyphicon-remove"
+                            ng-show="items[1][key].dId"
+                            style="color: #BBBBBB;margin-right: -44px;"
+                            ng-click="removeField('<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', items[1][key].dId, {discountType:<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>, sectionId:key, isGroup: <?= $group->id ?>}, 'removeDiscountCallback')"></span>
+                        </div>
+                    </div>
+
+                    <div ng-if="hierarchy[key] && items[1][key].shown">
+                        <div ng-repeat="(subsectionId, series) in hierarchy[key]">
+                            <div style="margin-left: 15px;" class="row tree-row">
+                                <div class="col-md-1">
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-plus"
+                                    ng-show="!items[2][subsectionId].shown"
+                                    ng-click="items[2][subsectionId].shown = true"></span>
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-minus"
+                                    ng-show="items[2][subsectionId].shown"
+                                    ng-click="items[2][subsectionId].shown = false"></span>
+                                </div>
+                                <div class="col-md-8" ng-click="items[2][subsectionId].shown = !items[2][subsectionId].shown" ng-bind="items[2][subsectionId].title"></div>
+                                <div class="col-md-3 pull-right" style="text-align: right; padding-right: 0; padding-top: 0">
+                                <span>
+                                    <input type="text"
+                                           ng-class="{inheritedDiscount: items[2][subsectionId].inherited, pristineDiscount: (items[2][subsectionId].inherited == 0 && !items[2][subsectionId].discount)}"
+                                           ng-model="items[2][subsectionId].discount"
+                                           ng-keypress="enterpress($event, '<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', '<?= $group->id ?>', 'discount', items[2][subsectionId].discount, {discountType:<?= \Catalog\Controller\AdminController::SUBSECTION_TABLE ?>, sectionId:subsectionId, isGroup: <?= $group->id ?>}, 'discountCallback')"
+                                        />
+                                </span>
+                                <span
+                                    class="btn glyphicon glyphicon-ok-circle"
+                                    style="color: #BBBBBB"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', '<?= $group->id ?>', 'discount', items[2][subsectionId].discount, {discountType:<?= \Catalog\Controller\AdminController::SUBSECTION_TABLE ?>, sectionId:subsectionId, isGroup:  <?= $group->id ?>}, 'discountCallback')"></span>
+                                <span
+                                    class="btn glyphicon glyphicon-remove"
+                                    ng-show="items[2][subsectionId].dId"
+                                    style="color: #BBBBBB;margin-right: -44px;"
+                                    ng-click="removeField('<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', items[2][subsectionId].dId, {discountType:<?= \Catalog\Controller\AdminController::SUBSECTION_TABLE ?>, sectionId:subsectionId, isGroup:  <?= $group->id ?>}, 'removeDiscountCallback')"></span>
+                                </div>
+                            </div>
+
+
+                            <div ng-if="series && items[2][subsectionId].shown">
+                                <div ng-repeat="(seriesId, products) in series">
+                                    <div style="margin-left: 30px;" class="row tree-row">
+                                        <div class="col-md-1">
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-plus"
+                                    ng-show="!items[3][seriesId].shown"
+                                    ng-click="items[3][seriesId].shown = true"></span>
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-minus"
+                                    ng-show="items[3][seriesId].shown"
+                                    ng-click="items[3][seriesId].shown = false"></span>
+                                        </div>
+                                        <div class="col-md-8" ng-bind="items[3][seriesId].title" ng-click="items[3][seriesId].shown = !items[3][seriesId].shown"></div>
+                                        <div class="col-md-3 pull-right" style="text-align: right; padding-right: 0; padding-top: 0">
+                                        <span>
+                                            <input type="text"
+                                                   ng-class="{inheritedDiscount: items[3][seriesId].inherited, pristineDiscount: (items[3][seriesId].inherited == 0 && !items[3][seriesId].discount)}"
+                                                   ng-model="items[3][seriesId].discount"
+                                                   ng-keypress="enterpress($event, '<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', '<?= $group->id ?>', 'discount', items[3][seriesId].discount, {discountType:<?= \Catalog\Controller\AdminController::SERIES_TABLE ?>, sectionId:seriesId, isGroup: <?= $group->id ?>}, 'discountCallback')"
+                                                />
+                                        </span>
+                                        <span
+                                            class="btn glyphicon glyphicon-ok-circle"
+                                            style="color: #BBBBBB"
+                                            ng-click="changeField('<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', '<?= $group->id ?>', 'discount', items[3][seriesId].discount, {discountType:<?= \Catalog\Controller\AdminController::SERIES_TABLE ?>, sectionId:seriesId, isGroup: <?= $group->id ?>}, 'discountCallback')"></span>
+
+                                        <span
+                                            class="btn glyphicon glyphicon-remove"
+                                            ng-show="items[3][seriesId].dId"
+                                            style="color: #BBBBBB;margin-right: -44px;"
+                                            ng-click="removeField('<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', items[3][seriesId].dId, {discountType:<?= \Catalog\Controller\AdminController::SERIES_TABLE ?>, sectionId:seriesId, isGroup: <?= $group->id ?>}, 'removeDiscountCallback')"></span>
+
+                                        </div>
+                                    </div>
+                                    <div ng-if="products && items[3][seriesId].shown">
+                                        <div ng-repeat="(productId, staff) in products">
+                                            <div style="margin-left: 45px;" class="row tree-row">
+                                                <div class="col-md-8 col-md-offset-1" ng-bind="items[4][productId].title"></div>
+                                                <div class="col-md-3 pull-right" style="text-align: right; padding-right: 0; padding-top: 0">
+                                                <span>
+                                                    <input type="text"
+                                                           ng-class="{inheritedDiscount: items[4][productId].inherited, pristineDiscount: (items[4][productId].inherited == 0 && !items[4][productId].discount)}"
+                                                           ng-model="items[4][productId].discount"
+                                                           ng-keypress="enterpress($event, '<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', '<?= $group->id ?>', 'discount', items[4][productId].discount, {discountType:<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>, sectionId:productId, isGroup: <?= $group->id ?>}, 'discountCallback')"
+                                                        />
+                                                </span>
+                                                <span
+                                                    class="btn glyphicon glyphicon-ok-circle"
+                                                    style="color: #BBBBBB"
+                                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', '<?= $group->id ?>', 'discount', items[4][productId].discount, {discountType:<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>, sectionId:productId, isGroup: <?= $group->id ?>}, 'discountCallback')"></span>
+
+                                                <span
+                                                    class="btn glyphicon glyphicon-remove"
+                                                    ng-show="items[4][productId].dId"
+                                                    style="color: #BBBBBB;margin-right: -44px;"
+                                                    ng-click="removeField('<?= \Catalog\Controller\AdminController::DISCOUNT_TABLE ?>', items[4][productId].dId, {discountType:<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>, sectionId:productId, isGroup: <?= $group->id ?>}, 'removeDiscountCallback')"></span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dfl-tree>
+        </div>
+        <script type="application/javascript">
+            AppFactory("dflTree", "trees", ["dflTree"]);
+        </script>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function clearDiscount(parentId, isGroup) {
+        var url = catalog.baseUrl;
+
+        if (isGroup) {
+            url += 'clearPersonalDiscountsGroup/'
+        } else {
+            url += 'clearPersonalDiscounts/'
+        }
+        url += parentId + '/';
+
+        var clearConfirm = confirm('Вы действительно хотите очистить персональные скидки ВСЕХ пользователей в группе?');
+        if(clearConfirm){
+            $.ajax({
+                url: url,
+                dataType : "json",
+                type: "post",
+                data: {id:parentId},
+                success: function (data, textStatus) {
+                    $('#clearDiscountsAlert').alert();
+                }
+            });
+        }
+    }
+
+    $(function(){
+        catalog.parentType = '<?= \Catalog\Controller\AdminController::PARTNER_GROUP_TABLE ?>';
+        catalog.parentId = '<?= $group->id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/discounts') ?>';
+        catalog.initEditables();
+        catalog.userId = '<?= $group->id ?>';
+        catalog.type = '<?= \Catalog\Controller\AdminController::USERS_TABLE ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/discounts', array('action'=> 'partners')) ?>';
+        catalog.dopEditUrl = '<?= $this->url('zfcadmin/discounts', array('action'=> 'sectionsGroups')) ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::INDEX ?>';
+        catalog.init();
+
+
+
+        tagit.init({
+            tags: <?= $userTags; ?>,
+            type: '<?= \Catalog\Controller\AdminController::PARTNER_GROUP_TABLE ?>',
+            inputField: $("#tagit-users"),
+            outputField: $('#tagit-users-res'),
+            placeholder: 'Введите имя пользователя'
+        });
+
+        additionalTagit.init({
+            tags: <?= $sectionTags; ?>,
+            type: '<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>',
+            inputField: $("#tagit-sections"),
+            outputField: $('#tagit-sections-res'),
+            placeholder: 'Введите название раздела',
+            isGroup: true
+        });
+
+        imgUploader.init({
+            type: 'single',
+            imgUrl: '<?= $this->basePath() . '/images/series_docs/' ?>'
+        });
+    });
+</script>

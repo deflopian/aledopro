@@ -1,0 +1,26 @@
+<?php
+$subsec = $this->subsec;
+$showPic = $this->showPic;
+$seriesId =  isset($this->seriesId) ? $this->seriesId : false;
+?>
+<div class="col-md-12 ">
+
+<a href="<?= empty($subsec->display_name) ?
+    $this->url('catalog', array('action'=>'subsection', 'id'=>$subsec->id)) :
+    $this->url('catalog', array('action'=>'subsection', 'id'=>$subsec->display_name));?><?= $seriesId ? '?series=' . $seriesId : '' ?>">
+    <div class="row">
+        <div class="subsection-link col-md-12 dotted-top" style="padding-left: 0; padding-right: 0">
+            <?= $subsec->title; ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="padding: 0">
+            <? if ($showPic) { ?>
+                <? $src = $subsec->url ? $this->basePath() . '/images/subsections/' . $subsec->url : $this->basePath() . '/images/empty-subsection.png' ?>
+                <img src="<?= $src ?>" alt="<?= $subsec->title ?>"/>
+            <? } ?>
+        </div>
+    </div>
+</div>
+<div class="subsection-link-icon"></div>
+</a>

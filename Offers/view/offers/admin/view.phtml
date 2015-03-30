@@ -1,0 +1,137 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/offers') ?>">Специальные предложения</a>
+    >
+    <span id="title"><?= $entity->title; ?></span>
+</h1>
+
+<h3>Основная информация</h3>
+<table class="table admin-table  table-striped">
+    <tbody>
+    <tr>
+        <td>Название</td>
+        <td>
+            <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
+        </td>
+    </tr>
+    <tr>
+        <td>Изображение</td>
+        <td>
+            <div class="admin-banner-img-container" <?= $entity->img ? '' : 'style="display:none"' ?>>
+                <img style="height: 100%" src="<?= $entity->img ? $this->basePath() . '/images/offers/' . $entity->img : ''?>" alt=""/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="add-img"> <?= $entity->img ? 'Редактировать' : 'Добавить' ?> изображение</button>
+
+            <div class="form-inline" id="adding-form-img" style="display: none">
+                <form id="img-form" method="post" enctype="multipart/form-data">
+                    <p>
+                        <input type="file" name="image"/>
+                        <input type="hidden" name="id" value="<?= $entity->id ?>"/>
+                    </p>
+
+                    <p>
+                        <input type="submit" class="btn btn-default"/>
+                        <button type="button" class="btn btn-default" id="adding-cancel-img">Отмена</button>
+                    </p>
+                </form>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Описание</td>
+        <td>
+            <div class="editor-get-btn" data-name="text"><?= $entity->text; ?></div>
+        </td>
+    </tr>
+    <tr>
+        <td>Выводить на главной?</td>
+        <td>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="yes">Да</label>
+                    <input type="radio" id="yes" name="active" class="radio" value="1" <?= $entity->active ? 'checked' : ''?>/>
+                </div>
+                <div class="col-md-3">
+                    <label for="no">Нет</label>
+                    <input type="radio" id="no" name="active" class="radio" value="0" <?= $entity->active ? : 'checked'?>/>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="section">
+    <h3>Продукты в предложении</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="tagit-add">Добавить продукт</button>
+
+        <div id="tagit-form" style="display: none">
+            <ul id="tagit-product"></ul>
+            <input type="hidden" id="tagit-product-res" name="productIds"/>
+
+            <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody>
+        <? foreach($relatedProds as $prod){ ?>
+            <tr>
+                <td><?= $prod->id; ?></td>
+                <td><?= $prod->title; ?></td>
+                <td>
+                    <a href="#" class="removeBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentId = '<?= $entity->id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/offers') ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService:: OFFERS ?>';
+        catalog.initEditables();
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.editablesSave
+        });
+
+        imgUploader.init({
+            type: 'single',
+            imgUrl: '<?= $this->basePath() . '/images/offers/' ?>'
+        });
+
+        tagit.init({
+            tags: <?= $tags; ?>,
+            inputField: $("#tagit-product"),
+            outputField: $('#tagit-product-res'),
+            placeholder: 'Введите название или ID продукта',
+            min: 2
+        });
+
+        var val;
+        $('.radio').on('change', function(){
+            val = $('.radio:checked').val();
+            $.ajax({
+                url:  catalog.baseUrl + 'changeActivityStatus/',
+                dataType : "json",
+                type: "post",
+                data: {id: catalog.parentId, val: val},
+                success: function (data, textStatus) {
+                    console.log('changed active status');
+                }
+            });
+        });
+    });
+</script>

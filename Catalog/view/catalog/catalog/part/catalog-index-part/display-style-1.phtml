@@ -1,0 +1,28 @@
+<?php
+$i = $this->i;
+/** @var Catalog\Model\Section $section */
+$section = $this->section;
+$series = $this->series;
+
+if (isset($this->subsections[$section->id])) {
+    ?>
+    <div class="row row-second">
+        <? foreach($this->subsections[$section->id] as $i => $subsec){
+            if(($i+1)%5==0){ echo'</div><div class="row row-second">'; }
+            ?>
+            <div class="col-md-3 mobile-left-margin-2">
+                <? $oneSeries = $series[$subsec->id][0]; ?>
+                <?=
+                $this->partial(
+                    "catalog/catalog/part/catalog-index-part/part/subsec-tile.phtml",
+                    array(
+                        'subsec' => $subsec,
+                        'showPic' => true,
+                        'seriesId' => $oneSeries->id
+                    )
+                );
+                ?>
+            </div>
+        <? } ?>
+    </div>
+<? } ?>

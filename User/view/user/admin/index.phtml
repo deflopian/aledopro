@@ -1,0 +1,105 @@
+<h1>Пользователи</h1>
+<div class="row">
+    <div class="col-md-12">
+        <a href="/admin/user/orphans">Пользователи без менеджера</a>
+    </div>
+</div>
+
+<div class="section" id="userTable">
+    <solo-table make-sortable="3" items-on-page="20">
+        <div solo-table-data ng-cloak>
+            <?= $usersJson ?>
+        </div>
+
+        <span ng-show="false" ng-init="getSelectFor(['city', 'manager_name', 'true_role'])"></span>
+
+
+        <div class="row">
+            <div class="col-md-12" style="text-align: right">
+                <!-- Постраничная навигация -->
+                <ul class="pagination pagination-sm" ng-show="pageNums.length > 1">
+                    <li ng-class="{active: $index == pager.currentPage - 1}" ng-model="pageNums" ng-repeat="i in pageNums track by $index" ><a href="#"  ng-click="gotoPage($index+1)">{{$index+1}}</a> </li>
+                </ul>
+            </div>
+        </div>
+
+        <table class="table admin-table table-striped">
+            <thead>
+            <tr>
+                <th sort-by='user_id'>Id</th>
+                <th sort-by='username'>Имя</th>
+                <th sort-by='email'>Почта</th>
+                <th sort-by='true_role'>Статус</th>
+                <th sort-by='alias'>Псевдоним</th>
+                <th sort-by='city'>Город</th>
+                <th sort-by='manager_name'>Менеджер</th>
+                <th sort-by='last_visit'>Последнее посещение</th>
+                <th sort-by='is_partner'>Партнёрство</th>
+                <th>Управление</th>
+            </tr>
+            <tr class="filter-input-row">
+                <th></th>
+                <th><input type="text" class="form-control" ng-model="filterModelUsername" name="username" placeholder="Имя пользователя" /></th>
+                <th><input type="text" class="form-control" ng-model="filterModelEmail" name="email" placeholder="Почта" /></th>
+                <th>
+                    <select ng-model="filterModelRole" class="input form-control">
+                        <option value="">Все</option>
+                        <option ng-repeat="role in selects.true_role" ng-value="role">{{role}}</option>
+                    </select>
+                </th>
+                <th><input type="text" class="form-control" ng-model="filterModelAlias" name="alias" placeholder="Псевдоним" /></th>
+                <th>
+                    <select ng-model="filterModelCity" class="input form-control">
+                        <option value="">Все города</option>
+                        <option ng-repeat="town in selects.city" ng-value="town">{{town}}</option>
+                    </select>
+                </th>
+                <th>
+                    <select ng-model="filterModelManager" class="input form-control">
+                        <option value="">Все</option>
+                        <option ng-repeat="manager in selects.manager_name" ng-value="manager">{{manager}}</option>
+                    </select>
+                </th>
+<!--                <th><input type="text" class="form-control" ng-model="filterModelManager" name="manager" placeholder="Менеджер" /></th>-->
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+
+
+            <tbody id="sortable">
+<!--            --><?// foreach($entities as $entity){ ?>
+                <tr class="entity" ng-repeat="item in filtered = (original | filterByFields:filterModelUsername:['username'] | filterByFields:filterModelEmail:['email'] | filterByFields:filterModelAlias:['alias'] | filterByFields:filterModelCity:['city'] | filterByFields:filterModelManager:['manager_name'] | filterByFields:filterModelRole:['true_role'])">
+                    <td>{{item.user_id}}</td>
+                    <td>{{item.username}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.true_role}}</td>
+                    <td>{{item.alias}}</td>
+                    <td>{{item.city}}</td>
+                    <td>{{item.manager_name}}</td>
+                    <td><span ng-if="item.last_visit"><a ng-href="/admin/user/history/{{item.user_id}}/">{{getDate(item.last_visit)}}</a></span><span ng-if="!item.last_visit">нет данных</span></td>
+                    <td>
+                        <span ng-if="item.is_partner">
+                            <a ng-href="/admin/discounts/partners/{{item.user_id}}/">скидки</a>
+                        </span>
+                    </td>
+                    <td>
+                        <a ng-href="/admin/user/view/{{item.user_id}}/" class="editBtn">Редактировать</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </solo-table>
+</div>
+<script>
+    AppFactory("userTable", "example1", ["solo.table"]);
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        catalog.baseUrl = '<?= $this->url('zfcadmin/user') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/user', array('action'=> 'view')) ?>';
+        catalog.init();
+    });
+</script>

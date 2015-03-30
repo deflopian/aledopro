@@ -1,0 +1,95 @@
+<? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+<? if (count($vacancies) == 0) { ?>
+    <div class="row"><div class="col-md-12"><div class="black-top" ></div></div></div>
+    <div class="section section-odd" id="section-vacansies" style="border: 0; padding-bottom: 80px">
+
+        <div class="row">
+            <div class="col-md-12" style="margin-top: 70px">
+                <h3>В данный момент свободных вакансий нет</h3>
+                Но! Если ты целеустремлен, креативен, коммуникабелен и полон идей, тогда ждем твое резюме.
+            </div>
+        </div>
+    </div>
+<? } else { ?>
+<div class="section section-odd" id="section-vacansies">
+    <div class="row"><div class="col-md-12"><div class="black-bottom" ></div></div></div>
+    <div class="row">
+        <? foreach($vacancies as $i=>$vacancy){
+            if($i+1%3==0){echo '</div><div class="col-md-4">';}
+            ?>
+
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div><h2><?= $vacancy->title ?></h2></div>
+                    </div>
+                </div>
+                <div class="row row-second">
+                    <div class="col-md-12"><div class="dotted-bottom" ></div></div>
+                </div>
+                <div class="row row-second-small">
+                    <div class="col-md-12 img200">
+                        <img src="<?=  $this->basePath() . '/images/vacancies/' . $vacancy->img ?>" alt=""/><?= $vacancy->text ?>
+                    </div>
+                </div>
+                <div class="row row-second">
+                    <div class="col-md-12">
+                        <?= $vacancy->text ?>
+                    </div>
+                </div>
+            </div>
+        <? } ?>
+    </div>
+</div>
+
+<? } ?>
+<div class="section" style="border-top: 1px dotted #666666">
+    <div class="row row-second">
+        <div class="col-md-12">
+            <form class="form-inline form-left aledo-form" role="form" method="post" action="<?= $this->url() ?>">
+                <div class="col-md-12 text-center">
+                    <div>
+                        <h2 class="form-title">Отправить резюме</h2>
+                    </div>
+                </div>
+
+                <div class="row-second">
+                    <div class="form-group col-md-4">
+                        <label for="vacancies-name" class="col-md-12 control-label">ФИО*</label>
+                        <input type="text" name="name" class="form-control" data-required="yes">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="vacancies-act" class="col-md-12 control-label">E-mail*</label>
+                        <input type="text" name="mail" class="form-control" data-required="yes">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="vacancies-vacid" class="col-md-12 control-label">Вакансия</label>
+                        <select class="form-control" id="vacancies-vacid" name="vacancy">
+                            <? foreach($vacancies as $vacancy){ ?>
+                                <option value="<?= $vacancy->id ?>"><?= $vacancy->title ?></option>
+                            <? } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3" id="vacancies-form-input" style="padding-top:25px">
+                        <?= \Application\Service\ApplicationService::renderFormFileInput($sl, 'Прикрепить резюме', '(txt, doc, pdf)', false, true); ?>
+                    </div>
+                </div>
+
+                <div class="row-second ">
+                    <div class="col-md-3 pull-right" style="margin-top: 20px">
+                    <button type="submit" class="btn btn-aledo-green">Отправить запрос</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function(){
+        formajax.init({});
+        window.setTimeout( mainpage.initAfterBars, 350 );
+    });
+</script>

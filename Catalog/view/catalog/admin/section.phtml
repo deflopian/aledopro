@@ -1,0 +1,318 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/catalog') ?>">Каталог</a>
+    >
+    <span id="title"><?= $section->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table  admin-table table-striped">
+        <tbody>
+        <tr>
+            <td>Название</td>
+            <td>
+                <a href="#" data-type="text" data-name="title" class="editable-param">
+                    <?= $section->title; ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Изображение</td>
+            <td>
+                <div class="admin-banner-img-container" <?= $section->url ? '' : 'style="display:none"' ?>>
+                    <div class="admin-img-del">
+                        <button class="btn btn-xs btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                    </div>
+                    <img style="height: 100%" src="<?= $section->url ? $this->basePath() . '/images/section/' . $section->url : ''?>" alt=""/>
+                </div>
+
+                <button type="button" class="btn btn-default" id="add-img"> <?= $section->url ? 'Редактировать' : 'Добавить' ?> изображение</button>
+
+                <div class="form-inline" id="adding-form-img" style="display: none">
+                    <form action="" id="img-form" method="post" enctype="multipart/form-data">
+                        <p>
+                            <input type="file" name="image"/>
+                            <input type="hidden" name="id" value="<?= $section->id ?>"/>
+                            <input type="hidden" name="type" value="section"/>
+                        </p>
+
+                        <p>
+                            <input type="submit" class="btn btn-default"/>
+                            <button type="button" class="btn btn-default" id="adding-cancel-img">Отмена</button>
+                        </p>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>URL</td>
+            <td>
+                <a href="#" data-type="text" data-name="display_name" class="editable-param">
+                    <?= $section->display_name; ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Видео</td>
+            <td>
+                <a href="#" data-type="text" data-name="video" class="editable-param">
+                    <?= $section->video; ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Сео-заголовок</td>
+            <? if ($section->display_style != 3) { ?>
+                <td class="col-md-8">
+                    <div class="editor-get-btn" data-name="seo_title">
+                        <?= $section->seo_title; ?>
+                    </div>
+                </td>
+            <? } else { ?>
+                <td class="col-md-8"></td>
+            <? } ?>
+        </tr>
+
+        <? if ($section->display_style == 3) { ?>
+        <tr>
+            <td colspan="2">
+                <div class="editor-get-btn" data-name="seo_title">
+                    <?= $section->seo_title; ?>
+                </div>
+            </td>
+        </tr>
+        <? } ?>
+
+        <tr>
+            <td>Сео-текст</td>
+            <? if ($section->display_style != 3) { ?>
+                <td class="col-md-8">
+                    <div class="editor-get-btn" data-name="seo_text">
+                        <?= $section->seo_text; ?>
+                    </div>
+                </td>
+            <? } else { ?>
+                <td class="col-md-8"></td>
+            <? } ?>
+        </tr>
+
+        <? if ($section->display_style == 3) { ?>
+            <tr>
+                <td colspan="2">
+                    <div class="editor-get-btn" data-name="seo_text">
+                        <?= $section->seo_text; ?>
+                    </div>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h3>Список подразделов</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-entity">Добавить подраздел</button>
+
+        <div class="form-inline" id="adding-form" style="display: none">
+            <div class="form-group">
+                <label class="sr-only" for="inputName">Название подраздела</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Введите название..."/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="adding-complete">Добавить</button>
+            <button type="button" class="btn btn-default" id="adding-cancel">Отмена</button>
+        </div>
+    </div>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="tagit-add">Добавить существующий подраздел</button>
+
+        <div id="tagit-form" style="display: none">
+            <ul id="tagit-subsections" ></ul>
+            <input type="hidden" id="tagit-subsections-res" name="subsectionsIds"/>
+
+            <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
+        </div>
+    </div>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+        <? foreach($subsections as $subsec){ ?>
+            <tr class="entity" <?= $subsec->deleted ? 'style="color: #BBB"' : '' ?>>
+                <td><?= $subsec->id; ?></td>
+                <td><?= $subsec->title; ?></td>
+                <td>
+                    <a href="#" class="editBtn">Редактировать</a>
+                    <a href="#" class="removeBtn">Открепить</a>
+                    <a href="#" class="deleteBtn">Удалить</a>
+                    <a href="#" class="showBtn" <?= $subsec->deleted ? '' : 'style="display: none"' ?>>Показать</a>
+                    <a href="#" class="hideBtn" <?= $subsec->deleted ? 'style="display: none"' : '' ?>>Скрыть</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="section">
+    <h3>Связи</h3>
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-3">
+            <label for="linkType">Тип элемента</label>
+            <select name="linkType" class="form-control" onchange="catalog.getTagsByType($(this).val())">
+                <option value="<?=\Catalog\Controller\AdminController::PRODUCT_TABLE ?>">Продукт</option>
+                <option value="<?=\Catalog\Controller\AdminController::SERIES_TABLE ?>">Серия</option>
+                <option value="<?=\Catalog\Controller\AdminController::SUBSECTION_TABLE ?>">Подраздел</option>
+                <option value="<?=\Catalog\Controller\AdminController::SECTION_TABLE ?>" selected>Раздел</option>
+                <option value="<?=\Catalog\Controller\AdminController::SOLUTION_TABLE ?>">Решение</option>
+                <option value="<?=\Catalog\Controller\AdminController::PROJECT_TABLE ?>">Проект</option>
+            </select>
+        </div>
+    </div>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="linktagit-add">Добавить существующий элемент</button>
+
+        <div id="linktagit-form" style="display: none">
+            <ul id="tagit-links" ></ul>
+            <input type="hidden" id="tagit-links-res" name="linksIds"/>
+
+            <button type="button" class="btn btn-default" id="linktagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="linktagit-cancel">Отмена</button>
+        </div>
+    </div>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Тип</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+
+        <? /** @var $links array */
+        foreach($links as $link){ ?>
+            <tr class="entity" data-linktype="<?= $link[0] ?>">
+                <td><?= $link[1]->id ?></td>
+                <td><?= $link[3] ?></td>
+                <td><?= $link[1]->title ?></td>
+                <td>
+                    <a href="#" class="removeLinkBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="section" ng-app="dflTree">
+
+
+
+    <div ng-controller="DflTreeCtrl">
+        <h3>Фильтры</h3>
+        <dfl-tree section-id="<?= $section->id ?>" section-type="1">
+        <div class="row" ng-show="isPersonalFilter(1)">
+            <div class="col-md-12 alert alert-warning">
+                Для этого раздела установлены отдельные фильтры.<br>
+                <span ng-click="clearAll(23, 1)" style="color: #666666; cursor: pointer">Вернуть фильтры по умолчанию</span>
+            </div>
+        </div>
+
+        <div class="row">
+        <div class="col-md-6">
+
+                <div dfl-tree-data ng-cloak><?= $treeDataByLvlJson ?></div>
+
+                <div dfl-tree-hierarchy ng-cloak>[]</div>
+                <div ng-init="list = items[23];"></div>
+                <style>
+                    #sortable2 { list-style-type: none; margin: 0; padding: 0; width: 450px; }
+                </style>
+                <ul id="sortable2">
+                    <li ng-repeat="(key, item) in items[23]" data-id="{{item.id}}">
+                        <div class="row tree-row">
+                            <div class="col-md-10" ng-click="item.shown = !item.shown" ng-bind="item.title"></div>
+                            <div class="col-md-1" style="text-align: right; padding-right: 0">
+                                <span
+                                    class="glyphicon glyphicon-folder-open"
+                                    ng-show="item.open == 1"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'open', 0, {sectionId:<?= $section->id?>, sectionType: 1}, 'filterCallback')"></span>
+                                <span
+                                    class="glyphicon glyphicon-folder-close"
+                                    ng-show="item.open == 0"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'open', 1, {sectionId:<?= $section->id?>, sectionType: 1}, 'filterCallback')"></span>
+                            </div>
+                            <div class="col-md-1" style="text-align: right; padding-right: 0">
+                                <span
+                                    class="glyphicon glyphicon-eye-open"
+                                    ng-show="item.hidden == 0"
+                                    style="color: #B5BD26"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'hidden', 1, {sectionId:<?= $section->id?>, sectionType: 1}, 'filterCallback')"></span>
+                                <span
+                                    class="glyphicon glyphicon-eye-close"
+                                    style="color: #BBBBBB"
+                                    ng-show="item.hidden > 0"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'hidden', 0, {sectionId:<?= $section->id?>, sectionType: 1}, 'filterCallback')"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+        </div>
+        </div>
+        </dfl-tree>
+        <script type="application/javascript">
+            AppFactory("dflTree", "trees", ["dflTree"]);
+        </script>
+    </div>
+</div>
+
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.type = '<?= \Catalog\Controller\AdminController::SUBSECTION_TABLE ?>';
+        catalog.link_type_1 = '<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>';
+        catalog.parentType = '<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService:: CATALOG_SECTION ?>';
+        catalog.parentId = '<?= $section->id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/catalog') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/catalog', array('action'=> 'subsection')) ?>';
+        catalog.init();
+        catalog.initEditables();
+
+        imgUploader.init({
+            type: 'single',
+            delFunction: imgUploader.entityImgDel,
+            imgUrl: '<?= $this->basePath() . '/images/section/' ?>'
+        });
+
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.editablesSave
+        });
+
+        tagit.init({
+            tags: <?= $tags; ?>,
+            type: '<?= \Catalog\Controller\AdminController::SUBSECTION_TABLE ?>',
+            inputField: $("#tagit-subsections"),
+            outputField: $('#tagit-subsections-res'),
+            placeholder: 'Введите название или ID подраздела'
+        });
+
+
+        catalog.getTagsByType(<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>);
+
+    });
+</script>

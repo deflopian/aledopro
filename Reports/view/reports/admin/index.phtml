@@ -1,0 +1,33 @@
+<h1>Отчёты</h1>
+
+<div class="section">
+    <h3>Список отчётов</h3>
+
+    <table class="table admin-table table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+        <? foreach($entities as $entity){ ?>
+            <tr class="entity">
+                <td><?= $entity->id; ?></td>
+                <td><?= $entity->name; ?></td>
+                <td>
+                    <a href="#" class="editBtn">Редактировать</a>
+                    <a href="#" class="deleteBtn">Удалить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        catalog.baseUrl = '<?= $this->url('zfcadmin/reports') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/reports', array('action'=> 'view')) ?>';
+        catalog.init();
+    });
+</script>

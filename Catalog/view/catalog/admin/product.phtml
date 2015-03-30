@@ -1,0 +1,138 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/catalog') ?>">Каталог</a>
+    >
+    <a href="<?= $this->url('zfcadmin/catalog', array('action'=> 'section', 'id'=>$section->id));?>"><?= $section->title; ?></a>
+    >
+    <a href="<?= $this->url('zfcadmin/catalog', array('action'=> 'subsection', 'id'=>$subsection->id));?>"><?= $subsection->title; ?></a>
+    >
+    <a href="<?= $this->url('zfcadmin/catalog', array('action'=> 'series', 'id'=>$series->id));?>"><?= $series->visible_title; ?></a>
+    >
+    <span id="title"><?= $product->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table admin-table  table-striped">
+        <tbody>
+        <tr>
+            <td>Документ</td>
+            <td>
+                <div class="admin-banner-img-container" style="<?= $product->file_custom ? 'height:30px' : 'display:none' ?>">
+                    <a href="<?= $product->file_custom ? $this->basePath() . '/images/product_docs/' . $product->file_custom : ''?>"
+                       target="_blank"
+                       ><?= $product->file_custom ?></a>
+                </div>
+
+                <button type="button" class="btn btn-default" id="add-img"> <?= $product->file_custom ? 'Редактировать' : 'Добавить' ?> файл</button>
+
+                <div class="form-inline" id="adding-form-img" style="display: none">
+                    <form id="img-form" method="post" enctype="multipart/form-data">
+                        <p>
+                            <input type="file" name="image"/>
+                            <input type="hidden" name="id" value="<?= $product->id ?>"/>
+                        </p>
+                        <p>
+                            <input type="submit" class="btn btn-default"/>
+                            <button type="button" class="btn btn-default" id="adding-cancel-img">Отмена</button>
+                        </p>
+                    </form>
+                </div>
+
+                <button type="button" class="btn btn-default" id="del-img" data-id="<?= $product->id ?>">Удалить</button>
+
+            </td>
+        </tr>
+        <? $uneditableParams[] = 'title';
+        foreach($product->toArray() as $key=>$val){
+            if(in_array($key, $uneditableParams)){continue;}
+            $type = 'text';
+            if($key == 'text'){ $type = 'textarea'; }
+            if($key == 'in_market'){ $type = 'checkbox'; }
+            $name = isset($paramsDescr[$key]) ? $paramsDescr[$key]->title : $key;
+            ?>
+            <tr>
+                <td><?= $name ?></td>
+                <td>
+                    <a href="#" data-type="<?= $type ?>" data-name="<?= $key ?>" class="editable-param">
+                        <?= $val ?>
+                    </a>
+                </td>
+            </tr>
+        <?}?>
+
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="section">
+    <h3>Связи</h3>
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-3">
+            <label for="linkType">Тип элемента</label>
+            <select name="linkType" class="form-control" onchange="catalog.getTagsByType($(this).val())">
+                <option value="<?=\Catalog\Controller\AdminController::PRODUCT_TABLE ?>">Продукт</option>
+                <option value="<?=\Catalog\Controller\AdminController::SERIES_TABLE ?>">Серия</option>
+                <option value="<?=\Catalog\Controller\AdminController::SUBSECTION_TABLE ?>">Подраздел</option>
+                <option value="<?=\Catalog\Controller\AdminController::SECTION_TABLE ?>" selected>Раздел</option>
+                <option value="<?=\Catalog\Controller\AdminController::SOLUTION_TABLE ?>">Решение</option>
+                <option value="<?=\Catalog\Controller\AdminController::PROJECT_TABLE ?>">Проект</option>
+            </select>
+        </div>
+    </div>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="linktagit-add">Добавить существующий элемент</button>
+
+        <div id="linktagit-form" style="display: none">
+            <ul id="tagit-links" ></ul>
+            <input type="hidden" id="tagit-links-res" name="linksIds"/>
+
+            <button type="button" class="btn btn-default" id="linktagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="linktagit-cancel">Отмена</button>
+        </div>
+    </div>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Тип</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+
+        <? /** @var $links array */
+        foreach($links as $link){ ?>
+            <tr class="entity" data-linktype="<?= $link[0] ?>">
+                <td><?= $link[1]->id ?></td>
+                <td><?= $link[3] ?></td>
+                <td><?= $link[1]->title ?></td>
+                <td>
+                    <a href="#" class="removeLinkBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentType = '<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>';
+        catalog.parentId = '<?= $product->id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/catalog') ?>';
+        catalog.initEditables();
+
+        imgUploader.init({
+            type: 'single',
+            imgUrl: '<?= $this->basePath() . '/images/series_docs/' ?>',
+            delFunction: imgUploader.deleteProdFile,
+            isProduct: true
+        });
+
+        catalog.link_type_1 = '<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>';
+        catalog.getTagsByType(<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>);
+    });
+</script>

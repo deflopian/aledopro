@@ -1,0 +1,137 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/user') ?>">Пользователи</a>
+    >
+    <span id="title"><?= $entity->username; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table admin-table ">
+        <tbody>
+        <tr>
+            <td>Имя</td>
+            <td>
+                <a href="#" data-type="text" data-name="username" class="editable-param"><?= $entity->username; ?></a>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Последнее посещение: </td>
+            <td>
+                <? if ($entity->last_visit) { ?>
+                    <?= date('d.m.Y H:i:s',$entity->last_visit); ?>
+                <? } else { ?>
+                    Нет данных
+                <? } ?>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Почта</td>
+            <td>
+                <a href="#" data-type="text" data-name="email" class="editable-param"><?= $entity->email; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Телефон</td>
+            <td>
+                <a href="#" data-type="text" data-name="phone" class="editable-param"><?= $entity->phone; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Псевдоним</td>
+            <td>
+                <a href="#" data-type="text" data-name="alias" class="editable-param"><?= $entity->alias ? $entity->alias : ""; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Город</td>
+            <td>
+                <a href="#" data-type="text" data-name="city" class="editable-param"><?= $entity->city ? $entity->city : ""; ?></a>
+            </td>
+        </tr>
+
+        <? if ($this->user->getId() != $entity->user_id) { ?>
+        <tr>
+            <td>Роль</td>
+            <td>
+                <a href="#" data-type="select" data-name="role_id"
+                   data-source='<?= \Zend\Json\Json::encode($roles); ?>'
+                   data-value="<?= $entity->status; ?>" class="editable-param">
+                    <?= $roleLinkers->role_id; //todome: костыль. в массиве ролс лежат по порядку строки со значениями по порядку ?>
+                </a>
+            </td>
+        </tr>
+        <? } ?>
+
+
+
+        <? if ($entity->is_partner) { ?>
+        <tr>
+            <td>Группа партнёров</td>
+            <td>
+                <a href="#" data-type="select" data-name="partner_group"
+                   data-source='<?= \Zend\Json\Json::encode($partnerGroups); ?>'
+                   data-value="<?= $entity->partner_group; ?>" class="editable-param">
+                    <?= $partnerGroups[$entity->partner_group]; ?>
+                </a>
+            </td>
+        </tr>
+        <? } ?>
+
+        <? if ($roleLinkers->role_id != 'admin' && $roleLinkers->role_id != 'manager' ) { ?>
+        <tr>
+            <td>Назначить менеджера</td>
+            <td>
+                <a href="#" data-type="select" data-name="manager_id"
+                   data-source='<?= \Zend\Json\Json::encode($managers); ?>'
+                   data-value="<?= $entity->manager_id; ?>" class="editable-param">
+                    <?= $currentManager; ?>
+                </a>
+            </td>
+        </tr>
+        <? } else { ?>
+            <tr>
+                <td>Назначенные клиенты:</td>
+                <td>
+                    <? if (count($clients) > 0) { ?>
+                        <ul>
+                        <? foreach ($clients as $client) { ?>
+                            <li><a href="/admin/user/view/<?= $client->user_id ?>"><?= $client->username . ' (' . $client->email . ')' ?></a></li>
+                        <? } ?>
+                        </ul>
+                    <? } else { ?>
+                        Нет ни одного клиента
+                    <? } ?>
+                </td>
+            </tr>
+        <? } ?>
+        <? if ($managerRole->role_id == 'manager' || $managerRole->role_id == 'admin') { ?>
+        <tr>
+            <td title="Взор бога!">Посмотреть скидки глазами этого пользователя:</td>
+            <td>
+                <? if ($this->user->getGodModeId() != $entity->user_id) { ?>
+                    <a class="btn btn-default btn-aledo-black" href="/cabinet/godModeOn/<?= $entity->user_id ?>/?from=user">Включить</a>
+                <? } else { ?>
+                    <a class="btn btn-default btn-aledo-green" href="/cabinet/godModeOff">Выключить</a>
+                <? } ?>
+            </td>
+        </tr>
+        <? } ?>
+        <tr>
+            <td title="Большой Брат следит за тобой!">История активности пользователя: </td>
+            <td>
+                <a class="btn btn-default btn-aledo-green" href="/admin/user/calendar/<?= $entity->user_id ?>/">Смотреть</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentId = '<?= $entity->user_id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/user') ?>';
+        catalog.initEditables();
+    });
+</script>

@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-md-12 text-center"><h1>Оформление заказа без регистрации</h1></div>
+</div>
+<div class="row"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>
+<form class="form-horizontal aledo-form form-left" role="form" method="post">
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="row">
+            <div class="col-md-12 text-center"><h2>Контактная информация</h2></div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="cbwr-name" class="col-md-3 control-label">Имя*</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="cbwr-name" name="name" data-required="yes">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="cbwr-phone" class="col-md-4 control-label">Контактный телефон*</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" id="cbwr-phone" name="phone" data-required="yes">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="cbwr-mail" class="col-md-3 control-label">E-mail*</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="cbwr-mail" name="mail" data-required="yes">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="cbwr-city" class="col-md-3 control-label">Город</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="cbwr-city" name="city" data-required="no">
+            </div>
+        </div>
+
+            <div class="form-group">
+                <div class="col-md-9 col-md-offset-3">
+                    <input type="checkbox" id="cbwr-spam" name="is_spamed" checked>
+                    <label for="cbwr-spam">подписаться на рассылку <br>(информация о скидках, акциях)</label>
+                </div>
+            </div>
+
+    </div>
+</div>
+<div class="row"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>
+
+<div class="row row-second-small">
+    <div class="col-md-3">
+        <button id="cbwr-back" class="btn btn-aledo-black">Назад</button>
+    </div>
+    <div class="col-md-4 pull-right">
+        <button id="cbwr-success" type="submit" class="btn btn-aledo-black">Подтвердить</button>
+    </div>
+</div>
+</form>
+<script type="text/javascript">
+    $(function(){
+        formajax.init({
+            changeUrl: false
+        });
+
+        $('#cbwr-back').on('click', function(e){
+            e.preventDefault();
+            showFooBarPopup('cart-buy');
+        });
+
+        $('#cbwr-success').on('click', function(e){
+            e.preventDefault();
+            cart.buyWithoutRegisrtation();
+        });
+
+
+    });
+</script>

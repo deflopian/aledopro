@@ -1,0 +1,100 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/catalog') ?>">Каталог</a>
+    >
+    <a href="<?= $this->url('zfcadmin/catalog', array('action'=> 'section', 'id'=>$section->id));?>"><?= $section->title; ?></a>
+    >
+    <a href="<?= $this->url('zfcadmin/catalog', array('action'=> 'subsection', 'id'=>$subsection->id));?>"><?= $subsection->title; ?></a>
+    >
+    <a href="<?= $this->url('zfcadmin/catalog', array('action'=> 'series', 'id'=>$series->id));?>"><?= $series->visible_title; ?></a>
+    >
+    Допгруппа продуктов: <span id="title"><?= $dopProdGroup->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table  admin-table table-striped">
+        <tbody>
+        <tr>
+            <td>Название</td>
+            <td>
+                <a href="#" data-type="text" data-name="title" class="editable-param">
+                    <?= $dopProdGroup->title; ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Способ представления</td>
+            <td>
+                <a href="#" data-type="select" data-name="display_style"
+                   data-source='<?= \Zend\Json\Json::encode($displayStyles); ?>'
+                   data-value="<?= $dopProdGroup->display_style; ?>" class="editable-param">
+                    <?= $displayStyles[$dopProdGroup->display_style]; //todome: костыль. в массиве ролс лежат по порядку строки со значениями по порядку ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h3>Входящие продукты</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="tagit-add">Добавить продукт</button>
+
+        <div id="tagit-form" style="display: none">
+            <ul id="tagit-dopprod"></ul>
+            <input type="hidden" id="tagit-dopprod-res" name="seriesIds"/>
+
+            <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable-dopprod">
+        <? foreach($dopProducts as $prod){ ?>
+            <tr class="entity-dopprod">
+                <td><?= $prod->id; ?></td>
+                <td><?= $prod->title; ?></td>
+                <td>
+                    <a href="#" class="editBtn">Редактировать</a>
+                    <a href="#" class="removeBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentType = '<?= \Catalog\Controller\AdminController::SERIES_DOPPROD_GROUP_TABLE ?>';
+        catalog.parentId = '<?= $dopProdGroup->id ?>';
+
+        catalog.baseUrl = '<?= $this->url('zfcadmin/catalog') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/catalog', array('action'=> 'product')) ?>';
+        catalog.init();
+        catalog.initEditables();
+
+        tagit.init({
+            tags: <?= $tags; ?>,
+            type: 'dopprods',
+            inputField: $("#tagit-dopprod"),
+            outputField: $('#tagit-dopprod-res'),
+            placeholder: 'Введите название или ID продукта',
+            min: 2
+        });
+
+        catalog.initDopProds({
+            type: <?= \Catalog\Controller\AdminController::SERIES_DOPPROD_TABLE ?>
+        });
+    });
+</script>

@@ -1,0 +1,175 @@
+
+<div class="b-download-page">
+    <div class="b-section b-section_catalogs"
+         image-responsive="{
+                             default : {
+             src: '/images/files/<?= $entity->img_1_1000_name ?>',
+                                 css : {
+
+                                }
+                             }, 1001 : {
+              src: '/images/files/<?= $entity->img_1_name ?>',
+                  css : {
+
+
+             }
+                 }}">
+        <div class=" b-section__content">
+            <div class="b-downloads b-downloads_catalogs">
+                <div class="b-downloads-table">
+                    <div class="b-downloads-table__cell b-downloads-table__cell_l" align="left">
+                        <img class="b-downloads__image" src="/images/catalogs-image_24_03.svg" />
+                    </div>
+                    <div class="b-downloads-table__cell b-downloads-table__cell_r">
+                        <div class="b-downloads-slider  b-slider_no-slider">
+                            <? foreach ($this->catalogs as $catalog) { ?>
+                                <div class="b-downloads-slider__item">
+                                    <a class="b-downloads-slider__link" href="/images/documents/<?= $catalog->file_name ?>" target="_blank">
+                                        <img class="b-downloads-slider__image" src="/images/documents/<?= $catalog->img_name ?>" />
+                                    </a>
+                                </div>
+                            <? } ?>
+                            <? if (count($this->catalogs)==1) { ?>
+                                <? $catalog = reset($this->catalogs); ?>
+                                <div class="b-downloads-slider__item">
+                                    <a class="b-downloads-slider__link" href="/images/documents/<?= $catalog->file_name ?>" target="_blank">
+                                        <img class="b-downloads-slider__image" src="/images/documents/<?= $catalog->img_name ?>" />
+                                    </a>
+                                </div>
+                            <? } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="b-section b-section_instructions">
+        <div class="b-section__content">
+            <div class="b-instructions">
+                <? $firstInstruction = $this->instructions[0]; ?>
+                <? $secondInstruction = $this->instructions[1]; ?>
+                <? if ($firstInstruction) { ?>
+                <div class="b-instructions-cell">
+                    <h3 class="b-instructions-cell__heading">
+                        <?= $firstInstruction->title ?>
+                    </h3>
+                    <div class="b-instructions-cell__bottom-section">
+                        <img src="/images/documents/<?= $firstInstruction->img_name ?>" class="b-instructions-cell__image" />
+                        <a class="b-button b-button_gray-bordered b-button_gray-colored b-instructions-cell__button"
+                           href="/images/documents/<?= $firstInstruction->file_name ?>" target="_blank">
+                            СКАЧАТЬ
+                        </a>
+
+                    </div>
+                </div>
+                <? } ?>
+                <? if ($secondInstruction) { ?>
+                    <div class="b-instructions-cell b-instructions-cell_separator b-instructions-cell_separator_v ">
+                        <i class="b-instructions-cell_separator_v__line"></i>
+                    </div>
+                    <div class="b-instructions-cell b-instructions-cell_separator b-instructions-cell_separator_h ">
+                        <i class="b-instructions-cell_separator_h__line"></i>
+                    </div>
+
+                    <div class="b-instructions-cell">
+                        <h3 class="b-instructions-cell__heading">
+                            <?= $secondInstruction->title ?>
+                        </h3>
+                        <div class="b-instructions-cell__bottom-section">
+                            <img src="/images/documents/<?= $secondInstruction->img_name ?>" class="b-instructions-cell__image" />
+                            <a class="b-button b-button_gray-bordered b-button_gray-colored b-instructions-cell__button"
+                                href="/images/documents/<?= $secondInstruction->file_name ?>" target="_blank">СКАЧАТЬ</a>
+                        </div>
+
+                    </div>
+                <? } ?>
+            </div>
+        </div>
+    </div>
+    <div class="b-section b-section_certificates"
+         image-responsive="{
+                             default : {
+             src: '/images/files/<?= $entity->img_2_1000_name ?>',
+                                 css : {
+
+                                }
+                             }, 1001 : {
+              src: '/images/files/<?= $entity->img_2_name ?>',
+                  css : {
+
+
+             }
+                 }}">
+        <div class="b-section__content">
+            <div class="b-downloads b-downloads_certificates">
+                <div class="b-downloads-table">
+                    <div class="b-downloads-table__cell b-downloads-table__cell_l" align="left">
+                        <img class="b-downloads__image" src="/images/certificates-image_24_03.svg" />
+                    </div>
+
+                    <div class="b-downloads-table__cell b-downloads-table__cell_r">
+                        <div class="b-downloads-slider">
+                            <? foreach ($this->certificates as $certificate) { ?>
+                            <div class="b-downloads-slider__item">
+                                <a class="b-downloads-slider__link b-downloads-slider__link_certificate" href="/images/documents/<?= $certificate->file_name ?>">
+                                    <img class="b-downloads-slider__image" src="/images/documents/<?= $certificate->img_name ?>" />
+                                </a>
+                            </div>
+                            <? } ?>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    (function() {
+        jQuery('.b-downloads-slider').each(function() {
+            var $this = jQuery(this),
+                $slides = $this.find(".b-downloads-slider__item"),
+                noSliderClass = "b-slider_no-slider";
+            if ($slides.length == 1) {
+
+                return;
+
+            }
+            $this.removeClass(noSliderClass);
+            $this.slick({
+                dots: false,
+                infinite: true,
+                speed: browser.mobile ? 300 : 500,
+                touchThreshold: browser.mobile ? 5 : 50,
+                slidesToShow: 1,
+                centerMode: true,
+                variableWidth: true,
+                responsive: [
+                    {
+                        breakpoint: 991,
+                        settings: {
+                            fade: true
+                        }
+                    }
+                ],
+                prevArrow: "<a href=\"javascript:void(0)\" class=\"b-downloads-slider-arrow b-downloads-slider-arrow_prev\">" +
+                "<img class=\"b-downloads-slider-arrow__image\" src=\"/Content/images/button-arrow-white.png\"/>" +
+                "</a>",
+                nextArrow: "<a href=\"javascript:void(0)\" class=\"b-downloads-slider-arrow b-downloads-slider-arrow_next\">" +
+                "<img class=\"b-downloads-slider-arrow__image\" src=\"/Content/images/button-arrow-white.png\"/>" +
+                "</a>"
+            });
+
+        });
+
+        jQuery(".b-downloads-slider__link_certificate").fancybox({
+            'opacity': true,
+            padding: 20,
+            'overlayShow': true,
+            'transitionIn': 'elastic',
+            'transitionOut': 'elastic'
+        });
+    })();
+
+</script>

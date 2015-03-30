@@ -1,0 +1,213 @@
+<? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+<?
+/** @var integer $scrollToSubsection*/
+/** @var integer $scrollToSeries*/
+/** @var integer $scrollToProduct*/
+
+?>
+
+<!-- Эти стили нужны для сортировки -->
+<style type="text/css">
+    .solo-table-sort-asc > .solo-column-arrow
+    {
+        position: relative;
+        top: 10px;
+        margin-left: 5px;
+        /*border-color: black transparent;*/
+        /*border-style: solid;*/
+        border-width: 5px 5px 0px 5px;
+        height: 0px;
+        width: 0px;
+    }
+    .solo-table-sort-desc > .solo-column-arrow
+    {
+        position: relative;
+        top: -10px;
+        margin-left: 5px;
+        /*border-color: black transparent;*/
+        /*border-style: solid;*/
+        border-width: 0px 5px 5px 5px;
+        height: 0px;
+        width: 0px;
+    }
+
+    .solo-table-column-cursor
+    {
+        cursor: pointer;
+    }
+</style>
+
+<div class="section">
+    <div class="row">
+        <div class="col-md-6 tablefilter">
+            <? include 'part/filter-small.phtml' ?>
+        </div>
+    </div>
+    <div id="catalog-filterbar-place"></div>
+
+    <div class="row row-second-xs">
+        <div class="col-md-12" >
+
+
+            <?
+             $serNum = 1;
+            foreach($allSeries as $series){ ?>
+
+
+                <? if ($series->imgs) { ?>
+
+                    <div class="col-md-12 dotted-top ">
+                        <div class="row row-second-xs">
+                        <div class="col-md-12"></div>
+                        </div>
+
+                    </div>
+                    <div class="series-pics carousel slide" id="banner-carousel" data-ride="carousel" onmouseover="$('.carousel-indicators').show()" onmouseout="$('.carousel-indicators').hide()"">
+
+            <? if (count($series->imgs) > 1) { ?>
+                    <ol class="carousel-indicators" style="display: none; margin-bottom: 0">
+                        <? foreach($series->imgs as $i=>$image){ ?>
+                            <li data-target="#banner-carousel" data-slide-to="<?= $i ?>" <?= $i == 0? 'class="active"': ''?>></li>
+                        <? } ?>
+                    </ol>
+                <? } ?>
+
+                    <div class="carousel-inner" style="">
+                        <? foreach($series->imgs as $i=>$image){ ?>
+                            <div class="item <?= $i == 0? 'active': ''?>">
+                                <img class="drivers_pic" style="width: 100%" src="<?= $this->basePath() . '/images/series/' . $image->url ?>" alt="<?= $image->title?>">
+
+                                <div class="absolute-banner-text-block absolute-banner-text-block-alt">
+                                    <div class="container">
+                                        <div class="banner-backgrounded-wrapper banner-backgrounded-wrapper-alt" style="max-width: 45%">
+                                            <? if ($series->visible_title) { ?>
+                                                <span class="banner-title backgrounded-alt" <?= !$series->visible_title ? 'style="padding-bottom: 16px;"' : '' ?>><?= $series->visible_title ?>&nbsp;&nbsp;</span><br />
+                                            <? } elseif ( $series->title) { ?>
+
+                                                <span class="banner-title backgrounded-alt" <?= !$series->title ? 'style="padding-bottom: 16px;"' : '' ?>><?= $series->title ?>&nbsp;&nbsp;</span><br />
+
+                                            <? } ?>
+                                            <? if ($series->text) { ?>
+
+                                                <span class="banner-text backgrounded-alt"><?= $series->text ?>&nbsp;&nbsp;&nbsp;</span>
+
+                                            <? } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <? } ?>
+                    </div>
+                <? if (count($series->imgs) > 1) { ?>
+                    <a class="left carousel-control" href="#banner-carousel" data-slide="prev">
+                        <div class="aledo-banner-chevron left"></div>
+                    </a>
+                    <a class="right carousel-control" href="#banner-carousel" data-slide="next">
+                        <div class="aledo-banner-chevron right"></div>
+                    </a>
+                <? } ?>
+                </div>
+                <? } else { ?>
+                <div class="row <?= $i==0 ? '' : 'row-second-big'?>">
+                    <div class="col-md-12">
+                        <div>
+                            <h2><?= $series->visible_title ?></h2>
+                        </div>
+                    </div>
+                </div>
+                 <? }?>
+
+                <div class="series-block dotted-top row-second-xs" id="subsec-<?=$series->subsection_id?>" data-id="<?= $series->id ?>">
+                    <div class="row">
+                        <div class="col-md-12 ">
+<!--                            <div class="bar-green">-->
+<!--                                <h2>--><?//= $series->visible_title ?><!--</h2>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+<!---->
+<!--                    --><?// if(isset($series->imgs)){
+//                        $imgs = $series->imgs;
+//                        ?>
+<!--                        <div class="row row-second-small unnecessary">-->
+<!--                            --><?// include 'part/part/series-gallery.phtml';  ?>
+<!--                        </div>-->
+<!--                    --><?// } ?>
+
+<!--                    <div class="row row-second-small unnecessary ">-->
+<!--                        <div class="col-md-12">-->
+<!--                            --><?// if (!empty($series->text)) { ?>
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-12">-->
+<!--                                    <div class="dotted-bottom">-->
+<!--                                        <h2>Описание</h2>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row row-second-xs">-->
+<!--                                <div class="col-md-12">-->
+<!--                                    --><?//= $series->text; ?>
+<!--                                    <div class="dotted-bottom row-second-small"></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            --><?// } ?>
+<!---->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <? if(isset($pAgg)){
+                        $products = $pAgg->getProducts($series->id);
+                        $count = count($products);
+                        ?>
+                        <div class="row row-second">
+                            <div class="col-md-12" id="testApp_<?= $series->id ?>">
+
+                                <? include 'part/part/product-table-lenti.phtml'; ?>
+                            </div>
+                        </div>
+                        <?
+
+                        ?>
+                    <? } ?>
+
+                    <script>
+                    AppFactory("testApp_<?= $series->id ?>", "example<?= $series->id ?>", ["solo.table", "myFilters"]);
+                    </script>
+
+                    <? $serNum++; if(isset($series->dopProducts)){ ?>
+                        <? foreach($series->dopProducts as $dopGroup){ ?>
+                            <div class="row row-second-small">
+                                <div class="col-md-12">
+                                    <? include 'part/part/product-dop-table.phtml'; ?>
+                                </div>
+                            </div>
+                        <? } ?>
+                    <? } ?>
+                    <? $i++; ?>
+                </div>
+            <? } ?>
+        </div>
+    </div>
+
+    <?= \Catalog\Service\CatalogService::renderSeoTextBlock($sl, $section); ?>
+</div>
+
+<script type="text/javascript">
+    var screenWidth = $("html").width();
+    $('.series-pics').css('width', screenWidth);
+    $('.series-pics').css('margin-left', -(screenWidth-$('.container :first').width())/2-15);
+
+    $(function(){
+        popup.initSeriesPopup();
+        popup.renderCartedLines();
+        catalogClient.scrollToSeries = <?= $scrollToSeries ? $scrollToSeries : 'false' ?>;
+        catalogClient.scrollToProduct = <?= $scrollToProduct ? $scrollToProduct : 'false'  ?>;
+        catalogClient.scrollToSubsection = <?= $scrollToSubsection ? $scrollToSubsection : 'false' ?>;
+        catalogClient.initUrl();
+
+        //window.setTimeout( function(){ popup.initPopupGallery(); }, 5 );
+
+        //catalogClient.initUrl();
+    })
+</script>

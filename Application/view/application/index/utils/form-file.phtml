@@ -1,0 +1,13 @@
+<div class="form-file-button" <?= $this->isCart ? '' : 'style="margin-left: -20px"' ?>>
+    <span class="icon-download icon-clip"></span>
+    <span class="icon-title"><?= $this->title ?> <?= $this->formats ?></span>
+</div>
+<div class="form-file-clipped" <?= $this->lastFile ? '' : 'style="display: none"' ?>>
+    <div class="clipped-file-label col-md-12"></div>
+    <div style="position: relative">
+        <div class="clipped-file-name col-md-12"><?= $this->lastFile ?></div>
+        <div type="button" class="close form-file-clipped-close" style="position: absolute; top: 5px; right: 5px;">×</div>
+    </div>
+</div>
+<input class="form-file" type="file" <?= $this->isRequired ? 'data-required="yes"' : '' ?> name="file" style="display: none"/>
+<input class="hidden-last-file" type="hidden" value="<?= $this->lastFile ? '1' : '0' ?>" name="lastFile" style="display: none"/>

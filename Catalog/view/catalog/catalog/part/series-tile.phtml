@@ -1,0 +1,47 @@
+<? $url = $this->url('catalog', array(
+    'action' => $product ? 'product' : 'series',
+    'id' => $product ? $product->id : $series->id
+));
+
+?>
+
+<? if ($product) { ?>
+<a href="<?= $url ?>">
+    <div class="tile-title-series">
+        <? if ($series->is_offer) { ?>
+            <span style="position: absolute; top: 10px; left: -12px">
+                <div class="icon-offer"></div>
+            </span>
+        <? } ?>
+        <span>
+            <?= $product->title ?>
+        </span>
+    </div>
+    <? if (isset($series->previewName)) { ?>
+        <? $src = $this->basePath() . '/images/series/' . $series->previewName; ?>
+    <? } else { ?>
+        <? $src = $series->img ? $this->basePath() . '/images/series/' . $series->img : $this->basePath() . '/images/empty-series.png' ?>
+
+    <? } ?>
+    <img src="<?= $src ?>" alt="<?= $product->title ?>"/>
+</a>
+<? } else { ?>
+    <a href="<?= $url ?>">
+        <div class="tile-title-series">
+            <? if ($series->is_offer) { ?>
+                <span style="position: absolute; top: 10px; left: -12px">
+                <div class="icon-offer"></div>
+                </span>
+            <? } ?>
+            <span>
+                <?= $series->visible_title ?>
+            </span>
+        </div>
+        <? if (isset($series->previewName)) { ?>
+            <? $src = $series->previewName ? $this->basePath() . '/images/series/' . $series->previewName : $this->basePath() . '/images/empty-series.png' ?>
+        <? } else { ?>
+            <? $src = $series->img ? $this->basePath() . '/images/series/' . $series->img : $this->basePath() . '/images/empty-series.png' ?>
+        <? } ?>
+        <img src="<?= $src ?>" alt="<?= $series->visible_title ?>"/>
+    </a>
+<? } ?>

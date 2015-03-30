@@ -1,0 +1,15 @@
+<h1>Заявки</h1>
+
+<div class="row">
+    <a href="<?= $this->url('zfcadmin/order') ?>" class="admin-tile">Заказы</a>
+    <a href="<?= $this->url('zfcadmin/requests', array('action' => 'reqPartner')) ?>" class="admin-tile">Партнерские заявки</a>
+    <a href="<?= $this->url('zfcadmin/requests', array('action' => 'reqConsult')) ?>" class="admin-tile">Запросы на консультацию</a>
+</div>
+<div class="row" style="margin-top: 30px;">
+    <a href="<?= $this->url('zfcadmin/requests', array('action' => 'reqProject')) ?>" class="admin-tile">Запросы на проект</a>
+    <a href="<?= $this->url('zfcadmin/requests', array('action' => 'reqCalc')) ?>" class="admin-tile">Запросы на расчет</a>
+    <a href="<?= $this->url('zfcadmin/requests', array('action' => 'reqModern')) ?>" class="admin-tile">Запросы на модернизацию</a>
+</div>
+<div class="row" style="margin-top: 30px;">
+    <a href="<?= $this->url('zfcadmin/requests', array('action' => 'reqMontaj')) ?>" class="admin-tile">Запросы на монтаж</a>
+</div>

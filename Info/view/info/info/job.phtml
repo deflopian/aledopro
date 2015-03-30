@@ -1,0 +1,75 @@
+<div class="b-section b-section_work" image-responsive="{
+                             default : {
+             src: '/images/job/<?= $entity->img_1000_name ?>',
+                                 css : {
+
+                                }
+                             }, 1001 : {
+              src: '/images/job/<?= $entity->img_name ?>',
+                  css : {
+
+
+             }
+                 }}">
+    <div class="b-section__content">
+        <div class="b-work text-white">
+            <div class="b-work-cell b-work-cell_left">
+                <img class="b-work__image" src="/Content/images/work/image_1.svg" />
+            </div>
+            <div class="b-work-cell b-work-cell_right">
+                <form name="work" enctype="multipart/form-data">
+                    <div class="b-work-form b-clearfix">
+                        <div class="b-work-form__table">
+                            <div class="b-work-form__row">
+
+                                <div class="b-work-form__cell b-work-form__cell_left ">
+                                    <label for="work_name">ФИО*</label>
+                                </div>
+                                <div class="b-work-form__cell ">
+                                    <input id="work_name" name="work_name" class="b-form-control b-form-control_small" />
+                                </div>
+                            </div>
+                            <div class="b-work-form__row">
+                                <div class="b-work-form__cell b-work-form__cell_left ">
+                                    <label for="work_email">E-mail*</label>
+                                </div>
+                                <div class="b-work-form__cell">
+                                    <input id="work_email" name="work_email" class="b-form-control b-form-control_small" />
+                                </div>
+                            </div>
+                            <div class="b-work-form__row">
+                                <div class="b-work-form__cell b-work-form__cell_left ">
+                                    <label for="work_vacancy">Вакансия</label>
+                                </div>
+                                <div class="b-work-form__cell">
+                                    <input id="work_vacancy" name="work_vacancy" class="b-form-control b-form-control_small" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="b-work-form__file text-center">
+                            <script type="text/javascript">
+                                if (browser.msie9) {
+                                    document.write("<u>Загрузите</u> файл резюме<br/>(TXT, DOC, PDF)");
+                                } else {
+                                    document.write("Перетащите файл резюме (TXT, DOC, PDF)<br/>" +
+                                    "сюда или <u>загрузите</u>");
+                                }
+
+                            </script>
+
+
+
+                            <input id="work_resume" name="work_resume" type="file" class="b-form-control b-form-control_file" />
+                        </div>
+                        <button class="b-button b-button_white b-button_small b-right" id="work_submit">
+
+
+                            <span class="b-button__text">отправить запрос</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

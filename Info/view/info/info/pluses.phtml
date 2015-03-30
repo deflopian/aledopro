@@ -1,0 +1,66 @@
+<?
+    /** @var $entity \Info\Model\Pluses */
+?>
+<div class="b-section b-advantages-page">
+    <div class="b-section__content">
+        <h1 class="b-advantages-page__heading text-center"><?= $entity->title ?></h1>
+        <hr class="dotted-separator" />
+        <div class="b-advantages">
+            <img src="/images/pluses/<?= $entity->img_name ?>" border="0" class="b-advantages__image" />
+            <div class="b-advantages__link-wrapper b-advantages__link-wrapper_1">
+                <a href="javascript:void(0)" class="b-button b-advantages__link b-advantages__link_tooltip "
+                   data-toggle="tooltip" data-placement="left"
+                   title="<?= addslashes(strip_tags($entity->text1)) ?>">
+                    <span class="b-button__text"><?= $entity->title1 ?></span>
+                </a>
+            </div>
+            <div class="b-advantages__link-wrapper b-advantages__link-wrapper_2">
+                <a href="javascript:void(0)" class="b-button  b-advantages__link b-advantages__link_tooltip" data-toggle="tooltip" data-placement="left"
+                   title="<?= addslashes(strip_tags($entity->text2)) ?>">
+                    <span class="b-button__text"><?= $entity->title2 ?></span>
+                </a>
+            </div>
+            <div class="b-advantages__link-wrapper b-advantages__link-wrapper_3">
+                <a href="javascript:void(0)" class="b-button  b-advantages__link b-advantages__link_tooltip "
+                   data-toggle="tooltip" data-placement="left"
+                   title="<?= addslashes(strip_tags($entity->text3)) ?>">
+                    <span class="b-button__text"><?= $entity->title3 ?></span>
+                </a>
+            </div>
+            <div class="b-advantages__link-wrapper b-advantages__link-wrapper_4">
+                <a href="javascript:void(0)" class="b-button  b-advantages__link b-advantages__link_tooltip"
+                   data-toggle="tooltip" data-placement="left"
+                   title="<?= addslashes(strip_tags($entity->text4)) ?>">
+                    <span class="b-button__text"><?= $entity->title4 ?></span>
+                </a>
+            </div>
+            <div class="b-advantages__link-wrapper b-advantages__link-wrapper_5">
+                <a href="javascript:void(0)" class="b-button  b-advantages__link b-advantages__link_tooltip"
+                   data-toggle="tooltip" data-placement="left"
+                   title="<?= addslashes(strip_tags($entity->text5)) ?>">
+                    <span class="b-button__text"><?= $entity->title5 ?></span>
+                </a>
+            </div>
+        </div>
+        <hr class="dotted-separator" />
+        <br /><br />
+        <div class="text-center">
+            <a class="b-button b-advantages__link b-advantages__link_button" href="/catalog/">ПЕРЕЙТИ В КАТАЛОГ</a>
+            <a class="b-button b-advantages__link b-advantages__link_button" href="/projects/">СМОТРЕТЬ ПРОЕКТЫ</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    (function () {
+        var $tooltipTriggers = jQuery(".b-advantages__link_tooltip");
+
+        $tooltipTriggers.each(function () {
+            var $this = jQuery(this);
+            $this.tooltip({
+                container: $this.parent(),
+                html: true,
+                template: "<div class=\"b-advantages__tooltip\"><div class=\"tooltip-inner\"></div></div>"
+            });
+        });
+    })();
+</script>

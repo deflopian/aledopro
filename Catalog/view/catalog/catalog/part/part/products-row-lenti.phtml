@@ -1,0 +1,55 @@
+
+<tr>
+    <th>Питание</th>
+    <th>Цвет свечения</th>
+    <th>Световой поток</th>
+    <th>Мощность</th>
+    <th>Цена</th>
+    <!--                <th>Партнерская цена</th>-->
+    <th style="width: 60px;"></th>
+    <th style="width: 30px;"></th>
+</tr>
+
+<tr class="product-line" data-id="<?= $this->product->id; ?>" >
+    <td>
+        <?= $this->product->electro_power ?>
+    </td>
+    <td>
+        <?= $this->product->color_of_light ?>
+    </td>
+    <td>
+        <?= $this->product->luminous_flux . (strpos($this->product->luminous_flux, 'лм') ? '' : ' лм') ?>
+    </td>
+    <td>
+        <?= ceil($this->product->power); ?> Вт/м
+    </td>
+
+    <td itemprop="offers" itemscope itemtype="http://schema.org/Offer" >
+        <meta itemprop="currency" content="RUB" />
+        <span itemprop="seller" itemscope itemtype="http://schema.org/Organization">
+                <meta itemprop="name" content="Aledo" />
+                <meta itemprop="address" content="<?= strip_tags($contacts->adress) ?>" />
+                <meta itemprop="telephone" content="<?= $contacts->phone?>" />
+                <meta itemprop="faxNumber" content="<?= $contacts->fax ?>" />
+                <meta itemprop="email" content="<?= $contacts->mail ?>" />
+            </span>
+        <? if ($this->product->length > 0) {
+            $truePrice = \Catalog\Service\CatalogService::getTruePrice($this->product->price_without_nds);?>
+        <span itemprop="price"><?= round($truePrice/$this->product->length) ?></span> <span class="b-rub">Р</span>/м
+        <? } else { ?>
+        <span itemprop="price"><?= \Catalog\Service\CatalogService::getTruePrice($this->product->price_without_nds); ?></span> <span class="b-rub">Р</span>
+        <? } ?>
+    </td>
+    <td>
+        <a class="buy-btn">
+            <span class="buy-arrow"></span>
+        <span class="buy-body">
+            <span class="buy-on">купить</span>
+        </span>
+        </a>
+        <a href="<?= $this->url('cart') ?>" class="buy-to-cart">в корзине</a>
+    </td>
+    <td>
+        <a class="buy-back-btn" title="убрать из корзины"><div class="icon-whitecross"></div></a>
+    </td>
+</tr>

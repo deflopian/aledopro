@@ -1,0 +1,91 @@
+
+<tr>
+    <th>Мощность потребляемая</th>
+    <th>Световой поток</th>
+    <th>Угол пучка</th>
+    <th>Цоколь</th>
+    <th>Колба</th>
+    <th>Цвет корпуса</th>
+    <th>Цена</th>
+    <!--                <th>Партнерская цена</th>-->
+    <th style="width: 60px;"></th>
+    <th style="width: 30px;"></th>
+</tr>
+<tr class="product-line" data-id="<?= $this->product->id; ?>" >
+    <td>
+        <?= $this->product->power ?> Вт
+    </td>
+    <td>
+        <?= $this->product->luminous_flux . (strpos($this->product->luminous_flux, 'лм') ? '' : 'лм') ?>
+    </td>
+    <td>
+        <?= $this->product->viewing_angle ?>
+    </td>
+    <td>
+        <?= $this->product->socle ?>
+    </td>
+    <td>
+        <?= $this->product->bulb ?>
+    </td>
+    <td>
+        <?
+        switch($this->product->case_color){
+            case 'Белый':
+                $color = 'fff; border: 1px solid #D0D0D1;';
+                break;
+            case 'Серебристый':
+                $color = 'D2D3D3;';
+                break;
+            case 'Черный':
+            case 'Чёрный':
+                $color = '777; color:#fff';
+                break;
+            case 'Полир. алюминий':
+                $color = 'd4d0c7; color:#D2D3D3';
+                break;
+            case 'Золотой':
+                $color = 'efe4a3; color:#D2D3D3';
+                break;
+            case 'Красный':
+                $color = 'd0453a; color:#fff';
+                break;
+            case 'Оранжевый':
+                $color = 'e18a27; color:#fff';
+                break;
+            case 'Зелёный':
+                $color = '61b943; color:#fff';
+                break;
+            case 'Фиолетовый':
+                $color = '4696ed; color:#fff';
+                break;
+            default:
+                $color = 'D6CEBD;';
+                break;
+        }
+        ?>
+        <span class="color-bar" style="background-color:#<?=$color?>"><?= $this->product->case_color; ?></span>
+    </td>
+    <td itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <meta itemprop="currency" content="RUB" />
+        <span itemprop="seller" itemscope itemtype="http://schema.org/Organization">
+                <meta itemprop="name" content="Aledo" />
+                <meta itemprop="address" content="<?= strip_tags($contacts->adress) ?>" />
+                <meta itemprop="telephone" content="<?= $contacts->phone?>" />
+                <meta itemprop="faxNumber" content="<?= $contacts->fax ?>" />
+                <meta itemprop="email" content="<?= $contacts->mail ?>" />
+            </span>
+       <span itemprop="price"><?= \Catalog\Service\CatalogService::getTruePrice($this->product->price_without_nds); ?></span>&nbsp;<span class="b-rub">Р</span>
+    </td>
+    <td>
+        <a class="buy-btn">
+            <span class="buy-arrow"></span>
+        <span class="buy-body">
+            <span class="buy-on">купить</span>
+        </span>
+        </a>
+        <a href="<?= $this->url('cart') ?>" class="buy-to-cart">в корзине</a>
+    </td>
+    <td>
+        <a class="buy-back-btn" title="убрать из корзины"><div class="icon-whitecross"></div></a>
+    </td>
+</tr>

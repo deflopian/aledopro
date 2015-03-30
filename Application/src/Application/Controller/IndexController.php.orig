@@ -1,0 +1,173 @@
+<?php
+namespace Application\Controller;
+
+use Application\Service\ApplicationService;
+use Services\Controller\ServicesController;
+use Zend\EventManager\EventManagerInterface;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
+
+class IndexController extends AbstractActionController
+{
+//    public function setEventManager(EventManagerInterface $events)
+//    {
+//        parent::setEventManager($events);
+//
+//        $controller = $this;
+//        $events->attach('dispatch', function ($e) use ($controller) {
+//            $viewHelper = $controller->getServiceLocator()->get('viewhelpermanager');
+//            $viewHelper->get('headscript')->prependFile('/js/mainpage.js');
+//        }, 100); // execute before executing action logic
+//    }
+
+    public function indexAction()
+    {
+        $sl = $this->getServiceLocator();
+        $bannerImages = $sl->get('BannerTable')->fetchAll('order asc');
+        $aboutText = $sl->get('InfoTable')->find(\Info\Controller\AdminController::ABOUT);
+        $teamMembers = $sl->get('TeamTable')->fetchAll('order asc');
+        $teamPopups = $this->renderTeamPopups($teamMembers);
+
+
+        $services = $sl->get('ServicesTable')->fetchAll('order asc');
+        $servicesPopups = $this->renderServicePopups($services);
+        $serviceFormsPopups = $this->renderServiceFormsPopups();
+        $aledoServices = $kaledoscopServices = array();
+        foreach($services as $service){
+            if($service->is_kaledoscop){
+                $kaledoscopServices[] = $service;
+            } else {
+                $aledoServices[] = $service;
+            }
+        }
+
+        $projects = $sl->get('ProjectsTable')->fetchAll('order asc');
+        $projects = array_slice($projects, 0, 6);
+        $conacts = $sl->get('ContactsTable')->find(1);
+
+
+        $this->layout()->noBottomLine = true;
+
+        return array(
+            'bannerImages'  => $bannerImages,
+            'aboutText'     => $aboutText,
+            'teamMembers'   => $teamMembers,
+            'teamPopups'    => \Zend\Json\Json::encode($teamPopups),
+            'projects'      => $projects,
+            'conacts'       => $conacts,
+            'aledoServices'      => $aledoServices,
+            'kaledoscopServices' => $kaledoscopServices,
+            'servicesPopups' => \Zend\Json\Json::encode($servicesPopups),
+            'serviceFormsPopups' => \Zend\Json\Json::encode($serviceFormsPopups),
+        );
+    }
+
+    public function showFooBarPopupAction()
+    {
+        $request = $this->getRequest();
+        if ($request->isXmlHttpRequest()) {
+            $type = $request->getPost('type', false);
+            $url = $request->getPost('url', false);
+            $success = 0;
+            $content = '';
+
+            if ($type) {
+                $sl = $this->getServiceLocator();
+
+                $tmplts= array(
+                    'login',
+                    'register',
+                    'forgot',
+                    'emptycart',
+                    'regsuccess',
+                    'stuffsend',
+                    'error',
+                    'cart-buy',
+                );
+
+                $template = in_array($type, $tmplts) ? 'application/index/part/'.$type : false;
+                if($template){
+                    $htmlViewPart = new ViewModel();
+                    $htmlViewPart->setTerminal(true)
+                        ->setTemplate($template)
+                        ->setVariable('url', $url);
+
+                    if ($type === 'register') {
+                        $registerForm = $this->getServiceLocator()->get('zfcuser_register_form');
+                        $htmlViewPart->setVariable('form', $registerForm);
+                    }
+
+                    $content = $sl->get('viewrenderer')->render($htmlViewPart);
+
+                    $success = 1;
+                }
+            }
+
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode(array(
+                'success' => $success,
+                'content' => $content
+            )));
+            return $response;
+        }
+        return $this->redirect()->toRoute('home');
+    }
+
+    private function renderTeamPopups($workers)
+    {
+        $res = array();
+        foreach($workers as $worker)
+        {
+            $htmlViewPart = new ViewModel();
+            $htmlViewPart->setTerminal(true)
+                ->setTemplate('team/team/part/popup')
+                ->setVariables(array(
+                    'worker'   => $worker,
+                ));
+
+            $res[$worker->id]['text'] = $this->getServiceLocator()->get('viewrenderer')->render($htmlViewPart);
+        }
+
+        return $res;
+    }
+
+    private function renderServicePopups($services)
+    {
+        $res = array();
+        foreach($services as $service)
+        {
+            $htmlViewPart = new ViewModel();
+            $htmlViewPart->setTerminal(true)
+                ->setTemplate('services/services/part/popup')
+                ->setVariables(array(
+                    'service'   => $service,
+                ));
+
+            $res[$service->id]['text'] = $this->getServiceLocator()->get('viewrenderer')->render($htmlViewPart);
+        }
+
+        return $res;
+    }
+
+    private function renderServiceFormsPopups()
+    {
+        $res = array();
+
+        // заявка на консультацию
+        $htmlViewPart = new ViewModel();
+        $htmlViewPart->setTerminal(true)->setTemplate('services/services/part/form-consult');
+        $res[ServicesController::CONSULT_ORDER_FORM]['text'] = $this->getServiceLocator()->get('viewrenderer')->render($htmlViewPart);
+
+        // заявка на проект
+        $htmlViewPart = new ViewModel();
+        $htmlViewPart->setTerminal(true)->setTemplate('services/services/part/form-project');
+        $res[ServicesController::PROJECT_ORDER_FORM]['text'] = $this->getServiceLocator()->get('viewrenderer')->render($htmlViewPart);
+
+        // запрос на расчет
+        $htmlViewPart = new ViewModel();
+        $htmlViewPart->setTerminal(true)->setTemplate('services/services/part/form-calculation');
+        $res[ServicesController::CALCULATION_FORM]['text'] = $this->getServiceLocator()->get('viewrenderer')->render($htmlViewPart);
+
+        return $res;
+    }
+}

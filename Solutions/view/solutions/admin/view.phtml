@@ -1,0 +1,534 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/solutions') ?>">Решения</a>
+    >
+    <? /** @var \Solutions\Model\Solution $entity */ ?>
+    <span id="title"><?= $entity->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table admin-table ">
+        <tbody>
+        <tr>
+            <td>Название</td>
+            <td>
+                <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
+            </td>
+        </tr>
+        <tr ng-app="imageMapper">
+            <td>Изображение</td>
+            <td ng-controller="ImageCtrl">
+                <div
+                    ng-single-image-upload
+                    parent-type="solution"
+                    parent-id="<?= $entity->id ?>"
+                    folder="solutions"
+                    field="img"
+                    img="<?= $entity->img_name ? $entity->img_name : "" ?>"
+                    img-id ="<?= $entity->img ? $entity->img : "" ?>"
+                    ></div>
+
+                <script type="application/javascript">
+                    AppFactory("imageMapper", "images1", ["imageMapper", "ur.file"]);
+                </script>
+            </td>
+        </tr>
+        <tr  id="imageMapper22">
+            <td>Превью</td>
+            <td ng-controller="ImageCtrl">
+                <div
+                    ng-single-image-upload
+                    parent-type="solution"
+                    parent-id="<?= $entity->id ?>"
+                    folder="solutions"
+                    field="preview"
+                    img="<?= $entity->preview_name ? $entity->preview_name : "" ?>"
+                    img-id ="<?= $entity->preview ? $entity->preview : "" ?>"
+                    ></div>
+
+                <script type="application/javascript">
+                    AppFactory("imageMapper22", "images1", ["imageMapper", "ur.file"]);
+                </script>
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <td>Текст</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="text" class="editable-param"><?= $entity->text; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Использованный продукт. Название</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="light_name" class="editable-param"><?= $entity->light_name; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Использованный продукт. Ссылка</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="light_link" class="editable-param"><?= $entity->light_link; ?></a>
+            </td>
+        </tr>
+        <tr id="imageMapper2">
+            <td>Использованный продукт. Изображение</td>
+            <td ng-controller="ImageCtrl">
+                <div
+                    ng-single-image-upload
+                    parent-type="solution"
+                    parent-id="<?= $entity->id ?>"
+                    folder="solutions"
+                    field="light_img"
+                    img="<?= $entity->light_img_name ? $entity->light_img_name : "" ?>"
+                    img-id ="<?= $entity->light_img ? $entity->light_img : "" ?>"
+                    ></div>
+
+                <script type="application/javascript">
+                    AppFactory("imageMapper2", "images2", ["imageMapper", "ur.file"]);
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <td>Харатеристики продукта. Эквивалент</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="attr_equiv" class="editable-param"><?= $entity->attr_equiv; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Харатеристики продукта. Эффективность</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="attr_effectiveness" class="editable-param"><?= $entity->attr_effectiveness; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Харатеристики продукта. Величина светового потока</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="attr_lux_value" class="editable-param"><?= $entity->attr_lux_value; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Харатеристики продукта. Питание</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="attr_electric_power" class="editable-param"><?= $entity->attr_electric_power; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Харатеристики продукта. Мощность</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="attr_power" class="editable-param"><?= $entity->attr_power; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Харатеристики продукта. Вес</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="attr_weight" class="editable-param"><?= $entity->attr_weight; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Харатеристики продукта. Цвет свечения</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="attr_color_temperature" class="editable-param"><?= $entity->attr_color_temperature; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Харатеристики продукта. CRI</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="attr_cri" class="editable-param"><?= $entity->attr_cri; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Харатеристики продукта. Конструкция корпуса</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="attr_construction" class="editable-param"><?= $entity->attr_construction; ?></a>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td>Сравнение светильников. Что сравниваем. Название</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_name_1" class="editable-param"><?= $entity->compare_name_1; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Сравнение светильников. Что сравниваем. Ссылка</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_link_1" class="editable-param"><?= $entity->compare_link_1; ?></a>
+            </td>
+        </tr>
+
+        <tr id="imageMapper3">
+            <td>Сравнение светильников. Что сравниваем. Изображение</td>
+            <td ng-controller="ImageCtrl">
+                <div
+                    ng-single-image-upload
+                    parent-type="solution"
+                    parent-id="<?= $entity->id ?>"
+                    folder="solutions"
+                    field="compare_img_1"
+                    img="<?= $entity->compare_img_1_name ? $entity->compare_img_1_name : "" ?>"
+                    img-id ="<?= $entity->compare_img_1 ? $entity->compare_img_1 : "" ?>"
+                    ></div>
+
+                <script type="application/javascript">
+                    AppFactory("imageMapper3", "images3", ["imageMapper", "ur.file"]);
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <td>Сравнение светильников. Первый. Потребление в год</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_power_kwh_1" class="editable-param"><?= $entity->compare_power_kwh_1; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Сравнение светильников. Первый. Срок службы</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_lifetime_1" class="editable-param"><?= $entity->compare_lifetime_1; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Сравнение светильников. Первый. Индекс светопередачи</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_color_index_1" class="editable-param"><?= $entity->compare_color_index_1; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Сравнение светильников. Первый. Удельное энергопотребление</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_electric_power_1" class="editable-param"><?= $entity->compare_electric_power_1; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Сравнение светильников. Первый. Средняя освещенность экспозиции</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_exposition_1" class="editable-param"><?= $entity->compare_exposition_1; ?></a>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Сравнение светильников. С чем сравниваем. Название</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_name_2" class="editable-param"><?= $entity->compare_name_2; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Сравнение светильников. С чем сравниваем. Ссылка</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_link_2" class="editable-param"><?= $entity->compare_link_2; ?></a>
+            </td>
+        </tr>
+
+        <tr id="imageMapper4">
+            <td>Сравнение светильников. С чем сравниваем. изображение</td>
+            <td ng-controller="ImageCtrl">
+                <div
+                    ng-single-image-upload
+                    parent-type="solution"
+                    parent-id="<?= $entity->id ?>"
+                    folder="solutions"
+                    field="compare_img_2"
+                    img="<?= $entity->compare_img_2_name ? $entity->compare_img_2_name : "" ?>"
+                    img-id ="<?= $entity->compare_img_2 ? $entity->compare_img_2 : "" ?>"
+                    ></div>
+
+                <script type="application/javascript">
+                    AppFactory("imageMapper4", "images4", ["imageMapper", "ur.file"]);
+                </script>
+            </td>
+
+        </tr>
+        <tr>
+            <td>Сравнение светильников. Второй. Потребление в год</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_power_kwh_2" class="editable-param"><?= $entity->compare_power_kwh_2; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Сравнение светильников. Второй. Срок службы</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_lifetime_2" class="editable-param"><?= $entity->compare_lifetime_2; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Сравнение светильников. Второй. Индекс светопередачи</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_color_index_2" class="editable-param"><?= $entity->compare_color_index_2; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Сравнение светильников. Второй. Удельное энергопотребление</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_electric_power_2" class="editable-param"><?= $entity->compare_electric_power_2; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Сравнение светильников. Второй. Средняя освещенность экспозиции</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="compare_exposition_2" class="editable-param"><?= $entity->compare_exposition_2; ?></a>
+            </td>
+        </tr>
+
+        <tr id="imageMapper5">
+            <td>Диаграмма-1</td>
+            <td ng-controller="ImageCtrl">
+                <div
+                    ng-single-image-upload
+                    parent-type="solution"
+                    parent-id="<?= $entity->id ?>"
+                    folder="solutions"
+                    field="diagram_1"
+                    img="<?= $entity->diagram_1_name ? $entity->diagram_1_name : "" ?>"
+                    img-id ="<?= $entity->diagram_1 ? $entity->diagram_1 : "" ?>"
+                    ></div>
+
+                <script type="application/javascript">
+                    AppFactory("imageMapper5", "images5", ["imageMapper", "ur.file"]);
+                </script>
+            </td>
+        </tr>
+        <tr id="imageMapper6">
+            <td>Диаграмма-2</td>
+            <td ng-controller="ImageCtrl">
+                <div
+                    ng-single-image-upload
+                    parent-type="solution"
+                    parent-id="<?= $entity->id ?>"
+                    folder="solutions"
+                    field="diagram_2"
+                    img="<?= $entity->diagram_2_name ? $entity->diagram_2_name : "" ?>"
+                    img-id ="<?= $entity->diagram_2 ? $entity->diagram_2 : "" ?>"
+                    ></div>
+
+                <script type="application/javascript">
+                    AppFactory("imageMapper6", "images6", ["imageMapper", "ur.file"]);
+                </script>
+            </td>
+        </tr>
+        <tr id="imageMapper7">
+            <td>Диаграмма-3</td>
+            <td ng-controller="ImageCtrl">
+                <div
+                    ng-single-image-upload
+                    parent-type="solution"
+                    parent-id="<?= $entity->id ?>"
+                    folder="solutions"
+                    field="diagram_3"
+                    img="<?= $entity->diagram_3_name ? $entity->diagram_3_name : "" ?>"
+                    img-id ="<?= $entity->diagram_3 ? $entity->diagram_3 : "" ?>"
+                    ></div>
+
+                <script type="application/javascript">
+                    AppFactory("imageMapper7", "images7", ["imageMapper", "ur.file"]);
+                </script>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td>Ключевое преимущество 1</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="key_advantage_first" class="editable-param"><?= $entity->key_advantage_first; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Ключевое преимущество 2</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="key_advantage_second" class="editable-param"><?= $entity->key_advantage_second; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Ключевое преимущество 3</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="key_advantage_third" class="editable-param"><?= $entity->key_advantage_third; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Ключевое преимущество 4</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="key_advantage_fourth" class="editable-param"><?= $entity->key_advantage_fourth; ?></a>
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <td>Дополнительный текст 1</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="comment_1" class="editable-param"><?= $entity->comment_1; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Дополнительный текст 2</td>
+            <td>
+                <a href="#" data-type="text" data-name="comment_2" class="editable-param"><?= $entity->comment_2; ?></a>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Сео-заголовок</td>
+            <td class="col-md-8">
+                <div class="editor-get-btn"  data-name="seo_title">
+                    <?= $entity->seo_title; ?>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Сео-текст</td>
+            <td class="col-md-8">
+                <div class="editor-get-btn" data-name="seo_text">
+                    <?= $entity->seo_text; ?>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h3>Популярные продукты</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="tagit-add">Добавить продукт</button>
+
+        <div id="tagit-form" style="display: none">
+            <ul id="tagit-product"></ul>
+            <input type="hidden" id="tagit-product-res" name="productIds"/>
+
+            <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table  admin-table table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody>
+        <? foreach($relatedProds as $prod){ ?>
+            <tr>
+                <td><?= $prod->id; ?></td>
+                <td><?= $prod->title; ?></td>
+                <td>
+                    <a href="#" class="removeBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h3>Проекты</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="tagit-proj-add">Добавить проект</button>
+
+        <div id="tagit-proj-form" style="display: none">
+            <ul id="tagit-proj-product"></ul>
+            <input type="hidden" id="tagit-proj-res" name="productIds"/>
+
+            <button type="button" class="btn btn-default" id="tagit-proj-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="tagit-proj-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody>
+        <? foreach($relatedProjs as $proj){ ?>
+            <tr>
+                <td><?= $proj->id; ?></td>
+                <td><?= $proj->title; ?></td>
+                <td>
+                    <a href="#" class="removeBtn-proj">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="section">
+    <h3>Связи</h3>
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-3">
+            <label for="linkType">Тип элемента</label>
+            <select name="linkType" class="form-control" onchange="catalog.getTagsByType($(this).val())">
+                <option value="<?=\Catalog\Controller\AdminController::PRODUCT_TABLE ?>">Продукт</option>
+                <option value="<?=\Catalog\Controller\AdminController::SERIES_TABLE ?>">Серия</option>
+                <option value="<?=\Catalog\Controller\AdminController::SUBSECTION_TABLE ?>">Подраздел</option>
+                <option value="<?=\Catalog\Controller\AdminController::SECTION_TABLE ?>" selected>Раздел</option>
+                <option value="<?=\Catalog\Controller\AdminController::SOLUTION_TABLE ?>">Решение</option>
+                <option value="<?=\Catalog\Controller\AdminController::PROJECT_TABLE ?>">Проект</option>
+            </select>
+        </div>
+    </div>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="linktagit-add">Добавить существующий элемент</button>
+
+        <div id="linktagit-form" style="display: none">
+            <ul id="tagit-links" ></ul>
+            <input type="hidden" id="tagit-links-res" name="linksIds"/>
+
+            <button type="button" class="btn btn-default" id="linktagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="linktagit-cancel">Отмена</button>
+        </div>
+    </div>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Тип</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+
+        <? /** @var $links array */
+        foreach($links as $link){ ?>
+            <tr class="entity" data-linktype="<?= $link[0] ?>">
+                <td><?= $link[1]->id ?></td>
+                <td><?= $link[3] ?></td>
+                <td><?= $link[1]->title ?></td>
+                <td>
+                    <a href="#" class="removeLinkBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentId = '<?= $entity->id ?>';
+        catalog.type = 'prmember';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/solutions') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/solutions', array('action'=> 'viewMember')) ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::SOLUTIONS ?>';
+        catalog.init();
+        catalog.initEditables();
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.editablesSave,
+            config: 'config-info'
+        });
+
+    });
+
+
+</script>

@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-md-12 text-center"><h1>Вход</h1></div>
+</div>
+
+<? include'part/form-login.phtml' ?>
+
+<div class="row row-second-large">
+    <div class="col-md-12">
+        <button id="popup-register" class="btn btn-aledo-black" href="#">Зарегистрироваться</button>
+    </div>
+</div>
+
+<!--<div class="row row-second">-->
+<!--    <div class="col-md-12">-->
+<!--        Пользоваться всеми разделами сайта можно без регистрации. Регистрация дает возможность:-->
+<!--        <br>- задавать вопросы специалистам-->
+<!--        <br>- участвовать в конкурсах и викторинах-->
+<!--        <br>- оценивать материалы портала-->
+<!--        Изменить регистрационные данные можно в «Личном кабинете».-->
+<!--    </div>-->
+<!--</div>-->
+
+<script type="text/javascript">
+    $(function(){
+        window.setTimeout( function(){
+            formajax.init({
+                changeUrl: false,
+                successPopup: 'refresh'
+            });
+        }, 100);
+        $('#popup-register').on('click', function(e){
+            e.preventDefault();
+            showFooBarPopup('register');
+        });
+        $('#popup-forgot').on('click', function(e){
+            e.preventDefault();
+            showFooBarPopup('forgot');
+        });
+    });
+</script>

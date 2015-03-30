@@ -1,0 +1,79 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/blog') ?>">Блог</a>
+    >
+    <a href="<?= $this->url('zfcadmin/news') ?>">Новости</a>
+    >
+    <span id="title"><?= $entity->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table admin-table  table-striped">
+        <tbody>
+        <tr>
+            <td>Название</td>
+            <td>
+                <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Изображение</td>
+            <td>
+                <div class="admin-banner-img-container" <?= $entity->img ? '' : 'style="display:none"' ?>>
+                    <img style="height: 100%" src="<?= $entity->img ? $this->basePath() . '/images/news/' . $entity->img : ''?>" alt=""/>
+                </div>
+
+                <button type="button" class="btn btn-default" id="add-img"> <?= $entity->img ? 'Редактировать' : 'Добавить' ?> изображение</button>
+
+                <div class="form-inline" id="adding-form-img" style="display: none">
+                    <form id="img-form" method="post" enctype="multipart/form-data">
+                        <p>
+                            <input type="file" name="image"/>
+                            <input type="hidden" name="id" value="<?= $entity->id ?>"/>
+                        </p>
+
+                        <p>
+                            <input type="submit" class="btn btn-default"/>
+                            <button type="button" class="btn btn-default" id="adding-cancel-img">Отмена</button>
+                        </p>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Краткое описание</td>
+            <td>
+                <div class="editor-get-btn" data-name="text_short"><?= $entity->text_short; ?></div>
+            </td>
+        </tr>
+        <tr>
+            <td>Полное описание</td>
+            <td>
+                <div class="editor-get-btn" data-name="text"><?= $entity->text; ?></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        catalog.parentId = '<?= $entity->id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/news') ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::NEWS ?>';
+        catalog.initEditables();
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.editablesSave
+        });
+
+        imgUploader.init({
+            type: 'single',
+            imgUrl: '<?= $this->basePath() . '/images/news/' ?>'
+        });
+    });
+</script>

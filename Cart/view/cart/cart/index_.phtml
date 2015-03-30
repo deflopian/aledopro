@@ -1,0 +1,242 @@
+<? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+
+<div class="section">
+    <div class="row">
+        <div class="col-md-11 col-md-offset-1">
+            <table class="table table-aledo">
+                <thead>
+                <tr class="row">
+                    <th class="col-md-2"></th>
+                    <th class="col-md-1">Артикул</th>
+                    <th class="col-md-4" style="padding-left: 28px">Наименование</th>
+                    <th style="width: 100px; text-align: center">Цена</th>
+                    <th>Количество</th>
+                    <th style="width: 100px; text-align: center">Стоимость</th>
+                    <? if ($user && $user->getIsPartner()) { ?>
+                    <th style="width: 100px; text-align: center">Скидка</th>
+                    <th style="width: 100px; text-align: center">Стоимость со скидкой</th>
+                    <? } ?>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?
+                $totalPrice = 0;
+                foreach($this->prodsInCart as $data){
+                    $prod = $data['product'];
+                    $count = floor($data['count']);
+                    ?>
+                    <tr class="cart-line row" data-id="<?= $prod->id ?>">
+                        <td class="col-md-2">
+                                <?
+                                $src = $prod->preview_img
+                                    ? $this->basePath() . '/images/series/'. $prod->preview_img
+                                    : $this->basePath() . '/images/empty-series.png';
+                                ?>
+                                <a href="<?= $this->url('catalog', array('action' => 'product', 'id' => $prod->id)) ?>" class="incart-preview">
+                                    <img src="<?= $src ?>" alt="<?= $prod->title ?>"/>
+                                </a>
+                        </td>
+                        <td class="col-md-1">
+                            <a href="<?= $this->url('catalog', array('action' => 'product', 'id' => $prod->id)) ?>">
+                                <h2><?= $prod->id ?></h2>
+                            </a>
+                        </td>
+                        <td class="cart-description col-md-5" style="padding-left: 28px">
+                            <h2>
+                                <a class="link" href="<?= $this->url('catalog', array('action' => 'product', 'id' => $prod->id)) ?>">
+                                    <?= $prod->title ?>
+                                </a>
+                            </h2>
+                            <div style="font-size: 13px">
+                            <? foreach ($prod->mainParams as $paramKey => $paramVal) { ?>
+                                <? if ($prod->$paramKey) { ?>
+                                    <p><?= $paramVal ?> - <?= $prod->$paramKey ?></p>
+                                <? } ?>
+                            <? } ?>
+                            </div>
+                        </td>
+
+                        <? //высчитываем обычную цену, цену со скидкой и скидку:
+
+                            $price = \Catalog\Service\CatalogService::getTruePrice($prod->price_without_nds);
+
+                            if ($user && $user->getIsPartner()) {
+                                $discountPrice = \Catalog\Service\CatalogService::getTruePrice(
+                                    $prod->price_without_nds,
+                                    $user,
+                                    $this->hierarchies[$prod->id] ? $this->hierarchies[$prod->id] : array(),
+                                    $this->discounts,
+                                    $prod->opt2
+                                );
+
+                                $realDiscount = round((1 - ($discountPrice / $price))*100);
+                            }
+
+
+                        ?>
+
+                        <td class="table-padding price" style="text-align: center">
+                            <span class="price-one"><?= $price ?></span>
+                            <span class="b-rub">Р</span>
+                        </td>
+
+                        <td>
+                            <div class="row form-group" style="width: 100px">
+                                <div class="col-md-11">
+                                    <input type="text" class="form-control" name="count" value="<?= $count ?>">
+                                </div>
+                                <div class="cart-arrow-container mobile-hide">
+                                    <div class="arrow-aledo arrow-top"></div>
+                                    <div class="arrow-aledo arrow-bot" style="margin-top: 20px"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="table-padding" style="text-align: center">
+                            <span class="price-full">
+                                <? if ($user && $user->getIsPartner()) { ?>
+                                    <? $totalPrice += $count*$discountPrice; ?>
+                                <? } else { ?>
+                                    <? $totalPrice += $count*$price; ?>
+
+                                <? } ?>
+                                <span><?= $count*$price ?></span>
+
+                                <span class="b-rub">Р</span>
+                            </span>
+                        </td>
+
+
+                        <? if ($user && $user->getIsPartner()) { ?>
+
+
+                            <td class="table-padding" style="text-align: center">
+                                <span class="real-discount"><?= $realDiscount ?></span>
+                                <span>%</span>
+                            </td>
+
+                            <td class="table-padding price" style="text-align: center">
+                                <span class="price-discount"><?= $discountPrice*$count ?></span>
+                                <span class="b-rub">Р</span>
+                            </td>
+
+                        <? } ?>
+
+                        <td class="table-padding">
+                            <div class="aledo-cross" title="убрать из корзины"></div>
+                        </td>
+                    </tr>
+                <? } ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>
+    <div class="row row-second-small" style="line-height: 40px;">
+        <div class="col-md-2 col-md-offset-10">
+            <p style="font-size: 16px">Итого: <span id="price-total"><?= $totalPrice ?></span> <span class="b-rub" style="font-weight: bold">Р</span></p>
+        </div>
+    </div>
+    <div class="row"><div class="col-md-12"><div class="black2-top"></div></div></div>
+
+    <div class="row row-second-small">
+        <div class="col-md-8 col-md-offset-4">
+            <form id="cart-form" method="post" action="<?= $this->url('cart',array('action'=>'saveFormAjax')) ?>" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p style="font-size: 13px; padding-top: 8px">Я покупаю как</p>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="radio">
+                                    <input type="radio" id="individual" name="buyer-state" value="1" checked  onchange="changeFileInputAvailable(1)">
+                                    <label for="individual" style="font-size: 11px; text-transform: uppercase; font-weight: bold">физическое лицо</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-second-small"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>
+                        <div class="row row-second-small">
+                            <div class="col-md-5">
+                                <div class="radio">
+                                    <input type="radio" id="legal" name="buyer-state" value="2"  onchange="changeFileInputAvailable(2)">
+                                    <label for="legal" style="font-size: 11px; text-transform: uppercase; font-weight: bold">юридическое лицо</label>
+                                </div>
+                            </div>
+                            <div class="col-md-7" id="cart-input-file" style="cursor: pointer; font-size: 11px; text-transform: uppercase; font-weight: bold; padding-top: 5px">
+                                <?= \Application\Service\ApplicationService::renderFormFileInput($sl, 'Прикрепить реквизиты', '(txt, doc, pdf)', true, false, $this->lastFile); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-second-small"><div class="col-md-12"><div class="black2-top"></div></div></div>
+                <div class="row row-second-small">
+                    <div class="col-md-12">
+                        <label for="comment" class="control-label" style="font-size: 13px; padding-bottom: 8px">Комментарии к заказу</label>
+                        <textarea class="form-control" id="comment" rows="3" name="comment"></textarea>
+                    </div>
+                </div>
+                <div class="row row-second">
+                    <div class="col-md-4 pull-right" style="width: 180px;">
+                        <input type="hidden" id="order-products" name="order-products"/>
+                        <button type="button" style=" background-color: #C8CF76; color: #505050" id="send-bnt" class="btn btn-aledo-green">Оформить заказ</button>
+                    </div>
+                </div>
+                <div class="row row-second-big">
+                    <div class="col-md-12">
+                        <p>При заказе на сумму свыше 30 000 рублей доставка по Санкт-Петербургу бесплатная.</p>
+                        <p>Доставка по России предоставляется юридическим лицам и индивидуальным предпринимателям. Отгрузка товара производится только после получения 100% предоплаты по безналичному расчёту.</p>
+                        <p><a class="link" href="<?= $this->url('info',array('action'=>'delivery'))?>">Узнать подробнее об условиях доставки и оплаты</a></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        cart.initCart();
+
+        formajax.form = $('#cart-form');
+        formajax.page = 'cart';
+        formajax.initFileInput();
+
+    });
+
+    $(changeFileInputAvailable(1));
+
+    function changeFileInputAvailable(val)
+    {
+        if (val == 1) {
+            $('.form-file').attr('disabled', 'disabled');
+            $('.form-file-button .icon-clip').css('background-color', '#FFFFFF');
+            $('.form-file-button .icon-clip').css('border-width', '1px');
+            $('#cart-input-file').css('opacity', '0.3');
+        } else if (val == 2) {
+            $('.form-file').removeAttr('disabled');
+            $('.form-file-button .icon-clip').css('background-color', 'rgba(160, 171, 47, 0.7)');
+            $('.form-file-button .icon-clip').css('border-width', '0');
+            $('#cart-input-file').css('opacity', '1');
+        }
+    }
+</script>
+
+
+<!-- Google Code for &#1055;&#1086;&#1082;&#1091;&#1087;&#1082;&#1072; Conversion Page -->
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var google_conversion_id = 966821971;
+    var google_conversion_language = "ru";
+    var google_conversion_format = "3";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = "lugyCJLD5lgQ05CCzQM";
+    var google_remarketing_only = false;
+    /* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<!--<noscript>-->
+<!--    -->
+<!--</noscript>-->

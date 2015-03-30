@@ -1,0 +1,86 @@
+<?
+$hierarchies = $this->hierarchies;
+$discounts = $this->discounts;
+
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="bar-grey">
+            <h2><?= $dopGroup['title'] ?></h2>
+        </div>
+    </div>
+</div>
+<div class="row row-second-small">
+    <div class="col-md-12">
+        <table class="table table-hover table-aledo table-products">
+            <thead>
+            <tr>
+                <th>Артикул</th>
+                <th>Наименование</th>
+                <th></th>
+                <th>Габариты</th>
+                <th>Мощность</th>
+                <th>Выходной ток</th>
+                <th>Гарантия</th>
+                <th style="width: 40px; padding-right: 10px">Наличие</th>
+                <th>Цена</th>
+                <!--                <th>Партнерская цена</th>-->
+                <th style="width: 80px;"></th>
+                <th style="width: 30px;"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <? foreach($dopGroup['products'] as $prod){ ?>
+                <tr class="product-line" data-id="<?= $prod->id; ?>">
+                    <td class="td-grey"><?= $prod->id; ?></td>
+                    <td><?= $prod->title; ?></td>
+                    <td>
+                        <a href="<?= $prod->file_custom ? $this->basePath() . '/images/product_docs/' . $prod->file_custom : ''?>"
+                           target="_blank"
+                           onclick="ga('send', 'event', 'button', 'click', 'download', '<?= $prod->file_custom ?>');"
+                            >
+                            <? $type = substr($prod->file_custom, -3); ?>
+
+                            <span class="icon-download icon-<?= $type?>"></span>
+                        </a>
+                    </td>
+                    <td><?= ' ' //габариты ?></td>
+                    <td><?= $prod->power; ?></td>
+                    <td><?= $prod->i_out; ?> лм</td>
+                    <td><?= $prod->warranty; ?></td>
+                    <td style="padding-right: 8px"><?=
+                        $prod->free_balance
+                            ? ( ($user && $user->getIsPartner()) ? $prod->free_balance : '<div class="icon-daw"></div>')
+                            : '<div title="наличие уточняйте" class="icon-question"></div>';
+                        ?></td>
+                    <td>
+                        <?= \Catalog\Service\CatalogService::getTruePrice(
+                            $prod->price_without_nds,
+                            $user,
+                            isset($hierarchies[$prod->id]) ? $hierarchies[$prod->id] : array(),
+                            $discounts,
+                            $prod->opt2
+                        ); ?><span class="b-rub">Р</span></td>
+                    <!--                <td class="td-grey"></td>-->
+                    <td>
+                        <a class="buy-btn">
+                            <span class="buy-arrow"></span>
+                            <span class="buy-body">
+                                <span class="buy-on">купить</span>
+                            </span>
+                        </a>
+                        <a href="<?= $this->url('cart') ?>" class="buy-to-cart">в корзине</a>
+                    </td>
+                    <td>
+                        <? if(in_array($prod->id, $offeredIds)){ ?>
+                            <div class="icon-discount"></div>
+                        <? } ?>
+                        <a class="getlink-btn"><div class="icon-getlink"></div></a>
+                        <a class="buy-back-btn"><div class="icon-whitecross"></div></a>
+                    </td>
+                </tr>
+            <? } ?>
+            </tbody>
+        </table>
+    </div>
+</div>

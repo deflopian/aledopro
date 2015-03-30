@@ -1,0 +1,35 @@
+<?php
+use \Catalog\Controller\AdminController;
+$links = $this->links;
+$forWhat = "LED-лент";
+?>
+<div class="section">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Блоки питания для <?=$forWhat?>:</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class=" dotted-bottom"></div>
+        </div>
+    </div>
+    <div class="row">
+        <? foreach ($links as $link) { ?>
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="subsection-link col-md-12" style="height: 50px">
+
+                        <?= $link[1]->title ?>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="padding-bottom: 10px">
+                        <div class=" dotted-bottom"></div>
+                    </div>
+                </div>
+            </div>
+        <? } ?>
+    </div>
+</div>

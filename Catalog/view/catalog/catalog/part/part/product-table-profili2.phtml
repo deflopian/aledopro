@@ -1,0 +1,238 @@
+<?
+$hierarchies = $this->hierarchies;
+$discounts = $this->discounts;
+$fields = array('id', 'title', 'file_custom', 'free_balance', 'price_without_nds', 'price_with_nds');
+$filteredFields = array();
+if ($user && $user->getIsPartner()) {
+    $fields[] = 'partner_price';
+}
+
+$posVals = \Catalog\Service\CatalogService::getValsJSON($products, $filteredFields, $prevProdCount);
+
+$products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS, $hierarchies, $discounts, $filteredFields, true);
+
+?>
+
+
+
+<solo-table make-sortable="3" >
+    <div solo-table-data>
+        [<?= $products ?>]
+    </div>
+    <div solo-table-header-data>
+        [
+        {
+        "name": "id",
+        "label": "Артикул"
+        },
+        {
+        "name": "title",
+        "label": "Наименование"
+        },
+        {
+        "name": "file_custom",
+        "label": ""
+        },
+        {
+        "name": "free_balance",
+        "label": "Наличие"
+        },
+        {
+        "name": "price_with_nds",
+        "label": "Цена"
+        }
+        <? if ($user && $user->getIsPartner()) { ?>
+            ,
+            {
+            "name": "partner_price",
+            "label": "Цена партнёра"
+            }
+        <? } ?>
+        ]
+    </div>
+    <div solo-table-pos-vals>
+        <?= $posVals ?>
+    </div>
+
+<!--    --><?// include 'series-filter-angular.phtml'; ?>
+
+    <table class="table table-hover table-aledo table-products" id="table-products_<?= $serNum ?>">
+        <thead>
+        <tr>
+            <th class="{{th.name}}-header" ng-repeat="th in ths = tds" sort-by='{{th.name}}'>{{th.label}}</th>
+            <th class="buy-item-header"></th>
+            <th class="copy-link-header"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+            itemscope
+            itemtype="http://schema.org/Product"
+            ng-repeat="item in filtered = (original | possibleVals:this)"
+            ng-class="{selectedProd: item.id == selectedProdId, productIncart: elCarto[item.id]==1 }"
+
+            class="item product-line"
+            data-id="{{item.id}}"
+            class="product-line"
+            >
+            <!--        <tr itemscope itemtype="http://schema.org/Product"-->
+            <!--            class="item product-line --><?//= $this->selectedProdId == $prod->id ? 'selectedProd' : ''?><!--"-->
+            <!--            data-id="--><?//= $prod->id; ?><!--">-->
+            <td itemprop="productID" class="td-grey item-id">{{item.id}}</td>
+            <td itemprop="name" class="item-title">{{item.title}}</td>
+            <td class="file_custom">
+                <div ng-show="item.file_custom">
+                    <a href="/images/product_docs/{{item.file_custom}}"
+                       target="_blank"
+                       ng-click="ga('send', 'event', 'button', 'click', 'download', '{{item.file_custom}}');">
+                        <span class="icon-download icon-photo"></span>
+                        <span class="icon-title">ФОТО</span>
+                    </a>
+                </div>
+            </td>
+            <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                <td class="td-grey free_balance">
+                    <div ng-if="item.free_balance">
+                        <span ng-if="item.free_balance == -1">
+                            <div class="icon-daw"></div><link itemprop="availability" href="http://schema.org/InStock"/>
+                        </span>
+                        <span ng-if="item.free_balance > 0">
+                            {{item.free_balance}}
+                        </span>
+
+                    </div>
+                    <div ng-if="item.free_balance == 0">
+                        <div title="Уточняйте наличие" class="icon-question"></div><link itemprop="availability" href="http://schema.org/OutOfStock"/>
+                    </div>
+                </td>
+
+                <td class="price-with-nds">
+                    <span itemprop="price">
+                        {{item.price_with_nds}}
+                    </span>
+                    <span>
+                        <span class="b-rub">Р</span>
+                    </span>
+                </td>
+
+                <? if ($user && $user->getIsPartner()) { ?>
+                    <td class="td-grey partner-price">
+                    <span itemprop="price">
+                        {{item.partner_price}}
+                    </span>
+                    <span>
+                        <span class="b-rub">Р</span>
+                    </span>
+                    </td>
+                <? } ?>
+            </span>
+
+            <td class="but-item">
+                <a class="buy-btn" title="купить модель" ng-click="addItemToCart(item.id)">
+                    <span class="buy-arrow"></span>
+                    <span class="buy-body">
+                        <span class="buy-on">купить</span>
+                    </span>
+                </a>
+                <a href="<?= $this->url('cart') ?>" class="buy-to-cart" title="модель помещена в корзину">в корзине</a>
+            </td>
+            <td class="copy-link">
+                <span ng-if="false">
+                    <div class="icon-discount"></div>
+                </span>
+
+                <a class="getlink-btn">
+                    <div class="icon-getlink zeroclipboard"
+                         data-clipboard-text="/catalog/product/{{item.id}}/"></div>
+                </a>
+                <a class="buy-back-btn" ng-click="removeItemFromCart(item.id)" title="убрать из корзины"><div class="icon-whitecross"></div></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</solo-table>
+
+<table class="table table-hover table-aledo table-products">
+    <thead>
+    <tr>
+        <th class="<?= $admin ? 'id-header sortable" data-param="id' : 'id-header' ?>">Артикул</th>
+        <th class="<?= $admin ? 'title-header sortable" data-param="title' : 'title-header' ?>">Наименование</th>
+        <th class="file-custom-header">Изображение</th>
+        <th class="<?= $admin ? 'free-balance-header sortable" data-param="free_balance' : 'free-balance-header' ?>" >Наличие</th>
+        <th class="<?= $admin ? 'price-with-nds-header sortable" data-param="price_without_nds' : 'price-with-nds-header' ?>" >Цена</th>
+        <? if ($user && $user->getIsPartner()) { ?>
+            <th class="partner-price-header">Цена партнёра</th>
+        <? } ?>
+        <!--                <th>Партнерская цена</th>-->
+        <th class="buy-item-header"></th>
+        <th class="copy-link-header"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <? foreach($products as $prod){ ?>
+        <tr itemscope itemtype="http://schema.org/Product"
+            class="item product-line <?= $this->selectedProdId == $prod->id ? 'selectedProd' : ''?>"
+            data-id="<?= $prod->id; ?>">
+            <td itemprop="productID" class="td-grey item-id"><?= $prod->id; ?></td>
+            <td itemprop="name" class="item-title"><?= $prod->title; ?></td>
+            <td class="file-custom">
+                <? if($prod->file_custom){ ?>
+                    <a href="<?=$this->basePath() . '/images/product_docs/' . $prod->file_custom ?>"
+                       target="_blank"
+                       onclick="ga('send', 'event', 'button', 'click', 'download', '<?= $prod->file_custom ?>');"
+                    >
+                        <span class="icon-download icon-photo"></span>
+                        <span class="icon-title">ФОТО</span>
+                    </a>
+                <? } ?>
+            </td>
+            <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                <td class="td-grey free-balance"><?=
+                    $prod->free_balance
+                        ? ( ($user && $user->getIsPartner()) ?
+                        $prod->free_balance : '<div class="icon-daw"></div><link itemprop="availability" href="http://schema.org/InStock"/>')
+                        : '<div title="Уточняйте наличие" class="icon-question"></div><link itemprop="availability" href="http://schema.org/OutOfStock"/>';
+                    ?></td>
+                <td class="price-with-nds">
+                    <span itemprop="price"><?= \Catalog\Service\CatalogService::getTruePrice(
+                        $prod->price_without_nds
+                    ); ?></span>&nbsp;<span class="b-rub">Р</span>
+                </td>
+                <? if ($user && $user->getIsPartner()) { ?>
+                <td class="partner-price td-grey">
+                    <span itemprop="discount-price"><?= \Catalog\Service\CatalogService::getTruePrice(
+                            $prod->price_without_nds,
+                            $user,
+                            $hierarchies[$prod->id] ? $hierarchies[$prod->id] : array(),
+                            $discounts,
+                            $prod->opt2
+                        ); ?>
+                    </span>&nbsp;<span class="b-rub">Р</span>
+                </td>
+                <? } ?>
+            </span>
+            <!--                <td class="td-grey"></td>-->
+            <td class="but-item">
+
+                <a class="buy-btn" ng-click="addItemToCart(item.id)">
+                    <span class="buy-arrow"></span>
+                    <span class="buy-body">
+                        <span class="buy-on">купить</span>
+                    </span>
+                </a>
+                <a href="<?= $this->url('cart') ?>" class="buy-to-cart">в корзине</a>
+            </td>
+            <td class="copy-link">
+                <? if(in_array($prod->id, $offeredIds)){ ?>
+                    <div class="icon-discount"></div>
+                <? } ?>
+                <a class="getlink-btn">
+                    <div class="icon-getlink zeroclipboard"
+                         data-clipboard-text="<?= $this->url('catalog', array('action'=>'product', 'id'=>$prod->id)); ?>"></div>
+                </a>
+                <a class="buy-back-btn" ng-click="removeItemFromCart(item.id)" ><div class="icon-whitecross"></div></a>
+            </td>
+        </tr>
+    <? } ?>
+    </tbody>
+</table>

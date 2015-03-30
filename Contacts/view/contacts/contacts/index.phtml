@@ -1,0 +1,89 @@
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script src="/Scripts/google.routes.js"></script>
+
+<div class="b-contacts-page b-section">
+    <div class="b-section__content">
+        <div class="b-contacts-table text-center">
+            <div class="b-contacts-table__cell b-contacts-cell dotted-right">
+                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">КОНТАКТЫ</h4>
+                <div class="b-mb4">
+                    <?= $contacts->adress?>
+                </div>
+                <p class="b-mb2 b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_upper b-dotted-decorated_fully">
+                    <?= $contacts->work_time?>
+                </p>
+                <p>
+                    <?= str_replace(' ', '&nbsp;', $contacts->phone) ?><br />
+                    <?= str_replace(' ', '&nbsp;', $contacts->fax) ?><br />
+                    <a class="b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully" href="mailto:<?= $contacts->mail?>"> <?= $contacts->mail?></a>
+                </p>
+            </div>
+            <div class="b-contacts-table__cell b-contacts-cell b-contacts-cell_right">
+                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">СВЯЖИТЕСЬ С НАМИ</h4>
+                <div>
+                    <h4>Или Вы можете</h4>
+                    <a class="b-button b-button_yellow-bordered b-button_gray-colored">
+                        <span class="b-button__text">   заказать обратный звонок</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <hr class="dotted-separator" />
+        <h4 class="text-center">КАРТА ПРОЕЗДА К ОФИСУ</h4>
+        <hr class="dotted-separator" />
+        <div class="b-routing-map"></div>
+
+        <div class="b-route-table">
+            <div class="b-route-table__cell b-route-cell b-route-cell_left dotted-right">
+                <h4 class="b-route-cell__heading">КАК ДОБРАТЬСЯ</h4>
+                <hr class="dotted-separator b-mb1" />
+
+
+                <div class="b-form-group">
+                    <label for="routeFrom" class="b-form-label">Откуда:</label>
+                    <input type="text" class="b-form-control" id="routeFrom" value="СПб, Балтийская" />
+                </div>
+                <div class="b-form-group">
+                    <label for="routeInclude" class="b-form-label">Через (необязательно):</label>
+                    <input type="text" class="b-form-control" id="routeInclude" />
+                </div>
+                <br />
+                <div class="b-form-group">
+                    <p>Каким образом:</p>
+                    <div>
+                        <input type="radio" name="driverType" checked="checked" id="driverType_1" value="1" />
+                        <label for="driverType_1" >На машине</label>
+                    </div><div>
+                        <input type="radio" name="driverType" id="driverType_2" value="2"/>
+                        <label for="driverType_2">Пешком</label>
+                    </div><div>
+                        <input type="radio" name="driverType" id="driverType_3" value="3" />
+                        <label for="driverType_3">Общественным транспортом</label>
+                    </div>
+                </div>
+                <a href="javascript:void(0)" class="b-button b-button_yellow-background" onclick="contactsMap.calcRoute()">
+                    <span class="b-button__text">построить маршрут</span>
+
+                </a>
+
+            </div>
+            <div class="b-route-table__cell b-route-cell b-route-cell_right">
+                <h4 class="b-route-cell__heading">МАРШРУТ</h4>
+                <hr class="dotted-separator b-mb1" />
+                <div class="b-route-preview">
+                    <p>Введите адрес места отправления в колонке слева и нажмите кнопку <strong>Построить маршрут</strong></p>
+                    <img class="b-route-preview__image" src="/Content/images/contacts.svg" />
+                </div>
+                <div class="b-route-steps-wrapper" style="display: none;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        window.contactsMap = new ContactsMap();
+        //initialize();
+        window.contactsMap.init();
+    </script>
+</div>

@@ -1,0 +1,150 @@
+<? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+
+<div class="section" itemscope itemtype="http://schema.org/Product" >
+    <div class="row">
+        <div class="col-md-3">
+            <span itemprop="name"><?= $this->product->title ?></span>
+
+            <? if ($this->series->img) { ?>
+                <meta itemprop="image" content="http://aledo-pro.ru/images/series/<?=$this->series->img ?>" />
+                <img src="/images/series/<?= $this->series->img ?>" alt="<?= $this->series->visible_title ? $this->series->visible_title : $this->series->title ?>">
+            <? } else { ?>
+                <img src="/images/empty-series.png" alt="<?= $this->series->visible_title ? $this->series->visible_title : $this->series->title ?>">
+            <? } ?>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 dotted-top dotted-bottom">
+            <meta itemprop="productID" content="<?= $this->product->id; ?>" />
+            <meta itemprop="identifier" content="<?= $this->product->id; ?>" />
+            <meta itemprop="brand" content="<?= $this->product->brand; ?>" />
+
+
+            <table width="100%">
+            <? if ($this->type == 0) { ?>
+                <?=
+                $this->partial(
+                    "catalog/catalog/part/part/products-row-simple.phtml",
+                    array(
+                        'product' => $this->product,
+                        'contacts' => $this->contacts,
+                    )
+                );
+                ?>
+            <? } elseif ($this->type == 1) { ?>
+                <?=
+                $this->partial(
+                    "catalog/catalog/part/part/products-row-lenti.phtml",
+                    array(
+                        'product' => $this->product,
+                        'contacts' => $this->contacts,
+                    )
+                );
+                ?>
+            <? } elseif ($this->type == 2) { ?>
+                <?=
+                $this->partial(
+                    "catalog/catalog/part/part/products-row-pitanie.phtml",
+                    array(
+                        'product' => $this->product,
+                        'isDriver' => $this->isDriver,
+                        'contacts' => $this->contacts,
+                    )
+                );
+                ?>
+            <? } elseif ($this->type == 3) { ?>
+                <?=
+                $this->partial(
+                    "catalog/catalog/part/part/products-row-profili.phtml",
+                    array(
+                        'product' => $this->product,
+                        'contacts' => $this->contacts,
+                    )
+                );
+                ?>
+            <? } ?>
+
+            </table>
+
+        </div>
+    </div>
+    <div class="row row-second-xs">
+
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <? if (!empty($series->text)) { ?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="dotted-bottom">
+                                    <h2 class="series-title">Описание</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-second-xs">
+                            <div class="col-md-12 series-description" itemprop="description">
+                                <?= $series->text; ?>
+                            </div>
+                        </div>
+                    <? } ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <? if(trim($series->text_exploit)){ ?>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="dotted-bottom">
+                                        <h2 class="series-title">Комплектация и условия эксплуатации</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row row-second-xs">
+                                <div class="col-md-12 series-description">
+                                    <?= $series->text_exploit; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <? } ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <? if ($docs) { ?>
+                <div class="row row-second">
+                    <div class="col-md-12">
+                        <div class="dotted-bottom">
+                            <h2 class="series-title">Материалы для скачивания</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-second-small">
+                    <? foreach($docs as $doc){ ?>
+                        <div class="col-md-12">
+                            <a href="<?= $doc->url ? $this->basePath() . '/images/series_docs/' . $doc->url . '?originalName=' . urlencode($doc->original_name) : ''?>"
+                               target="_blank"
+                               onclick="ga('send', 'event', 'button', 'click', 'download', '<?= $doc->url ?>');"
+                            >
+                                <? $type = substr($doc->url, -3); ?>
+
+                                <span class="icon-download icon-<?= $type?>"></span>
+                                <span class="icon-title" style="font-size: 11px; font-weight: bold"><?= $doc->title; ?> (<?= $type ?>)</span>
+                            </a>
+                        </div>
+                    <? } ?>
+                </div>
+            <? } ?>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        popup.initSeriesPopup();
+        popup.renderCartedLines();
+
+        catalogClient.initUrl();
+    })
+</script>

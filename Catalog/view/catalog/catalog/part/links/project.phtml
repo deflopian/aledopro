@@ -1,0 +1,22 @@
+<?
+/** @var \Projects\Model\Project $project */
+$project = $this->element;
+$url = $this->url('projects', array(
+    'action' => 'view',
+    'id' => $project->id
+));
+?>
+
+<a href="<?= $url ?>">
+    <div class="popup-buttton project-tile-other" data-id="<?= $project->id ?>">
+        <div class="absolute-banner-text-block">
+            <div class="tile-title-project">
+                <span class="backgrounded"><?= $project->title ?>&nbsp;&nbsp;</span>
+            </div>
+            <div class="lolwut">
+                <span class="backgrounded-alt project-title"><?= trim($project->adress) ?> &nbsp;&nbsp;</span>
+            </div>
+        </div>
+        <img src="<?= $this->basePath() . '/images/projects/' . $project->img ?>" alt="<?= $project->title ?>"/>
+    </div>
+</a>

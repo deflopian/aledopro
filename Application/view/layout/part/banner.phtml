@@ -1,0 +1,53 @@
+<div class="row mobile-hide">
+    <div class="col-md-12">
+        <div class="dotted-top" style="padding-bottom: 10px"> </div>
+    </div>
+</div>
+<div id="banner-carousel" class="carousel slide mobile-hide" data-ride="carousel" onmouseover="$('.carousel-indicators').show()" onmouseout="$('.carousel-indicators').hide()">
+
+    <ol class="carousel-indicators" style="display: none; margin-bottom: 0">
+        <? foreach($bannerImages as $i=>$image){ ?>
+            <li data-target="#banner-carousel" data-slide-to="<?= $i ?>" <?= $i == 0? 'class="active"': ''?>></li>
+        <? } ?>
+    </ol>
+
+    <div class="carousel-inner" style="">
+        <? foreach($bannerImages as $i=>$image){ ?>
+            <div class="item <?= $i == 0? 'active': ''?>">
+                <a href="<?= $image->link?>">
+                    <img style="width: 100%" src="<?= $this->basePath() . '/images/banner/' . $image->img ?>" alt="<?= (strlen($image->title) > 3) ? $image->title : ''?>">
+                </a>
+                <? if (strlen($image->title) > 3) { ?>
+                    <div class="absolute-banner-text-block">
+                        <div class="container">
+                            <div class="banner-backgrounded-wrapper">
+                        <? if ($image->title) { ?>
+                            <span class="banner-title backgrounded" <?= !$image->text ? 'style="padding-bottom: 16px;"' : '' ?>><?= $image->title ?>&nbsp;&nbsp;</span><br />
+                        <? } ?>
+                        <? if ($image->text) { ?>
+                            <span class="banner-text-main backgrounded"><?= $image->text ?>&nbsp;&nbsp;&nbsp;</span>
+                        <? } ?>
+                            </div>
+                        </div>
+                    </div>
+                <? } ?>
+            </div>
+
+        <? } ?>
+    </div>
+
+    <a class="left carousel-control" href="#banner-carousel" data-slide="prev">
+        <div class="aledo-banner-chevron left"></div>
+    </a>
+    <a class="right carousel-control" href="#banner-carousel" data-slide="next">
+        <div class="aledo-banner-chevron right"></div>
+    </a>
+</div>
+
+<div class="row mobile-hide">
+    <div class="col-md-12">
+        <div class="dotted-top further-more-line text-center" style="position: relative; line-height: 60px;">
+            <span class="further-more-arrow"></span>
+        </div>
+    </div>
+</div>

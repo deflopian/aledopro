@@ -1,0 +1,123 @@
+<div class="catalog-filter">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="dotted-bottom">
+                <h2 style="margin-top: 7px; margin-bottom: 24px">Выбор по параметрам</h2>
+            </div>
+        </div>
+    </div>
+
+    <form id="f-form" class="form-horizontal row-second-xs" role="form">
+
+        <div class="form-group">
+            <div class="checkbox"  style="margin-left: 15px">
+                <input type="checkbox" id="f-instock">
+                <label for="f-instock">показать только в наличии</label>
+            </div>
+        </div>
+
+        <div class="panel-group">
+
+            <? foreach($filterData as $param){ ?>
+                <div class="panel panel-catalog-filter" data-field="<?= $param->field ?>">
+
+                    <div class="panel-heading popupsmall-container wide-popup" data-type="filter">
+                        <a class="<?= $param->open ? '' : 'collapsed' ?> panel-title" data-toggle="collapse"
+                           href="#f-<?= $param->field ?>">
+                            <div class="filter-arrow"></div>
+                            <span style="padding-left: 7px"><?= $param->title ?></span>
+                        </a>
+                        <span class="popupsmall-button catalog-question pull-right" data-id="<?= $param->id ?>">?</span>
+                    </div>
+
+                    <div id="f-<?= $param->field ?>" class="panel-collapse collapse<?= $param->open ? ' in force-open' : '' ?>">
+                        <div class="panel-body form-group <?= $param->is_slider ? 'panel-slider' : 'panel-checkbox' ?>" data-type="<?= $param->is_slider ? 'slider' : 'checkbox' ?>">
+                            <? if($param->is_slider){  ?>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-md-1 control-label">От</label>
+                                        <div class="col-md-4">
+                                            <input id="f-<?= $param->field ?>-val-from"
+                                                   type="text" class="form-control" >
+                                        </div>
+                                        <label class="col-md-1 control-label">До</label>
+                                        <div class="col-md-4">
+                                            <input id="f-<?= $param->field ?>-val-to"
+                                                   type="text" class="form-control">
+
+                                            <div class="filter-measure"><?= $param->post_value ?></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div data-name="<?= $param->field ?>" class="noUiSlider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <? } else { ?>
+                                <? if(isset($param->values)){ ?>
+                                    <? foreach($param->values as $i=>$val){ ?>
+                                        <div class="checkbox">
+                                            <input id="f-<?= $param->field ?>-val-<?= $i ?>" type="checkbox"
+                                                   name="<?= $param->field ?>" value="<?= $i ?>">
+                                            <label for="f-<?= $param->field ?>-val-<?= $i ?>"><?= $param->pre_value ?> <?=$val ?> <?= $param->post_value ?></label>
+                                        </div>
+                                    <? } ?>
+                                <? } ?>
+                            <? } ?>
+                        </div>
+                    </div>
+                </div>
+            <? } ?>
+        </div>
+
+        <div class="form-group row-second-xs">
+            <div class="checkbox"  style="margin-left: -4px">
+                <input type="checkbox" id="f-offers">
+                <label for="f-offers">спецпредложения</label>
+            </div>
+            <div class="col-md-12 row-second-small">
+                <div class="dotted-bottom"></div>
+            </div>
+        </div>
+
+        <div class="form-group row-second-xs">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-aledo-black" style="text-transform: uppercase; font-weight: bold">Применить фильтр</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(function(){
+
+        filter.init({
+            slidersData: <?= $this->slidersData ?>,
+            postVals: <?= $this->postVals ?>,
+            section_id: <?= $section->id ?>,
+            subsection_id: <?= isset($this->subsection->id)? $this->subsection->id : 0 ?>
+        });
+
+        var content = [];
+        content['filter'] = {
+            content: <?= $this->qtexts; ?>,
+            data: {
+                placement: 'right',
+                trigger: 'click'
+            }
+        };
+        popupsmall.init({ content: content });
+
+        $('.series-tile > a').click(function(e) {
+            if ($.url().param('filter')) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                url += '?filter=' + encodeURIComponent($.url().param('filter'));
+                location.href = url;
+            }
+        });
+    });
+</script>

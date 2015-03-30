@@ -1,0 +1,52 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/showroom') ?>">Баннер</a>
+    >
+    <span id="title"><?= $entity->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table admin-table ">
+        <tbody>
+        <tr>
+            <td>Название</td>
+            <td>
+                <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Ссылка</td>
+            <td>
+                <a href="#" data-type="text" data-name="link" class="editable-param"><?= $entity->link; ?></a>
+            </td>
+        </tr>
+        <tr ng-app="imageMapper">
+            <td>Изображение</td>
+            <td ng-controller="ImageCtrl">
+                <div
+                    ng-single-image-upload
+                    parent-type="showRoom"
+                    parent-id="<?= $entity->id ?>"
+                    folder="showroom"
+                    field="img"
+                    img="<?= $entity->img_name ? $entity->img_name : "" ?>"
+                    img-id ="<?= $entity->img ? $entity->img : "" ?>"
+                    ></div>
+
+                <script type="application/javascript">
+                    AppFactory("imageMapper", "images1", ["imageMapper", "ur.file"]);
+                </script>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentId = '<?= $entity->id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/showroom') ?>';
+        catalog.initEditables();
+    });
+</script>

@@ -1,0 +1,46 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/requests') ?>">Заявки</a>
+    >
+    <a href="<?= $this->url('zfcadmin/requests', array('action' => 'reqModern'))?>">Заявки на модернизацию</a>
+    >
+    <?= $req->name; ?>
+</h1>
+
+<div class="section">
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <td>Имя отправителя</td>
+            <td><?= $req->name ?></td>
+        </tr>
+        <tr>
+            <td>Мобильный</td>
+            <td><?= $req->phone ?></td>
+        </tr>
+        <tr>
+            <td>Почта</td>
+            <td><?= $req->mail ?></td>
+        </tr>
+        <tr>
+            <td>Город/область</td>
+            <td><?= $req->city ?></td>
+        </tr>
+        <tr>
+            <td>Коментарии</td>
+            <td><?= $req->comment ?></td>
+        </tr>
+        <tr>
+            <td>Прикреплённый файл</td>
+            <td>
+                <? if($req->file) { ?>
+                    <a href="<?= $this->basePath() . '/uploads/services/' . $req->file ?>" target="_blank"><?= $req->file ?></a>
+                <? } ?>
+            </td>
+        </tr>
+        <tr>
+            <td>Дата</td>
+            <td><?= \Application\Service\ApplicationService::getFormedDate($req->date); ?></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

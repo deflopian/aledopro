@@ -1,0 +1,140 @@
+<? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+<?
+$admin = $this->isAllowed('controller/CatalogAdmin');
+?>
+<?
+/** @var integer $scrollToSubsection*/
+/** @var integer $scrollToSeries*/
+/** @var integer $scrollToProduct*/
+
+?>
+<div class="section">
+    <div class="row catalog-submenu">
+        <div class="col-md-12" style="text-align: center">
+            <div class="row no-tb-padding">
+                <div class="col-md-12 no-tb-padding">
+                    <?
+                    //todome: исправить это мракобесие
+                    $i = 0;
+                    foreach($subsections as $subsec){ ?>
+                        <div class="catalog-submenu-item dotted-left">
+                            <a href="<?= $this->url('home') ?>catalog/section/<?= $section->id ?>/?p=subsec-<?= $subsec->id?>"><?= $subsec->title; ?></a>
+                        </div>
+                        <?  if(($i+1)%4 == 0){echo'</div></div>
+                    <div class="row no-tb-padding row-second-xxs"><div class="col-md-12 no-tb-padding"><div class="dotted-top"></div></div></div>
+                    <div class="row no-tb-padding"><div class="col-md-12 no-tb-padding">';}
+                        $i++;
+                    } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="black-bottom absolute-width"></div>
+    </div>
+
+    <div class="row row-second">
+        <div class="col-md-6 tablefilter">
+            <? include 'part/filter-small.phtml' ?>
+        </div>
+    </div>
+
+    <div id="catalog-filterbar-place"></div>
+
+    <?
+    $i = 0;
+    foreach($subsections as $subsec){ ?>
+        <div id="subsec-<?=$subsec->id?>">
+            <? if ($subsec->url) { ?>
+            <div class="series-pics " style="position: relative">
+                <img class="drivers_pic" src="<?= $this->basePath() . '/images/subsections/' . $subsec->url ?>" alt="<?= $subsec->title?>">
+                <div class="absolute-banner-text-block absolute-banner-text-block-alt">
+                    <div class="container">
+                        <div class="banner-backgrounded-wrapper banner-backgrounded-wrapper-alt">
+                            <? if ( $subsec->title) { ?>
+
+                                <span class="banner-title backgrounded-alt" <?= !$subsec->title ? 'style="padding-bottom: 16px;"' : '' ?>><?= $subsec->title ?>&nbsp;&nbsp;</span><br />
+
+                            <? } ?>
+                            <? if ( $subsec->text) { ?>
+
+                                <span class="banner-text backgrounded-alt"><?= $subsec->text ?>&nbsp;&nbsp;&nbsp;</span>
+
+                            <? } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <? } else { ?>
+        <div class="row">
+            <div class="col-md-12">
+                <h1><?= $subsec->title ?></h1>
+                <div class="grey-bottom"></div>
+            </div>
+        </div>
+    <? }?>
+
+            <div class="row row-second-xs">
+                <div class="col-md-12">
+                    <?
+
+                        foreach($seAgg->getSeries($subsec->id) as $series){ ?>
+
+                            <div class="series-block" data-id="<?= $series->id ?>">
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-12">-->
+<!--                                        <div class="title-pitanie">-->
+<!--                                            <h2>--><?//= $series->title ?><!--</h2>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="row"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>-->
+                                <div class="row row-second-xs">
+                                    <? $equalParameters = $series->equalParams; ?>
+                                    <? $shownEqualParams = $series->shownEqualParams; ?>
+                                    <? include 'part/part/equal-blocks-inline.phtml'; ?>
+                                </div>
+
+                                <?  if(isset($pAgg)){
+                                    $products = $pAgg->getProducts($series->id);
+
+                                    ?>
+                                    <div class="row row-second-small">
+                                        <div class="col-md-12">
+                                            <? include 'part/part/product-table-pitaine.phtml'; ?>
+                                        </div>
+                                    </div>
+                                <? } ?>
+                            </div>
+
+                        <? } ?>
+                </div>
+            </div>
+        </div>
+        <? $i++; ?>
+    <? } ?>
+
+    <?= \Catalog\Service\CatalogService::renderSeoTextBlock($sl, $section); ?>
+</div>
+
+<script type="text/javascript">
+    var screenWidth = $("html").width();
+    $('.series-pics').css('width', screenWidth);
+    $('.series-pics').css('margin-left', -(screenWidth-$('.container :first').width())/2-15);
+    $(function(){
+        popup.initSeriesPopup();
+        popup.renderCartedLines();
+        catalogClient.scrollToSeries = <?= $scrollToSeries ? $scrollToSeries : 'false' ?>;
+        catalogClient.scrollToProduct = <?= $scrollToProduct ? $scrollToProduct : 'false'  ?>;
+        catalogClient.scrollToSubsection = <?= $scrollToSubsection ? $scrollToSubsection : 'false' ?>;
+        catalogClient.initUrl();
+    })
+
+    window.setTimeout( function(){
+        mainpage.renderUrl();
+    }, 100);
+
+
+
+</script>

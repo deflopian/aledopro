@@ -1,0 +1,65 @@
+<? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+
+<div class="section b-section__content catalog">
+    <div class="row">
+        <div class="col-md-6">
+            <? include 'part/filter-small.phtml' ?>
+        </div>
+    </div>
+
+    <div id="catalog-filterbar-place"></div>
+
+    <? foreach($subsections as $subsecId=>$subsection){ ?>
+        <div class="row row-second" id="subsec-<?= $subsecId?>">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="catalog-section-bar" data-id="<?= $subsection->id ?>"
+                           href="<?= empty($subsection->display_name) ?
+                               $this->url('catalog', array('action'=>'subsection', 'id'=>$subsection->id)) :
+                               $this->url('catalog', array('action'=>'subsection', 'id'=>$subsection->display_name));?>">
+                            <h2><?= $subsection->title; ?></h2>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row row-second" data-type="catalog">
+                    <?
+                    if(isset($seAgg)){
+                        $i = 0;
+                        foreach($seAgg->getSeries($subsection->id) as $ser){ ?>
+                            <div class="col-md-2 series-tile" data-id="<?= $ser->id ?>">
+                                <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $ser);?>
+                            </div>
+                            <?
+                            if(($i+1)%6==0){ echo '</div><div class="row row-second" data-type="catalog">'; }
+                            $i++;
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    <? } ?>
+    <?=
+    $this->partial(
+        "catalog/catalog/part/links-block.phtml",
+        array(
+            'links' => $this->links,
+            'forWhat' => 'профилей'
+        )
+    );
+    ?>
+    <?= \Catalog\Service\CatalogService::renderSeoTextBlock($sl, $section); ?>
+</div>
+
+
+<script type="text/javascript">
+    $(function(){
+        popup.init({
+            page: 'catalog',
+            isSection: true,
+        view: '<?= \Catalog\Controller\CatalogController::POPUP_PROFILI ?>'
+        });
+    });
+</script>

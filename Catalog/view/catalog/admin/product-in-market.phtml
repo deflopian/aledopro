@@ -1,0 +1,56 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/market') ?>">Яндекс.Маркет</a>
+    >
+    <span id="title"><?= $product->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table admin-table  table-striped">
+        <tbody>
+        <? $uneditableParams[] = 'title';
+            $uneditableParams[] = 'id';
+            $uneditableParams[] = 'purchase';
+        foreach($product->toArray() as $key=>$val){
+
+            $name = $key;
+            if(in_array($key, $uneditableParams)){ ?>
+
+                <tr>
+                    <td><?= $name ?></td>
+                    <td>
+                        <?= $val ?>
+                    </td>
+                    <td>
+                        <?= isset($paramsDescr[$key]) ? $paramsDescr[$key] : "" ?>
+                    </td>
+                </tr>
+            <? } else {
+                $type = 'text';
+            ?>
+            <tr>
+                <td><?= $name ?></td>
+                <td>
+                    <a href="#" data-type="<?= $type ?>" data-name="<?= $key ?>" class="editable-param">
+                        <?= $val ?>
+                    </a>
+                </td>
+                <td>
+                    <?= isset($paramsDescr[$key]) ? $paramsDescr[$key] : "" ?>
+                </td>
+            </tr>
+            <?}?>
+        <?}?>
+
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentType = '<?= \Catalog\Controller\AdminController::PRODUCT_IN_MARKET_TABLE ?>';
+        catalog.parentId = '<?= $product->id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/market') ?>';
+        catalog.initEditables();
+    });
+</script>

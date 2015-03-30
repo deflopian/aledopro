@@ -1,0 +1,100 @@
+<? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h1>Заявка на энергоаудит</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="dotted-top"></div>
+    </div>
+</div>
+<div class="row row-second">
+    <div class="col-md-12">
+        <?= $this->service->text ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="dotted-top"></div>
+    </div>
+</div>
+
+<div class="row row-second-small">
+    <div class="col-md-12 text-center">
+        <h2>Контактная информация</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <form class="form-horizontal aledo-form" role="form" method="post" action="<?= $this->url('services') ?>">
+            <div class="form-group">
+                <label for="calc-name" class="col-md-3 control-label">ФИО*</label>
+                <div class="col-md-9">
+                    <input class="form-control" id="calc-name" name="name"
+                        <?= ($this->isRegistered && $this->user->getUsername()) ?
+                            'type="text" data-required="yes" value="' . $this->user->getUsername() . '"' :
+                            'type="text" data-required="yes"'
+                        ?>>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="calc-phone" class="col-md-5 control-label">Номер телефона*</label>
+                <div class="col-md-7">
+                    <input class="form-control" id="calc-phone" name="phone"
+                        <?= ($this->isRegistered && $this->user->getPhone()) ?
+                            'type="text" data-required="yes" value="' . $this->user->getPhone() . '"' :
+                            'type="text" data-required="yes"'
+                        ?>>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="calc-mail" class="col-md-3 control-label">E-mail*</label>
+                <div class="col-md-9">
+                    <input  class="form-control" id="calc-mail" name="mail"
+                        <?= ($this->isRegistered && $this->user->getEmail()) ?
+                            'type="text" data-required="yes" value="' . $this->user->getEmail() . '"' :
+                            'type="text" data-required="yes"'
+                        ?>>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="proj-city" class="col-md-3 control-label">Город</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="proj-city" name="city">
+                </div>
+            </div>
+
+            <div class="form-group"  style="cursor: pointer">
+                <div class="col-md-12">
+                    <?= \Application\Service\ApplicationService::renderFormFileInput($sl, 'Прикрепить чертёж', '(DWG, PDF, JPG, DOC)', false); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label for="consult-comment" class="control-label">Комментарии</label>
+                    <textarea class="form-control" id="consult-comment" rows="3" name="comment"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="hidden" name="form-type"
+                           value="<?= \Services\Controller\ServicesController::MODERNISATION_FORM?>"/>
+                    <button type="submit" class="btn btn-aledo-black">Отправить заявку</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        formajax.init({});
+    });
+</script>

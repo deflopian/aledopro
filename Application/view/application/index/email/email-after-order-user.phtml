@@ -1,0 +1,188 @@
+<table cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="border-collapse:collapse; margin:0 auto">
+    <tbody>
+        <tr>
+        <td align="center">
+
+            <table width="600" height="200" cellpadding="0" cellspacing="0" style="margin:0 auto;font-family:'Lato',Arial,Helvetica,sans-serif;border-collapse:collapse">
+                <tbody>
+                <tr height="10">
+                    <td height="10" colspan="4">
+                        <p style="border-bottom: 1px dotted black"></p>
+                    </td>
+                </tr>
+                <tr height="20">
+                    <td width="20" height="20">&nbsp;</td>
+                    <td width="220" height="20">
+                        <p>
+                            Здравствуйте, <?= $this->username ?>!
+                            <br />
+                            Номер Вашего заказа <?= $this->orderId ?>
+                        </p>
+                    </td>
+                    <td height="20" align="right">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <img src="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?>/images/aledo-logo-without-title.png" width="212" height="40" alt="Aledo <8 (800) 555 56 72>" />
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td width="18">&nbsp;</td>
+                                <td>
+                                    8 (800) 555 56 72
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </td>
+
+                    <td width="1" height="20">&nbsp;</td>
+                </tr>
+
+                <tr height="10">
+                    <td height="10" colspan="4">
+                        <p style="border-bottom: 1px dotted black"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td colspan="2" bgcolor="white" align="left">
+                        <table width="600" height="200" border="0" cellpadding="0" cellspacing="10" align="left">
+                            <tr height="40">
+                                <td width="40" height="60">
+                                    Артикул
+                                    <p style="border-bottom: 1px dotted black"></p>
+                                </td>
+                                <td width="*" height="60">
+                                    Наименование
+                                    <p style="border-bottom: 1px dotted black"></p>
+                                </td>
+                                <td width="35" height="60">
+                                    Цена
+                                    <p style="border-bottom: 1px dotted black"></p>
+                                </td>
+                                <td width="80" height="60">
+                                    Количество
+                                    <p style="border-bottom: 1px dotted black"></p>
+                                </td>
+                                <td width="80" height="60">
+                                    Стоимость
+                                    <p style="border-bottom: 1px dotted black"></p>
+                                </td>
+                            </tr>
+
+                            <? foreach ($this->products as $oneProduct) : ?>
+                                <tr height="30">
+                                    <td height="30"><?= $oneProduct->id ?></td>
+                                    <td height="30">
+                                        <table>
+                                            <tbody>
+                                            <tr>
+                                                <td>
+                                                    <a href="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?>/catalog/product/<?= $oneProduct->id ?>/">
+                                                    <?= $oneProduct->title ?>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <? foreach ($oneProduct->mainParams as $paramKey => $paramVal) { ?>
+                                                <? if ($oneProduct->$paramKey) { ?>
+                                                    <tr height="20">
+                                                        <td height="20">
+                                                            <span><?= $paramVal ?> - <?= $oneProduct->$paramKey ?></span>
+                                                        </td>
+                                                    </tr>
+                                                <? } ?>
+                                            <? } ?>
+
+<!--                                                    цвет корпуса - --><?//= $oneProduct->case_color ?>
+<!--                                                -->
+<!--                                            <tr height="20">-->
+<!--                                                <td height="20">-->
+<!--                                                    <span>температура свечения - --><?//= $oneProduct->color_of_light ?><!--</span>-->
+<!--                                                </td>-->
+<!--                                            </tr>-->
+<!--                                            <tr height="20">-->
+<!--                                                <td height="20">-->
+<!--                                                    <span>угол рассеивания - --><?//= $oneProduct->viewing_angle ?><!-- ⁰</span>-->
+<!--                                                </td>-->
+<!--                                            </tr>-->
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td height="30"> <?= $this->prodsInfo[$oneProduct->id]->price ?>&nbsp;руб.</td>
+                                    <td height="30"><?= $this->prodsInfo[$oneProduct->id]->count ?>&nbsp;шт.</td>
+                                    <td height="30"><strong><?= $this->prodsInfo[$oneProduct->id]->price * $this->prodsInfo[$oneProduct->id]->count ?>&nbsp;руб</strong></td>
+                                </tr>
+                                <tr height="10">
+                                    <td height="10" colspan="5">
+                                        <p style="border-bottom: 1px dotted black"></p>
+                                    </td>
+                                </tr>
+                            <? endforeach; ?>
+                            <tr align="right">
+                                <td colspan="5"  align="right">
+                                    <table width="200">
+                                        <tbody>
+                                        <tr>
+                                            <td align="right">
+                                                Итого:
+                                            </td>
+                                            <td width="80" align="left">
+                                                <strong><?= $this->orderInfo->summ ?>&nbsp;руб</strong>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+
+                <? if (isset($this->orderInfo->originalName)) : ?>
+                    <tr>
+                        <td width="180" style="color: #666666">
+                            Прикреплённый файл:
+                        </td>
+                        <td>
+                            <?= $this->orderInfo->originalName ?>
+                        </td>
+                    </tr>
+                    <tr height="10">
+                        <td height="10" colspan="4">
+                            <p style="border-bottom: 1px dotted black"></p>
+                        </td>
+                    </tr>
+                <? endif; ?>
+                <? if (!empty($this->orderInfo->comment)) : ?>
+                    <tr>
+                        <td width="180" style="color: #666666">
+                            Комментарий:
+                        </td>
+                        <td>
+                            <?= $this->orderInfo->comment ?>
+                        </td>
+                    </tr>
+                <? endif; ?>
+                <tr height="10">
+                    <td height="10" colspan="4">
+                        <p style="border-bottom: 1px dotted black"></p>
+                    </td>
+                </tr>
+                <tr height="20">
+                    <td height="20">&nbsp;</td>
+                    <td height="20" colspan="2">
+                        В ближайшее время наш менеджер свяжется с вами для уточнения способа доставки и оплаты товара.<br />
+                        Спасибо, что выбрали нас!
+                    </td>
+                    <td height="20">&nbsp;</td>
+                </tr>
+                </tbody></table>
+        </td>
+    </tr>
+    </tbody></table>

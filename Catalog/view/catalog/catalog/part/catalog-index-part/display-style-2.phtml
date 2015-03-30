@@ -1,0 +1,47 @@
+<?php
+    $i = $this->i;
+    /** @var Catalog\Model\Section $section */
+    $section = $this->section;
+    $series = $this->series;
+
+    if (isset($this->subsections[$section->id])) {
+?>
+    <div class="row">
+        <? foreach($this->subsections[$section->id] as $i => $subsec){
+            if($i%2==0){ echo'</div><div class="row row-second">'; }
+            ?>
+            <div class="col-md-6 mobile-left-margin-2">
+                <a href="<?= empty($subsec->display_name) ?
+                    $this->url('catalog', array('action'=>'subsection', 'id'=>$subsec->id)) :
+                    $this->url('catalog', array('action'=>'subsection', 'id'=>$subsec->display_name));?>">
+                    <div class="black2-top subsection-link">
+                        <?= $subsec->title; ?>
+                    </div>
+                    <div class="subsection-link-icon"></div>
+                </a>
+
+
+                <? if (isset($series) && is_array($series)) { ?>
+                    <div class="row">
+                        <? foreach($series[$subsec->id] as $j => $oneSeries){
+                            if($j%2==0){ echo'</div><div class="row">'; }
+                            ?>
+                            <div class="col-md-6 " style="padding-bottom: 10px">
+                                <?=
+                                $this->partial(
+                                    "catalog/catalog/part/catalog-index-part/part/series-tile.phtml",
+                                    array(
+                                        'series' => $oneSeries,
+                                        'showPic' => true,
+                                    )
+                                );
+                                ?>
+                            </div>
+                        <? } ?>
+                    </div>
+                <? } ?>
+
+            </div>
+        <? } ?>
+    </div>
+<? } ?>

@@ -1,0 +1,69 @@
+<!--<div class="section">-->
+<!--    <div class="row row-second popup-buttons-container" data-type="solutions">-->
+<!--        --><?// foreach($solutions as $i=>$project){ ?>
+<!--            <div class="col-md-4 popup-buttton project-tile-other" data-id="--><?//= $project->id ?><!--">-->
+<!--                <div class="tile-title">--><?//= $project->title ?><!--</div>-->
+<!--                <div class="tile-text">--><?//= $project->adress ?><!--</div>-->
+<!--                <img src="--><?//= $this->basePath() . '/images/solutions/' . $project->img ?><!--" alt="--><?//= $project->title ?><!--"/>-->
+<!--            </div>-->
+<!--            --><?// if(($i+1)%3==0){echo'</div><div class="row row-second popup-buttons-container" data-type="solutions">';} ?>
+<!--        --><?// } ?>
+<!--    </div>-->
+<!--</div>-->
+<?
+/**
+ * @var $solutions \Solutions\Model\Solution[]
+ * @var $firstSolution \Solutions\Model\Solution
+ */
+?>
+<div class="b-solutions b-section">
+    <div class="b-section__content">
+        <div class="b-solutions-table">
+
+            <div class="b-solutions-table__cell b-solutions-table__cell_right visible-xs-block visible-sm-block">
+                <h1 class="b-solutions__heading">НАШИ <br /> РЕШЕНИЯ</h1>
+                <p>
+                    Мы специализируемся на разработке и внедрении
+                    энергоэффективных светодиодных решений.
+                    В этом разделе вы найдете несколько примеров того,
+                    как можно начать экономить с помощью LED- технологий.
+                </p>
+
+            </div>
+            <div class="b-solutions-table__cell b-solutions-table__cell_left">
+
+                <img src="/images/solutions/<?= $firstSolution->preview_name ?>" />
+                <a class="b-button b-button_gray-bordered  b-button_gray-colored  b-button_solutions-table" href="/solutions/view/<?= $firstSolution->id ?>">
+                    <span class="b-button__text">
+                        <?= $firstSolution->title ?>
+                    </span>
+                    <i class="b-button__icon"></i>
+                </a>
+            </div>
+            <div class="b-solutions-table__cell b-solutions-table__cell_right hidden-xs hidden-sm">
+                <h1 class="b-solutions__heading">НАШИ <br /> РЕШЕНИЯ</h1>
+                <p>
+                    Мы специализируемся на разработке и внедрении
+                    энергоэффективных светодиодных решений.
+                    В этом разделе вы найдете несколько примеров того,
+                    как можно начать экономить с помощью LED- технологий.
+                </p>
+
+            </div>
+        </div>
+        <div class="b-solutions__row">
+            <? foreach($solutions as $i=>$solution){ ?>
+            <div class="b-solutions-item">
+                <a class="b-solutions-item__link" href="/solutions/view/<?= $solution->id ?>">
+                    <img class="b-solutions-item__image" src="/images/solutions/<?= $solution->preview_name ?>" />
+                    <div class="b-button b-button_solutions">
+                        <span class="b-button__text"> <?= $solution->title ?></span>
+                        <i class="b-button__icon"></i>
+                    </div>
+                </a>
+            </div>
+            <? } ?>
+        </div>
+    </div>
+
+</div>

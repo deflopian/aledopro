@@ -1,0 +1,326 @@
+<?
+/** @var \Info\Model\Info $entity */
+$entity = $this->entity;
+?>
+<? if ($this->page == \Info\Controller\AdminController::PARTNER) { ?>
+<!--<div class="section section-odd" id="partner-section" style="padding-bottom: 40px">-->
+<!--    <div class="row">-->
+<!--    <div class="col-md-12">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-12">-->
+<!---->
+<!--                --><?// if ($entity->text1) { ?>
+<!--                    <div class="row"><div class="col-md-12"><div class="black2-top"></div></div></div>-->
+<!--                    <div class="row solution-popup">-->
+<!--                        <div class="col-md-12 top-text-1">-->
+<!--                            --><?//= $entity->text1 ?>
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="row"><div class="col-md-12"><div class="black2-bottom"></div></div></div>-->
+<!--                --><?// } ?>
+<!---->
+<!--                --><?// if ($entity->text2) { ?>
+<!--                    <div class="row solution-popup">-->
+<!--                        <div class="col-md-12 column">-->
+<!--                            <div class="row" style="margin-top: 20px">-->
+<!--                            <div class="col-md-8">-->
+<!--                            --><?//= $entity->text2 ?>
+<!--                            </div>-->
+<!--                            </div>-->
+<!--                            <div class="dotted-bottom" style="padding-top: 20px"></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                --><?// } ?>
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row solution-popup">-->
+<!--            <div class="col-md-4">-->
+<!--                --><?// for ($i=1; $i<count($entity->items)+1; $i+=3 ) { ?>
+<!--                    --><?// $varName = 'list_item_' . $i; ?>
+<!--                    --><?// if ($entity->items[$i]) { ?>
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-12 list-item">-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px"><div class=" popup-list-item"><div class="popup-list-number">--><?//= $i ?><!--</div></div></div>-->
+<!--                                </div>-->
+<!--                                <div class="dotted-bottom"></div>-->
+<!---->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px">-->
+<!--                                        --><?//= $entity->items[$i] ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="bottom-bold-yellow-line"></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    --><?// } ?>
+<!--                --><?// } ?>
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--                --><?// for ($i=2; $i<count($entity->items)+1; $i+=3 ) { ?>
+<!--                    --><?// $varName = 'list_item_' . $i; ?>
+<!--                    --><?// if ($entity->items[$i]) { ?>
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-12 list-item">-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px"><div class=" popup-list-item"><div class="popup-list-number">--><?//= $i ?><!--</div></div></div>-->
+<!--                                </div>-->
+<!--                                <div class="dotted-bottom"></div>-->
+<!---->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px">-->
+<!--                                        --><?//= $entity->items[$i] ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="bottom-bold-yellow-line"></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    --><?// } ?>
+<!--                --><?// } ?>
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--                --><?// for ($i=3; $i<count($entity->items)+1; $i+=3 ) { ?>
+<!--                    --><?// $varName = 'list_item_' . $i; ?>
+<!--                    --><?// if ($entity->items[$i]) { ?>
+<!--                        <div class="row">-->
+<!--                            <div class="col-md-12 list-item">-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px"><div class=" popup-list-item"><div class="popup-list-number">--><?//= $i ?><!--</div></div></div>-->
+<!--                                </div>-->
+<!--                                <div class="dotted-bottom"></div>-->
+<!---->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-12" style="padding-top: 10px; padding-bottom: 10px">-->
+<!--                                        --><?//= $entity->items[$i] ?>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="bottom-bold-yellow-line"></div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    --><?// } ?>
+<!--                --><?// } ?>
+<!--            </div>-->
+<!---->
+<!--        </div>-->
+<!--    </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--    <div class="section">-->
+<!--        <div class="row row-second">-->
+<!--            <div class="col-md-12">-->
+<!--                <form class="form-inline form-left aledo-form"-->
+<!--                      role="form" method="post" action="--><?//= $this->url() ?><!--">-->
+<!---->
+<!---->
+<!--                        <div class="col-md-12">-->
+<!--                            <h2 class="form-title" style="text-transform: none">Если вы хотите стать нашим партнером, заполните данные ниже.</h2>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-12">-->
+<!--                            * — обязательные поля-->
+<!--                        </div>-->
+<!--                        <div class="col-md-12">-->
+<!--                            <h2>Контактное лицо, ответственное за сотрудничество</h2>-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-12 dotted-bottom">-->
+<!--                                    <div class=""></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!---->
+<!--                    <div class="row row-second-small">-->
+<!--                        <div class="form-group col-md-6">-->
+<!--                            <label for="partn-name" class="col-md-12 control-label">ФИО*</label>-->
+<!--                            <input type="text" class="form-control" id="partn-name" name="name" data-required="yes">-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="partn-act" class="col-md-12 control-label">Род деятельности*</label>-->
+<!--                            <input type="text" class="form-control" id="partn-act" name="activity" data-required="yes">-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="partn-job" class="col-md-12 control-label">Должность</label>-->
+<!--                            <input type="text" class="form-control" id="partn-job" name="job">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!---->
+<!--                    <div class="row row-second-small">-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="partn-phone" class="col-md-12 control-label">Мобильный номер телефона*</label>-->
+<!--                            <input type="text" class="form-control" id="partn-phone" name="phone" data-required="yes">-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="partn-mail" class="col-md-12 control-label">E-mail*</label>-->
+<!--                            <input type="text" class="form-control" id="partn-mail" name="email" data-required="yes">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!---->
+<!--                    <div class="row row-second">-->
+<!--                        <div class="col-md-12">-->
+<!--                            <div class="dotted-bottom">-->
+<!--                                <h2>Информация о компании</h2>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!---->
+<!--                    <div class="row row-second-small">-->
+<!--                        <div class="form-group col-md-8">-->
+<!--                            <label for="partn-comp-name" class="col-md-12 control-label">Полное название компании (с юр. статусом)*</label>-->
+<!--                            <input type="text" class="form-control" id="partn-comp-name" name="company_name" data-required="yes">-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-4">-->
+<!--                            <label for="partn-comp-act" class="col-md-12 control-label">Сфера деятельности компании*</label>-->
+<!--                            <input type="text" class="form-control" id="partn-comp-act" name="company_activity" data-required="yes">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!---->
+<!--                    <div class="row row-second-small">-->
+<!--                        <div class="form-group col-md-12">-->
+<!--                            <label for="partn-comp-brands" class="col-md-12 control-label">Назовите несколько светотехнических брендов из вашего основного ассортимента (для торгующих организайций)*</label>-->
+<!--                            <input type="text" class="form-control" id="partn-comp-brands" name="brands_sample" data-required="yes">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!---->
+<!--                    <div class="row row-second-small">-->
+<!--                        <div class="form-group col-md-2">-->
+<!--                            <label for="partn-comp-index" class="col-md-12 control-label">Индекс</label>-->
+<!--                            <input type="text" class="form-control" id="partn-comp-index" name="post_index">-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="partn-comp-region" class="col-md-12 control-label">Область/Город</label>-->
+<!--                            <input type="text" class="form-control" id="partn-comp-region" name="city">-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="partn-comp-adress" class="col-md-12 control-label">Улица, номер дома офиса</label>-->
+<!--                            <input type="text" class="form-control" id="partn-comp-adress" name="adress">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!---->
+<!--                    <div class="row row-second-small">-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="partn-comp-phone" class="col-md-12 control-label">Телефон с кодом города*</label>-->
+<!--                            <input type="text" class="form-control" id="partn-comp-phone" name="company_phone" data-required="yes">-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="partn-comp-fax" class="col-md-12 control-label">Факс</label>-->
+<!--                            <input type="text" class="form-control" id="partn-comp-fax" name="company_fax">-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="partn-comp-mail" class="col-md-12 control-label">E-mail*</label>-->
+<!--                            <input type="text" class="form-control" id="partn-comp-mail" name="company_email" data-required="yes">-->
+<!--                        </div>-->
+<!--                        <div class="form-group col-md-3">-->
+<!--                            <label for="partn-comp-cite" class="col-md-12 control-label">Website*</label>-->
+<!--                            <input type="text" class="form-control" id="partn-comp-cite" name="company_website" data-required="yes">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!---->
+<!---->
+<!--                    <div class="row row-second-big">-->
+<!--                        <div class="col-md-2 pull-right">-->
+<!--                            <button type="submit" class="btn btn-aledo-green">Отправить запрос</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <script type="text/javascript">-->
+<!--        $(function(){ formajax.init({}); });-->
+<!--    </script>-->
+
+<? } else if($page == \Info\Controller\AdminController::DELIVERY){  ?>
+
+    <div class="b-info-page b-section">
+        <div class="b-section__content">
+            <br />
+            <h4>ДОСТАВКА И ОПЛАТА</h4>
+            <br />
+            <div class="b-tabs-wrapper b-tabs-wrapper_payment-nav">
+                <ul class="b-tabs list-unstyled">
+                    <li class="b-tabs__tab active">
+                        <a class="b-tabs__link  text-center" href="#paymentInfo_1" data-toggle="tab"><?= $entity->title1 ?></a>
+                    </li>
+                    <li class="b-tabs__tab">
+                        <a class="b-tabs__link  text-center" href="#paymentInfo_2" data-toggle="tab"><?= $entity->title2 ?></a>
+                    </li>
+                    <li class="b-tabs__tab">
+                        <a class="b-tabs__link  text-center" href="#paymentInfo_3" data-toggle="tab"><?= $entity->title3 ?></a>
+                    </li>
+                </ul>
+                <div class="b-tabs-content" style="padding: 18px">
+                    <div class="b-tabs-content__item fade in active" id="paymentInfo_1">
+                        <?= $entity->text1 ?>
+                    </div>
+                    <div class="b-tabs-content__item fade" id="paymentInfo_2">
+                        <?= $entity->text2 ?>
+                    </div>
+                    <div class="b-tabs-content__item fade" id="paymentInfo_3">
+                        <?= $entity->text3 ?>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    <div class="section section-odd" id="delivery-section" style="padding-bottom: 40px">-->
+<!--        --><?// if (!empty($entity->text1)) { ?>
+<!--        <div class="row"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>-->
+<!--        <div class="row" style="padding-bottom: 20px; padding-top: 20px">-->
+<!--            <div class="col-md-4 ">-->
+<!--                <h2 style="margin-top: 5px">--><?//= $entity->title1 ?><!--</h2>-->
+<!--            </div>-->
+<!--            <div class="col-md-8">-->
+<!--                --><?//= $entity->text1 ?>
+<!--            </div>-->
+<!--        </div>-->
+<!---->
+<!--        --><?// } ?>
+<!--        --><?// if (!empty($entity->text2)) { ?>
+<!--        <div class="row"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>-->
+<!--        <div class="row" style="padding-bottom: 20px; padding-top: 20px">-->
+<!--            <div class="col-md-4">-->
+<!--                <h2 style="margin-top: 5px">--><?//= $entity->title2 ?><!--</h2>-->
+<!--            </div>-->
+<!--            <div class="col-md-8">-->
+<!--                --><?//= $entity->text2 ?>
+<!--            </div>-->
+<!--        </div>-->
+<!---->
+<!--        --><?// } ?>
+<!--        --><?// if (!empty($entity->text3)) { ?>
+<!--        <div class="row"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>-->
+<!--        <div class="row" style="padding-bottom: 20px; padding-top: 20px">-->
+<!--            <div class="col-md-4">-->
+<!--                <h2 style="margin-top: 5px">--><?//= $entity->title3 ?><!--</h2>-->
+<!--            </div>-->
+<!--            <div class="col-md-8">-->
+<!--                --><?//= $entity->text3 ?>
+<!--            </div>-->
+<!--        </div>-->
+<!---->
+<!--        --><?// } ?>
+<!--        --><?// if (!empty($entity->text4)) { ?>
+<!--        <div class="row"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>-->
+<!--        <div class="row" style="padding-bottom: 20px; padding-top: 20px">-->
+<!--            <div class="col-md-4">-->
+<!--                <h2 style="margin-top: 5px">--><?//= $entity->title4 ?><!--</h2>-->
+<!--            </div>-->
+<!--            <div class="col-md-8">-->
+<!--                --><?//= $entity->text4 ?>
+<!--            </div>-->
+<!--        </div>-->
+<!--        --><?// } ?>
+<!--    </div>-->
+<!---->
+<!--    <script type="text/javascript">-->
+<!--        $(function(){ popup.init({}); });-->
+<!--    </script>-->
+<? } ?>
+
+<script type="text/javascript">
+    $(function(){
+        window.setTimeout( function(){
+            mainpage.initAfterBars();
+        }, 2000 );
+        });
+</script>
