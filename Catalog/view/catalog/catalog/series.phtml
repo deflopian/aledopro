@@ -13,19 +13,8 @@
  * @var \Projects\Model\Project $nextProd
  * @var \Projects\Model\ProjectImg[] $imgs
  */
-?>
-<?
 /** @var integer $scrollToProduct*/
-
 ?>
-
-
-
-
-<script src="/Scripts/jquery.dragscroll.js"></script>
-<script src="/Scripts/imagesloaded.pkgd.js"></script>
-
-
 <div class="b-goods b-section">
     <div class="b-section__content">
 
@@ -68,7 +57,7 @@
                         ?>
 
                         <li class="b-goods-characteristics-list__item">
-                            <div><?= isset($params[$field]) ? $params[$field]->title . ' ' . $params[$field]->post_value . $params[$field]->pre_value : $field ?></div>
+                            <div><?= isset($params[$field]) ? $params[$field]->title : $field ?></div>
                             <div><?= isset($params[$field]) ? $params[$field]->pre_value . ' ' . $val.' '.$params[$field]->post_value : $val; ?></div>
                         </li>
                     <? } ?>

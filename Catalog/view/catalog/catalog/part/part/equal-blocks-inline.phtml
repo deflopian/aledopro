@@ -10,7 +10,7 @@
         if(!in_array($field, $shownEqualParams)){ continue; }
         ?>
         <div class="equal-block dotted-left" >
-            <p class="text-grey" style="font-size: 13px"><?= isset($params[$field]) ? $params[$field]->title . ' ' . $params[$field]->post_value . $params[$field]->pre_value : $field ?></p>
+            <p class="text-grey" style="font-size: 13px"><?= isset($params[$field]) ? $params[$field]->title : $field ?></p>
             <h3 <?= preg_match('[(\d)+]', $val) ? 'style="text-transform: none"' : '' ?>><?= isset($params[$field]) ? $params[$field]->pre_value . ' ' . $val.' '.$params[$field]->post_value : $val; ?></h3>
 
         </div>

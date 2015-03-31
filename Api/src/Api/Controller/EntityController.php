@@ -52,8 +52,18 @@ class EntityController extends ApiController
     public function delete($id, $data) {
         $sl = $this->getServiceLocator();
         $type = $this->params()->fromQuery('type', false);
+        if ($type == 26) {
+            parent::delete($id, array('type' => "document"));
+        } else {
+            $sl = $this->getServiceLocator();
 
+            $tableName = CatalogService::$tables[$type];
+            $table = $sl->get($tableName);
 
-        return parent::delete($id, array('type' => "document"));
+            $result = $table->del($id);
+            $this->response->setContent(Json::encode($result))->setStatusCode(200);
+            return $this->response;
+        }
+        return $this->response;
     }
 }

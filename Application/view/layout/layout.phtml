@@ -52,66 +52,42 @@ $url = $uriArr[0]
     <?= $this->headLink()
         ->prependStylesheet($this->basePath() . '/js/libs/jquery.bxslider/jquery.bxslider.css')
         ->prependStylesheet($this->basePath() . '/fonts/rub_arial/stylesheet.css')
-        ->prependStylesheet($this->basePath() . '/css/catalog.css')
+//        ->prependStylesheet($this->basePath() . '/css/catalog.css')
         ->prependStylesheet($this->basePath() . '/css/main1.css')
-//        ->prependStylesheet($this->basePath() . '/css/popup.css')
-
-//        ->prependStylesheet($this->basePath() . '/css/non-responsive.css')
-//        ->prependStylesheet($this->basePath() . '/css/libs/bootstrap.css')
-
-        ->prependStylesheet("/fancybox/jquery.fancybox.css?v=2.1.5")
-//        ->prependStylesheet("/css/libs/justifiedGallery.min.css")
-    ?>
-<!--    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>-->
-<!--    <link href="--><?php //echo $this->basePath($this->less('less/Config.less')) ?><!--" media="screen" rel="stylesheet" type="text/css">-->
+?>
+    <!--    <link href="--><?php //echo $this->basePath($this->less('less/Config.less')) ?><!--" media="screen" rel="stylesheet" type="text/css">-->
     <link rel="stylesheet/less" type="text/css" href="/Content/Config.less"/>
-<!--    <script src="//code.angularjs.org/1.2.0/angular.js"></script>-->
-    <!-- Scripts -->
+    <link rel="stylesheet/less" type="text/css" href="/Content/fancybox/jquery.fancybox.css" />
+
+    <script src="/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="/Scripts/jquery.browser.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/modernizr/modernizr.js"></script>
+    <script src="/Scripts/modernizr/modernizr_mq.js"></script>
+    <script src="/Scripts/Common.js"></script>
+    <script src="/Scripts/jquery-ui.effects.js"></script>
+    <script src="/Scripts/jquery.fancybox.js"></script>
+    <script src="/Scripts/jquery.placeholder.js"></script>
+    <script src="/Scripts/angular.js"></script>
+    <script src="/Scripts/angular-touch.js"></script>
+    <script src="/Scripts/slick.js"></script>
+    <script src="/Scripts/jquery.mousewheel.js"></script>
+
+    <script src="/Scripts/jquery.dragscroll.js"></script>
+
     <?  $this->headScript()
-//        ->prependFile($this->basePath() . '/js/libs/jquery-1.10.2.min.js')
-        ->prependFile($this->basePath() . '/Scripts/jquery-1.11.1.min.js')
-//
-        ->prependFile($this->basePath() . '/js/libs/angular.js')
-//        ->prependFile($this->basePath() . '/js/libs/angular.min.js')
-//        ->prependFile($this->basePath() . '/js/libs/angular-1.1.5.js')
-//        ->prependFile($this->basePath() . '/Scripts/angular.js')
-//        ->appendFile($this->basePath() . '/js/libs/angular-route.js')
         ->appendFile($this->basePath() . '/js/main.js')
-//        ->appendFile($this->basePath() . '/js/libs/angular.min.js')
-//        ->prependFile($this->basePath() . '/js/libs/angular-1.1.5.js')
-//        ->appendFile($this->basePath() . '/js/libs/angular-route.js')
         ->appendFile($this->basePath() . '/js/solo.table.js')
-//        ->appendFile($this->basePath() . '/js/catalog.js')
         ->appendFile($this->basePath() . '/js/app.factory.js')
         ->appendFile($this->basePath() . '/js/popups.js')
-//        ->appendFile($this->basePath() . '/js/libs/toArrayFilter.js')
-        ->appendFile($this->basePath() . '/Scripts/jquery.browser.js')
-        ->appendFile($this->basePath() . '/Scripts/bootstrap.js')
-        ->appendFile($this->basePath() . '/Scripts/modernizr/modernizr.js')
-        ->appendFile($this->basePath() . '/Scripts/modernizr/modernizr_mq.js')
-        ->appendFile($this->basePath() . '/Scripts/Common.js')
-        ->appendFile($this->basePath() . '/Scripts/jquery-ui.effects.js')
-        ->appendFile($this->basePath() . '/Scripts/jquery.fancybox.js')
-        ->appendFile($this->basePath() . '/Scripts/jquery.placeholder.js')
         ->appendFile($this->basePath() . '/js/libs/url.min.js')
-//        ->appendFile($this->basePath() . '/Scripts/angular-touch.js')
-        ->appendFile($this->basePath() . '/Scripts/slick.js')
-
-
-//        ->appendFile($this->basePath() . '/js/google.routes.js')
         ->appendFile($this->basePath() . '/js/libs/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
         ->appendFile($this->basePath() . '/js/libs/history.min.js')
         ->appendFile($this->basePath() . '/js/libs/jquery.cookie.js')
         ->appendFile($this->basePath() . '/js/libs/jquery.form.js')
-        ->appendFile($this->basePath() . '/js/libs/jquery.mousewheel.min.js')
         ->appendFile($this->basePath() . '/js/libs/purl.js')
-        ->appendFile($this->basePath() . '/js/libs/bootstrap-tooltip.js')
-//        ->appendFile($this->basePath() . '/js/libs/bootstrap-popover.js')
-
+//        ->appendFile($this->basePath() . '/js/libs/bootstrap-tooltip.js')
         ->appendFile($this->basePath() . '/js/libs/jquery.bxslider/jquery.bxslider.min.js')
-        ->appendFile('http://code.jquery.com/jquery-migrate-1.2.1.js')
-        ->appendFile("/fancybox/jquery.fancybox.pack.js?v=2.1.5")
-//        ->appendFile("/js/libs/jquery.justifiedGallery.min.js")
 //    ?>
     <?
     $this->isAllowed('controller/CatalogAdmin') ?  $this->headScript()->appendFile($this->basePath() . '/js/admin.js') : ''
@@ -136,21 +112,6 @@ $url = $uriArr[0]
     <script src="/Scripts/aledo.app/aledo.directives/input.mask.directive.js"></script>
     <script src="/Scripts/aledo.app/aledo.directives/responsive.image.directive.js"></script>
     <script src="/Scripts/imagesloaded.pkgd.js"></script>
-    <!--    <script src="/Scripts/jquery-1.9.1.js"></script>-->
-<!--    <script src="/Scripts/jquery.browser.js"></script>-->
-<!--    <script src="/Scripts/bootstrap.js"></script>-->
-<!--    <script src="/Scripts/modernizr/modernizr.js"></script>-->
-<!--    <script src="/Scripts/modernizr/modernizr_mq.js"></script>-->
-<!--    <script src="/Scripts/Common.js"></script>-->
-<!--    <script src="/Scripts/jquery-ui.effects.js"></script>-->
-<!--    <script src="/Scripts/jquery.fancybox.js"></script>-->
-<!--    <script src="/Scripts/jquery.placeholder.js"></script>-->
-<!--    <script src="/Scripts/angular.js"></script>-->
-<!--    <script src="/Scripts/angular-touch.js"></script>-->
-<!--    <script src="/Scripts/slick.js"></script>-->
-
-<!--    <link rel="stylesheet" type="text/css" href="/Content/less_cache/lessphp_aaa1683c1d8f5c4253e83b405335274b61192328.css">-->
-<!--    <link rel="stylesheet" type="text/css" href="/css/catalog.css">-->
 
     <script type="text/javascript">
         if (!window._ua) {
@@ -196,8 +157,6 @@ $url = $uriArr[0]
 
     </script>
 
-
-<!--    <link rel="stylesheet" type="text/css" href="/Content/less_cache/lessphp_8d6b7ddb6e9a08849c062c1596dd8f65ab8329c8.css">-->
     <link rel="stylesheet" type="text/css" href="/Content/less_cache/lessphp_22685ca2838c80c9b5f914ff224ab156998adbe3.css">
     <link rel="stylesheet" type="text/css" href="/css/custom_css_over_less.css">
 
@@ -278,7 +237,7 @@ $url = $uriArr[0]
 	
 </head>
 
-<body ng-app="Aledo" ng-controller="SwipeController" ng-swipe-left="swipe('left')" ng-swipe-right="swipe('right')">
+<body ng-app="Aledo">
     <div class="b-layout">
         <noscript><img src="http://b.kavanga.ru/exp?sid=10281&bt=3&bn=1&ct=8" border=0 width=1 height=1></noscript>
         <!-- Kavanga.AdEngine END -->
@@ -316,9 +275,8 @@ $url = $uriArr[0]
         </div>
 
         <? include 'part/header.phtml' ?>
-        <div class="b-layout-content">
-            <?= $this->content; ?>
-        </div>
+
+        <div class="b-layout-content"><?= ltrim($this->content); ?></div>
         <? include 'part/footer.phtml' ?>
 
 
@@ -371,7 +329,7 @@ $url = $uriArr[0]
 
             +function () {
                 var _recalculateLayoutDim = function() {
-                    $layout.css({ "padding-bottom": $footer.outerHeight() });
+                    $layout.css({ "padding-bottom": ($footer.outerHeight()-24) });
 
                 };
                 var $footer = jQuery(".b-layout-footer"),
@@ -384,6 +342,7 @@ $url = $uriArr[0]
         <script type="text/javascript">
             domReady();
         </script>
+        <div class="swipe-layout"  ng-controller="SwipeController" ng-swipe-left="swipe('left')" ng-swipe-right="swipe('right')"></div>
     </div>
 </body>
 </html>
