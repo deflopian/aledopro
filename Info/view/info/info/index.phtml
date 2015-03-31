@@ -87,7 +87,7 @@
             <div class="b-downloads b-downloads_reviews">
                 <div class="b-downloads-table">
                     <div class="b-downloads-table__cell b-downloads-table__cell_l" align="left">
-                        <img class="b-downloads__image" src="/Content/images/about/icon_reviews.svg" />
+                        <img class="b-downloads__image" src="/images/icon_reviews_09.svg" />
                     </div>
                     <div class="b-downloads-table__cell b-downloads-table__cell_r">
                         <div class="b-downloads-slider">
@@ -190,7 +190,7 @@
         <div style="display:none" id="imagesLoadedShowRoom">
             <? foreach ($showRoom as $banner) { ?>
                 <div class="b-slider__item">
-                    <img class="b-slider__image" src="/images/banner/<?= $banner->img_name ?>" />
+                    <img class="b-slider__image" src="/images/showroom/<?= $banner->img_name ?>" />
                 </div>
             <? } ?>
         </div>
@@ -268,21 +268,30 @@
 
     <div class="b-slider-outer b-section">
         <div style="display: none" id="imagesLoadedTeam">
+            <? /** @var $team \Team\Model\Worker[]  */ ?>
             <? foreach ($team as $worker) { ?>
                 <div class="b-slider__item">
                     <img class="b-slider__image" src="/images/team/<?= $worker->img_name ?>" />
+                    <div class="b-slider__title">
+                        <div class="b-slider__title-post">
+                            <?= $worker->role ?>
+                        </div>
+                        <div class="b-slider__title-name">
+                            <?= $worker->title ?>
+                        </div>
+                    </div>
                 </div>
             <? } ?>
         </div>
         <div class="b-slider b-slider_our-team">
 
         </div>
-
+        <!--
         <div class="b-section__content">
             <div class="b-slider-arrows b-slider-arrows_our-team">
                 <img class="b-slider-image b-slider-image_our-team" src="/Content/images/about/icon_team.svg" />
             </div>
-        </div>
+        </div> -->
     </div>
     <script type="text/javascript">
         (function () {

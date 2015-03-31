@@ -9,4 +9,6 @@ class Guarantee extends SampleModel
     public $title;
     public $text1;
     public $text2;
+    public $title2;
+    public $text3;
 }

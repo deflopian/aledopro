@@ -9,7 +9,7 @@ $seriesId =  isset($this->seriesId) ? $this->seriesId : false;
     $this->url('catalog', array('action'=>'subsection', 'id'=>$subsec->id)) :
     $this->url('catalog', array('action'=>'subsection', 'id'=>$subsec->display_name));?><?= $seriesId ? '?series=' . $seriesId : '' ?>">
     <div class="row">
-        <div class="subsection-link col-md-12 dotted-top" style="padding-left: 0; padding-right: 0">
+        <div class="b-section__content-subsection-title col-md-12 dotted-top" style="padding-left: 0; padding-right: 0">
             <?= $subsec->title; ?>
         </div>
     </div>
