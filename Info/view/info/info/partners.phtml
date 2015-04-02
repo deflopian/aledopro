@@ -4,16 +4,22 @@
             <div class=" b-business-proposal">
                 <div class="b-business-proposal__inner">
                     <h1 class="b-business-proposal__heading">
-                        Дружим с профессионалами
+                        <?= $entity->title1 ?>
                     </h1>
                     <br/>
                     <p>
-                        Мы прекрасно осознаем, что работа в рыночных условиях основана на взаимной<br />
-                        поддержке профессионалов, поэтому постоянно нацелены на поиск надежных партнеров<br />
-                        в сфере поставок электротехники, проектирования и строительства.<br />
-                        Если у вас есть к нам деловое  предложение, то отправляйте его на почту: <a href="mailto:http://offer@aledo-pro.ru">offer@aledo-pro.ru</a>
+                        <?= $entity->text1 ?>
                     </p>
                 </div>
+            </div>
+
+            <div class="large-line text-center b-mt5">
+                <p>
+                    <span class="b-dotted-decorated b-dotted-decorated_upper">Если вы хотите стать нашим партнером и приобретать</span><br />
+
+                    предлагаемую продукцию по специальным ценам,<br />
+                    <span class="b-dotted-decorated b-dotted-decorated_downed">  то заполните карту партнера <a href="javascript:void(0)">здесь</a></span>
+                </p>
             </div>
         </div>
     </div>
@@ -22,90 +28,65 @@
             <div class=" b-business-proposal">
                 <div class="b-business-proposal__inner">
                     <h1 class="b-business-proposal__heading">
-                        Держим склад
+                        <?= $entity->title2 ?>
                     </h1>
                     <br />
 
                     <p>
-                        Начиная нашу работу на светотехническом рынке в 2010 году (<a href="http://kaledoscop.ru" target="_blank">проект kaledoscop.ru</a>)<br />
-                        мы ощущали острую нехватку светодиодного оборудования с хорошим соотношением <br />
-                        цена-качество, которое можно было бы приобрести в россии, здесь и сейчас.<br />
-                        мы смогли решить эту проблему для себя и готовы предложить широкий ассортимент<br />
-                        качественного светодиодного оборудования нашим партнерам. уверены, что это как минимум,<br />
-                        актуально в кризисном 2015-м году.
+                        <?= $entity->text2 ?>
                     </p>
                 </div>
-            </div>
-
-            <div class="large-line text-center b-mt5">
-                <p>
-                    <span class="b-dotted-decorated b-dotted-decorated_upper">Если вы хотите стать нашим партнером и использовать</span><br />
-
-                    наш складской ассортимент в своих проектах,<br />
-                    <span class="b-dotted-decorated b-dotted-decorated_downed">  то заполните карту партнера <a href="javascript:void(0)">здесь</a></span>
-                </p>
             </div>
         </div>
     </div>
     <div class="b-section">
         <div class="b-section__content">
             <br /><br /><br />
-            <h1 class="text-center">Мы предлагаем сотрудничество:</h1>
+            <h1 class="text-center"><?= $entity->title3 ?></h1>
             <br />
             <div class="b-tabs-wrapper b-tabs-wrapper_partners-tabs">
                 <ul class="b-tabs list-unstyled">
                     <li class="b-tabs__tab active">
-                        <a class="b-tabs__link  text-left" href="#partnersTab_1" data-toggle="tab">Светотехникам и<br /> проектировщикам</a>
+                        <a class="b-tabs__link  text-left" href="#partnersTab_1" data-toggle="tab"><?= $entity->tab1_head ?></a>
                     </li>
                     <li class="b-tabs__tab">
-                        <a class="b-tabs__link  text-left" href="#partnersTab_2" data-toggle="tab">Архитекторам и<br /> дизайнерам </a>
+                        <a class="b-tabs__link  text-left" href="#partnersTab_2" data-toggle="tab"><?= $entity->tab2_head ?></a>
                     </li>
                     <li class="b-tabs__tab">
                         <a class="b-tabs__link  text-left" href="#partnersTab_3" data-toggle="tab">
-                            Строительным<br />
-                            компаниям
+                            <?= $entity->tab3_head ?>
                         </a>
                     </li>
                     <li class="b-tabs__tab">
-                        <a class="b-tabs__link b-tabs__link_active text-left" href="#partnersTab_4" data-toggle="tab">Электромонтажным <br />организациям</a>
+                        <a class="b-tabs__link b-tabs__link_active text-left" href="#partnersTab_4" data-toggle="tab"><?= $entity->tab4_head ?></a>
                     </li>
                 </ul>
                 <div class="b-tabs-content">
                     <div class="b-tabs-content__item fade in active" id="partnersTab_1">
-                        о оборудования с хорошим соотношением цена-качество, которое можно было бы приобрести в России, здесь и сейчас.
-                        Мы смогли wdwdwdwdблему для себя и готовы предложить широкий ассо
+                        <?= $entity->tab1_body ?>
                     </div>
                     <div class="b-tabs-content__item fade" id="partnersTab_2">
-                        о оборудоваwwwdwdwи решить эту проблему для себя и готовы предложить широкий ассо
+                        <?= $entity->tab2_body ?>
                     </div>
                     <div class="b-tabs-content__item fade" id="partnersTab_3">
-                        о оборудования с хорошим соотношением цена-качество, которое можно было бы приобрести в России, здесь и сейчас.
-                        Мы смогли решить эту проблему для себя и готовы предложить широкий ассо
+                        <?= $entity->tab3_body ?>
                     </div>
                     <div class="b-tabs-content__item fade" id="partnersTab_4">
-                        о оборудования с хорошим соотношением цена-качество, которое можно было бы приобрести в России, здесь и сейчас.
-                        Мы смогли решить wdwdwdредложить широкий ассо
+                        <?= $entity->tab4_body ?>
                     </div>
                 </div>
             </div>
             <hr class="dotted-separator" />
             <br /><br />
-            <h1 class="text-center">Сервис для профессионалов в свете</h1>
+            <h1 class="text-center"><?= $entity->title4 ?></h1>
             <br />
             <div class="text-center">
                 <img src="/Content/images/aledo-logo.svg" height="55" class="b-pl5" />
                 <br /><br /><br />
                 <div class="large-line">
-                    <p>Мы предлагаем:</p>
-                    <ul class="list-unstyled">
-                        <li>
-                            Просмотр складских остатков 24X7 в режиме online;
-                        </li>
-                        <li>Возможность формировать ваш заказ в режиме online;</li>
-                        <li>Ваши персональные цены на весь ассортимент;</li>
-                    </ul>
+                    <?= $entity->text4 ?>
                 </div>
-                <h3><strong><a href="/service" class="b-hover-yellow b-hover-decorated">Смотреть подробнее сервис aledo-pro</a></strong></h3>
+                <h3><strong><a href="/service" class="b-hover-yellow b-hover-decorated"><?= $entity->more ?></a></strong></h3>
             </div>
         </div>
     </div>

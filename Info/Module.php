@@ -8,6 +8,7 @@ use Info\Model\GuaranteeTable;
 use Info\Model\InfoTable;
 use Info\Model\JobTable;
 use Info\Model\PartnerRequestTable;
+use Info\Model\PartnersTable;
 use Info\Model\Pluses;
 use Info\Model\PlusesTable;
 use Info\Model\SeoDataTable;
@@ -50,6 +51,11 @@ class Module
                 'AboutsTable' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table     = new AboutTable($dbAdapter);
+                    return $table;
+                },
+                'PartnersTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new PartnersTable($dbAdapter);
                     return $table;
                 },
                 'PlusesTable' =>  function($sm) {

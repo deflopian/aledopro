@@ -43,7 +43,7 @@ class CatalogService {
         AdminController::FILTER_FIELD_TABLE => 'FilterFieldTable',
         AdminController::DOCUMENT_TABLE => 'DocumentsTable',
         AdminController::MAINPAGE_BLOCK_TABLE => 'MainPageBlocksTable',
-        AdminController::MAINPAGE_BLOCK_IMAGE_TABLE => 'MainPageBlockImagesTable',
+        AdminController::MAINPAGE_BLOCK_IMAGE_TABLE => 'MainPageBlockImagesTable'
     );
 
     const DISPLAY_STYLE_DEFAULT = 0;

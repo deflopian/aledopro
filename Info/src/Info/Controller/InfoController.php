@@ -19,7 +19,7 @@ class InfoController extends AbstractActionController
     protected $pageInfoType = SeoService::INFO;
     public function indexAction(){
         $sl = $this->getServiceLocator();
-        $team = $sl->get("TeamTable")->fetchAll();
+        $team = $sl->get("TeamTable")->fetchAll("order ASC");
 
         $fileTable = $sl->get("FilesTable");
         foreach ($team as &$worker) {
@@ -253,12 +253,30 @@ class InfoController extends AbstractActionController
             'entity' => $entity
         );
     }
+
     public function partnersAction(){
+        $partnersTable = $this->getServiceLocator()->get('PartnersTable');
+        $entity = $partnersTable->find(1);
 
+        $imgFields = array('img1', 'img2', 'img1_min', 'img2_min');
+        if ($imgFields) {
+            $fileTable = $this->getServiceLocator()->get('FilesTable');
+            foreach ($imgFields as $imgField) {
+                if ($entity->$imgField) {
+                    $file = $fileTable->find($entity->$imgField);
+                    if ($file) {
+                        $imgFieldAndName = $imgField . "_name";
+                        $entity->$imgFieldAndName = $file->name;
+                    }
+                }
+            }
+        }
         return array(
-
+            'entity' => $entity
         );
     }
+
+
     public function deliveryAction() {
         $deliveryTable = $this->getServiceLocator()->get('DeliveryTable');
         $entity = $deliveryTable->find(1);

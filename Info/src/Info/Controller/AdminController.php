@@ -187,7 +187,38 @@ class AdminController extends SampleAdminController
 
         return $view;
     }
-    public function partnerAction() { return $this->renderPage(self::PARTNER); }
+
+    public function partnerAction() {
+        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::INFO, 1);
+
+        $entity = $this->getServiceLocator()->get('PartnersTable')->find(1);
+
+        $this->imgFields = array('img1', 'img1_min', 'img2', 'img2_min');
+        if ($this->imgFields) {
+            $fileTable = $this->getServiceLocator()->get('FilesTable');
+            foreach ($this->imgFields as $imgField) {
+                if ($entity->$imgField) {
+                    $file = $fileTable->find($entity->$imgField);
+                    if ($file) {
+                        $imgFieldAndName = $imgField . "_name";
+                        $entity->$imgFieldAndName = $file->name;
+                    }
+                }
+            }
+        }
+
+        $view = new ViewModel();
+        $view
+            ->setVariables(array(
+                'entity' => $entity,
+                'id'     => 0,
+                'seoData' => $seoData,
+                'links' =>  LinkToLinkMapper::getInstance($this->getServiceLocator())->fetchAll(0, \Catalog\Controller\AdminController::INFO_TABLE)
+            ));
+
+        return $view;
+
+    }
     public function showroomAction() { return $this->renderPage(self::SHOWROOM); }
 
     public function getWysiwygBarAction()
@@ -288,6 +319,17 @@ class AdminController extends SampleAdminController
                         $success = 1;
                         break;
                     }
+                    case SeoService::PARTNERS :
+                    {
+                        $data['id'] = 1;
+                        $table = $this->getServiceLocator()->get('PartnersTable');
+                        $entity = $table->find(1);
+                        $entity->exchangeArray($data);
+
+                        $table->save($entity);
+                        $success = 1;
+                        break;
+                    }
                     case SeoService::PLUSES :
                     {
                         $data['id'] = 1;
@@ -346,7 +388,7 @@ class AdminController extends SampleAdminController
             $success = 0;
 
 
-            if($id && $text && $wid){
+            if($id && $text !== false && $wid){
                 switch ($id) {
                     case SeoService::ABOUT :
                     {
@@ -354,6 +396,18 @@ class AdminController extends SampleAdminController
                         $entity = $table->find(1);
                         $data['id'] = 1;
                         $data[$wid] = $text;
+                        $entity->exchangeArray($data);
+                        $table->save($entity);
+                        $success = 1;
+                        break;
+                    }
+                    case SeoService::PARTNERS :
+                    {
+                        $table = $this->getServiceLocator()->get('PartnersTable');
+                        $entity = $table->find(1);
+                        $data['id'] = 1;
+                        $data[$wid] = $text;
+
                         $entity->exchangeArray($data);
                         $table->save($entity);
                         $success = 1;
