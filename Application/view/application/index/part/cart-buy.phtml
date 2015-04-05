@@ -1,53 +1,42 @@
-<div class="row">
-    <div class="col-md-12 text-center"><h1>Оформление заказа</h1></div>
-</div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div>
-            <div class="dotted-bottom"></div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <h2>Вход</h2>
-                <div class="dotted-bottom"></div>
+<hr class="dotted-separator" />
+<div class="text-center b-mt1 b-mb1">Оформление заказа</div>
+<hr class="dotted-separator b-mb1" />
+<div class="b-partner-registration">
+    <form novalidate ng-submit="submit()" name="cartBuy">
+        <div class="b-partner-registration__row">
+            <div class="b-partner-registration__cell b-partner-registration__cell_left">
+                <div class="text-center b-mt2 b-mb2">Вход</div>
+                <div class="b-form-group">
+                    <? include'part/form-login.phtml' ?>
+                </div>
+            </div>
+            <div class="b-partner-registration__cell b-partner-registration__cell_decoration-cell">
+                <div class="b-partner-registration__decoration"></div>
+
+            </div>
+            <div class="b-partner-registration__cell b-partner-registration__cell_right">
+                <div class="text-center b-mt2 b-mb2">Я покупаю впервые</div>
+                <div class="b-form-group">
+                    <button id="popup-register"  class="b-button b-button_gray" href="#">
+                        <span class="b-button__text">Зарегистрироваться</span>
+                    </button>
+                </div>
+
+                <div class="b-form-group">
+                    <span style="font-size: 12px">
+                        Регистрация позволит получать бонусы и экономить время при следующих покупках. Это займет не более минуты.
+                    </span>
+                </div>
+
+                <div class="b-form-group">
+                    <button id="buy-without-register"  class="b-button b-button_gray" href="#">
+                        <span class="b-button__text">Купить без регистрации</span>
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <? include'part/form-login.phtml' ?>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <h2>Я покупаю впервые</h2>
-                <div class="dotted-bottom"></div>
-            </div>
-        </div>
-        <div class="row row-second-small">
-            <div class="col-md-12">
-                <button id="popup-register" class="btn btn-aledo-black" href="#">Зарегистрироваться</button>
-            </div>
-        </div>
-        <div class="row row-second-small">
-            <div class="col-md-12">
-                <span style="font-size: 12px">
-                    Регистрация позволит получать бонусы и экономить время при следующих покупках. Это займет не более минуты.
-                </span>
-            </div>
-        </div>
-        <div class="row row-second-small">
-            <div class="col-md-12">
-                <a id="buy-without-register" class="btn btn-aledo-black" href="#">Купить без регистрации</a>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>
 
 <script type="text/javascript">

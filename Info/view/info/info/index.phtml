@@ -33,6 +33,8 @@
                         <?= $entity->text_2_text_2 ?>
                         <h4><?= $entity->text_2_header_3 ?></h4>
                         <?= $entity->text_2_text_3 ?>
+                        <h4><?= $entity->text_2_header_4 ?></h4>
+                        <?= $entity->text_2_text_4 ?>
                     </div>
                 </div>
                 <hr class="dotted-separator"/>
@@ -95,6 +97,11 @@
                                 <div class="b-downloads-slider__item">
                                     <a class="b-downloads-slider__link b-downloads-slider__link_review" href="/images/documents/<?= $comment->file_name ?>">
                                         <img class="b-downloads-slider__image" src="/images/documents/<?= $comment->img_name ?>" />
+                                        <div class="b-slider__document-title">
+                                            <div class="b-slider__document-title-name">
+                                                <?= $comment->title ?>
+                                            </div>
+                                        </div>
                                     </a>
                                 </div>
                             <? } ?>

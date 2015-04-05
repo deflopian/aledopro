@@ -112,7 +112,7 @@ $url = $uriArr[0]
     <script src="/Scripts/aledo.app/aledo.directives/input.mask.directive.js"></script>
     <script src="/Scripts/aledo.app/aledo.directives/responsive.image.directive.js"></script>
     <script src="/Scripts/imagesloaded.pkgd.js"></script>
-
+    <script src="http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"></script>
     <script type="text/javascript">
         if (!window._ua) {
             var _ua = navigator.userAgent.toLowerCase();
@@ -262,17 +262,20 @@ $url = $uriArr[0]
             //-->
         </script>
 
-        <div class="modal fade" id="fooBarPopup" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <div class="popup-modal">
+            <script src="/Scripts/jquery.maskedinput.js"></script>
+            <div class="modal fade " id="fooBarPopup" tabindex="-1">
+                <div class="modal-dialog b-partner-registration-dialog">
+                    <div class="modal-content">
+                        <div class="model-header">
+                            <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="popup-modal">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
         <? include 'part/header.phtml' ?>
 

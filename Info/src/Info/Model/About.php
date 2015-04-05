@@ -16,6 +16,8 @@ class About extends SampleModel
     public $text_2_text_2;
     public $text_2_header_3;
     public $text_2_text_3;
+    public $text_2_header_4;
+    public $text_2_text_4;
     public $title2;
     public $block_2_text_1;
         public $block_2_img_1;

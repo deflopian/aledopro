@@ -1,103 +1,107 @@
-<?
-    /** @var \ZfcUser\Form\Register $form */
-    $form = $this->form;
-
-    $form->setAttribute('action', $this->url('cabinet',array('action'=>'register')));
-    $form->setAttribute('class', "form-horizontal form-left row-second-small");
-    $form->setAttribute('role', "form");
-    $form->prepare();
-?>
-<div class="row">
-    <div class="col-md-12 text-center"><h1>Регистрация</h1></div>
-</div>
-
-<form action="<?= $this->url('cabinet', array('action' => 'register'))?>" method="post"
-      class="aledo-form form-left form-horizontal row-second-small" role="form">
-    <div class="form-group">
-        <label class="col-md-4 control-label">имя*</label>
-        <div class="col-md-8">
-            <?
-            $username = $form->get('username');
-            $username->setAttribute('class', "form-control");
-            $username->setAttribute('data-required', "yes");
-            ?>
-            <?= $this->formText($username) ?>
+<!-- NEW -->
+<form novalidate
+      action="<?= $this->url('cabinet', array('action' => 'register'))?>"
+      name="registration"
+      ng-controller="RegistrationController">
+    <div>
+        <div class="b-registration__cell b-registration__cell_left">
+            <label for="user_name">Имя*</label>
+        </div>
+        <div class="b-registration__cell b-registration__cell_right">
+            <input type="text"
+                   class="b-form-control b-form-control_small"
+                   data-required="yes"
+                   name="username"
+                   id="user_name"
+                   ng-model="user_name"
+                   autocomplete="off"
+                   required />
+        </div>
+    </div>
+    <div>
+        <div class="b-registration__cell b-registration__cell_left">
+            <label for="user_tel">Контактный телефон*</label>
+        </div>
+        <div class="b-registration__cell b-registration__cell_right">
+            <input type="text"
+                   class="b-form-control b-form-control_small"
+                   id="user_tel"
+                   name="phone"
+                   data-required="yes"
+                   ng-model="user_tel"
+                   autocomplete="off"
+                   required />
+        </div>
+    </div>
+    <div>
+        <div class="b-registration__cell b-registration__cell_left">
+            <label for="user_tel">Город</label>
+        </div>
+        <div class="b-registration__cell b-registration__cell_right">
+            <input type="text"
+                   class="b-form-control b-form-control_small"
+                   id="user_tel"
+                   name="city"
+                   data-required="no"
+                   ng-model="user_tel"
+                   autocomplete="off"
+                />
+        </div>
+    </div>
+    <div>
+        <div class="b-registration__cell b-registration__cell_left">
+            <label for="user_email">E-mail*</label>
+        </div>
+        <div class="b-registration__cell b-registration__cell_right">
+            <input type="text"
+                   class="b-form-control b-form-control_small"
+                   id="user_email"
+                   data-required="yes"
+                   name="email"
+                   ng-model="user_email"
+                   autocomplete="off"
+                   required />
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-md-6 control-label">контактный телефон*</label>
-        <div class="col-md-6">
-            <?
-            $phone = $form->get('phone');
-            $phone->setAttribute('class', "form-control");
-            $phone->setAttribute('data-required', "yes");
-            ?>
-            <?= $this->formText($phone) ?>
-<!--            <input name="phone" type="text" class="form-control">-->
+    <div class="b-registration__table">
+        <div class="b-registration__row">
+            <div class="b-registration__cell b-registration__cell_left">
+                <label for="user_password">Пароль*</label>
+            </div>
+            <div class="b-registration__cell b-registration__cell_right">
+                <input type="password"
+                       class="b-form-control b-form-control_small"
+                       id="user_cur_password"
+                       ng-model="user_cur_password"
+                       data-required="yes"
+                       name="password"
+                       autocomplete="off"
+                       required />
+            </div>
+        </div>
+        <div class="b-registration__row">
+            <div class="b-registration__cell b-registration__cell_left">
+                <label for="user_password_repeat">Повторите пароль*</label>
+            </div>
+            <div class="b-registration__cell b-registration__cell_right">
+                <input type="password"
+                       class="b-form-control b-form-control_small"
+                       id="user_password_repeat"
+                       ng-model="user_password_repeat"
+                       autocomplete="off"
+                       name="passwordVerify"
+                       data-required="yes"
+                       required />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        <label class="col-md-6 control-label">Город</label>
-        <div class="col-md-6">
-            <?
-            $city = $form->get('city');
-            $city->setAttribute('class', "form-control");
-            $city->setAttribute('data-required', "no");
-            ?>
-            <?= $this->formText($city) ?>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-md-4 control-label">e-mail*</label>
-        <div class="col-md-8">
-            <?
-            $email = $form->get('email');
-            $email->setAttribute('class', "form-control");
-            $email->setAttribute('data-required', "yes");
-            ?>
-            <?= $this->formText($email) ?>
-<!--            <input name="email" type="text" class="form-control">-->
-        </div>
-    </div>
-
-    <div class="checkbox col-md-offset-1">
-        <?
-        $is_spamed = $form->get('is_spamed');
-        $is_spamed->setAttribute('id', "reg-spam");
-        $is_spamed->setValue(1);
-        ?>
-        <?= $this->formCheckbox($is_spamed) ?>
-        <label for="reg-spam">подписаться на рассылку
-            <br>(не волнуйтесь, мы не рассылаем СПАМ)</label>
-    </div>
-
-    <div class="form-group row-second-small">
-        <label class="col-md-6 control-label">пароль*</label>
-        <div class="col-md-6">
-            <input name="password" type="password" class="form-control" data-required="yes">
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-md-6 control-label">подтвердите пароль*</label>
-        <div class="col-md-6">
-            <?
-            $passwordVerify = $form->get('passwordVerify');
-            $passwordVerify->setAttribute('class', "form-control");
-            $passwordVerify->setAttribute('data-required', "yes");
-            ?>
-            <?= $this->formPassword($passwordVerify) ?>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-12">
-            <input type="hidden" name="redirect" value="<?= $url ?>"/>
-            <button id="popup-reg-complete" type="submit" class="btn btn-aledo-black">Зарегистрироваться</button>
-        </div>
+    <div class="text-center">
+        <button class="b-button b-button_gray" id="registration_button" ng-disabled="registration.$invalid" type="submit">
+            <span class="b-button__text">
+                СОХРАНИТЬ ПЕРСОНАЛЬНЫЕ ДАННЫЕ
+            </span>
+        </button>
     </div>
 </form>
 
