@@ -36,9 +36,9 @@ class CatalogController extends BaseController
         $events->attach('dispatch', function ($e) use ($controller) {
             $viewHelper = $controller->getServiceLocator()->get('viewhelpermanager');
             $viewHelper->get('headlink')
-                ->prependStylesheet('/css/libs/jquery.nouislider.css')
-                ->prependStylesheet('/css/catalog.css')
-                ->prependStylesheet('/css/main1.css');
+                ->prependStylesheet('/Content/css/libs/jquery.nouislider.css')
+                ->prependStylesheet('/Content/css/catalog.css')
+                ->prependStylesheet('/Content/css/main1.css');
 
             $viewHelper->get('headscript')
                 ->prependFile('/js/libs/jquery.nouislider.js')

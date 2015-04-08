@@ -15,7 +15,7 @@ class SearchController extends AbstractActionController
         $events->attach('dispatch', function ($e) use ($controller) {
             $viewHelper = $controller->getServiceLocator()->get('viewhelpermanager');
             $viewHelper->get('headlink')
-                ->prependStylesheet('/css/catalog.css');
+                ->prependStylesheet('/Content/css/catalog.css');
 
             $viewHelper->get('headscript')
                 ->prependFile('/js/libs/ZeroClipboard.min.js')
