@@ -47,14 +47,14 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
 </div>
 <div class="catalog b-section__content">
 <!--    <div class="row">-->
-<!--        <div class="col-md-6 tablefilter">-->
+<!--        <div class="col-xs-6 tablefilter">-->
 <!--            --><?// include 'part/filter-small.phtml' ?>
 <!--        </div>-->
 <!--    </div>-->
 <!--    <div id="catalog-filterbar-place"></div>-->
 
     <div class="row row-second-xs">
-        <div class="col-md-12" >
+        <div class="col-xs-12" >
             <?
              $serNum = 1;
             foreach($allSeries as $series){ ?>
@@ -62,9 +62,9 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
 
                 <? if ($series->imgs) { ?>
 
-                    <div class="col-md-12">
+                    <div class="col-xs-12">
                         <div class="row row-second-xs">
-                        <div class="col-md-12"></div>
+                        <div class="col-xs-12"></div>
                         </div>
 
                     </div>
@@ -116,7 +116,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
                 </div>
                 <? } else { ?>
                 <div class="row <?= $i==0 ? '' : 'row-second-big'?>">
-                    <div class="col-md-12">
+                    <div class="col-xs-12">
                         <div>
                             <h2><?= $series->visible_title ?></h2>
                         </div>
@@ -126,7 +126,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
 
                 <div class="dotted-top row-second-xs">
                     <div class="row">
-                        <div class="col-md-12 ">
+                        <div class="col-xs-12 ">
                         </div>
                     </div>
 
@@ -135,7 +135,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
                         $count = count($products);
                         ?>
                         <div class="row row-second">
-                            <div class="col-md-12" id="testApp_<?= $series->id ?>">
+                            <div class="col-xs-12" id="testApp_<?= $series->id ?>">
 
                                 <? include 'part/part/product-table-lenti.phtml'; ?>
                             </div>
@@ -152,7 +152,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
                     <? $serNum++; if(isset($series->dopProducts)){ ?>
                         <? foreach($series->dopProducts as $dopGroup){ ?>
                             <div class="row row-second-small">
-                                <div class="col-md-12">
+                                <div class="col-xs-12">
                                     <? include 'part/part/product-dop-table.phtml'; ?>
                                 </div>
                             </div>

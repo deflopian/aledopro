@@ -10,7 +10,7 @@
 </div>
 <div class="section b-section__content catalog">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-xs-6">
             <? include 'part/filter-small.phtml' ?>
         </div>
     </div>
@@ -22,7 +22,7 @@
         if(isset($series)){
             $i = 0;
             foreach($series as $ser){ ?>
-                <div class="col-md-2 series-tile" data-id="<?= $ser->id ?>">
+                <div class="col-xs-2 series-tile" data-id="<?= $ser->id ?>">
                     <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $ser);?>
                 </div>
                 <?

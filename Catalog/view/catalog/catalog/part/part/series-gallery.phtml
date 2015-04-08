@@ -1,6 +1,6 @@
-<div class="col-md-12 popup-gallery" style="min-width: 640px;">
+<div class="col-xs-12 popup-gallery" style="min-width: 640px;">
     <div class="row  row-second-xs">
-        <div class="col-md-12 scrollbar" id="ex3" style="overflow: auto;">
+        <div class="col-xs-12 scrollbar" id="ex3" style="overflow: auto;">
             <div class="row bad-pics-container" style="width: <?= (count($imgs)-1)*700 ?>px; height: 415px; margin: 0 auto">
                 <? $i = 0; ?>
                 <? if (!$series->preview && $series->img_gallery) { ?>
@@ -29,14 +29,14 @@
         </div>
     </div>
 <!--    <div class="row">-->
-<!--        <div class="col-md-12 popup-gallery-img">-->
+<!--        <div class="col-xs-12 popup-gallery-img">-->
 <!--            --><?// $src = $series->img_gallery ? $this->basePath() . '/images/series/' . $series->img_gallery : $this->basePath() . '/images/empty-series.png' ?>
 <!--            <img style=" margin: 0 auto; width: auto; height: 360px;" src="--><?//= $src ?><!--" alt="--><?//= $series->visible_title; ?><!--"/>-->
 <!--        </div>-->
 <!--    </div>-->
 <!---->
 <!--    <div class="row row-second">-->
-<!--        <div class="col-md-12" id="gallery-preview-line">-->
+<!--        <div class="col-xs-12" id="gallery-preview-line">-->
 <!--            --><?// foreach($imgs as $i=>$img){
 //                if($i==0){ continue; }
 //                ?>

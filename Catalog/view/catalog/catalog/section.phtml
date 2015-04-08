@@ -6,24 +6,72 @@
  */
 
 ?>
+<div class="modal fade " id="catalog_mobile_redirect" tabindex="-1">
+    <div class="modal-dialog b-mobile-redirect-dialog">
 
-<div class="b-section__content catalog">
+                <div class="b-mobile-redirect-dialog__content">
+
+                    <a class="b-mobile-redirect-dialog__link">Смотреть товар</a>
+                    на полной версии сайта
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    (function () {
+        jQuery("#catalog_mobile_redirect").on("show.bs.modal", function (e) {
+            var href = jQuery(e.relatedTarget).data("href"),
+                $link = jQuery(".b-mobile-redirect-dialog__link");
+            $link.attr("href", href);
+        });
+    })()
+</script>
+<div class="visible-xs visible-sm">
+    <div class="b-section__content">
+        <div class="b-section__content-breadcrumbs">
+            <div class="b-breadcrumbs">
+                <? foreach ($breadCrumbs as $bc) { ?>
+                    <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+                <? } ?>
+                <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+            </div>
+        </div>
+    </div>
+    <div class="b-mobile-catalog">
+
+        <? foreach ($subsections as $subsecId => $subsec) { ?>
+            <div class="b-mobile-catalog__item"
+                 style="background-image: url(<?= $this->basePath() . '/images/subsections/' . $subsec->url ?>)">
+                <a class="b-mobile-catalog__link text-uppercase" data-id="<?= $subsec->id ?>"
+                   data-target="#catalog_mobile_redirect"
+                   data-toggle="modal"
+                   data-href="<?= empty($subsec->display_name) ?
+                       $this->url('catalog', array('action' => 'subsection', 'id' => $subsec->id)) :
+                       $this->url('catalog', array('action' => 'subsection', 'id' => $subsec->display_name)); ?>">
+                    <?= $subsec->title; ?>
+                </a>
+
+            </div>
+        <? } ?>
+    </div>
+</div>
+<div class="b-section__content b-section__content_catalog catalog hidden-xs hidden-sm">
 
 
     <div class="row">
-        <div class="col-md-3 row-second">
+        <div class="col-xs-3 row-second">
             <? include 'part/filter.phtml' ?>
 
-            <? if($section->video){ ?>
+            <? if ($section->video) { ?>
                 <div class="row row-second">
-                    <div class="col-md-12">
-                        <iframe width="250" height="200" src="<?= $section->video?>"></iframe>
+                    <div class="col-xs-12">
+                        <iframe width="250" height="200" src="<?= $section->video ?>"></iframe>
                     </div>
                 </div>
             <? } ?>
         </div>
 
-        <div class="col-md-9">
+        <div class="col-xs-9">
             <div class="b-section__content-breadcrumbs">
                 <div class="b-breadcrumbs">
                     <? foreach ($breadCrumbs as $bc) { ?>
@@ -34,30 +82,32 @@
             </div>
             <div id="catalog-filterbar-place"></div>
 
-            <? foreach($subsections as $subsecId=>$subsec){ ?>
-                <div class="row row-second" id="subsec-<?= $subsecId?>">
-                    <div class="col-md-12">
+            <? foreach ($subsections as $subsecId => $subsec) { ?>
+                <div class="row row-second" id="subsec-<?= $subsecId ?>">
+                    <div class="col-xs-12">
                         <a class="catalog-section-bar" data-id="<?= $subsec->id ?>"
                            href="<?= empty($subsec->display_name) ?
-                               $this->url('catalog', array('action'=>'subsection', 'id'=>$subsec->id)) :
-                               $this->url('catalog', array('action'=>'subsection', 'id'=>$subsec->display_name));?>">
+                               $this->url('catalog', array('action' => 'subsection', 'id' => $subsec->id)) :
+                               $this->url('catalog', array('action' => 'subsection', 'id' => $subsec->display_name)); ?>">
                             <h2 style=""><?= $subsec->title; ?></h2>
                         </a>
                     </div>
                 </div>
                 <div class="row row-second" data-type="catalog">
-                        <?
-                        if(isset($seAgg)){
-                            $i = 0;
-                            foreach($seAgg->getSeries($subsecId) as $ser){ ?>
-                                <div class="col-md-3 series-tile" data-id="<?= $ser->id ?>">
-                                    <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $ser);?>
-                                </div>
-                                <? if(($i+1)%4 == 0){ echo '</div><div class="row row-second-small" data-type="catalog">'; }
-                                $i++;
+                    <?
+                    if (isset($seAgg)) {
+                        $i = 0;
+                        foreach ($seAgg->getSeries($subsecId) as $ser) { ?>
+                            <div class="col-xs-3 series-tile" data-id="<?= $ser->id ?>">
+                                <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $ser); ?>
+                            </div>
+                            <? if (($i + 1) % 4 == 0) {
+                                echo '</div><div class="row row-second-small" data-type="catalog">';
                             }
+                            $i++;
                         }
-                        ?>
+                    }
+                    ?>
                 </div>
             <? } ?>
             <?=
@@ -78,9 +128,9 @@
 
 <script type="text/javascript">
 
-    $(function(){
+    $(function () {
         mainpage.renderUrl();
-        popup.init({ page: 'catalog', isSection: true });
+        popup.init({page: 'catalog', isSection: true});
 
     });
 </script>

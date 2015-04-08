@@ -10,9 +10,9 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
 ?>
 <div class="section">
     <div class="row catalog-submenu">
-        <div class="col-md-12" style="text-align: center">
+        <div class="col-xs-12" style="text-align: center">
             <div class="row no-tb-padding">
-                <div class="col-md-12 no-tb-padding">
+                <div class="col-xs-12 no-tb-padding">
                     <?
                     //todome: исправить это мракобесие
                     $i = 0;
@@ -21,8 +21,8 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
                             <a href="<?= $this->url('home') ?>catalog/section/<?= $section->id ?>/?p=subsec-<?= $subsec->id?>"><?= $subsec->title; ?></a>
                         </div>
                         <?  if(($i+1)%4 == 0){echo'</div></div>
-                    <div class="row no-tb-padding row-second-xxs"><div class="col-md-12 no-tb-padding"><div class="dotted-top"></div></div></div>
-                    <div class="row no-tb-padding"><div class="col-md-12 no-tb-padding">';}
+                    <div class="row no-tb-padding row-second-xxs"><div class="col-xs-12 no-tb-padding"><div class="dotted-top"></div></div></div>
+                    <div class="row no-tb-padding"><div class="col-xs-12 no-tb-padding">';}
                         $i++;
                     } ?>
                 </div>
@@ -34,7 +34,7 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
     </div>
 
     <div class="row row-second">
-        <div class="col-md-6 tablefilter">
+        <div class="col-xs-6 tablefilter">
             <? include 'part/filter-small.phtml' ?>
         </div>
     </div>
@@ -68,7 +68,7 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
 
     <? } else { ?>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <h1><?= $subsec->title ?></h1>
                 <div class="grey-bottom"></div>
             </div>
@@ -76,20 +76,20 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
     <? }?>
 
             <div class="row row-second-xs">
-                <div class="col-md-12">
+                <div class="col-xs-12">
                     <?
 
                         foreach($seAgg->getSeries($subsec->id) as $series){ ?>
 
                             <div class="series-block" data-id="<?= $series->id ?>">
 <!--                                <div class="row">-->
-<!--                                    <div class="col-md-12">-->
+<!--                                    <div class="col-xs-12">-->
 <!--                                        <div class="title-pitanie">-->
 <!--                                            <h2>--><?//= $series->title ?><!--</h2>-->
 <!--                                        </div>-->
 <!--                                    </div>-->
 <!--                                </div>-->
-<!--                                <div class="row"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>-->
+<!--                                <div class="row"><div class="col-xs-12"><div class="dotted-bottom"></div></div></div>-->
                                 <div class="row row-second-xs">
                                     <? $equalParameters = $series->equalParams; ?>
                                     <? $shownEqualParams = $series->shownEqualParams; ?>
@@ -101,7 +101,7 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
 
                                     ?>
                                     <div class="row row-second-small">
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <? include 'part/part/product-table-pitaine.phtml'; ?>
                                         </div>
                                     </div>

@@ -1,6 +1,6 @@
 <div class="catalog-filter">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class="dotted-bottom">
                 <h2 style="margin-top: 7px; margin-bottom: 24px">Выбор по параметрам</h2>
             </div>
@@ -35,13 +35,13 @@
                             <? if($param->is_slider){  ?>
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="col-md-1 control-label">От</label>
-                                        <div class="col-md-4">
+                                        <label class="col-xs-1 control-label">От</label>
+                                        <div class="col-xs-4">
                                             <input id="f-<?= $param->field ?>-val-from"
                                                    type="text" class="form-control" >
                                         </div>
-                                        <label class="col-md-1 control-label">До</label>
-                                        <div class="col-md-4">
+                                        <label class="col-xs-1 control-label">До</label>
+                                        <div class="col-xs-4">
                                             <input id="f-<?= $param->field ?>-val-to"
                                                    type="text" class="form-control">
 
@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <div data-name="<?= $param->field ?>" class="noUiSlider"></div>
                                         </div>
                                     </div>
@@ -78,13 +78,13 @@
                 <input type="checkbox" id="f-offers">
                 <label for="f-offers">спецпредложения</label>
             </div>
-            <div class="col-md-12 row-second-small">
+            <div class="col-xs-12 row-second-small">
                 <div class="dotted-bottom"></div>
             </div>
         </div>
 
         <div class="form-group row-second-xs">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <button type="submit" class="btn btn-aledo-black" style="text-transform: uppercase; font-weight: bold">Применить фильтр</button>
             </div>
         </div>

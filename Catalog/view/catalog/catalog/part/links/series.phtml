@@ -19,11 +19,11 @@ $url = $this->url('catalog', array(
 <!--    --><?// $src = $series->img ? $this->basePath() . '/images/series/' . $series->img : $this->basePath() . '/images/empty-series.png' ?>
     <div class="row">
         <? if ($min) { ?>
-        <div class="col-md-12 <?= $hasBorder ? 'bordered-link-element' : '' ?>">
+        <div class="col-xs-12 <?= $hasBorder ? 'bordered-link-element' : '' ?>">
             <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+                <div class="col-xs-8 col-xs-offset-2">
         <? } else { ?>
-        <div class="col-md-12">
+        <div class="col-xs-12">
         <? } ?>
             <img src="<?= $src ?>" alt="<?= $series->visible_title ?>"/>
 

@@ -4,37 +4,37 @@
 <? if (!$nonFilter) { ?>
 
 <div class="row" >
-    <div class="col-md-12" >
+    <div class="col-xs-12" >
         <div style="background-color: #989898; color: #ffffff; margin-top: 10px; margin-bottom: 20px; padding: 12px">
 
             <div data-toggle="collapse" ng-click="toggleTags()" data-parent="#accordion" href="#collapse<?= $serNum ?>" style="cursor: pointer" >
                 <div class="row">
-                    <div class="col-md-3 filter-before-<?= $serNum ?>">
+                    <div class="col-xs-3 filter-before-<?= $serNum ?>">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-xs-12">
                                 <h2 style="font-weight: bold; margin:0; padding: 0; margin-top: 3px">Фильтр</h2>
                             </div>
                         </div>
 
                     </div>
-                    <div class="col-md-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
+                    <div class="col-xs-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
                         <div class="row"  style="text-align: left">
-                            <div class="col-md-12">
+                            <div class="col-xs-12">
                                 <div class="icon-filter"></div>
                             </div>
                         </div>
                     </div>
 
 
-                    <div class="col-md-2 pull-right"  ng-show="showTags"><h2 style="font-weight: bold; margin:0; padding: 0; margin-top: 3px; text-align: right">Показать</h2></div>
+                    <div class="col-xs-2 pull-right"  ng-show="showTags"><h2 style="font-weight: bold; margin:0; padding: 0; margin-top: 3px; text-align: right">Показать</h2></div>
                 </div>
             </div>
             <div>
                 <div class="row">
-                    <div class="col-md-3 filter-before-<?= $serNum ?>"> </div>
-                    <div class="col-md-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
+                    <div class="col-xs-3 filter-before-<?= $serNum ?>"> </div>
+                    <div class="col-xs-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
                         <div class="row" ng-repeat="tag in getTags(name)" ng-show="showTags">
-                            <div class="col-md-12">
+                            <div class="col-xs-12">
                                 <input id="f-<?=$serNum?>{{name}}-val-{{tag.key}}" type="checkbox"
                                        name="{{name}}" value="{{tag.value}}"
                                        ng-true-value="'{{tag.hash}}'"
@@ -51,7 +51,7 @@
 
             <div id="collapse<?= $serNum ?>" class="panel-collapse collapse">
                 <div class="row" style="position: relative">
-                    <div class="col-md-3 filter-before-<?= $serNum ?>" style="margin-top: 3px">
+                    <div class="col-xs-3 filter-before-<?= $serNum ?>" style="margin-top: 3px">
                             <div style="padding-left: 0; padding-top: 0">
                                 <input type="checkbox" id="f-<?= $serNum ?>-instock" ng-model="instock" ng-checked="{{instock}}" class="little-gray-checkbox">
                                 <label for="f-<?= $serNum ?>-instock">в наличии</label>
@@ -62,16 +62,16 @@
                             </div>
 
                     </div>
-                    <div class="col-md-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
+                    <div class="col-xs-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-xs-12">
                                 <div style="border-bottom: 1px solid white; padding-bottom: 20px; margin-bottom: 10px" >
                                     {{paramNames[name]}}
                                 </div>
                             </div>
                         </div>
                         <div class="row" ng-repeat="(i, val) in vals[name]" >
-                            <div class="col-md-12">
+                            <div class="col-xs-12">
                                 <input id="f-<?=$serNum?>{{name}}-val-{{i}}" type="checkbox"
                                        name="{{name}}" value="{{val.value}}"
                                        ng-true-value="'{{val.hash}}'"
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-1 pull-right" style="position: absolute; bottom: 0; right: 0; cursor: pointer; text-align: right" ng-show="!showTags">
+                    <div class="col-xs-1 pull-right" style="position: absolute; bottom: 0; right: 0; cursor: pointer; text-align: right" ng-show="!showTags">
                         <div data-toggle="collapse" ng-click="toggleTags()" data-parent="#accordion" href="#collapse<?= $serNum ?>" style="">
                             <h2 style="font-weight: bold; margin:0; padding: 0">Скрыть</h2>
                         </div>

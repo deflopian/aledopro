@@ -1,45 +1,61 @@
 <? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+<div class="b-section__content visible-xs visible-sm">
+    <div class="b-mobile-catalog">
+        <? foreach ($this->sections as $i => $section) { ?>
+            <div class="b-mobile-catalog__item">
+                <a class="b-mobile-catalog__link text-uppercase" href="<?= empty($section->display_name) ?
+                    $this->url('catalog', array('action' => 'section', 'id' => $section->id)) :
+                    $this->url('catalog', array('action' => 'section', 'id' => $section->display_name)); ?>">
+                    <?=$section->title;?>
+                </a>
+            </div>
+        <? } ?>
+    </div>
 
-<div class="b-section__content">
-        <? foreach($this->sections as $i => $section) {?>
-        <div class="row <?= $i==0 ? 'row-second' : 'row-second-large'?>">
-            <div class="col-md-4 mobile-left-margin-1">
+</div>
+<div class="b-section__content hidden-xs hidden-sm">
+    <? foreach ($this->sections as $i => $section) { ?>
+        <div class="row <?= $i == 0 ? 'row-second' : 'row-second-large' ?>">
+            <div class="col-xs-4 mobile-left-margin-1">
                 <div class="row row-second" id="section-<?= $section->id ?>" style="padding-right: 15px">
-                    <div class="col-md-12">
+                    <div class="col-xs-12">
                         <div class="black2-top"></div>
                         <div class="catalog-bar-icon"></div>
                         <a class="catalog-bar" href="<?= empty($section->display_name) ?
-                            $this->url('catalog', array('action'=>'section', 'id'=>$section->id)) :
-                            $this->url('catalog', array('action'=>'section', 'id'=>$section->display_name));?>">
+                            $this->url('catalog', array('action' => 'section', 'id' => $section->id)) :
+                            $this->url('catalog', array('action' => 'section', 'id' => $section->display_name)); ?>">
                             <h2><?= $section->title; ?></h2>
                         </a>
+
                         <div class="dotted-bottom mobile-hide"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
-            <? $ds = is_null($section->display_style) ? 0 : $section->display_style ?>
-            <?=
-            $this->partial(
-                "catalog/catalog/part/catalog-index-part/display-style-$ds.phtml",
-                array(
-                    'i' => $i,
-                    'section' => $section,
-                    'subsections' => $this->subsections,
-                    'series' => $this->series,
-                )
-            );
-            ?>
+            <div class="col-xs-8">
+                <? $ds = is_null($section->display_style) ? 0 : $section->display_style ?>
+                <?=
+                $this->partial(
+                    "catalog/catalog/part/catalog-index-part/display-style-$ds.phtml",
+                    array(
+                        'i' => $i,
+                        'section' => $section,
+                        'subsections' => $this->subsections,
+                        'series' => $this->series,
+                    )
+                );
+                ?>
             </div>
         </div>
-        <? } ?>
-    <div class="row row-second-big"><div class="col-md-12"></div></div>
+    <? } ?>
+    <div class="row row-second-big">
+        <div class="col-xs-12"></div>
+    </div>
     <div class="row row-second-small">
         <?= \Catalog\Service\CatalogService::renderSeoTextBlock($sl, $this->seoData); ?>
     </div>
 
     <script type="text/javascript">
-        window.setTimeout( function(){
+        window.setTimeout(function () {
             mainpage.renderUrl();
         }, 100);
     </script>

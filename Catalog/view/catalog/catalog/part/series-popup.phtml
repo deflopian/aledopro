@@ -7,13 +7,13 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
 <?= \Catalog\Service\CatalogService::renderPopupNav($sl, $prevSer, $nextSer, 'series', $this->robot); //навигация ?>
     <div class="row" style="margin-top: 20px">
         <div class="row">
-            <div class="col-md-12 text-left">
+            <div class="col-xs-12 text-left">
                 <h1><?= $series->visible_title; ?></h1>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <div class="dotted-top"></div>
             </div>
         </div>
@@ -25,7 +25,7 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
 
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class="further-more-line text-center">
             </div>
         </div>
@@ -33,17 +33,17 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
 
     <div class="row row-second-xs">
 
-        <div class="col-md-8">
+        <div class="col-xs-8">
             <? if (!empty($series->text)) { ?>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-xs-12">
                     <div class="dotted-bottom">
                         <h2 class="series-title">Описание</h2>
                     </div>
                 </div>
             </div>
             <div class="row row-second-xs">
-                <div class="col-md-12 series-description" >
+                <div class="col-xs-12 series-description" >
                     <?= (($num = strpos('<p>&nbsp;</p>', $series->text)) < 5 && $num !== false) ?
                         substr($series->text, $num+13) : $series->text; ?>
                 </div>
@@ -52,19 +52,19 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
         </div>
 
         <? if ($docs) { ?>
-        <div class="col-md-3 col-md-offset-1">
+        <div class="col-xs-3 col-xs-offset-1">
             <div class="row ">
-                <div class="col-md-12">
+                <div class="col-xs-12">
                     <div class="dotted-bottom">
                         <h2 class="series-title">Материалы для скачивания</h2>
                     </div>
                 </div>
             </div>
             <div class="row row-second-small">
-                <div class="col-md-12">
+                <div class="col-xs-12">
                 <? foreach($docs as $doc){ ?>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-xs-12">
                             <a href="<?= $doc->url ? $this->basePath() . '/images/series_docs/' . $doc->url : ''?>"
                                target="_blank"
                                onclick="ga('send', 'event', 'button', 'click', 'download', '<?= $doc->url ?>');"
@@ -83,16 +83,16 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
         <? } ?>
 
         <? if(false && $articles){ ?>
-            <div class="col-md-4">
+            <div class="col-xs-4">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-xs-12">
                         <div class="dotted-bottom">
                             <h2 class="series-title">Материалы по теме</h2>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-xs-12">
                         <a href="<?= $this->url('blog') .'?btype=articles&bid='. $articles[0]->id ?>">
                             <div class="tile-title tile-title-blog"><?= $articles[0]->title ?></div>
                             <img src="<?= $this->basePath() . '/images/articles/' . $articles[0]->img ?>" alt="<?= $articles[0]->title ?>"/>
@@ -101,7 +101,7 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
                 </div>
                 <? if(sizeof($articles)>1){ ?>
                     <div class="row row-second-xs">
-                        <div class="col-md-12">
+                        <div class="col-xs-12">
                             <p>а также смотрите:</p>
                             <? foreach($articles as $i=>$article){
                                 if($i==0){continue;}
@@ -119,16 +119,16 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
 
     <? if($series->text_exploit = trim($series->text_exploit)){ ?>
         <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-xs-12">
                     <div class="dotted-bottom">
                         <h2 class="series-title">Комплектация и условия эксплуатации</h2>
                     </div>
                 </div>
             </div>
             <div class="row row-second-xs">
-                <div class="col-md-12 series-description">
+                <div class="col-xs-12 series-description">
                     <?= (($num = strpos('<p>&nbsp;</p>', $series->text_exploit)) < 5 && $num !== false) ?
                         substr($series->text_exploit, $num+13) : $series->text_exploit ?>
                 </div>
@@ -147,7 +147,7 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
 
     <div class="series-pics " style="position: relative; <? $view == \Catalog\Controller\CatalogController::POPUP_DEFAULT ? '' : 'margin-top: 70px;' ?>">
         <div class="row row-second-xs" id="serpopup-table-container">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <?
 
                 switch($view){
@@ -176,7 +176,7 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
 
     <? foreach ($this->dopProducts as $oneGroup) { ?>
     <div class="row row-second">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class="dotted-bottom">
                 <h2 class="series-title"><?= $oneGroup['title'] ?></h2>
             </div>
@@ -184,7 +184,7 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
     </div>
     <div class="series-pics " style="position: relative">
         <div class="row row-second" id="serpopup-table-container">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <?
 
                 switch($oneGroup['view']){
@@ -218,7 +218,7 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
     <? } ?>
     <? if (false) { ?>
     <div class="row row-second">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class="dotted-bottom">
                 <h2 class="series-title">С этим продуктом покупают</h2>
             </div>
@@ -230,7 +230,7 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
         foreach($relatedSeries as $i=>$ser){
             if($i+1%5 == 0){echo'</div><div class="row row-second-small">'; }
             ?>
-            <div class="col-md-2 series-tile" data-id="<?= $ser->id ?>">
+            <div class="col-xs-2 series-tile" data-id="<?= $ser->id ?>">
                 <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $ser); ?>
             </div>
         <? } ?>
@@ -238,7 +238,7 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
         foreach($relatedProds as $i=>$prod){
             if($i+1%5 == 0){echo'</div><div class="row row-second-small">'; }
             ?>
-            <div class="col-md-2 series-tile" data-id="<?= $prod->id ?>">
+            <div class="col-xs-2 series-tile" data-id="<?= $prod->id ?>">
                 <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $prod, true); ?>
             </div>
         <? } ?>

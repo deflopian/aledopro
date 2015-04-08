@@ -5,12 +5,12 @@ $forWhat = $this->forWhat;
 ?>
 <div class="section">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <h2><?=$forWhat?>:</h2>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div class=" dotted-bottom"></div>
         </div>
     </div>
@@ -51,9 +51,9 @@ $forWhat = $this->forWhat;
             ?>
 
         <a href="<?= $href ?>">
-        <div class="col-md-2">
+        <div class="col-xs-2">
             <div class="row">
-                <div class="subsection-link col-md-12" style="height: 50px">
+                <div class="subsection-link col-xs-12" style="height: 50px">
                     <? if ($link[0] == \Catalog\Controller\AdminController::SERIES_TABLE) { ?>
                         <?= $link[1]->visible_title ? $link[1]->visible_title : $link[1]->title ?>
                     <? } else { ?>
@@ -62,12 +62,12 @@ $forWhat = $this->forWhat;
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12" style="padding-bottom: 10px">
+                <div class="col-xs-12" style="padding-bottom: 10px">
                     <div class=" dotted-bottom"></div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-xs-12">
                     <? $src = $link[1]->$url ? $this->basePath() . '/images/' . $folder . '/' . $link[1]->$url : $this->basePath() . '/images/empty-series.png' ?>
                     <img src="<?= $src ?>" alt="<?= $link[1]->title ?>"/>
                 </div>

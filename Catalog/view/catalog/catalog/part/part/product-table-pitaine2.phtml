@@ -71,19 +71,19 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
     <?= $posVals ?>
 </div>
 <div class="row" >
-    <div class="col-md-12" style="background-color: #989898; color: #ffffff; margin-top: 20px; margin-bottom: 20px; padding: 20px">
+    <div class="col-xs-12" style="background-color: #989898; color: #ffffff; margin-top: 20px; margin-bottom: 20px; padding: 20px">
         <div class="row">
-            <div class="col-md-3 filter-before"><h2 style="font-weight: bold; margin-top: 0">Фильтр</h2></div>
-            <div class="col-md-2 filter-param"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder " >
+            <div class="col-xs-3 filter-before"><h2 style="font-weight: bold; margin-top: 0">Фильтр</h2></div>
+            <div class="col-xs-2 filter-param"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder " >
                 <div class="row"  style="text-align: left">
-                    <div class="col-md-12">
+                    <div class="col-xs-12">
 
                         <div class="icon-filter"></div>
                         <div style="border-bottom: 1px solid white; padding-bottom: 20px; margin-bottom: 10px" >{{paramNames[name]}}</div>
                     </div>
                 </div>
                 <div class="row" ng-repeat="(i, val) in vals[name]" >
-                    <div class="col-md-12" ng-click="printScope()">
+                    <div class="col-xs-12" ng-click="printScope()">
                         <input id="f-<?=$serNum?>{{name}}-val-{{i}}" type="checkbox"
                                name="{{name}}" value="{{val.value}}"
                                ng-true-value="{{val.hash}}"

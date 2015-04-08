@@ -39,14 +39,14 @@
 
 <div class="section">
     <div class="row">
-        <div class="col-md-6 tablefilter">
+        <div class="col-xs-6 tablefilter">
             <? include 'part/filter-small.phtml' ?>
         </div>
     </div>
     <div id="catalog-filterbar-place"></div>
 
     <div class="row row-second-xs">
-        <div class="col-md-12" >
+        <div class="col-xs-12" >
 
 
             <?
@@ -56,9 +56,9 @@
 
                 <? if ($series->imgs) { ?>
 
-                    <div class="col-md-12 dotted-top ">
+                    <div class="col-xs-12 dotted-top ">
                         <div class="row row-second-xs">
-                        <div class="col-md-12"></div>
+                        <div class="col-xs-12"></div>
                         </div>
 
                     </div>
@@ -110,7 +110,7 @@
                 </div>
                 <? } else { ?>
                 <div class="row <?= $i==0 ? '' : 'row-second-big'?>">
-                    <div class="col-md-12">
+                    <div class="col-xs-12">
                         <div>
                             <h2><?= $series->visible_title ?></h2>
                         </div>
@@ -120,7 +120,7 @@
 
                 <div class="series-block dotted-top row-second-xs" id="subsec-<?=$series->subsection_id?>" data-id="<?= $series->id ?>">
                     <div class="row">
-                        <div class="col-md-12 ">
+                        <div class="col-xs-12 ">
 <!--                            <div class="bar-green">-->
 <!--                                <h2>--><?//= $series->visible_title ?><!--</h2>-->
 <!--                            </div>-->
@@ -136,17 +136,17 @@
 <!--                    --><?// } ?>
 
 <!--                    <div class="row row-second-small unnecessary ">-->
-<!--                        <div class="col-md-12">-->
+<!--                        <div class="col-xs-12">-->
 <!--                            --><?// if (!empty($series->text)) { ?>
 <!--                            <div class="row">-->
-<!--                                <div class="col-md-12">-->
+<!--                                <div class="col-xs-12">-->
 <!--                                    <div class="dotted-bottom">-->
 <!--                                        <h2>Описание</h2>-->
 <!--                                    </div>-->
 <!--                                </div>-->
 <!--                            </div>-->
 <!--                            <div class="row row-second-xs">-->
-<!--                                <div class="col-md-12">-->
+<!--                                <div class="col-xs-12">-->
 <!--                                    --><?//= $series->text; ?>
 <!--                                    <div class="dotted-bottom row-second-small"></div>-->
 <!--                                </div>-->
@@ -161,7 +161,7 @@
                         $count = count($products);
                         ?>
                         <div class="row row-second">
-                            <div class="col-md-12" id="testApp_<?= $series->id ?>">
+                            <div class="col-xs-12" id="testApp_<?= $series->id ?>">
 
                                 <? include 'part/part/product-table-lenti.phtml'; ?>
                             </div>
@@ -178,7 +178,7 @@
                     <? $serNum++; if(isset($series->dopProducts)){ ?>
                         <? foreach($series->dopProducts as $dopGroup){ ?>
                             <div class="row row-second-small">
-                                <div class="col-md-12">
+                                <div class="col-xs-12">
                                     <? include 'part/part/product-dop-table.phtml'; ?>
                                 </div>
                             </div>

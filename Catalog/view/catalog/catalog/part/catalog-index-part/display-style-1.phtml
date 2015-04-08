@@ -10,7 +10,7 @@ if (isset($this->subsections[$section->id])) {
         <? foreach($this->subsections[$section->id] as $i => $subsec){
             if(($i+1)%5==0){ echo'</div><div class="row row-second">'; }
             ?>
-            <div class="col-md-3 mobile-left-margin-2">
+            <div class="col-xs-3 mobile-left-margin-2">
                 <? $oneSeries = $series[$subsec->id][0]; ?>
                 <?=
                 $this->partial(

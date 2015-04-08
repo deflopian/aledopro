@@ -97,7 +97,7 @@
                 <div class="b-tabs-content__item fade in active tab-pane" role="tabpanel" id="goods_1">
                     <div class="catalog" style="position: relative; <?= $view !== \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES ? '' : 'margin-top: 70px;' ?>">
                         <div class="row row-second-xs" id="serpopup-table-container">
-                            <div class="col-md-12" id="testApp_<?= $series->id ?>" >
+                            <div class="col-xs-12" id="testApp_<?= $series->id ?>" >
 <!--                                <div ng-controller="SoloTableCtrl">-->
                                 <?
 
@@ -152,7 +152,7 @@
 
                 <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_2" style="padding-left: 30px">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-xs-12">
                     <?= (($num = strpos('<p>&nbsp;</p>', $series->text)) < 5 && $num !== false) ?
                         substr($series->text, $num+13) : $series->text; ?>
                         </div>
@@ -161,16 +161,16 @@
 
                     <? if($series->text_exploit = trim($series->text_exploit)){ ?>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-xs-12">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-xs-12">
                                         <div class="dotted-bottom">
                                             <h2 class="series-title">Комплектация и условия эксплуатации</h2>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row row-second-xs">
-                                    <div class="col-md-12 series-description">
+                                    <div class="col-xs-12 series-description">
                                         <?= (($num = strpos('<p>&nbsp;</p>', $series->text_exploit)) < 5 && $num !== false) ?
                                             substr($series->text_exploit, $num+13) : $series->text_exploit ?>
                                     </div>
@@ -182,10 +182,10 @@
                 <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_3">
                     <? if ($docs) { ?>
                         <div class="row row-second-small">
-                            <div class="col-md-12">
+                            <div class="col-xs-12">
                                 <? foreach($docs as $doc){ ?>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-xs-12">
                                             <? $type = strtolower(substr($doc->url, -3)); ?>
                                             <a href="<?= $doc->url ? $this->basePath() . '/images/series_docs/' . $doc->url . '?originalName=' . urlencode($doc->original_name) : ''?>"
                                                target="_blank"
@@ -209,7 +209,7 @@
                 <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_4">
                     <? foreach ($dopProducts as $oneGroup) { ?>
                         <div class="row row-second <?= (strpos($oneGroup['title'], 'тока') || strpos($oneGroup['title'], 'питания') || strpos($oneGroup['title'], 'блоки') || strpos($oneGroup['title'], 'источники')) ? ' scrollable_power' : ''?>" >
-                            <div class="col-md-12">
+                            <div class="col-xs-12">
                                 <div class="dotted-bottom">
                                     <h2 class="series-title"><?= $oneGroup['title'];?></h2>
                                 </div>
@@ -217,7 +217,7 @@
                         </div>
                         <div style="position: relative">
                             <div class="row row-second" id="serpopup-table-container">
-                                <div class="col-md-12" id="testApp_<?= $oneGroup['id'] ?>">
+                                <div class="col-xs-12" id="testApp_<?= $oneGroup['id'] ?>">
                                     <?
                                     $view = ($oneGroup['display_style'] > 0 ? $oneGroup['display_style'] : $oneGroup['view'] );
                                     switch($view){

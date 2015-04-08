@@ -20,7 +20,7 @@ $navPath = "";
 ?>
 <div class="popup-nav-solutions" style="height: 0; overflow: visible">
     <div class="row" style="height: 0; overflow: visible">
-        <div class="col-md-2">
+        <div class="col-xs-2">
             <a href="<?= $navPath . $this->prevEntity->id ?>">
 <div class="pull-left popup-nav-block" id="prev" data-id="<?= $this->prevEntity->id ?>" style="min-width: 90px; max-width: 140px; padding-left: 30px;">
 
@@ -28,12 +28,12 @@ $navPath = "";
             <div class="arrow-aledo-big-solutions arrow-left" style="float:right"></div>
         </div>
         <div class="row" style="margin-top: 13px">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <div class="dotted-bottom"></div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <div class="popup-nav-tile-title-solutions" style="text-align: right">
                     <?= !empty($this->prevEntity->visible_title) ? $this->prevEntity->visible_title : $this->prevEntity->title ?>
                 </div>
@@ -46,7 +46,7 @@ $navPath = "";
             </div>
             </a>
         </div>
-        <div class="col-md-2 pull-right">
+        <div class="col-xs-2 pull-right">
             <a href="<?= $navPath . $this->nextEntity->id ?>">
 <div class="pull-right popup-nav-block" id="next" data-id="<?= $this->nextEntity->id ?>" style="min-width: 90px; max-width: 140px; padding-right: 30px">
 
@@ -54,12 +54,12 @@ $navPath = "";
             <div class="arrow-aledo-big-solutions arrow-right"></div>
         </div>
         <div class="row" style="margin-top: 13px">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <div class="dotted-bottom"></div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <div class="popup-nav-tile-title-solutions">
                     <?= !empty($this->nextEntity->visible_title) ? $this->nextEntity->visible_title : $this->nextEntity->title ?>
                 </div>
