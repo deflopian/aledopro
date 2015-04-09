@@ -118,7 +118,7 @@
                     </div>
                     <br />
                     <hr class="dotted-separator" />
-                    <form name="cartBuy" class="b-clearfix b-order-place " ng-controller="OrderPlaceController">
+                    <form name="cartBuy" id="cart-form" class="b-clearfix b-order-place " ng-controller="OrderPlaceController">
                         <div class="b-form-group b-form-group_order-place  b-clearfix">
                             <strong class="b-left">Я покупаю как</strong>
                             <div class="b-cart-select-type b-right">
@@ -164,6 +164,7 @@
                         <hr class="dotted-separator" />
                         <div class="b-form-group b-form-group_order-place b-clearfix">
                             <button type="submit" class="b-button b-button_small b-button_gray-colored b-button_yellow-background b-right" id="order_place">
+                                <input type="hidden" id="order-products" name="order-products"/>
                                 <span class="b-button__text" id="send-bnt">Оформить заказ</span>
                             </button>
                         </div>
