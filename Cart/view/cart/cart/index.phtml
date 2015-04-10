@@ -118,20 +118,22 @@
                     </div>
                     <br />
                     <hr class="dotted-separator" />
-                    <form name="cartBuy" id="cart-form" class="b-clearfix b-order-place " ng-controller="OrderPlaceController">
+                    <form name="cartBuy" id="cart-form" method="post" action="<?= $this->url('cart',array('action'=>'saveFormAjax')) ?>"  class="b-clearfix b-order-place " ng-controller="OrderPlaceController">
                         <div class="b-form-group b-form-group_order-place  b-clearfix">
                             <strong class="b-left">Я покупаю как</strong>
                             <div class="b-cart-select-type b-right">
                                 <div class="b-cart-select-type__cell">
-                                    <input type="radio" name="buyType" id="buyType_1" data-figure="square" />
+                                    <input type="radio" checked name="buyType" id="buyType_1" value="1"  data-figure="square" />
                                     <label for="buyType_1">Физическое лицо</label>
 
                                 </div>
                                 <div class="b-cart-select-type__cell">
-                                    <input type="radio" name="buyType" id="buyType_2" data-figure="square" class="b-order-place__input" />
+                                    <input type="radio" name="buyType" id="buyType_2" value="2" data-figure="square" class="b-order-place__input" />
                                     <label for="buyType_2">Юридическое лицо</label>
                                     <div class="b-order-place__file-zone" ng-class="{'b-order-place__file-zone_file-uploaded' : fileName.length }">
-                                        <div><input type="file" id="orderDetails" onchange="angular.element(this).scope().showFileName(this)" /></div>
+                                        <div><input type="file" name="file" id="orderDetails" onchange="angular.element(this).scope().showFileName(this)" /></div>
+                                        <input class="hidden-last-file" type="hidden" value="<?= $this->lastFile ? '1' : '0' ?>" name="lastFile" style="display: none"/>
+
                                         <div ng-hide="fileName.length">
                                             <script type="text/javascript">
                                                 if (browser.msie9) {
@@ -159,7 +161,7 @@
                         <hr class="dotted-separator" />
                         <div class="b-form-group b-form-group_order-place">
                             <label><strong>Написать комментарии к заказу</strong></label>
-                            <textarea class="b-form-control b-order-place__comment"></textarea>
+                            <textarea name="comment" class="b-form-control b-order-place__comment"></textarea>
                         </div>
                         <hr class="dotted-separator" />
                         <div class="b-form-group b-form-group_order-place b-clearfix">

@@ -1,26 +1,81 @@
-<form name="login-form" id="login-form" action="<?= $this->url('cabinet', array('action' => 'login'))?>" method="post"
-      class="aledo-form form-horizontal row-second-small" role="form">
-    <div class="form-group">
-        <div class="col-md-12">
-            <input name="identity" placeholder="Ваш e-mail" type="text" class="form-control" data-required="yes">
-        </div>
+<form novalidate
+      name="login-form"
+      method="post"
+      id="login-form"
+      action="<?= $this->url('cabinet', array('action' => 'login'))?>"
+      ng-controller="LoginController">
+    <p class="b-authorize__heading">Войти</p>
+    <div class="b-authorize__col">
+        <input name="identity"
+               type="text"
+               id="auth_email"
+               placeholder="Ваш e-mail"
+               class="b-form-control b-form-control_small b-form-control_auth"
+               ng-model="formData.identity" />
     </div>
-    <div class="form-group">
-        <div class="col-md-12">
-            <input name="credential" placeholder="Ваш пароль" type="password" class="form-control" data-required="yes">
-        </div>
+    <div class="b-authorize__col">
+        <input name="credential"
+               type="password"
+               id="auth_password"
+               placeholder="Ваш пароль"
+               class="b-form-control b-form-control_small b-form-control_auth"
+               ng-model="formData.credential" />
+        <a href="javascript:void(0)" class="text-darker-gray b-password-recovery-trigger"><small>Забыли пароль?</small></a>
     </div>
-
-    <div class="form-group">
-        <div class="col-md-6">
-            <a id="popup-forgot" class="link" href="">забыли пароль?</a>
-        </div>
-        <div class="col-md-6">
-            <input type="hidden" name="redirect" value="<?= $url ?>"/>
-            <input type="submit" name="submit" class="btn btn-aledo-black" value="Войти" />
-        </div>
+    <div class="b-authorize__col">
+        <a ng-click="submit()" class="b-button b-button_gray b-button_auth b-button_small">
+            <span class="b-button__text">Войти</span>
+        </a>
     </div>
 </form>
+<!---->
+<!--<form name="login-form" id="login-form" action="--><?//= $this->url('cabinet', array('action' => 'login'))?><!--" method="post"-->
+<!--      class="aledo-form form-horizontal row-second-small" role="form">-->
+<!--    <div>-->
+<!--        <div class="b-login__cell">-->
+<!--            <input type="text"-->
+<!--                   class="b-form-control b-form-control_small"-->
+<!--                   data-required="yes"-->
+<!--                   name="identity"-->
+<!--                   id="user_name"-->
+<!--                   ng-model="user_name"-->
+<!--                   placeholder="Ваш e-mail"-->
+<!--                   autocomplete="off"-->
+<!--                   required />-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <div class="b-login__cell b-login__cell_right">-->
+<!--            <input type="password"-->
+<!--                   class="b-form-control b-form-control_small"-->
+<!--                   id="credential"-->
+<!--                   name="credential"-->
+<!--                   data-required="yes"-->
+<!--                   autocomplete="off"-->
+<!--                   required />-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <div class="col-md-12">-->
+<!--            <input name="identity" placeholder="Ваш e-mail" type="text" class="form-control" data-required="yes">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <div class="col-md-12">-->
+<!--            <input name="credential" placeholder="Ваш пароль" type="password" class="form-control" data-required="yes">-->
+<!--        </div>-->
+<!--    </div>-->
+<!---->
+<!--    <div class="form-group">-->
+<!--        <div class="col-md-6">-->
+<!--            <a id="popup-forgot" class="link" href="">забыли пароль?</a>-->
+<!--        </div>-->
+<!--        <div class="col-md-6">-->
+<!--            <input type="hidden" name="redirect" value="--><?//= $url ?><!--"/>-->
+<!--            <input type="submit" name="submit" class="btn btn-aledo-black" value="Войти" />-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</form>-->
 
-<iframe src="/cabinet/fakelogin" id="loginTarget" name="loginTarget" style="display:none">
-</iframe>
+<!--<iframe src="/cabinet/fakelogin" id="loginTarget" name="loginTarget" style="display:none">-->
+<!--</iframe>-->

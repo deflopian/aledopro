@@ -221,11 +221,12 @@ class CartController extends AbstractActionController
                 $orderData = array(
                     'comment' => $data['comment'],
                     'summ' => $totalPrice,
-                    'orderState' => $post['buyer-state'],
+                    'orderState' => $post['buyType'],
                 );
                 $filePath = null;
+
                 //заказчик - юридическое лицо, сохраняем его реквизиты
-                if ($post['buyer-state'] == 2) {
+                if ($post['buyType'] == 2) {
                     if (isset($data['file']['tmp_name'])) {
                         $filePath = substr($data['file']['tmp_name'], strlen($_SERVER['DOCUMENT_ROOT'] . self::UPLOAD_PATH));
 
@@ -287,12 +288,15 @@ class CartController extends AbstractActionController
                             'price' => $prodData[1],
                             'count' => floor($prodData[0]),
                         ));
+
                         $orderProdsTable->save($pto);
+
                         $ptosIds[$id] = $pto;
                     }
                     $success = 1;
 
                     $return['orderId'] = $orderId;
+
                     if (isset($orderId) && !empty($orderId)) {
                         if ($user) {
                             $isRegistered = true;
@@ -306,7 +310,7 @@ class CartController extends AbstractActionController
                         }
 
 
-                        if ($post['buyer-state'] == 2) {
+                        if ($post['buyType'] == 2) {
                             if (isset($data['file']['name'])) {
                                 $order->originalName = $data['file']['name'];
                             } elseif (isset($order->file) && $order->file) {
@@ -314,13 +318,14 @@ class CartController extends AbstractActionController
                             }
                         }
 
-                        if (isset($userInfo)) {
+                                    if (isset($userInfo)) {
                             //отправляем юзеру письмо с деталями заказа
 
                             list($email, $mailView, $from) = MailService::prepareOrderUserMailData($this->serviceLocator, $userInfo, $orderId, $order, $productsInfo, $ptosIds);
                             MailService::sendMail($email, $mailView, "Детали заказа", $from);
 
                             //сообщаем менеджеру детали нового заказа
+                            if (false) {
                             list($email, $mailView, $from) = MailService::prepareOrderManagerMailData($this->serviceLocator, $userInfo, $orderId, $order, $productsInfo, $ptosIds, $isRegistered, $filePath);
                             if ($email != MailService::$currentManagerMail) {
                                 MailService::sendMail($email, $mailView, "Новый заказ номер " . $orderId . " на Aledo", $from);
@@ -336,6 +341,7 @@ class CartController extends AbstractActionController
                             }
                             MailService::sendMail(MailService::$currentManagerMail, $mailView, "Новый заказ номер " . $orderId . " на Aledo");
 //                            MailService::sendMail("deflopian@gmail.com", $mailView, "Новый заказ номер " . $orderId . " на Aledo");
+                                            }
                         }
                     }
                 }
