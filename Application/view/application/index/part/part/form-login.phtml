@@ -4,28 +4,47 @@
       id="login-form"
       action="<?= $this->url('cabinet', array('action' => 'login'))?>"
       ng-controller="LoginController">
-    <p class="b-authorize__heading">Войти</p>
-    <div class="b-authorize__col">
-        <input name="identity"
-               type="text"
-               id="auth_email"
-               placeholder="Ваш e-mail"
-               class="b-form-control b-form-control_small b-form-control_auth"
-               ng-model="formData.identity" />
-    </div>
-    <div class="b-authorize__col">
-        <input name="credential"
-               type="password"
-               id="auth_password"
-               placeholder="Ваш пароль"
-               class="b-form-control b-form-control_small b-form-control_auth"
-               ng-model="formData.credential" />
-        <a href="javascript:void(0)" class="text-darker-gray b-password-recovery-trigger"><small>Забыли пароль?</small></a>
-    </div>
-    <div class="b-authorize__col">
-        <a ng-click="submit()" class="b-button b-button_gray b-button_auth b-button_small">
-            <span class="b-button__text">Войти</span>
-        </a>
+    <p class="b-authorize__heading">Войти
+    <div class="b-registration__table">
+        <div class="b-registration__row">
+            <div class="b-registration__cell b-registration__cell_left">
+                <label for="auth_email">E-mail</label>
+            </div>
+            <div class="b-registration__cell b-registration__cell_right">
+            <input name="identity"
+                   type="text"
+                   id="auth_email"
+                   placeholder="Ваш e-mail"
+                   class="b-form-control b-form-control_small "
+                   ng-model="formData.identity" />
+            </div>
+        </div>
+        <div class="b-registration__row">
+            <div class="b-registration__cell b-registration__cell_left">
+                <label for="auth_password">Пароль</label>
+            </div>
+            <div class="b-registration__cell b-registration__cell_right">
+                <input name="credential"
+                   type="password"
+                   id="auth_password"
+                   placeholder="Ваш пароль"
+                   class="b-form-control b-form-control_small b-registration__cell b-registration__cell_right"
+                   ng-model="formData.credential" />
+            </div>
+
+        </div>
+
+
+        <div class="b-registration__row">
+            <div class="b-registration__cell b-registration__cell_left"></div>
+            <a href="javascript:void(0)" class="b-registration__cell b-registration__cell_right text-darker-gray b-password-recovery-trigger" style="text-align: right"><small>Забыли пароль?</small></a>
+        </div>
+        <div class="b-registration__row">
+            <div class="b-registration__cell b-registration__cell_left"></div>
+            <a ng-click="submit()" class="b-button b-button_gray">
+                <span class="b-button__text">Войти</span>
+            </a>
+        </div>
     </div>
 </form>
 <!---->
