@@ -6,26 +6,7 @@
  */
 
 ?>
-<div class="modal fade " id="catalog_mobile_redirect" tabindex="-1">
-    <div class="modal-dialog b-mobile-redirect-dialog">
-
-                <div class="b-mobile-redirect-dialog__content">
-
-                    <a class="b-mobile-redirect-dialog__link">Смотреть товар</a>
-                    на полной версии сайта
-
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-    (function () {
-        jQuery("#catalog_mobile_redirect").on("show.bs.modal", function (e) {
-            var href = jQuery(e.relatedTarget).data("href"),
-                $link = jQuery(".b-mobile-redirect-dialog__link");
-            $link.attr("href", href);
-        });
-    })()
-</script>
+<? include 'part/part/mobile-modal.phtml' ?>
 <div class="visible-xs visible-sm">
     <div class="b-section__content">
         <div class="b-section__content-breadcrumbs">
@@ -37,7 +18,7 @@
             </div>
         </div>
     </div>
-    <div class="b-mobile-catalog">
+    <div class="b-mobile-catalog visible-xs visible-sm">
 
         <? foreach ($subsections as $subsecId => $subsec) { ?>
             <div class="b-mobile-catalog__item"
