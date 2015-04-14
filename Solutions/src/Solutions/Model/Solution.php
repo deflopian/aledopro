@@ -39,6 +39,8 @@ class Solution extends SampleModel
     public $attr_cri;
     public $attr_construction;
 
+
+    public $compare_header;
     //сравнение светильников
     public $compare_name_1;
     public $compare_link_1;

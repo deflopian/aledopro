@@ -11,5 +11,7 @@ class Delivery extends SampleModel
     public $title3;
     public $text1;
     public $text2;
+    public $text2_details;
+    public $text2_part2;
     public $text3;
 }

@@ -15,6 +15,30 @@ class ApplicationService
     const BANNER_POSITION_CENTER = 1;
     const BANNER_POSITION_RIGHT = 2;
 
+    const ALEDO_POPUP_ERROR = 0;
+    const ALEDO_POPUP_SUCCESS = 1;
+    const ALEDO_POPUP_LOGIN = 2;
+    const ALEDO_POPUP_REGISTER = 3;
+    const ALEDO_POPUP_CART_BUY = 4;
+    const ALEDO_POPUP_CART_BUY_WITHOUT_REGISTER = 5;
+    const ALEDO_POPUP_CART_REGISTER = 6;
+    const ALEDO_POPUP_REGISTER_SUCCESS = 7;
+    const ALEDO_POPUP_CART_REGISTER_SUCCESS = 8;
+    const ALEDO_POPUP_PARTNER_CARD = 9;
+
+    private static $aledoPopups = array(
+        self::ALEDO_POPUP_ERROR => 'error',
+        self::ALEDO_POPUP_SUCCESS => 'stuffsend',
+        self::ALEDO_POPUP_LOGIN => 'login',
+        self::ALEDO_POPUP_REGISTER => 'register',
+        self::ALEDO_POPUP_CART_BUY => 'cart-buy',
+        self::ALEDO_POPUP_CART_BUY_WITHOUT_REGISTER => 'cart-buy-without-register',
+        self::ALEDO_POPUP_CART_REGISTER => 'registerFromCart',
+        self::ALEDO_POPUP_REGISTER_SUCCESS => 'regsuccess',
+        self::ALEDO_POPUP_CART_REGISTER_SUCCESS => 'regsuccessFromCart',
+        self::ALEDO_POPUP_PARTNER_CARD => 'partner-card',
+    );
+    
     private static $bannerPositionNames = array(
         self::BANNER_POSITION_LEFT => 'Слева',
         self::BANNER_POSITION_CENTER => 'По центру',
@@ -109,6 +133,14 @@ class ApplicationService
         return array($group1, $group2, $group3);
     }
 
+    public static function getPopupName($popupType) {
+        if (array_key_exists($popupType, self::$aledoPopups)) {
+            return self::$aledoPopups[$popupType];
+        } else {
+            return 'error';
+        }
+    }
+    
     public static function getValidationFormMessages()
     {
         $reader = new Ini();

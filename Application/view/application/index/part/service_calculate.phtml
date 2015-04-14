@@ -1,0 +1,237 @@
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">×</span></button>
+    <h4 class="modal-title text-center"><strong>РЕГИСТРАЦИЯ КАРТЫ ПАРТНЕРА</strong></h4>
+</div>
+<div class="modal-body">
+    <div class="popup-modal">
+        <hr class="dotted-separator" />
+        <div class="text-center b-mt1 b-mb1">ВАШИ ПЕРСОНАЛЬНЫЕ ДАННЫЕ:</div>
+        <hr class="dotted-separator b-mb1" />
+        <div class="b-partner-registration">
+            <? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1>Запрос на расчет</h1>
+                </div>
+            </div>
+
+            <div class="row row-second">
+                <div class="col-md-12">
+                    <p>Если у вас появилось желание точнее узнать о стоимости освещения для конкретного проекта, пожалуйста, заполните данную форму, мы сделаем расчет и свяжемся с вами.</p>
+                    <p>Или сами свяжитесь с нами по телефону или e-mail, это позволит сэкономить ваше время, а нам даст всю необходимую для расчета информацию</p>
+                </div>
+            </div>
+
+            <div class="row"> <div class="col-md-12"><div class="dotted-bottom"></div></div></div>
+
+            <div class="row">
+                <form class="form-horizontal aledo-form" role="form" method="post" action="<?= $this->url('services') ?>">
+                    <div style="overflow: auto">
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h2>Контактная информация</h2>
+                                    <div class="dotted-bottom"></div>
+                                </div>
+                            </div>
+                            <div class="row row-second">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="calc-name" class="col-md-3 control-label">ФИО*</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" id="calc-name" name="name"
+                                                <?= ($this->isRegistered && $this->user->getUsername()) ?
+                                                    'type="text" data-required="yes" value="' . $this->user->getUsername() . '"' :
+                                                    'type="text" data-required="yes"'
+                                                ?>>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="calc-phone" class="col-md-5 control-label">Номер телефона*</label>
+                                        <div class="col-md-7">
+                                            <input class="form-control" id="calc-phone" name="phone"
+                                                <?= ($this->isRegistered && $this->user->getPhone()) ?
+                                                    'type="text" data-required="yes" value="' . $this->user->getPhone() . '"' :
+                                                    'type="text" data-required="yes"'
+                                                ?>>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="calc-mail" class="col-md-3 control-label">E-mail*</label>
+                                        <div class="col-md-9">
+                                            <input  class="form-control" id="calc-mail" name="mail"
+                                                <?= ($this->isRegistered && $this->user->getEmail()) ?
+                                                    'type="text" data-required="yes" value="' . $this->user->getEmail() . '"' :
+                                                    'type="text" data-required="yes"'
+                                                ?>>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="calc-city" class="col-md-3 control-label">Город</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="calc-city" name="city">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h2>Техническая информация</h2>
+                                    <div class="dotted-bottom"></div>
+                                </div>
+                            </div>
+                            <div class="row row-second">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="calc-w" class="col-md-4 control-label">Ширина помещения, м</label>
+                                        <div class="col-md-2 small-input">
+                                            <input type="text" class="form-control" id="calc-w" name="w">
+                                        </div>
+
+                                        <label for="calc-h" class="col-md-4 control-label">Высота помещения, м</label>
+                                        <div class="col-md-2 small-input">
+                                            <input type="text" class="form-control" id="calc-h" name="h">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="calc-l" class="col-md-4 control-label">Длина помещения, м</label>
+                                        <div class="col-md-2 small-input">
+                                            <input type="text" class="form-control" id="calc-l" name="l">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="padding-left: 15px; cursor: pointer">
+                                        <?= \Application\Service\ApplicationService::renderFormFileInput($sl, 'Прикрепить чертёж', '(DWG, PDF, JPG, DOC)', true); ?>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <? $goals = \Services\Controller\ServicesController::getGoals(); ?>
+                        <div class="form-group">
+                            <label for="calc-goal" class="col-md-6 col-md-offset-6 control-label">Назначение помещения</label>
+                            <div class="col-md-7 col-md-offset-5">
+                                <select class="form-control" id="calc-goal" name="goal">
+                                    <? foreach($goals as $id=>$title){ ?>
+                                        <option value="<?= $id ?>"><?= $title ?></option>
+                                    <? } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label for="calc-comment" class="control-label">Комментарии</label>
+                                <textarea class="form-control" id="calc-comment" rows="3" name="comment"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-6 text-center">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <input type="hidden" name="form-type"
+                                               value="<?= \Services\Controller\ServicesController::CALCULATION_FORM?>"/>
+                                        <button type="submit" class="btn btn-aledo-black">Отправить запрос</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+
+
+
+            <form novalidate ng-submit="submit()" name="partnerRegistration">
+                <div class="b-partner-registration__row">
+                    <div class="b-partner-registration__cell b-partner-registration__cell_left">
+                        <div class="b-form-group">
+                            <label for="partner_lastname">Фамилия*</label>
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_lastname" ng-model="partner_lastname" autocomplete="off" required />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partner_name">Имя*</label>
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_name" ng-model="partner_name" autocomplete="off" required />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partner_fathername">Отчество</label>
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_fathername" ng-model="partner_fathername" autocomplete="off" />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partner_city">Город*</label>
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_city" ng-model="partner_city" autocomplete="off" required />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partner_tel">Контактный телефон*</label>
+                            <input type="text" input-mask="+7 (999) 999-99-99" class="b-form-control b-form-control_small" id="partner_tel" ng-model="partner_tel" autocomplete="off" required />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partners_email">E-mail*</label>
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_email" ng-model="partners_email" autocomplete="off" required />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partner_password">Пароль*</label>
+                            <input type="password" class="b-form-control b-form-control_small" id="partner_password" ng-model="partner_password" autocomplete="off" required />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partner_password_repeat">Повторите пароль*</label>
+                            <input type="password" class="b-form-control b-form-control_small" id="partner_password_repeat" ng-model="partner_password_repeat" autocomplete="off" required />
+                        </div>
+                    </div>
+                    <div class="b-partner-registration__cell b-partner-registration__cell_decoration-cell">
+                        <div class="b-partner-registration__decoration"></div>
+
+                    </div>
+                    <div class="b-partner-registration__cell b-partner-registration__cell_right">
+                        <div class="b-form-group">
+                            <label for="partner_job_title">Занимаемая должность</label>
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_job_title" ng-model="partner_job_title" autocomplete="off" />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partner_company_name">Полное название компании (с юр. статусом)*</label>
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_company_name" ng-model="partner_company_name" autocomplete="off" required />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partner_scope">Сфера деятельности компании*</label>
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_scope" ng-model="partner_scope" autocomplete="off" required />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partner_brands">Основные бренды из вашего ассортимента*</label>
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_brands" ng-model="partner_brands" autocomplete="off" required />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partner_office_tel">Телефоны офиса*</label>
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_office_tel" ng-model="partner_office_tel" autocomplete="off" required />
+                        </div>
+                        <div class="b-form-group">
+                            <label for="partner_website">Website</label>
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_website" ng-model="partner_website" autocomplete="off" />
+                        </div>
+                        <br />
+                        <hr class="dotted-separator" />
+                        <div class="text-darker-gray text-center">
+                            <p>*поля отмеченные звездочкой(*) обязательны к заполнению</p>
+                            <p>Мы гарантируем, что Ваши персональные данные не будут переданы третьим лицам</p>
+
+                            <button class="b-button b-button_gray" id="partner_reistration_button" ng-disabled="partnerRegistration.$invalid">
+                                            <span class="b-button__text">
+                                                отправить заявку на регистрацию
+                                            </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

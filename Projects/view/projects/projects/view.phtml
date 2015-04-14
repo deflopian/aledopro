@@ -264,7 +264,7 @@
                                 <? foreach ($relatedSeries as $relatedItem) { ?>
                                 <div class="b-project-products-slider__item">
                                     <i class="b-slider-item-layout"></i>
-                                    <? if ($relatedItem->preview) { ?>
+                                    <? if ($relatedItem->previewName) { ?>
                                         <a href="/images/series/<?= $relatedItem->previewName ?>" rel="project_product_gallery">
                                             <img class="b-project-products-slider__image" src="/images/series/<?= $relatedItem->previewName ?>" />
                                         </a>

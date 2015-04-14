@@ -179,7 +179,26 @@ class SampleTable extends AbstractTableGateway
         if (is_array($fields)) {
             $fields = '(' . implode(',', $fields) . ')';
         }
-        $sql = 'SELECT ' . $fields . ' FROM ' . $this->table . ' WHERE ' . $column . " REGEXP '" . $regex . "' " . $specialCondition;
+        if (is_array($column)) {
+
+            $sql_part1 = 'SELECT ' . $fields . ' FROM ' . $this->table . ' WHERE ';
+
+            $sql_part2 = "(";
+
+            $sql_columns = array();
+            foreach ($column as $one_column) {
+                $sql_columns[] = $one_column . " REGEXP '" . $regex . "'";
+            }
+
+            $sql_part2 .= implode(' OR ', $sql_columns);
+
+            $sql_part2 .= ') ';
+            $sql_part3 = $specialCondition;
+            $sql = $sql_part1 . $sql_part2 . $sql_part3;
+
+        } else {
+            $sql = 'SELECT ' . $fields . ' FROM ' . $this->table . ' WHERE ' . $column . " REGEXP '" . $regex . "' " . $specialCondition;
+        }
         $resultAsArray = array();
         try {
             $results = $this->adapter->query($sql, 'execute');

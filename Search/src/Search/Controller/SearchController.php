@@ -125,7 +125,7 @@ class SearchController extends AbstractActionController
         $resultsByProducts = $productTable->selectLike('title', $query, '*', $specialCondition);
         $fileTable = $this->getServiceLocator()->get('FilesTable');
 
-        $resultsBySeries = $seriesTable->selectLike('title', $query, '*', ' AND `deleted` != 1');
+        $resultsBySeries = $seriesTable->selectLike(array('title', 'visible_title'), $query, '*', ' AND `deleted` != 1');
         $resultsBySections = $sectionTable->selectLike('title', $query, '*', ' AND `deleted` != 1');
         $resultsBySubSections = $subsectionTable->selectLike('title', $query, '*', ' AND `deleted` != 1');
         $resultsByArticles = $articlesTable->selectLike('title', $query);

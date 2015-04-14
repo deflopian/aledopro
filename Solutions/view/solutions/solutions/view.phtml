@@ -41,8 +41,12 @@
         <h4 class="b-solution__heading">
             используемый светодиодный источник света
             <a href="<?= $solution->light_link ?>"><strong><?= $solution->light_name ?></strong></a>
-
+            <br />
+            <span class="b-solution__heading-subtitle" style="text-transform: none; display: inline-block;margin-top: 10px;">
+                Технические параметры
+            </span>
         </h4>
+
         <div class="b-solution__main-characteristics-table">
 
             <div class="b-solution__main-characteristics-cell">
@@ -78,9 +82,7 @@
         <br />
         <hr class="dotted-separator" />
         <h4 class="b-solution__heading">
-            используемый светодиодный источник света
-            <a href="<?= $solution->light_link ?>"><strong><?= $solution->light_name ?></strong></a>
-
+            <?= $solution->compare_header ?>
         </h4>
         <table cellspacing="0" cellpadding="0" border="0" class="b-compare-table">
 
@@ -250,7 +252,7 @@
         <hr class="dotted-separator" />
         <div class="text-center">
             <a href="/catalog/" class="b-button b-button_yellow-bordered b-button_underlined b-solution__button">
-                <span class="b-button__text">ПЕРЕЙТИ В КАТАЛОГ</span>
+                <span class="b-button__text">Заказать проект</span>
             </a>
         </div>
     </div>

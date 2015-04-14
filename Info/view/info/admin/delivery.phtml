@@ -27,10 +27,26 @@
         </td>
     </tr>
     <tr>
-        <td>Текст 2</td>
+        <td>Текст 2 (до реквизитов)</td>
         <td>
             <div class="editor-get-btn" data-wid="text2" data-id="<?= \Info\Service\SeoService::DELIVERY ?>">
                 <?= $entity->text2; ?>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Реквизиты</td>
+        <td>
+            <div class="editor-get-btn" data-wid="text2_details" data-id="<?= \Info\Service\SeoService::DELIVERY ?>">
+                <?= $entity->text2_details; ?>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Текст 2 (после реквизитов)</td>
+        <td>
+            <div class="editor-get-btn" data-wid="text2_part2" data-id="<?= \Info\Service\SeoService::DELIVERY ?>">
+                <?= $entity->text2_part2; ?>
             </div>
         </td>
     </tr>
