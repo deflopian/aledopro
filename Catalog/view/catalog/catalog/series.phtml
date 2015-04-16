@@ -72,23 +72,18 @@
                         <a class="b-tabs__link " role="tab" href="#goods_1" data-toggle="tab" aria-controls="goods_1" >Цены и модификации</a>
                     </li>
                     <li class="b-tabs__tab">
-                        <a class="b-tabs__link " role="tab" href="#goods_2"  data-toggle="tab" aria-controls="goods_2">Описание продукта</a>
+                        <a class="b-tabs__link " role="tab" href="#goods_2"  data-toggle="tab" aria-controls="goods_2">Описание и комплектация продукта</a>
                     </li>
                     <li class="b-tabs__tab">
                         <a class="b-tabs__link " role="tab" href="#goods_3" data-toggle="tab" aria-controls="goods_3">Материалы для скачивания</a>
                     </li>
                     <? $dopgtitle = "Блоки питания";
-                    switch($view){
-                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES:
-                            $dopgtitle = "Аксессуары";
-                            break;
-                        default:
-                            $dopgtitle = "Блоки питания";
-                            break;
-                    } ?>
+                    $dopProductsGroup = reset($dopProducts); ?>
+                    <? if ($dopProducts && $dopProductsGroup) { ?>
                     <li class="b-tabs__tab">
-                        <a class="b-tabs__link "  role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4"><?= $dopgtitle ?></a>
+                        <a class="b-tabs__link "  role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4"><?= $dopProductsGroup['title'] ?></a>
                     </li>
+                    <? } ?>
 
                 </ul>
             </div>
@@ -120,6 +115,7 @@
                                         'selectedProdId'   => $this->selectedProdId,
                                         'admin'   => $admin,
                                         'series'    => $series,
+                                        'serNum' => $series->id,
                                         'user' => $this->user,
                                         'params' => $this->params,
                                         'hierarchies' => $this->hierarchies,
@@ -208,15 +204,8 @@
                 </div>
                 <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_4">
                     <? foreach ($dopProducts as $oneGroup) { ?>
-                        <div class="row row-second <?= (strpos($oneGroup['title'], 'тока') || strpos($oneGroup['title'], 'питания') || strpos($oneGroup['title'], 'блоки') || strpos($oneGroup['title'], 'источники')) ? ' scrollable_power' : ''?>" >
-                            <div class="col-xs-12">
-                                <div class="dotted-bottom">
-                                    <h2 class="series-title"><?= $oneGroup['title'];?></h2>
-                                </div>
-                            </div>
-                        </div>
                         <div style="position: relative">
-                            <div class="row row-second" id="serpopup-table-container">
+                            <div class="row row-second">
                                 <div class="col-xs-12" id="testApp_<?= $oneGroup['id'] ?>">
                                     <?
                                     $view = ($oneGroup['display_style'] > 0 ? $oneGroup['display_style'] : $oneGroup['view'] );
@@ -242,6 +231,7 @@
                                             'offeredIds'   => $this->offeredIds,
                                             'selectedProdId'   => $this->selectedProdId,
                                             'user' => $this->user,
+                                            'serNum' => $oneGroup['id'],
                                             'hierarchies' => $this->hierarchies,
                                             'discounts' => $this->discounts,
                                             'nonFilter' => true,
@@ -292,9 +282,16 @@
 <script type="text/javascript">
     $(function() {
         $('a.b-tabs__link').click(function (e) {
-            e.preventDefault();
+//            e.preventDefault();
             $(this).tab('show');
         });
+
+        // Javascript to enable link to tab
+        var url = document.location.toString();
+        if (url.match('#')) {
+            var hash = url.split('#')[1].substring(1);
+            $('a.b-tabs__link[href=#'+hash+']').tab('show') ;
+        }
     });
 
     function Goods() {

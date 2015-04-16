@@ -18,7 +18,7 @@
                     <span class="b-dotted-decorated b-dotted-decorated_upper">Если вы хотите стать нашим партнером и приобретать</span><br />
 
                     предлагаемую продукцию по специальным ценам,<br />
-                    <span class="b-dotted-decorated b-dotted-decorated_downed">  то заполните карту партнера <a href="javascript:void(0)">здесь</a></span>
+                    <span class="b-dotted-decorated b-dotted-decorated_downed">  то заполните карту партнера <a ng-controller="PopupController" href="javascript:void(0)" ng-click="getPopup(ALEDO_POPUP_PARTNER_CARD)">здесь</a></span>
                 </p>
             </div>
         </div>
@@ -86,7 +86,7 @@
                 <div class="large-line">
                     <?= $entity->text4 ?>
                 </div>
-                <h3><strong><a href="/service" class="b-hover-yellow b-hover-decorated"><?= $entity->more ?></a></strong></h3>
+                <h3><strong><a href="/info/service" class="b-hover-yellow b-hover-decorated"><?= $entity->more ?></a></strong></h3>
             </div>
         </div>
     </div>

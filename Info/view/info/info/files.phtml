@@ -26,6 +26,11 @@
                                 <div class="b-downloads-slider__item">
                                     <a class="b-downloads-slider__link" href="/images/documents/<?= $catalog->file_name ?>" target="_blank">
                                         <img class="b-downloads-slider__image" src="/images/documents/<?= $catalog->img_name ?>" />
+                                        <div class="b-slider__document-title">
+                                            <div class="b-slider__document-title-name">
+                                                <?= $catalog->title ?>
+                                            </div>
+                                        </div>
                                     </a>
                                 </div>
                             <? } ?>
@@ -37,6 +42,7 @@
                                         <div class="b-slider__document-title">
                                             <div class="b-slider__document-title-name">
                                                 <?= $catalog->title ?>
+
                                             </div>
                                         </div>
                                     </a>

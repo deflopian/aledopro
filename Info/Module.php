@@ -12,6 +12,7 @@ use Info\Model\PartnersTable;
 use Info\Model\Pluses;
 use Info\Model\PlusesTable;
 use Info\Model\SeoDataTable;
+use Info\Model\ServicesTable;
 
 class Module
 {
@@ -56,6 +57,11 @@ class Module
                 'PartnersTable' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table     = new PartnersTable($dbAdapter);
+                    return $table;
+                },
+                'InfoServicesTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new ServicesTable($dbAdapter);
                     return $table;
                 },
                 'PlusesTable' =>  function($sm) {

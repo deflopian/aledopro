@@ -1,0 +1,309 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/info') ?>">О компании</a>
+    >
+    <? /** @var \Info\Model\Service $entity */ ?>
+    <?= $entity->title ?>
+</h1>
+
+<table class="table admin-table ">
+    <tbody>
+    <tr>
+        <td>Заголовок</td>
+        <td>
+            <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
+        </td>
+    </tr>
+    <tr id="imageMapper1">
+        <td>Фоновое изображение</td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="infoService"
+                parent-id="<?= $entity->id ?>"
+                folder="service"
+                field="img"
+                img="<?= $entity->img_name ? $entity->img_name : "" ?>"
+                img-id ="<?= $entity->img ? $entity->img : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper1", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+    <tr id="imageMapper2">
+        <td>Фоновое изображение (для низкого разрешения)</td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="infoService"
+                parent-id="<?= $entity->id ?>"
+                folder="service"
+                field="img_min"
+                img="<?= $entity->img_min_name ? $entity->img_min_name : "" ?>"
+                img-id ="<?= $entity->img_min ? $entity->img_min : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper2", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Заголовок 1</td>
+        <td>
+            <a href="#" data-type="text" data-name="title1" class="editable-param"><?= $entity->title1; ?></a>
+        </td>
+    </tr>
+    <tr>
+        <td>Текст 1</td>
+        <td>
+            <div class="editor-get-btn" data-wid="text1" data-id="<?= \Info\Service\SeoService::SERVICES ?>">
+                <?= $entity->text1; ?>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Подзаголовок 1</td>
+        <td>
+            <a href="#" data-type="text" data-name="subtitle1" class="editable-param"><?= $entity->subtitle1; ?></a>
+        </td>
+    </tr>
+    <tr id="imageMapper3">
+        <td>Изображение 1 </td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="infoService"
+                parent-id="<?= $entity->id ?>"
+                folder="service"
+                field="img1"
+                img="<?= $entity->img1_name ? $entity->img1_name : "" ?>"
+                img-id ="<?= $entity->img1 ? $entity->img1 : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper3", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+    <tr id="imageMapper4">
+        <td>Изображение 1 (для низкого разрешения)</td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="infoService"
+                parent-id="<?= $entity->id ?>"
+                folder="service"
+                field="img1_min"
+                img="<?= $entity->img1_min_name ? $entity->img1_min_name : "" ?>"
+                img-id ="<?= $entity->img1_min ? $entity->img1_min : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper4", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Заголовок 2</td>
+        <td>
+            <a href="#" data-type="text" data-name="title2" class="editable-param"><?= $entity->title2; ?></a>
+        </td>
+    </tr>
+    <tr>
+        <td>Текст 2</td>
+        <td>
+            <div class="editor-get-btn" data-wid="text2" data-id="<?= \Info\Service\SeoService::SERVICES ?>">
+                <?= $entity->text2; ?>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Подзаголовок 2</td>
+        <td>
+            <a href="#" data-type="text" data-name="subtitle2" class="editable-param"><?= $entity->subtitle2; ?></a>
+        </td>
+    </tr>
+    <tr id="imageMapper5">
+        <td>Изображение 2</td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="infoService"
+                parent-id="<?= $entity->id ?>"
+                folder="service"
+                field="img2"
+                img="<?= $entity->img2_name ? $entity->img2_name : "" ?>"
+                img-id ="<?= $entity->img2 ? $entity->img2 : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper5", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+    <tr id="imageMapper6">
+        <td>Изображение 2 (для низкого разрешения)</td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="infoService"
+                parent-id="<?= $entity->id ?>"
+                folder="service"
+                field="img2_min"
+                img="<?= $entity->img2_min_name ? $entity->img2_min_name : "" ?>"
+                img-id ="<?= $entity->img2_min ? $entity->img2_min : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper6", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+
+
+
+    <tr>
+        <td>Заголовок 3</td>
+        <td>
+            <a href="#" data-type="text" data-name="title3" class="editable-param"><?= $entity->title3; ?></a>
+        </td>
+    </tr>
+    <tr>
+        <td>Текст 3</td>
+        <td>
+            <div class="editor-get-btn" data-wid="text3" data-id="<?= \Info\Service\SeoService::SERVICES ?>">
+                <?= $entity->text3; ?>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Подзаголовок 3</td>
+        <td>
+            <a href="#" data-type="text" data-name="subtitle3" class="editable-param"><?= $entity->subtitle3; ?></a>
+        </td>
+    </tr>
+    <tr id="imageMapper7">
+        <td>Изображение 3</td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="infoService"
+                parent-id="<?= $entity->id ?>"
+                folder="service"
+                field="img3"
+                img="<?= $entity->img3_name ? $entity->img3_name : "" ?>"
+                img-id ="<?= $entity->img3 ? $entity->img3 : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper7", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+    <tr id="imageMapper8">
+        <td>Изображение 3 (для низкого разрешения)</td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="infoService"
+                parent-id="<?= $entity->id ?>"
+                folder="service"
+                field="img3_min"
+                img="<?= $entity->img3_min_name ? $entity->img3_min_name : "" ?>"
+                img-id ="<?= $entity->img3_min ? $entity->img3_min : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper8", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+
+
+
+    <tr>
+        <td>Заголовок 4</td>
+        <td>
+            <a href="#" data-type="text" data-name="title4" class="editable-param"><?= $entity->title4; ?></a>
+        </td>
+    </tr>
+    <tr>
+        <td>Текст 3</td>
+        <td>
+            <div class="editor-get-btn" data-wid="text4" data-id="<?= \Info\Service\SeoService::SERVICES ?>">
+                <?= $entity->text4; ?>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Подзаголовок 4</td>
+        <td>
+            <a href="#" data-type="text" data-name="subtitle4" class="editable-param"><?= $entity->subtitle4; ?></a>
+        </td>
+    </tr>
+    <tr id="imageMapper9">
+        <td>Изображение 4</td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="infoService"
+                parent-id="<?= $entity->id ?>"
+                folder="service"
+                field="img4"
+                img="<?= $entity->img4_name ? $entity->img4_name : "" ?>"
+                img-id ="<?= $entity->img4 ? $entity->img4 : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper9", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+    <tr id="imageMapper10">
+        <td>Изображение 4 (для низкого разрешения)</td>
+        <td ng-controller="ImageCtrl">
+            <div
+                ng-single-image-upload
+                parent-type="infoService"
+                parent-id="<?= $entity->id ?>"
+                folder="service"
+                field="img4_min"
+                img="<?= $entity->img4_min_name ? $entity->img4_min_name : "" ?>"
+                img-id ="<?= $entity->img4_min ? $entity->img4_min : "" ?>"
+                ></div>
+
+            <script type="application/javascript">
+                AppFactory("imageMapper10", "images3", ["imageMapper", "ur.file"]);
+            </script>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentId = '<?= \Info\Service\SeoService::SERVICES ?>';
+        catalog.type = 'prmember';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/info') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/info', array('action'=> 'viewMember')) ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::INFO ?>';
+        catalog.init();
+        catalog.initEditables();
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.infoSave,
+            config: 'config-info'
+        });
+    });
+</script>

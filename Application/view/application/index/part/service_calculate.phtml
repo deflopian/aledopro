@@ -1,27 +1,48 @@
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">×</span></button>
-    <h4 class="modal-title text-center"><strong>РЕГИСТРАЦИЯ КАРТЫ ПАРТНЕРА</strong></h4>
+    <h4 class="modal-title text-center"><strong>ЗАЯВКА НА ПРОЕКТ</strong></h4>
 </div>
 <div class="modal-body">
-    <div class="popup-modal">
-        <hr class="dotted-separator" />
-        <div class="text-center b-mt1 b-mb1">ВАШИ ПЕРСОНАЛЬНЫЕ ДАННЫЕ:</div>
-        <hr class="dotted-separator b-mb1" />
-        <div class="b-partner-registration">
+    <div class="popup-modal" ng-controller="CalculationServiceController">
             <? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <h1>Запрос на расчет</h1>
-                </div>
-            </div>
 
-            <div class="row row-second">
-                <div class="col-md-12">
-                    <p>Если у вас появилось желание точнее узнать о стоимости освещения для конкретного проекта, пожалуйста, заполните данную форму, мы сделаем расчет и свяжемся с вами.</p>
-                    <p>Или сами свяжитесь с нами по телефону или e-mail, это позволит сэкономить ваше время, а нам даст всю необходимую для расчета информацию</p>
+        <form novalidate ng-submit="submit()" name="calculationService">
+            <div class="b-partner-registration__row">
+                <div class="b-partner-registration__cell b-partner-registration__cell_left">
+                    <div class="b-form-group">
+                        <label for="username">ФИО*</label>
+                        <input type="text" class="b-form-control b-form-control_small" id="username" ng-model="username" autocomplete="off" required />
+                    </div>
+                    <div class="b-form-group">
+                        <label for="phone">Контактный телефон*</label>
+                        <input type="text" input-mask="+7 (999) 999-99-99" class="b-form-control b-form-control_small" id="phone" ng-model="phone" autocomplete="off" required />
+                    </div>
+                    <div class="b-form-group">
+                        <label for="email">E-mail*</label>
+                        <input type="text" class="b-form-control b-form-control_small" id="email" ng-model="email" autocomplete="off" required />
+                    </div>
+                    <div class="b-form-group">
+                        <label for="city">Город*</label>
+                        <input type="text" class="b-form-control b-form-control_small" id="city" ng-model="city" autocomplete="off" required />
+                    </div>
+                </div>
+
+                <br />
+                <hr class="dotted-separator" />
+                <div class="text-darker-gray text-center">
+                    <p>*поля отмеченные звездочкой(*) обязательны к заполнению</p>
+                    <p>Мы гарантируем, что Ваши персональные данные не будут переданы третьим лицам</p>
+
+                    <button class="b-button b-button_gray" id="partner_reistration_button" ng-disabled="calculationService.$invalid">
+                        <span class="b-button__text">
+                            отправить заявку
+                        </span>
+                    </button>
                 </div>
             </div>
+        </form>
+
 
             <div class="row"> <div class="col-md-12"><div class="dotted-bottom"></div></div></div>
 

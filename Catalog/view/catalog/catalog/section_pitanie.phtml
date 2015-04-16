@@ -156,7 +156,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER;
     $('.series-pics').css('width', screenWidth);
     $('.series-pics').css('margin-left', -(screenWidth-$('.catalog :first').width())/2-15);
     $(function(){
-        popup.initSeriesPopup();
+//        popup.initSeriesPopup();
         popup.renderCartedLines();
         catalogClient.scrollToSeries = <?= $scrollToSeries ? $scrollToSeries : 'false' ?>;
         catalogClient.scrollToProduct = <?= $scrollToProduct ? $scrollToProduct : 'false'  ?>;

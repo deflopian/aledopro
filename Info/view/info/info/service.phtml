@@ -1,6 +1,6 @@
 <div class="b-service-page b-section">
     <script src="/Scripts/jquery.maskedinput.js"></script>
-
+    <? /** @var $entity \Info\Model\Service */ ?>
     <div class="b-section b-section_service">
         <div class="b-section__content">
             <img src="/Content/images/aledo-service/service-aledo.svg" height="480"/>
@@ -8,44 +8,42 @@
 
     </div>
     <div class="b-section__content b-section__content_service-content text-center">
-        <h1>Наш сервис экономит время</h1>
+        <h1><?= $entity->title1 ?></h1>
         <p class="text-bigger">
-            Вам больше не нужно звонить и узнавать наличие товара на складе.<br />
-            Наш склад всегда
+            <?= $entity->text1 ?>
         </p>
-        <h4 class="b-service-page__advantages-phrases">ДОСТУПЕН ONLINE</h4>
+        <h4 class="b-service-page__advantages-phrases"><?= $entity->subtitle1 ?></h4>
         <br /><br /><br />
-        <img src="/Content/images/aledo-service/image_1.png" />
+        <img src="/images/service/<?= $entity->img1_name ?>" />
 
     </div>
     <hr class="dotted-separator" />
     <div class="b-section__content b-section__content_service-content text-center b-pb9">
-        <h1>Наш сервис считает ваши деньги</h1>
-        <p class="text-bigger">Вы всегда видите ваши персональные </p>
-        <h4 class="b-service-page__advantages-phrases">ЗАКУПОЧНЫЕ ЦЕНЫ</h4>
+        <h1><?= $entity->title2 ?></h1>
+        <p class="text-bigger"><?= $entity->text2 ?></p>
+        <h4 class="b-service-page__advantages-phrases"><?= $entity->subtitle2 ?></h4>
         <br /><br /><br />
-        <img src="/Content/images/aledo-service/image_2.png" />
+        <img src="/images/service/<?= $entity->img2_name ?>" />
 
     </div>
     <hr class="dotted-separator" />
     <div class="b-section__content b-section__content_service-content text-center">
-        <h1>Наш сервис помогает зарабатывать</h1>
-        <p class="text-bigger">Вы быстрее, а значит</p>
-        <h4 class="b-service-page__advantages-phrases">ЭФФЕКТИВНЕЕ КОНКУРЕНТОВ</h4>
+        <h1><?= $entity->title3 ?></h1>
+        <p class="text-bigger"><?= $entity->text3 ?></p>
+        <h4 class="b-service-page__advantages-phrases"><?= $entity->subtitle3 ?></h4>
         <br /><br /><br />
-        <img src="/Content/images/aledo-service/image_3.png" />
+        <img src="/images/service/<?= $entity->img3_name ?>" />
 
     </div>
     <hr class="dotted-separator" />
     <div class="b-section__content b-section__content_service-content text-center b-pb9">
-        <h1>Ваши клиенты всегда довольны</h1>
+        <h1><?= $entity->title4 ?></h1>
         <p class="text-bigger">
-            Вы всегда быстро им отвечаете. Даже в выходные дни.<br />
-            Даже если вы работаете
+            <?= $entity->text4 ?>
         </p>
-        <h4 class="b-service-page__advantages-phrases">В ДРУГОМ ЧАСОВОМ ПОЯСЕ</h4>
+        <h4 class="b-service-page__advantages-phrases"><?= $entity->subtitle4 ?></h4>
         <br /><br /><br />
-        <img src="/Content/images/aledo-service/image_4.png" />
+        <img src="/images/service/<?= $entity->img4_name ?>" />
 
     </div>
     <div class="b-section__content b-section__content_partnership text-center">
@@ -58,7 +56,7 @@
                     </p>
                     <ul class="b-partnership__list list-unstyled">
                         <li class="b-partnership__list-item">
-                            Пройдите регистрацию <strong><a data-toggle="modal" data-target="#registration_modal" href="javascript:void(0)">здесь</a></strong>
+                            Пройдите регистрацию <strong><a ng-controller="PopupController" href="javascript:void(0)" ng-click="getPopup(ALEDO_POPUP_REGISTER)">здесь</a></strong>
                             <i class="b-partnership__list-item-num">1</i>
                         </li>
                         <li class="b-partnership__list-item">
@@ -144,7 +142,7 @@
         <br />
         <h4>
             УДАЧИ В ПРОЕКТАХ!
-            <img src="/Content/images/aledo-logo-small.svg" height="180" />
+            <img src="/Content/images/aledo-service/aledo-logo-small_03_ALEDO-PRO.svg" height="180" />
         </h4>
     </div>
 </div>

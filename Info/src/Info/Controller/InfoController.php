@@ -225,12 +225,7 @@ class InfoController extends AbstractActionController
             'entity' => $entity
         );
     }
-    public function serviceAction(){
 
-        return array(
-
-        );
-    }
     public function plusesAction(){
 
         $plusesTable = $this->getServiceLocator()->get('PlusesTable');
@@ -259,6 +254,28 @@ class InfoController extends AbstractActionController
         $entity = $partnersTable->find(1);
 
         $imgFields = array('img1', 'img2', 'img1_min', 'img2_min');
+        if ($imgFields) {
+            $fileTable = $this->getServiceLocator()->get('FilesTable');
+            foreach ($imgFields as $imgField) {
+                if ($entity->$imgField) {
+                    $file = $fileTable->find($entity->$imgField);
+                    if ($file) {
+                        $imgFieldAndName = $imgField . "_name";
+                        $entity->$imgFieldAndName = $file->name;
+                    }
+                }
+            }
+        }
+        return array(
+            'entity' => $entity
+        );
+    }
+
+    public function serviceAction(){
+        $servicesTable = $this->getServiceLocator()->get('InfoServicesTable');
+        $entity = $servicesTable->find(1);
+
+        $imgFields = array('img', 'img1', 'img2', 'img3', 'img4', 'img_min', 'img1_min', 'img2_min', 'img3_min', 'img4_min');
         if ($imgFields) {
             $fileTable = $this->getServiceLocator()->get('FilesTable');
             foreach ($imgFields as $imgField) {

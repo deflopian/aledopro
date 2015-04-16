@@ -45,6 +45,7 @@ class AdminController extends SampleAdminController
     const MAINPAGE_BLOCK_TABLE = 27;
     const MAINPAGE_BLOCK_IMAGE_TABLE = 28;
     const INFO_PARTNERS = 29;
+    const INFO_SERVICES = 30;
 
     protected $tableImg = 'SeriesImgTable';
     protected $entityImgName = 'Catalog\Model\SeriesImg';

@@ -93,7 +93,7 @@
     <table class="table table-hover table-aledo table-products" id="table-products_<?= $serNum ?>" style="width: 100%;">
         <thead>
         <tr ng-init="printScopeId(tds)">
-            <th class="{{th.name}}-header" ng-repeat="(key, th) in tds"><span ng-bind="th.label"></span></th>
+            <th class="{{th.name}}-header" ng-repeat="(key, th) in tds" sort-by='{{th.name}}'>{{th.label}}</th>
             <th class="buy-item-header"></th>
             <th class="copy-link-header"></th>
             <th></th>
@@ -129,7 +129,7 @@
             <td class="td-grey luminous_flux">{{item.luminous_flux}} лм<span ng-if="!(item.luminous_flux.indexOf('лм') + 1)">лм</span></td>
             <td class="viewing_angle">{{item.viewing_angle}}°</td>
             <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                <td class="td-grey free_balance">
+                <td class="td-grey free_balance" style="padding: 0">
                     <div ng-if="item.free_balance">
                         <span ng-if="item.free_balance == -1">
                             <div class="icon-daw"></div><link itemprop="availability" href="http://schema.org/InStock"/>
@@ -147,10 +147,8 @@
                 <td class="price-with-nds">
                     <span itemprop="price">
                         {{item.price_with_nds}}
-                    </span>
-                    <span>
-                        <span class="b-rub">Р</span>
-                    </span>
+                    </span><span class="b-rub">Р</span>
+
                 </td>
 
                 <? if ($user && $user->getIsPartner()) { ?>
