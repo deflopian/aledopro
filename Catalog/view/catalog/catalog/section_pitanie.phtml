@@ -4,11 +4,12 @@ $admin = $this->isAllowed('controller/CatalogAdmin');
 $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER;
 ?>
 <?
-/** @var integer $scrollToSubsection*/
-/** @var integer $scrollToSeries*/
-/** @var integer $scrollToProduct*/
+/** @var integer $scrollToSubsection */
+/** @var integer $scrollToSeries */
+/** @var integer $scrollToProduct */
 
 ?>
+<? include 'part/part/mobile-modal.phtml'; ?>
 <div class="b-section__content b-section__content-breadcrumbs">
 
     <div class="b-breadcrumbs">
@@ -18,6 +19,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER;
         <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
     </div>
 </div>
+
 <div class="section catalog b-section__content">
     <div class="row catalog-submenu">
         <div class="col-xs-12" style="text-align: center">

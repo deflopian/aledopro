@@ -1,6 +1,20 @@
 <? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
-
-<div class="section b-section__content catalog">
+<? include 'part/part/mobile-modal.phtml'; ?>
+    <div class="b-mobile-catalog visible-xs visible-sm">
+        <? foreach ($subsections as $subsecId=>$subsection) { ?>
+            <div class="b-mobile-catalog__item">
+                <a class="b-mobile-catalog__link text-uppercase"
+                   data-target="#catalog_mobile_redirect"
+                   data-toggle="modal"
+                   data-href="<?= empty($subsection->display_name) ?
+                       $this->url('catalog', array('action'=>'subsection', 'id'=>$subsection->id)) :
+                       $this->url('catalog', array('action'=>'subsection', 'id'=>$subsection->display_name));?>">
+                    <?= $subsection->title; ?>
+                </a>
+            </div>
+        <? } ?>
+    </div>
+<div class="section b-section__content catalog hidden-xs hidden-sm">
     <div class="row">
         <div class="col-xs-6">
             <? include 'part/filter-small.phtml' ?>

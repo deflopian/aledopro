@@ -1,62 +1,73 @@
 <? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
-<div class="b-section__content visible-xs visible-sm">
-    <div class="b-mobile-catalog">
+<? include 'part/part/mobile-modal.phtml'; ?>
+
+    <div class="b-mobile-catalog visible-xs visible-sm">
         <? foreach ($this->sections as $i => $section) { ?>
             <div class="b-mobile-catalog__item">
+            <? if ($section->id == 29 || $section->id == 33) { ?>
+                <a class="b-mobile-catalog__link text-uppercase"
+                   data-target="#catalog_mobile_redirect"
+                   data-toggle="modal"
+                   data-href="<?= empty($section->display_name) ?
+                       $this->url('catalog', array('action' => 'section', 'id' => $section->id)) :
+                       $this->url('catalog', array('action' => 'section', 'id' => $section->display_name)); ?>">
+                    <?= $section->title; ?>
+                </a>
+            <? } else { ?>
                 <a class="b-mobile-catalog__link text-uppercase" href="<?= empty($section->display_name) ?
                     $this->url('catalog', array('action' => 'section', 'id' => $section->id)) :
                     $this->url('catalog', array('action' => 'section', 'id' => $section->display_name)); ?>">
-                    <?=$section->title;?>
+                    <?= $section->title; ?>
                 </a>
+
+            <? }?>
             </div>
-        <? } ?>
+       <? } ?>
     </div>
-
-</div>
-<div class="b-section__content hidden-xs hidden-sm">
-    <? foreach ($this->sections as $i => $section) { ?>
-        <div class="row <?= $i == 0 ? 'row-second' : 'row-second-large' ?>">
+    <div class="b-section__content hidden-xs hidden-sm">
+        <? foreach ($this->sections as $i => $section) { ?>
+            <div class="row <?= $i == 0 ? 'row-second' : 'row-second-large' ?>">
             <div class="col-xs-3 mobile-left-margin-1">
-                <div class="row row-second" id="section-<?= $section->id ?>" style="padding-right: 15px">
-                    <div class="col-xs-12">
-                        <div class="black2-top"></div>
-                        <div class="catalog-bar-icon"></div>
-                        <a class="catalog-bar" href="<?= empty($section->display_name) ?
-                            $this->url('catalog', array('action' => 'section', 'id' => $section->id)) :
-                            $this->url('catalog', array('action' => 'section', 'id' => $section->display_name)); ?>">
-                            <h2><?= $section->title; ?></h2>
-                        </a>
+                    <div class="row row-second" id="section-<?= $section->id ?>" style="padding-right: 15px">
+                        <div class="col-xs-12">
+                            <div class="black2-top"></div>
+                            <div class="catalog-bar-icon"></div>
+                            <a class="catalog-bar" href="<?= empty($section->display_name) ?
+                                $this->url('catalog', array('action' => 'section', 'id' => $section->id)) :
+                                $this->url('catalog', array('action' => 'section', 'id' => $section->display_name)); ?>">
+                                <h2><?= $section->title; ?></h2>
+                            </a>
 
-                        <div class="dotted-bottom mobile-hide"></div>
+                            <div class="dotted-bottom mobile-hide"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
             <div class="col-xs-9">
-                <? $ds = is_null($section->display_style) ? 0 : $section->display_style ?>
-                <?=
-                $this->partial(
-                    "catalog/catalog/part/catalog-index-part/display-style-$ds.phtml",
-                    array(
-                        'i' => $i,
-                        'section' => $section,
-                        'subsections' => $this->subsections,
-                        'series' => $this->series,
-                    )
-                );
-                ?>
+                    <? $ds = is_null($section->display_style) ? 0 : $section->display_style ?>
+                    <?=
+                    $this->partial(
+                        "catalog/catalog/part/catalog-index-part/display-style-$ds.phtml",
+                        array(
+                            'i' => $i,
+                            'section' => $section,
+                            'subsections' => $this->subsections,
+                            'series' => $this->series,
+                        )
+                    );
+                    ?>
+                </div>
             </div>
+        <? } ?>
+        <div class="row row-second-big">
+            <div class="col-xs-12"></div>
         </div>
-    <? } ?>
-    <div class="row row-second-big">
-        <div class="col-xs-12"></div>
-    </div>
-    <div class="row row-second-small">
-        <?= \Catalog\Service\CatalogService::renderSeoTextBlock($sl, $this->seoData); ?>
-    </div>
+        <div class="row row-second-small">
+            <?= \Catalog\Service\CatalogService::renderSeoTextBlock($sl, $this->seoData); ?>
+        </div>
 
-    <script type="text/javascript">
-        window.setTimeout(function () {
-            mainpage.renderUrl();
-        }, 100);
-    </script>
-</div>
+        <script type="text/javascript">
+            window.setTimeout(function () {
+                mainpage.renderUrl();
+            }, 100);
+        </script>
+    </div>
