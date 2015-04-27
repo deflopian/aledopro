@@ -1,12 +1,12 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">×</span></button>
+    <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">x</span></button>
     <h4 class="modal-title text-center"><strong>ЗАЯВКА НА ПРОЕКТ</strong></h4>
 </div>
 <div class="modal-body">
     <div class="popup-modal" ng-controller="CalculationServiceController">
             <? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
 
-        <form novalidate ng-submit="submit()" name="calculationService">
+        <form novalidate ng-submit="submit('service/saveFormAjax')" name="calculationService">
                 <div>
                     <div>
                         <div class="b-registration__cell b-registration__cell_left">
@@ -16,7 +16,7 @@
                             <input type="text"
                                    class="b-form-control b-form-control_small"
                                    id="username"
-                                   ng-model="formData.username"
+                                   ng-model="username"
                                    autocomplete="on" <?= ($this->isRegistered && $this->user->getUsername()) ?
                                 'value="' . $this->user->getUsername() . '"' : ''?> required />
                         </div>
@@ -27,7 +27,7 @@
                         </div>
                         <div class="b-registration__cell b-registration__cell_right">
                             <input type="text" input-mask="+7 (999) 999-99-99"
-                                   class="b-form-control b-form-control_small" id="phone" ng-model="formData.phone" autocomplete="on"
+                                   class="b-form-control b-form-control_small" id="phone" ng-model="phone" autocomplete="on"
                                 <?= ($this->isRegistered && $this->user->getPhone()) ? 'value="' . $this->user->getPhone() . '"' : ''?> required />
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                             <label for="email">E-mail*</label>
                         </div>
                         <div class="b-registration__cell b-registration__cell_right">
-                            <input type="text" class="b-form-control b-form-control_small" id="email" ng-model="formData.email" autocomplete="on"
+                            <input type="text" class="b-form-control b-form-control_small" id="email" ng-model="email" autocomplete="on"
                                 <?= ($this->isRegistered && $this->user->getEmail()) ? 'value="' . $this->user->getEmail() . '"' : ''?> required />
                         </div>
                     </div>
@@ -45,13 +45,13 @@
                             <label for="city">Город*</label>
                         </div>
                         <div class="b-registration__cell b-registration__cell_right">
-                            <input type="text" class="b-form-control b-form-control_small" id="city" ng-model="formData.city" autocomplete="on"
+                            <input type="text" class="b-form-control b-form-control_small" id="city" ng-model="city" autocomplete="on"
                                 <?= ($this->isRegistered && $this->user->getCity()) ? 'value="' . $this->user->getCity() . '"' : ''?> required />
                         </div>
                     </div>
 
                     <div class="b-order-place__file-zone" style="width: 100%;height: auto;padding: 1rem;" ng-class="{'b-order-place__file-zone_file-uploaded' : fileName.length }">
-                        <div><input type="file" name="file" id="orderDetails" onchange="angular.element(this).scope().showFileName(this)" /></div>
+                        <div><input type="file" name="file" id="orderDetails" onchange="console.log(angular.element(this).scope())" /></div>
                         <input class="hidden-last-file" type="hidden" value="<?= $this->lastFile ? '1' : '0' ?>" name="lastFile" style="display: none"/>
 
                         <div class="b-order-place__file-zone-label" ng-hide="fileName.length">

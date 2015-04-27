@@ -56,8 +56,8 @@ $url = $uriArr[0]
 //        ->prependStylesheet($this->basePath() . '/css/main1.css')
     ?>
     <!--    <link href="--><?php //echo $this->basePath($this->less('less/Config.less')) ?><!--" media="screen" rel="stylesheet" type="text/css">-->
-    <link rel="stylesheet/less" type="text/css" href="/Content/Config.less"/>
-
+<!--    <link rel="stylesheet/less" type="text/css" href="/Content/Config.less"/>-->
+    <link href="<?php echo $this->basePath($this->less('/Content/Config.less')) ?>" media="screen" rel="stylesheet" type="text/css">
 
     <script src="/Scripts/jquery-1.9.1.min.js"></script>
     <script src="/Scripts/jquery.browser.js"></script>
@@ -97,6 +97,7 @@ $url = $uriArr[0]
 
 
     <script src="/Scripts/aledo.app/aledo.app.js"></script>
+    <script src="/Scripts/aledo.app/aledo.controllers/service.controller.js"></script>
     <script src="/Scripts/aledo.app/aledo.controllers/cabinet.controllers.js"></script>
     <script src="/Scripts/aledo.app/aledo.controllers/feedback.controller.js"></script>
     <script src="/Scripts/aledo.app/aledo.controllers/order.controller.js"></script>
@@ -106,6 +107,7 @@ $url = $uriArr[0]
     <script src="/Scripts/aledo.app/aledo.controllers/registration.controller.js"></script>
     <script src="/Scripts/aledo.app/aledo.controllers/swipe.controller.js"></script>
     <script src="/Scripts/aledo.app/aledo.directives/input.mask.directive.js"></script>
+    <script src="/Scripts/aledo.app/aledo.directives/custom.onchange.directive.js"></script>
     <script src="/Scripts/aledo.app/aledo.directives/responsive.image.directive.js"></script>
     <script src="/Scripts/imagesloaded.pkgd.js"></script>
     <script src="http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU"
@@ -154,8 +156,9 @@ $url = $uriArr[0]
 
     </script>
 
-    <link rel="stylesheet" type="text/css"
-          href="/Content/less_cache/lessphp_22685ca2838c80c9b5f914ff224ab156998adbe3.css">
+<!--    <link rel="stylesheet" type="text/css"-->
+<!--          href="/Content/less_cache/lessphp_22685ca2838c80c9b5f914ff224ab156998adbe3.css">-->
+<!--    <link href="--><?php //echo $this->basePath($this->less('/Content/Config.less')) ?><!--" media="screen" rel="stylesheet" type="text/css">-->
     <link rel="stylesheet" type="text/css" href="/Content/css/custom_css_over_less.css">
 
 
@@ -331,21 +334,12 @@ $url = $uriArr[0]
     <script src="/Scripts/jquery.maskedinput.js"></script>
     <div class="modal fade " id="fooBarPopup" tabindex="-1">
         <div class="modal-dialog b-partner-registration-dialog">
-            <div class="modal-content">
-                <!--
-                <div class="model-header">
-                    <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="popup-modal">
-                    </div>
-                </div>
-                -->
+            <div class="modal-content" ng-controller="PopupController">
             </div>
         </div>
     </div>
 
+    <
     <? include 'part/header.phtml' ?>
 
     <div class="b-layout-content"><?= ltrim($this->content); ?></div>

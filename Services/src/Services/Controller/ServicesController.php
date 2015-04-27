@@ -37,7 +37,7 @@ class ServicesController extends AbstractActionController
     public function saveFormAjaxAction()
     {
         $request = $this->getRequest();
-        if ($request->isXmlHttpRequest()) {
+        if ($request->isPost()) {
             $sl = $this->getServiceLocator();
 
             $post = array_merge_recursive(
@@ -45,6 +45,13 @@ class ServicesController extends AbstractActionController
                 $request->getFiles()->toArray()
             );
 
+            if (!$post) {
+                $rest_json = file_get_contents("php://input");
+                $post = json_decode($rest_json, true);
+            }
+
+            var_dump($post);
+            return $post;
             $success = 0;
             $messages = array();
 

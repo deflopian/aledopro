@@ -72,7 +72,7 @@
                         <a class="b-tabs__link " role="tab" href="#goods_1" data-toggle="tab" aria-controls="goods_1" >Цены и модификации</a>
                     </li>
                     <li class="b-tabs__tab">
-                        <a class="b-tabs__link " role="tab" href="#goods_2"  data-toggle="tab" aria-controls="goods_2">Описание и комплектация продукта</a>
+                        <a class="b-tabs__link " role="tab" href="#goods_2"  data-toggle="tab" aria-controls="goods_2">Описание и комплектация</a>
                     </li>
                     <li class="b-tabs__tab">
                         <a class="b-tabs__link " role="tab" href="#goods_3" data-toggle="tab" aria-controls="goods_3">Материалы для скачивания</a>
@@ -148,7 +148,7 @@
 
                 <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_2" style="padding-left: 30px">
                     <div class="row">
-                        <div class="col-xs-12">
+                        <div class="col-xs-12 series-description">
                     <?= (($num = strpos('<p>&nbsp;</p>', $series->text)) < 5 && $num !== false) ?
                         substr($series->text, $num+13) : $series->text; ?>
                         </div>
