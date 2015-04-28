@@ -1,7 +1,7 @@
 <? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
 
 <div class="b-section__content b-section__content_catalog catalog">
-    <div class="row">
+    <div class="row row-second">
         <div class="col-xs-3">
             <? include 'part/filter.phtml' ?>
 
@@ -15,9 +15,8 @@
         </div>
 
         <div class="col-xs-9">
-            <div id="catalog-filterbar-place"></div>
-            <div class="b-section__content b-section__content-breadcrumbs">
 
+            <div class="b-section__content-breadcrumbs">
                 <div class="b-breadcrumbs">
                     <? foreach ($breadCrumbs as $bc) { ?>
                         <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
@@ -25,6 +24,7 @@
                     <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
                 </div>
             </div>
+            <div id="catalog-filterbar-place"></div>
             <div class="row row-second" data-type="catalog" data-action="series">
                 <? $i = 0; foreach($series as $ser){ ?>
                     <div class="col-xs-3 series-tile" data-id="<?= $ser->id ?>">

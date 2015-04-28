@@ -1,91 +1,85 @@
-<div class="catalog-filter">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="dotted-bottom">
-                <h2 style="margin-top: 7px; margin-bottom: 24px">Выбор по параметрам</h2>
-            </div>
-        </div>
+<div class="catalog-filter b-filter">
+    <div class="b-catalog__title b-title_filter">
+        <h2 class="b-title-h2 b-catalog__title-h2">Выбор по параметрам</h2>
     </div>
 
-    <form id="f-form" class="form-horizontal row-second-xs" role="form">
+    <form id="f-form" class="b-form b-filter-form" role="form">
 
-        <div class="form-group">
-            <div class="checkbox"  style="margin-left: 15px">
-                <input type="checkbox" id="f-instock">
-                <label for="f-instock">показать только в наличии</label>
+        <div class="b-filter-form__panel filter-instock">
+            <div class="b-checkbox">
+                <input class="b-checkbox__input" type="checkbox" id="f-instock">
+                <label class="b-checkbox__text" for="f-instock">показать только в наличии</label>
             </div>
         </div>
 
-        <div class="panel-group">
+    <? foreach($filterData as $param){ ?>
+        <div class="b-filter-form__panel" data-field="<?= $param->field ?>">
 
-            <? foreach($filterData as $param){ ?>
-                <div class="panel panel-catalog-filter" data-field="<?= $param->field ?>">
+            <div class="panel-heading popupsmall-container wide-popup" data-type="filter">
+                <a class="<?= $param->open ? '' : 'collapsed' ?> panel-title panel-heading__link" data-toggle="collapse"
+                   href="#f-<?= $param->field ?>">
+                    <div class="filter-arrow panel-heading__icon"></div>
+                    <span class="panel-heading__title"><?= $param->title ?></span>
+                </a>
+                <span class="popupsmall-button panel-heading__icon filter-question pull-right" data-id="<?= $param->id ?>">?</span>
+            </div>
 
-                    <div class="panel-heading popupsmall-container wide-popup" data-type="filter">
-                        <a class="<?= $param->open ? '' : 'collapsed' ?> panel-title" data-toggle="collapse"
-                           href="#f-<?= $param->field ?>">
-                            <div class="filter-arrow"></div>
-                            <span style="padding-left: 7px"><?= $param->title ?></span>
-                        </a>
-                        <span class="popupsmall-button catalog-question pull-right" data-id="<?= $param->id ?>">?</span>
-                    </div>
+            <div id="f-<?= $param->field ?>"
+                 class="panel-body panel-collapse collapse<?= $param->open ? ' in force-open' : '' ?> <?= $param->is_slider ? 'panel-slider' : 'panel-checkbox' ?>"
+                 data-type="<?= $param->is_slider ? 'slider' : 'checkbox' ?>">
+                <? if($param->is_slider){  ?>
+                    <div class="b-nouislider filter-slider">
+                        <div class="b-nouislider-serialized">
+                            <label for="f-<?= $param->field ?>-val-from"
+                                   class="b-nouislider-serialized__label filter-nouislider-from">От</label>
 
-                    <div id="f-<?= $param->field ?>" class="panel-collapse collapse<?= $param->open ? ' in force-open' : '' ?>">
-                        <div class="panel-body form-group <?= $param->is_slider ? 'panel-slider' : 'panel-checkbox' ?>" data-type="<?= $param->is_slider ? 'slider' : 'checkbox' ?>">
-                            <? if($param->is_slider){  ?>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <label class="col-xs-1 control-label">От</label>
-                                        <div class="col-xs-4">
-                                            <input id="f-<?= $param->field ?>-val-from"
-                                                   type="text" class="form-control" >
-                                        </div>
-                                        <label class="col-xs-1 control-label">До</label>
-                                        <div class="col-xs-4">
-                                            <input id="f-<?= $param->field ?>-val-to"
-                                                   type="text" class="form-control">
+                            <input id="f-<?= $param->field ?>-val-from"
+                                       type="text"
+                                       class="b-nouislider-serialized__input form-control" >
 
-                                            <div class="filter-measure"><?= $param->post_value ?></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div data-name="<?= $param->field ?>" class="noUiSlider"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <? } else { ?>
-                                <? if(isset($param->values)){ ?>
-                                    <? foreach($param->values as $i=>$val){ ?>
-                                        <div class="checkbox">
-                                            <input id="f-<?= $param->field ?>-val-<?= $i ?>" type="checkbox"
-                                                   name="<?= $param->field ?>" value="<?= $i ?>">
-                                            <label for="f-<?= $param->field ?>-val-<?= $i ?>"><?= $param->pre_value ?> <?=$val ?> <?= $param->post_value ?></label>
-                                        </div>
-                                    <? } ?>
-                                <? } ?>
-                            <? } ?>
+                            <label for="f-<?= $param->field ?>-val-to"
+                                   class="b-nouislider-serialized__label filter-nouislider-to">До</label>
+                            <input id="f-<?= $param->field ?>-val-to"
+                                   class="b-nouislider-serialized__input form-control">
+
+                            <span class="b-nouislider-serialized__measure filter-measure"><?= $param->post_value ?></span>
                         </div>
                     </div>
-                </div>
-            <? } ?>
+                    <div class="b-nouislider-graphics">
+                        <div data-name="<?= $param->field ?>" class="noUiSlider"></div>
+                    </div>
+                <? } else { ?>
+                    <? if(isset($param->values)){ ?>
+                        <div class="b-checkbox-container filter-checkboxes">
+                        <? foreach($param->values as $i=>$val){ ?>
+                            <div class="b-checkbox b-checkbox_filter">
+                                <input class="b-checkbox__input"
+                                       id="f-<?= $param->field ?>-val-<?= $i ?>"
+                                       type="checkbox"
+                                       name="<?= $param->field ?>" value="<?= $i ?>" />
+
+                                <label class="b-checkbox__text"
+                                       for="f-<?= $param->field ?>-val-<?= $i ?>"><?= $param->pre_value ?> <?=$val ?> <?= $param->post_value ?></label>
+                            </div>
+                        <? } ?>
+                        </div>
+                    <? } ?>
+                <? } ?>
+            </div>
+        </div>
+    <? } ?>
+
+        <div class="b-filter-form__panel filter-offers">
+            <div class="b-checkbox">
+                <input class="b-checkbox__input" type="checkbox" id="f-offers">
+                <label class="b-checkbox__text" for="f-offers">спецпредложения</label>
+            </div>
         </div>
 
-        <div class="form-group row-second-xs">
-            <div class="checkbox"  style="margin-left: -4px">
-                <input type="checkbox" id="f-offers">
-                <label for="f-offers">спецпредложения</label>
-            </div>
-            <div class="col-xs-12 row-second-small">
-                <div class="dotted-bottom"></div>
-            </div>
-        </div>
-
-        <div class="form-group row-second-xs">
-            <div class="col-xs-12">
-                <button type="submit" class="btn btn-aledo-black" style="text-transform: uppercase; font-weight: bold">Применить фильтр</button>
+        <div class="b-filter-form__panel">
+            <div class="b-button b-button_filter" onclick="$('#f-form').submit()">
+                <span class="b-button__text">Применить фильтр</span>
+                <i class="b-button__icon"></i>
             </div>
         </div>
     </form>
