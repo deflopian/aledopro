@@ -55,8 +55,7 @@ $url = $uriArr[0]
 //        ->prependStylesheet($this->basePath() . '/css/catalog.css')
 //        ->prependStylesheet($this->basePath() . '/css/main1.css')
     ?>
-    <!--    <link href="--><?php //echo $this->basePath($this->less('less/Config.less')) ?><!--" media="screen" rel="stylesheet" type="text/css">-->
-<!--    <link rel="stylesheet/less" type="text/css" href="/Content/Config.less"/>-->
+
     <link href="<?php echo $this->basePath($this->less('/Content/Config.less')) ?>" media="screen" rel="stylesheet" type="text/css">
 
     <script src="/Scripts/jquery-1.9.1.min.js"></script>
@@ -153,13 +152,12 @@ $url = $uriArr[0]
         if (browser.msie || browser.msie11) {
             document.documentElement.className += " b-html_msie";
         }
+        if (browser.mobile) {
+            document.documentElement.className += " b-html_mobile";
+        }
 
     </script>
 
-<!--    <link rel="stylesheet" type="text/css"-->
-<!--          href="/Content/less_cache/lessphp_22685ca2838c80c9b5f914ff224ab156998adbe3.css">-->
-<!--    <link href="--><?php //echo $this->basePath($this->less('/Content/Config.less')) ?><!--" media="screen" rel="stylesheet" type="text/css">-->
-    <link rel="stylesheet" type="text/css" href="/Content/css/custom_css_over_less.css">
 
 
     <!-- Google Analytics -->
@@ -276,11 +274,6 @@ $url = $uriArr[0]
         });
     </script>
 
-    <!--<style type="text/css">-->
-    <!--.catalog-ledionopto:hover {-->
-    <!--background-color: transparent !important;-->
-    <!--}-->
-    <!--</style>-->
 
     <noscript>
         <div><img src="//mc.yandex.ru/watch/24376390" style="position:absolute; left:-9999px;" alt=""/></div>
