@@ -178,24 +178,21 @@
                 <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_3">
                     <? if ($docs) { ?>
                         <div class="row row-second-small">
-                            <div class="col-xs-12">
+                            <div class="col-xs-12 b-section-materials">
                                 <? foreach($docs as $doc){ ?>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <? $type = strtolower(substr($doc->url, -3)); ?>
-                                            <a href="<?= $doc->url ? $this->basePath() . '/images/series_docs/' . $doc->url . '?originalName=' . urlencode($doc->original_name) : ''?>"
-                                               target="_blank"
-                                                <? if ($type != 'jpg' && $type != 'png' && $type != 'bmp' && $type != 'pdf' ) { ?>
+                                    <div class="b-section-materials__item">
+                                        <? $type = strtolower(substr($doc->url, -3)); ?>
+                                        <a class="b-section-materials__item-link" href="<?= $doc->url ? $this->basePath() . '/images/series_docs/' . $doc->url . '?originalName=' . urlencode($doc->original_name) : ''?>"
+                                           target="_blank"
+                                            <? if ($type != 'jpg' && $type != 'png' && $type != 'bmp' && $type != 'pdf' ) { ?>
 
-                                                <? } ?>
-                                               onclick="ga('send', 'event', 'button', 'click', 'download', '<?= $doc->url ?>');"
-                                                >
+                                            <? } ?>
+                                           onclick="ga('send', 'event', 'button', 'click', 'download', '<?= $doc->url ?>');"
+                                            >
 
 
-                                                <span class="icon-download icon-<?= $type?>"></span>
-                                                <span class="icon-title" style="font-size: 11px; font-weight: bold"><?= $doc->title; ?> (<?= $type ?>)</span>
-                                            </a>
-                                        </div>
+                                            <span class="icon-download icon-<?= $type?>-big b-section-materials__item-icon"></span><span class="icon-title b-section-materials__item-title" style="font-size: 11px; font-weight: bold"><?= $doc->title; ?> (<?= $type ?>)</span>
+                                        </a>
                                     </div>
                                 <? } ?>
                             </div>
