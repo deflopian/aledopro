@@ -21,7 +21,7 @@
                 <div class="b-slider__item b-slider_project__item">
                     <i class="b-slider-item-layout"></i>
                     <a href="/images/projects/<?= $img->url ?>" rel="gallery">
-                        <img class="b-slider__image" src="/images/projects/<?= $img->url ?>" />
+                        <img class="b-slider__image" src="/images/projects/<?= $img->url ?>"/>
                     </a>
                 </div>
             <? } ?>
@@ -29,13 +29,11 @@
         <div class="b-slider b-slider_project">
         </div>
 
-        <div class="b-section__content">
-            <div class="b-slider-arrows b-slider-arrows_project">
-            </div>
+        <div class="b-slider-arrows b-slider-arrows_project">
         </div>
     </div>
     <script type="text/javascript">
-        (function() {
+        (function () {
             function ProjectSlider() {
                 var _options = {
                         isAnimating: false,
@@ -51,11 +49,11 @@
                     $document = jQuery(document),
                     $html = jQuery("html"),
                     _ = _options,
-                    _init = function() {
+                    _init = function () {
                         _initSlider();
 
                     },
-                    _initSlider = function() {
+                    _initSlider = function () {
                         _.$slider.slick({
                             accessibility: false,
                             dots: false,
@@ -67,13 +65,14 @@
                             centerPadding: "0px",
                             variableWidth: true,
                             appendArrows: jQuery(".b-slider-arrows_project"),
+                            arrows: browser.mobile ? false : true,
                             prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows_project__arrow b-slider-arrows__arrow_prev\" ></a>",
                             nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows_project__arrow b-slider-arrows__arrow_next\" ></a>"
                         });
 
                         var imgLoad = imagesLoaded(_.imagesContainer);
-                        imgLoad.on("always", function(instance) {
-                            var loadedImages = jQuery.grep(imgLoad.images, function(a) {
+                        imgLoad.on("always", function (instance) {
+                            var loadedImages = jQuery.grep(imgLoad.images, function (a) {
                                 return a.isLoaded == true;
                             });
                             _slideAdd(loadedImages);
@@ -82,7 +81,7 @@
 
                     },
 
-                    _slideAdd = function(images) {
+                    _slideAdd = function (images) {
                         if (!images.length) return;
                         var slideElements = "";
                         for (var i = 0; i < images.length; ++i) {
@@ -100,7 +99,7 @@
                         _bindEvents();
 
                     },
-                    _initFancy = function() {
+                    _initFancy = function () {
                         _.$imagesLinks = _.$slider.find(".b-slider__item:not(.slick-cloned) > a");
                         _.$fancy = _.$imagesLinks.fancybox({
                             opacity: true,
@@ -117,7 +116,7 @@
                             },
                             prevSpeed: _.animatingSpeed,
                             nextSpeed: _.animatingSpeed,
-                            beforeLoad: function() {
+                            beforeLoad: function () {
                                 if (_.isAnimating) return false;
                                 _.isAnimating = true;
                                 if (!_.firstCalling && !_.checked) {
@@ -134,7 +133,7 @@
                                     37: 'right'
                                 }
                             },
-                            afterClose: function() {
+                            afterClose: function () {
                                 _.fancyIsOpen = false;
                                 $html.removeClass(_.fancySwipingClass);
                                 jQuery(".fancybox-overlay").off("mousedown.preventDrag");
@@ -142,26 +141,26 @@
                                 _.firstCalling = false;
                                 _.checked = false;
                             },
-                            beforeShow: function() {
-                                $document.on("ng.swipe.right.project", function() {
+                            beforeShow: function () {
+                                $document.on("ng.swipe.right.project", function () {
                                     if (_.isAnimating) return;
                                     _.direction = "prev";
                                     $.fancybox.prev();
-                                }).on("ng.swipe.left.project", function() {
+                                }).on("ng.swipe.left.project", function () {
                                     if (_.isAnimating) return;
                                     _.direction = "next";
                                     $.fancybox.next();
                                 });
                             },
-                            afterShow: function() {
+                            afterShow: function () {
                                 _.fancyIsOpen = true;
                                 _.isAnimating = false;
                                 $html.addClass(_.fancySwipingClass);
                                 //�������� �������������� ��� ������
-                                jQuery(".fancybox-overlay").on("mousedown.preventDrag", function(e) {
+                                jQuery(".fancybox-overlay").on("mousedown.preventDrag", function (e) {
                                     e.preventDefault();
                                 });
-                                document.addEventListener("keyup", function(e) {
+                                document.addEventListener("keyup", function (e) {
                                     if (_.isAnimating && _.fancyIsOpen) {
                                         e.preventDefault();
                                         e.stopPropagation();
@@ -176,21 +175,21 @@
                             },
                         });
                     },
-                    _bindEvents = function() {
-                        _.$slider.on("mousedown", function() {
+                    _bindEvents = function () {
+                        _.$slider.on("mousedown", function () {
                             return false;
                         });
-                        _.$slider.on("click", function(e) {
+                        _.$slider.on("click", function (e) {
                             var $this = jQuery(e.target),
                                 id = $this.closest("[data-slick-index]").data("slick-index");
                             _.$slider.slick("slickGoTo", id, false);
                             $this.siblings("a").click();
-                        }).on("afterChange", function() {
+                        }).on("afterChange", function () {
                             _.isAnimating = false;
                         });
 
 
-                        _.$fancy.on("fancyBox.beforeLoad", function() {
+                        _.$fancy.on("fancyBox.beforeLoad", function () {
                             if (_.firstCalling) {
                                 _.firstCalling = false;
                                 return;
@@ -199,7 +198,7 @@
                         });
 
 
-                        document.addEventListener("click", function(e) {
+                        document.addEventListener("click", function (e) {
                             var $nextButton, $prevButton;
                             if (_.fancyIsOpen) {
                                 $nextButton = jQuery(e.target).closest(".fancybox-next");
@@ -221,15 +220,15 @@
 
 
                     };
-                return { init: _init };
+                return {init: _init};
             }
 
             ProjectSlider().init();
         })();
     </script>
 
-    <br />
-    <br />
+    <br/>
+    <br/>
 
     <div class="b-section">
         <div class="b-section__content">
@@ -260,20 +259,25 @@
                         <div class="b-project-products">
 
                             <h4 class="b-project-products__product-name"></h4>
+
                             <div class="b-project-products-slider">
                                 <? foreach ($relatedSeries as $relatedItem) { ?>
-                                <div class="b-project-products-slider__item">
-                                    <i class="b-slider-item-layout"></i>
-                                    <? if ($relatedItem->previewName) { ?>
-                                        <a href="/images/series/<?= $relatedItem->previewName ?>" rel="project_product_gallery">
-                                            <img class="b-project-products-slider__image" src="/images/series/<?= $relatedItem->previewName ?>" />
-                                        </a>
-                                    <? } else { ?>
-                                        <a href="/images/series/<?= $relatedItem->img ?>" rel="project_product_gallery">
-                                            <img class="b-project-products-slider__image" src="/images/series/<?= $relatedItem->img ?>" />
-                                        </a>
-                                    <? } ?>
-                                </div>
+                                    <div class="b-project-products-slider__item">
+                                        <i class="b-slider-item-layout"></i>
+                                        <? if ($relatedItem->previewName) { ?>
+                                            <a href="/images/series/<?= $relatedItem->previewName ?>"
+                                               rel="project_product_gallery">
+                                                <img class="b-project-products-slider__image"
+                                                     src="/images/series/<?= $relatedItem->previewName ?>"/>
+                                            </a>
+                                        <? } else { ?>
+                                            <a href="/images/series/<?= $relatedItem->img ?>"
+                                               rel="project_product_gallery">
+                                                <img class="b-project-products-slider__image"
+                                                     src="/images/series/<?= $relatedItem->img ?>"/>
+                                            </a>
+                                        <? } ?>
+                                    </div>
                                 <? } ?>
 
                             </div>
@@ -296,11 +300,11 @@
                 fancySwipingClass: "fancybox-swiping",
                 productHeadingsHtml: [
                     <? foreach ($relatedSeries as $relatedItem) { ?>
-                        <? if (isset($relatedItem->isProduct) && $relatedItem->isProduct) { ?>
-                            "<a href=\"/catalog/product/<?= $relatedItem->id ?>/\"><?= $relatedItem->title ?></a>",
-                        <? } else { ?>
-                            "<a href=\"/catalog/series/<?= $relatedItem->id ?>/\"><?= $relatedItem->visible_title ? $relatedItem->visible_title : $relatedItem->title ?></a>",
-                        <? } ?>
+                    <? if (isset($relatedItem->isProduct) && $relatedItem->isProduct) { ?>
+                    "<a href=\"/catalog/product/<?= $relatedItem->id ?>/\"><?= $relatedItem->title ?></a>",
+                    <? } else { ?>
+                    "<a href=\"/catalog/series/<?= $relatedItem->id ?>/\"><?= $relatedItem->visible_title ? $relatedItem->visible_title : $relatedItem->title ?></a>",
+                    <? } ?>
                     <? } ?>
                 ],
                 $productHeadingContainer: jQuery(".b-project-products__product-name")
@@ -401,7 +405,7 @@
                         _.firstCalling = false;
                         _.checked = false;
                     },
-                    beforeShow: function() {
+                    beforeShow: function () {
                         $document.on("ng.swipe.right.products", function () {
                             if (_.isAnimating) return;
                             _.direction = "prev";
@@ -437,10 +441,12 @@
                 });
             },
             _initSlider = function () {
-                _.$slider.on("init", function() {
-                    setTimeout(function() { _showProductHeading(_getCurrentSlideIndex()); });
+                _.$slider.on("init", function () {
+                    setTimeout(function () {
+                        _showProductHeading(_getCurrentSlideIndex());
+                    });
                 }).
-                    on("beforeChange", function(e, current, currentIndex, nextIndex) {
+                    on("beforeChange", function (e, current, currentIndex, nextIndex) {
                         console.log(nextIndex);
 //                        _showProductHeading(_getCurrentSlideIndex());
                         _showProductHeading(nextIndex);
@@ -459,7 +465,7 @@
                     });
             };
 
-        return { init: _init };
+        return {init: _init};
     }
 
     ProjectProductSlider().init();

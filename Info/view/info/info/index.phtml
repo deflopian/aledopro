@@ -4,11 +4,12 @@
 <div class="b-about-page">
     <div class="b-section">
         <div class="b-section__content text-center">
-            <br /><br />
+            <br/><br/>
+
             <h2 class="text-center">
                 <?= $entity->title1 ?>
             </h2>
-            <br /><br />
+            <br/><br/>
 
             <div class="b-tabs-wrapper b-tabs-wrapper_about">
                 <div class="b-about-tabs">
@@ -39,47 +40,49 @@
                 </div>
                 <hr class="dotted-separator"/>
             </div>
-            <br/><br /><br />
+            <br/><br/><br/>
         </div>
     </div>
     <div class="b-section b-section_principles" style="display: none">
         <div class="b-section__content">
-            <br />
+            <br/>
+
             <h1 class="text-center"><?= $entity->title2 ?></h1>
-            <br />
-            <hr class="dotted-separator b-mb2" />
-            <br />
+            <br/>
+            <hr class="dotted-separator b-mb2"/>
+            <br/>
+
             <div class="b-principles">
                 <div class="b-principles-cell">
                     <div class="text-center">
                         <?= $entity->block_2_text_1 ?>
-                        <img class="b-principles-cell__icon" src="/images/about/<?= $entity->block_2_img_1_name ?>" />
+                        <img class="b-principles-cell__icon" src="/images/about/<?= $entity->block_2_img_1_name ?>"/>
                     </div>
                 </div>
                 <div class="b-principles-cell">
                     <div class="text-center">
                         <?= $entity->block_2_text_2 ?>
-                        <img class="b-principles-cell__icon" src="/images/about/<?= $entity->block_2_img_2_name ?>" />
+                        <img class="b-principles-cell__icon" src="/images/about/<?= $entity->block_2_img_2_name ?>"/>
                     </div>
                 </div>
                 <div class="b-principles-cell">
                     <div class="text-center">
                         <?= $entity->block_2_text_3 ?>
-                        <img class="b-principles-cell__icon" src="/images/about/<?= $entity->block_2_img_3_name ?>" />
+                        <img class="b-principles-cell__icon" src="/images/about/<?= $entity->block_2_img_3_name ?>"/>
                     </div>
                 </div>
             </div>
-            <hr class="dotted-separator" />
+            <hr class="dotted-separator"/>
         </div>
     </div>
     <div class="b-section b-section_reviews" id="reviews" image-responsive="{
                              default : {
-             src: '/images/about/<?=$entity->img_name ?>',
+             src: '/images/about/<?= $entity->img_name ?>',
                                  css : {
 
                                 }
                              }, 1001 : {
-              src: '/images/about/<?=$entity->img_min_name ?>',
+              src: '/images/about/<?= $entity->img_min_name ?>',
                   css : {
 
 
@@ -89,14 +92,17 @@
             <div class="b-downloads b-downloads_reviews">
                 <div class="b-downloads-table">
                     <div class="b-downloads-table__cell b-downloads-table__cell_l" align="left">
-                        <img class="b-downloads__image" src="/images/icon_reviews_09.svg" />
+                        <img class="b-downloads__image" src="/images/icon_reviews_09.svg"/>
                     </div>
                     <div class="b-downloads-table__cell b-downloads-table__cell_r">
                         <div class="b-downloads-slider">
                             <? foreach ($this->comments as $comment) { ?>
                                 <div class="b-downloads-slider__item">
-                                    <a class="b-downloads-slider__link b-downloads-slider__link_review" href="/images/documents/<?= $comment->file_name ?>">
-                                        <img class="b-downloads-slider__image" src="/images/documents/<?= $comment->img_name ?>" />
+                                    <a class="b-downloads-slider__link b-downloads-slider__link_review"
+                                       href="/images/documents/<?= $comment->file_name ?>">
+                                        <img class="b-downloads-slider__image"
+                                             src="/images/documents/<?= $comment->img_name ?>"/>
+
                                         <div class="b-slider__document-title">
                                             <div class="b-slider__document-title-name">
                                                 <?= $comment->title ?>
@@ -114,98 +120,99 @@
         </div>
         <div class="b-section__content b-section__content-all_projects">
             <a href="/projects/">
-            <div class="b-button b-button_gray-bordered  b-button_gray-colored b-button_all-projects">
-                <span class="b-button__text">Смотреть все проекты</span>
-            </div>
+                <div class="b-button b-button_gray-bordered  b-button_gray-colored b-button_all-projects">
+                    <span class="b-button__text">Смотреть все проекты</span>
+                </div>
             </a>
         </div>
     </div>
-<!--    <div class="b-slider-outer b-section">-->
-<!--        <div id="imagesLoadedProjects" style="display:none">-->
-<!--            --><?// foreach ($linkedProjects as $project) { ?>
-<!--                <div class="b-slider__item">-->
-<!--                    <img class="b-slider__image" src="/images/projects/--><?//= $project[1]->preview_name ?><!--" />-->
-<!--                </div>-->
-<!--            --><?// } ?>
-<!--        </div>-->
-<!--        <div class="b-slider b-slider_our-projects">-->
-<!---->
-<!--        </div>-->
-<!--        <div class="b-section__content">-->
-<!--            <div class="b-slider-arrows b-slider-arrows_projects">-->
-<!--                <img class="b-slider-image" src="/Content/images/about/icon_projects.svg" />-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <script type="text/javascript">-->
-<!--        (function() {-->
-<!--            var _options = {-->
-<!--                    $slider: jQuery('.b-slider_our-projects'),-->
-<!--                    slidesToShow: 1,-->
-<!--                    animatingSpeed: browser.mobile ? 300 : 500,-->
-<!--                    imagesContainer: "#imagesLoadedProjects",-->
-<!--                    noSliderClass: "b-slider_no-slider"-->
-<!--                },-->
-<!--                _ = _options,-->
-<!--                _init = function() {-->
-<!--                    _initSlider();-->
-<!--                },-->
-<!--                _initSlider = function() {-->
-<!--                    _.$slider.slick({-->
-<!--                        accessibility: false,-->
-<!--                        dots: false,-->
-<!--                        infinite: true,-->
-<!--                        speed: _.animatingSpeed,-->
-<!--                        slidesToShow: _.slidesToShow,-->
-<!--                        touchThreshold: browser.mobile ? 5 : 50,-->
-<!--                        centerMode: true,-->
-<!--                        centerPadding: "0px",-->
-<!--                        variableWidth: true,-->
-<!--                        appendArrows: jQuery(".b-slider-arrows_projects"),-->
-<!--                        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_prev\"></a>",-->
-<!--                        nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_next\"></a>"-->
-<!--                    });-->
-<!---->
-<!--                    var imgLoad = imagesLoaded(_.imagesContainer);-->
-<!---->
-<!--                    imgLoad.on("always", function(instance) {-->
-<!--                        var loadedImages = jQuery.grep(imgLoad.images, function(a) {-->
-<!--                            return a.isLoaded == true;-->
-<!--                        });-->
-<!--                        _slideAdd(loadedImages);-->
-<!---->
-<!--                    });-->
-<!---->
-<!--                },-->
-<!---->
-<!--                _slideAdd = function(images) {-->
-<!--                    if (!images.length) return;-->
-<!--                    var slideElements = "";-->
-<!--                    for (var i = 0; i < images.length; ++i) {-->
-<!--                        slideElements += jQuery(images[i].img).parentsUntil(_.imagesContainer).last()[0].outerHTML;-->
-<!--                    }-->
-<!---->
-<!---->
-<!--                    _.$slider.slick("slickAdd", slideElements);-->
-<!--                    if (images.length <= _.slidesToShow) {-->
-<!--                        _.$slider.slick("unslick");-->
-<!--                        _.$slider.addClass(_.noSliderClass);-->
-<!--                    }-->
-<!---->
-<!--                };-->
-<!---->
-<!--            _init();-->
-<!---->
-<!---->
-<!--        })();-->
-<!--    </script>-->
+    <!--    <div class="b-slider-outer b-section">-->
+    <!--        <div id="imagesLoadedProjects" style="display:none">-->
+    <!--            --><? // foreach ($linkedProjects as $project) { ?>
+    <!--                <div class="b-slider__item">-->
+    <!--                    <img class="b-slider__image" src="/images/projects/-->
+    <? //= $project[1]->preview_name ?><!--" />-->
+    <!--                </div>-->
+    <!--            --><? // } ?>
+    <!--        </div>-->
+    <!--        <div class="b-slider b-slider_our-projects">-->
+    <!---->
+    <!--        </div>-->
+    <!--        <div class="b-section__content">-->
+    <!--            <div class="b-slider-arrows b-slider-arrows_projects">-->
+    <!--                <img class="b-slider-image" src="/Content/images/about/icon_projects.svg" />-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <script type="text/javascript">-->
+    <!--        (function() {-->
+    <!--            var _options = {-->
+    <!--                    $slider: jQuery('.b-slider_our-projects'),-->
+    <!--                    slidesToShow: 1,-->
+    <!--                    animatingSpeed: browser.mobile ? 300 : 500,-->
+    <!--                    imagesContainer: "#imagesLoadedProjects",-->
+    <!--                    noSliderClass: "b-slider_no-slider"-->
+    <!--                },-->
+    <!--                _ = _options,-->
+    <!--                _init = function() {-->
+    <!--                    _initSlider();-->
+    <!--                },-->
+    <!--                _initSlider = function() {-->
+    <!--                    _.$slider.slick({-->
+    <!--                        accessibility: false,-->
+    <!--                        dots: false,-->
+    <!--                        infinite: true,-->
+    <!--                        speed: _.animatingSpeed,-->
+    <!--                        slidesToShow: _.slidesToShow,-->
+    <!--                        touchThreshold: browser.mobile ? 5 : 50,-->
+    <!--                        centerMode: true,-->
+    <!--                        centerPadding: "0px",-->
+    <!--                        variableWidth: true,-->
+    <!--                        appendArrows: jQuery(".b-slider-arrows_projects"),-->
+    <!--                        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_prev\"></a>",-->
+    <!--                        nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_next\"></a>"-->
+    <!--                    });-->
+    <!---->
+    <!--                    var imgLoad = imagesLoaded(_.imagesContainer);-->
+    <!---->
+    <!--                    imgLoad.on("always", function(instance) {-->
+    <!--                        var loadedImages = jQuery.grep(imgLoad.images, function(a) {-->
+    <!--                            return a.isLoaded == true;-->
+    <!--                        });-->
+    <!--                        _slideAdd(loadedImages);-->
+    <!---->
+    <!--                    });-->
+    <!---->
+    <!--                },-->
+    <!---->
+    <!--                _slideAdd = function(images) {-->
+    <!--                    if (!images.length) return;-->
+    <!--                    var slideElements = "";-->
+    <!--                    for (var i = 0; i < images.length; ++i) {-->
+    <!--                        slideElements += jQuery(images[i].img).parentsUntil(_.imagesContainer).last()[0].outerHTML;-->
+    <!--                    }-->
+    <!---->
+    <!---->
+    <!--                    _.$slider.slick("slickAdd", slideElements);-->
+    <!--                    if (images.length <= _.slidesToShow) {-->
+    <!--                        _.$slider.slick("unslick");-->
+    <!--                        _.$slider.addClass(_.noSliderClass);-->
+    <!--                    }-->
+    <!---->
+    <!--                };-->
+    <!---->
+    <!--            _init();-->
+    <!---->
+    <!---->
+    <!--        })();-->
+    <!--    </script>-->
 
     <div class="b-slider-outer b-section">
         <div style="display:none" id="imagesLoadedShowRoom">
             <? foreach ($showRoom as $banner) { ?>
                 <div class="b-slider__item">
                     <i class="b-slider-item-layout"></i>
-                    <img class="b-slider__image" src="/images/showroom/<?= $banner->img_name ?>" />
+                    <img class="b-slider__image" src="/images/showroom/<?= $banner->img_name ?>"/>
                 </div>
             <? } ?>
         </div>
@@ -214,8 +221,9 @@
         </div>
         <div class="b-section__content">
             <div class="b-slider-arrows b-slider-arrows_show-room">
-                <img class="b-slider-image b-slider-image_show-room" src="/Content/images/about/icon_show-room.svg" />
+
             </div>
+            <img class="b-slider-image b-slider-image_show-room" src="/Content/images/about/icon_show-room.svg"/>
         </div>
     </div>
     <script type="text/javascript">
@@ -243,6 +251,7 @@
                         centerPadding: "0px",
                         variableWidth: true,
                         appendArrows: jQuery(".b-slider-arrows_show-room"),
+                        arrows: browser.mobile ? false : true,
                         prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_show-room b-slider-arrows__arrow_show-room_prev\"></a>",
                         nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_show-room b-slider-arrows__arrow_show-room_next\"></a>"
                     });
@@ -283,11 +292,12 @@
 
     <div class="b-slider-outer b-section">
         <div style="display: none" id="imagesLoadedTeam">
-            <? /** @var $team \Team\Model\Worker[]  */ ?>
+            <? /** @var $team \Team\Model\Worker[] */ ?>
             <? foreach ($team as $worker) { ?>
-                <div class="b-slider__item">
+                <div class="b-slider__item b-slider_our-team__item">
                     <i class="b-slider-item-layout"></i>
-                    <img class="b-slider__image" src="/images/team/<?= $worker->img_name ?>" />
+                    <img class="b-slider__image" src="/images/team/<?= $worker->img_name ?>"/>
+
                     <div class="b-slider__title">
 
                         <div class="b-slider__title-name">
@@ -301,6 +311,9 @@
             <? } ?>
         </div>
         <div class="b-slider b-slider_our-team">
+
+        </div>
+        <div class="b-slider-arrows b-slider-arrows_our-team">
 
         </div>
         <!--
@@ -321,23 +334,26 @@
                 },
                 _ = _options,
                 _init = function () {
+
                     _initSlider();
                 },
                 _initSlider = function () {
-                    _.$slider.slick({
-                        accessibility: false,
-                        dots: false,
-                        infinite: true,
-                        speed: _.animatingSpeed,
-                        slidesToShow: _.slidesToShow,
-                        touchThreshold: browser.mobile ? 5 : 50,
-                        centerMode: true,
-                        centerPadding: "0px",
-                        variableWidth: true,
-                        appendArrows: jQuery(".b-slider-arrows_our-team"),
-                        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_prev\"></a>",
-                        nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_next\"></a>"
-                    });
+                    if (!browser.mobile) {
+                        _.$slider.slick({
+                            dots: false,
+                            draggable: false,
+                            infinite: true,
+                            speed: _.animatingSpeed,
+                            slidesToShow: _.slidesToShow,
+                            touchThreshold: browser.mobile ? 5 : 50,
+
+                            variableWidth: true,
+                            appendArrows: jQuery(".b-slider-arrows_our-team"),
+                            arrows: browser.mobile ? false : true,
+                            prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_prev\"></a>",
+                            nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows__arrow_next\"></a>"
+                        });
+                    }
 
                     var imgLoad = imagesLoaded(_.imagesContainer);
 
@@ -358,7 +374,11 @@
                         slideElements += jQuery(images[i].img).parentsUntil(_.imagesContainer).last()[0].outerHTML;
                     }
 
-
+                    if (browser.mobile) {
+                        _.$slider.html(slideElements);
+                        _.$slider.addClass(_.noSliderClass);
+                        return;
+                    }
                     _.$slider.slick("slickAdd", slideElements);
                     if (images.length <= _.slidesToShow) {
                         _.$slider.slick("unslick");
@@ -374,7 +394,7 @@
     </script>
 </div>
 <script type="text/javascript">
-    (function() {
+    (function () {
         var $this = jQuery('.b-downloads-slider'),
             $slides = $this.find(".b-downloads-slider__item"),
             noSliderClass = "b-slider_no-slider";
