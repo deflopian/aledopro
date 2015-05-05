@@ -107,13 +107,15 @@ class CartController extends AbstractActionController
             $return['hierarchies'] = $hierarchies;
         }
 
+        $return['isAuth'] = $this->zfcUserAuthentication()->hasIdentity();
         return $return;
     }
 
     public function saveFormAjaxAction()
     {
         $request = $this->getRequest();
-        if ($request->isXmlHttpRequest()) {
+
+        if ($request->isPost()) {
 
             $post = array_merge_recursive(
                 $request->getPost()->toArray(),
@@ -122,20 +124,24 @@ class CartController extends AbstractActionController
 
             $sl = $this->getServiceLocator();
             $user = $this->zfcUserAuthentication()->hasIdentity();
-
+            //return array();
             $success = 0;
             $return = $messages = array();
 
             $form = new OrderForm('order', $user);
+
             $form->setData($post);
+            $productDataCopy = array();
 
             if ($form->isValid()) {
+
                 $data = $form->getData();
 
                 $productData = \Zend\Json\Json::decode($post['order-products']);
                 $realProductsIds = get_object_vars(\Zend\Json\Json::decode($_COOKIE['products_in_cart']));
 
-                $productDataCopy = array();
+
+
                 foreach ($productData  as $id => $value) {
                     if (array_key_exists($id, $realProductsIds)) {
                         $productDataCopy[$id] = $value;
@@ -173,6 +179,7 @@ class CartController extends AbstractActionController
 
                 foreach($productData as $id=>$prodData)
                 {
+
                     $product = $prodTable->find($id);
                     $series = $seriesTable->find($product->series_id);
                     $subsection = $subsectionTable->find($series->subsection_id);
@@ -192,7 +199,7 @@ class CartController extends AbstractActionController
                     }
                     $productsInfo[$id]->mainParams = $mainParams;
 
-                    $trueCount = floor($prodData[0]);
+                    $trueCount = floor($prodData->count);
 
                     if ($identity && $identity->getIsPartner()) {
 
@@ -213,13 +220,13 @@ class CartController extends AbstractActionController
                         $truePrice = CatalogService::getTruePrice($product->price_without_nds);
                     }
 
-                    $productData[$id][1] = $truePrice;
+                    $productData[$id]->price = $truePrice;
                     $totalPrice += $truePrice * $trueCount;
                 }
 
                 $order = new Order();
                 $orderData = array(
-                    'comment' => $data['comment'],
+                    'comment' => $data['order_comment'],
                     'summ' => $totalPrice,
                     'orderState' => $post['buyType'],
                 );
@@ -227,12 +234,12 @@ class CartController extends AbstractActionController
 
                 //заказчик - юридическое лицо, сохраняем его реквизиты
                 if ($post['buyType'] == 2) {
-                    if (isset($data['file']['tmp_name'])) {
-                        $filePath = substr($data['file']['tmp_name'], strlen($_SERVER['DOCUMENT_ROOT'] . self::UPLOAD_PATH));
+                    if (isset($data['order_file']['tmp_name'])) {
+                        $filePath = substr($data['order_file']['tmp_name'], strlen($_SERVER['DOCUMENT_ROOT'] . self::UPLOAD_PATH));
 
                         $orderData['file'] =  $filePath;
                         $filePath = self::UPLOAD_PATH . $filePath;
-                    } elseif (isset($post['lastFile']) && $post['lastFile'] == 1) {
+                    } elseif (isset($post['order_lastFile']) && $post['order_lastFile'] == 1) {
 
                         if ($identity) {
                             //последний подгруженный файл с реквизитами (если заказывал как юр. лицо)
@@ -249,6 +256,7 @@ class CartController extends AbstractActionController
                     }
 
                 }
+
                 if($user){
                     $orderData['user_id'] = $this->zfcUserAuthentication()->getIdentity()->getId();
                 }
@@ -257,11 +265,11 @@ class CartController extends AbstractActionController
 
                 if(!$user){
 //                    $userData = json_decode($post['userVals'], true);
-                    $userData['name'] = $post['userVals-name'];
-                    $userData['mail'] = $post['userVals-mail'];
-                    $userData['phone'] = $post['userVals-phone'];
-                    $userData['city'] = $post['userVals-city'];
-                    $userData['is_spamed'] = $post['userVals-is_spamed'];
+                    $userData['name'] = $post['user_name'];
+                    $userData['mail'] = $post['user_email'];
+                    $userData['phone'] = $post['user_tel'];
+                    $userData['city'] = $post['user_city'];
+                    $userData['is_spamed'] = $post['user_is_spamed'] ? 1 : 0;
 
                     $orderUser = new OrderUser();
                     $orderUser->exchangeArray(array(
@@ -285,8 +293,8 @@ class CartController extends AbstractActionController
                         $pto->exchangeArray(array(
                             'order_id' => $orderId,
                             'product_id' => $id,
-                            'price' => $prodData[1],
-                            'count' => floor($prodData[0]),
+                            'price' => $prodData->price,
+                            'count' => floor($prodData->count),
                         ));
 
                         $orderProdsTable->save($pto);
@@ -311,8 +319,8 @@ class CartController extends AbstractActionController
 
 
                         if ($post['buyType'] == 2) {
-                            if (isset($data['file']['name'])) {
-                                $order->originalName = $data['file']['name'];
+                            if (isset($data['order_file']['name'])) {
+                                $order->originalName = $data['order_file']['name'];
                             } elseif (isset($order->file) && $order->file) {
                                 $order->originalName = $order->file;
                             }
@@ -348,7 +356,6 @@ class CartController extends AbstractActionController
 
             } else {
                 $messages = $form->getMessages();
-                var_dump($messages);
             }
 
             $return['success'] = $success;

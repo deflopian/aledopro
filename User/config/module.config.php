@@ -47,6 +47,7 @@ return array(
                 array('controller' => 'User\Controller\User', 'action'=>'saveOrder', 'roles' => array('user')),
                 array('controller' => 'User\Controller\User', 'action'=>'register', 'roles' => array('guest')),
                 array('controller' => 'User\Controller\User', 'action'=>'login', 'roles' => array('guest', 'user')), //user - чтобы потом можно быть аяксово отсечь повторюшек
+                array('controller' => 'User\Controller\User', 'action'=>'logout', 'roles' => array('user')), //user - чтобы потом можно быть аяксово отсечь повторюшек
                 array('controller' => 'User\Controller\User', 'action'=>'fakelogin', 'roles' => array('guest', 'user')), //user - чтобы потом можно быть аяксово отсечь повторюшек
                 array('controller' => 'User\Controller\User', 'action'=>'changepassword', 'roles' => array('user')),
                 array('controller' => 'User\Controller\User', 'action'=>'updateRegisterInfo', 'roles' => array('user')),

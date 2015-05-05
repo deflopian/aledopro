@@ -42,7 +42,7 @@ class CatalogController extends BaseController
 
             $viewHelper->get('headscript')
                 ->prependFile('/js/libs/jquery.nouislider.js')
-                ->prependFile('/js/libs/ZeroClipboard.min.js')
+                ->prependFile('/js/libs/ZeroClipboard.js')
                 ->prependFile('/js/catalog.js');
         }, 100); // execute before executing action logic
     }

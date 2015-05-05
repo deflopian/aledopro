@@ -31,6 +31,14 @@ class OrderForm extends Form
             $this->add($text);
         }
 
+        if (!$this->registred) {
+            $textUserFields = $this->getUserTextFields();
+            foreach($textUserFields as $name=>$require){
+                $text = new Element\Text($name);
+                $this->add($text);
+            }
+        }
+
         $file = new Element\File('file');
         $this->add($file);
     }
@@ -47,7 +55,7 @@ class OrderForm extends Form
         if (!$this->registred) {
             foreach($userFields as $name=>$required){
                 $inputFilter->add(array(
-                    'name' => 'userVals-' . $name . '',
+                    'name' =>  $name,
                     'required' => $required,
                     'validators' => $messages['text'],
                     'filters' => array(
@@ -97,27 +105,24 @@ class OrderForm extends Form
     private function getTextFields()
     {
         return array(
-            'username'=>false,
-            'email'=>false,
-            'phone'=>false,
-            'city'=>false,
-            'comment'=>false
+            'order_comment'=>false
         );
     }
 
     private function getUserTextFields()
     {
         return array(
-            'name'=>true,
-            'mail'=>true,
-            'phone'=>true,
+            'user_name'=>true,
+            'user_email'=>true,
+            'user_tel'=>true,
+            'user_city'=>false,
         );
     }
 
     private function getFileFields()
     {
         return array(
-            'file'=>false,
+            'order_file'=>false,
         );
     }
 }

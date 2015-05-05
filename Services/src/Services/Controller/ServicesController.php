@@ -49,12 +49,8 @@ class ServicesController extends AbstractActionController
                 $rest_json = file_get_contents("php://input");
                 $post = json_decode($rest_json, true);
             }
-
-            var_dump($post);
-            return $post;
             $success = 0;
             $messages = array();
-
             $type = $post['form-type'];
             $data = $this->getFormData($type);
 

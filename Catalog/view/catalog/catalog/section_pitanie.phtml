@@ -10,7 +10,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER;
 
 ?>
 <? include 'part/part/mobile-modal.phtml'; ?>
-<div class="b-section__content b-section__content-breadcrumbs">
+<div class="b-section__content b-section__content-breadcrumbs breadcumbs_ontop">
 
     <div class="b-breadcrumbs">
         <? foreach ($breadCrumbs as $bc) { ?>
@@ -21,39 +21,9 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER;
 </div>
 
 <div class="section catalog b-section__content">
-    <div class="row catalog-submenu">
-        <div class="col-xs-12" style="text-align: center">
-            <div class="row no-tb-padding">
-                <div class="col-xs-12 no-tb-padding">
-                    <?
-                    //todome: исправить это мракобесие
-                    $i = 0;
-                    foreach($subsections as $subsec){ ?>
-                        <div class="catalog-submenu-item dotted-left">
-                            <a href="<?= $this->url('home') ?>catalog/section/<?= $section->id ?>/?p=subsec-<?= $subsec->id?>"><?= $subsec->title; ?></a>
-                        </div>
-                        <?  if(($i+1)%4 == 0){echo'</div></div>
-                    <div class="row no-tb-padding row-second-xxs"><div class="col-xs-12 no-tb-padding"><div class="dotted-top"></div></div></div>
-                    <div class="row no-tb-padding"><div class="col-xs-12 no-tb-padding">';}
-                        $i++;
-                    } ?>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="black-bottom absolute-width"></div>
-    </div>
-
-<!--    <div class="row row-second">-->
-<!--        <div class="col-xs-6 tablefilter">-->
-<!--            --><?// include 'part/filter-small.phtml' ?>
-<!--        </div>-->
-<!--    </div>-->
 
     <div class="row row-second-xs">
         <div class="col-xs-12">
-<!--            <div class=" dotted-top"></div>-->
         </div>
     </div>
 

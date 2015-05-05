@@ -15,6 +15,9 @@
                         <?= $contacts->phone ?>
                     </p>
                     <p>
+                        8 (812) 448 58 49
+                    </p>
+                    <p>
                         <a href="mailto:<?= $contacts->mail ?>"><?= $contacts->mail ?></a>
                     </p>
                 </div>
@@ -69,7 +72,7 @@
                             <ul class="list-unstyled">
                                 <? if ($user = $this->zfcUserIdentity()){ ?>
                                     <li><a class="b-highlighted-link" href="/cabinet">Личный кабинет</a></li>
-                                    <li><a class="b-highlighted-link" href="javascript:void(0)">Выйти</a></li>
+                                    <li><a class="b-highlighted-link" href="/cabinet/logout">Выйти</a></li>
                                 <? } ?>
                                 <li><a class="b-highlighted-link" href="/sitemap/">Карта сайта</a></li>
                             </ul>

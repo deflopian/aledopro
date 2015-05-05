@@ -114,7 +114,6 @@
         <hr class="dotted-separator b-mb1" />
         <div class="b-partner-registration">
                     <form novalidate
-                          action="<?= $this->url('cabinet', array('action' => 'register'))?>"
                           name="registration"
                           ng-controller="RegistrationController">
                         <div>
@@ -125,9 +124,9 @@
                                 <input type="text"
                                        class="b-form-control b-form-control_small"
                                        data-required="yes"
-                                       name="username"
+                                       name="user_name"
                                        id="user_name"
-                                       ng-model="user_name"
+                                       ng-model="formData.user_name"
                                        autocomplete="off"
                                        required />
                             </div>
@@ -140,24 +139,24 @@
                                 <input type="text"
                                        class="b-form-control b-form-control_small"
                                        id="user_tel"
-                                       name="phone"
+                                       name="user_tel"
                                        data-required="yes"
-                                       ng-model="user_tel"
+                                       ng-model="formData.user_tel"
                                        autocomplete="off"
                                        required />
                             </div>
                         </div>
                         <div>
                             <div class="b-registration__cell b-registration__cell_left">
-                                <label for="user_tel">Город</label>
+                                <label for="user_city">Город</label>
                             </div>
                             <div class="b-registration__cell b-registration__cell_right">
                                 <input type="text"
                                        class="b-form-control b-form-control_small"
-                                       id="user_tel"
-                                       name="city"
+                                       id="user_city"
+                                       name="user_city"
                                        data-required="no"
-                                       ng-model="user_tel"
+                                       ng-model="formData.user_city"
                                        autocomplete="off"
                                     />
                             </div>
@@ -171,8 +170,23 @@
                                        class="b-form-control b-form-control_small"
                                        id="user_email"
                                        data-required="yes"
-                                       name="email"
-                                       ng-model="user_email"
+                                       name="user_email"
+                                       ng-model="formData.user_email"
+                                       autocomplete="off"
+                                       required />
+                            </div>
+                        </div>
+                        <div>
+                            <div class="b-registration__cell b-registration__cell_left">
+                                <label for="user_email">E-mail*</label>
+                            </div>
+                            <div class="b-registration__cell b-registration__cell_right">
+                                <input type="checkbox"
+                                       class="b-form-control b-form-control_small"
+                                       id="user_email"
+                                       data-required="yes"
+                                       name="user_email"
+                                       ng-model="formData.user_email"
                                        autocomplete="off"
                                        required />
                             </div>
@@ -187,9 +201,9 @@
                                     <input type="password"
                                            class="b-form-control b-form-control_small"
                                            id="user_cur_password"
-                                           ng-model="user_cur_password"
+                                           ng-model="formData.user_cur_password"
                                            data-required="yes"
-                                           name="password"
+                                           name="user_cur_password"
                                            autocomplete="off"
                                            required />
                                 </div>
@@ -202,20 +216,20 @@
                                     <input type="password"
                                            class="b-form-control b-form-control_small"
                                            id="user_password_repeat"
-                                           ng-model="user_password_repeat"
+                                           ng-model="formData.user_password_repeat"
                                            autocomplete="off"
-                                           name="passwordVerify"
+                                           name="user_password_repeat"
                                            data-required="yes"
                                            required />
                                 </div>
                             </div>
                         </div>
                         <div class="text-center">
-                            <button class="b-button b-button_gray" id="registration_button" ng-disabled="registration.$invalid" type="submit">
+                            <div class="b-button b-button_gray" ng-click="submit()" id="registration_button" ng-disabled="registration.$invalid">
                                 <span class="b-button__text">
                                     СОХРАНИТЬ ПЕРСОНАЛЬНЫЕ ДАННЫЕ
                                 </span>
-                            </button>
+                            </div>
                         </div>
                     </form>
         </div>

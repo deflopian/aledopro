@@ -1,110 +1,139 @@
 <!-- NEW -->
-<form novalidate
-      action="<?= $this->url('cabinet', array('action' => 'register'))?>"
-      name="registration"
-      ng-controller="RegistrationController">
-    <div>
-        <div class="b-registration__cell b-registration__cell_left">
-            <label for="user_name">Имя*</label>
-        </div>
-        <div class="b-registration__cell b-registration__cell_right">
-            <input type="text"
-                   class="b-form-control b-form-control_small"
-                   data-required="yes"
-                   name="username"
-                   id="user_name"
-                   ng-model="user_name"
-                   autocomplete="off"
-                   required />
-        </div>
-    </div>
-    <div>
-        <div class="b-registration__cell b-registration__cell_left">
-            <label for="user_tel">Контактный телефон*</label>
-        </div>
-        <div class="b-registration__cell b-registration__cell_right">
-            <input type="text"
-                   class="b-form-control b-form-control_small"
-                   id="user_tel"
-                   name="phone"
-                   data-required="yes"
-                   ng-model="user_tel"
-                   autocomplete="off"
-                   required />
-        </div>
-    </div>
-    <div>
-        <div class="b-registration__cell b-registration__cell_left">
-            <label for="user_tel">Город</label>
-        </div>
-        <div class="b-registration__cell b-registration__cell_right">
-            <input type="text"
-                   class="b-form-control b-form-control_small"
-                   id="user_tel"
-                   name="city"
-                   data-required="no"
-                   ng-model="user_tel"
-                   autocomplete="off"
-                />
-        </div>
-    </div>
-    <div>
-        <div class="b-registration__cell b-registration__cell_left">
-            <label for="user_email">E-mail*</label>
-        </div>
-        <div class="b-registration__cell b-registration__cell_right">
-            <input type="text"
-                   class="b-form-control b-form-control_small"
-                   id="user_email"
-                   data-required="yes"
-                   name="email"
-                   ng-model="user_email"
-                   autocomplete="off"
-                   required />
-        </div>
-    </div>
 
-    <div class="b-registration__table">
-        <div class="b-registration__row">
-            <div class="b-registration__cell b-registration__cell_left">
-                <label for="user_password">Пароль*</label>
-            </div>
-            <div class="b-registration__cell b-registration__cell_right">
-                <input type="password"
-                       class="b-form-control b-form-control_small"
-                       id="user_cur_password"
-                       ng-model="user_cur_password"
-                       data-required="yes"
-                       name="password"
-                       autocomplete="off"
-                       required />
-            </div>
-        </div>
-        <div class="b-registration__row">
-            <div class="b-registration__cell b-registration__cell_left">
-                <label for="user_password_repeat">Повторите пароль*</label>
-            </div>
-            <div class="b-registration__cell b-registration__cell_right">
-                <input type="password"
-                       class="b-form-control b-form-control_small"
-                       id="user_password_repeat"
-                       ng-model="user_password_repeat"
-                       autocomplete="off"
-                       name="passwordVerify"
-                       data-required="yes"
-                       required />
-            </div>
-        </div>
-    </div>
-    <div class="text-center">
-        <button class="b-button b-button_gray" id="registration_button" ng-disabled="registration.$invalid" type="submit">
-            <span class="b-button__text">
-                СОХРАНИТЬ ПЕРСОНАЛЬНЫЕ ДАННЫЕ
-            </span>
-        </button>
-    </div>
-</form>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">×</span></button>
+    <h4 class="modal-title text-center"><strong>РЕГИСТРАЦИЯ</strong></h4>
+</div>
+<div class="modal-body">
+    <div class="popup-modal">
+        <hr class="dotted-separator" />
+        <div class="text-center b-mt1 b-mb1">ВАШИ ПЕРСОНАЛЬНЫЕ ДАННЫЕ:</div>
+        <hr class="dotted-separator b-mb1" />
+        <div class="b-partner-registration">
+            <form novalidate
+                  name="registration"
+                  ng-controller="RegistrationController">
+                <div>
+                    <div class="b-registration__cell b-registration__cell_left">
+                        <label for="user_name">Имя*</label>
+                    </div>
+                    <div class="b-registration__cell b-registration__cell_right">
+                        <input type="text"
+                               class="b-form-control b-form-control_small"
+                               data-required="yes"
+                               name="user_name"
+                               id="user_name"
+                               ng-model="formData.user_name"
+                               autocomplete="off"
+                               required />
+                    </div>
+                </div>
+                <div>
+                    <div class="b-registration__cell b-registration__cell_left">
+                        <label for="user_tel">Контактный телефон*</label>
+                    </div>
+                    <div class="b-registration__cell b-registration__cell_right">
+                        <input type="text"
+                               class="b-form-control b-form-control_small"
+                               id="user_tel"
+                               name="user_tel"
+                               data-required="yes"
+                               ng-model="formData.user_tel"
+                               autocomplete="off"
+                               required />
+                    </div>
+                </div>
+                <div>
+                    <div class="b-registration__cell b-registration__cell_left">
+                        <label for="user_city">Город</label>
+                    </div>
+                    <div class="b-registration__cell b-registration__cell_right">
+                        <input type="text"
+                               class="b-form-control b-form-control_small"
+                               id="user_city"
+                               name="user_city"
+                               data-required="no"
+                               ng-model="formData.user_city"
+                               autocomplete="off"
+                            />
+                    </div>
+                </div>
+                <div>
+                    <div class="b-registration__cell b-registration__cell_left">
+                        <label for="user_email">E-mail*</label>
+                    </div>
+                    <div class="b-registration__cell b-registration__cell_right">
+                        <input type="text"
+                               class="b-form-control b-form-control_small"
+                               id="user_email"
+                               data-required="yes"
+                               name="user_email"
+                               ng-model="formData.user_email"
+                               autocomplete="off"
+                               required />
+                    </div>
+                </div>
+                <div>
 
+
+                    <div class="b-registration__cell">
+                        <input class="b-form-control b-checkbox" type="checkbox" id="user_is_spamed" name="user_is_spamed" ng-model="formData.user_is_spamed" />
+                        <label for="user_is_spamed">подписаться на рассылку (информация о скидках, акциях)</label>
+                    </div>
+                </div>
+
+                <div class="b-registration__table">
+                    <div class="b-registration__row">
+                        <div class="b-registration__cell b-registration__cell_left">
+                            <label for="user_password">Пароль*</label>
+                        </div>
+                        <div class="b-registration__cell b-registration__cell_right">
+                            <input type="password"
+                                   class="b-form-control b-form-control_small"
+                                   id="user_cur_password"
+                                   ng-model="formData.user_cur_password"
+                                   data-required="yes"
+                                   name="user_cur_password"
+                                   autocomplete="off"
+                                   required />
+                        </div>
+                    </div>
+                    <div class="b-registration__row">
+                        <div class="b-registration__cell b-registration__cell_left">
+                            <label for="user_password_repeat">Повторите пароль*</label>
+                        </div>
+                        <div class="b-registration__cell b-registration__cell_right">
+                            <input type="password"
+                                   class="b-form-control b-form-control_small"
+                                   id="user_password_repeat"
+                                   ng-model="formData.user_password_repeat"
+                                   autocomplete="off"
+                                   name="user_password_repeat"
+                                   data-required="yes"
+                                   required />
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="b-button b-button_gray" id="registration_button" ng-disabled="registration.$invalid" ng-click="submit()">
+                        <span class="b-button__text">
+                            СОХРАНИТЬ ПЕРСОНАЛЬНЫЕ ДАННЫЕ
+                        </span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="b-button button-back"
+                         ng-controller="PopupController"
+                         ng-click="popupHistoryBack()">
+                        <span class="b-button__text">
+                            Назад
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     $(function(){
         window.setTimeout( function(){

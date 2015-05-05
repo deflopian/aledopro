@@ -248,11 +248,12 @@
                 </li>
             </ul>
             <div class="b-search">
-                <form name="search">
+                <form name="search" method="get" role="search" action="<?= $this->url('search'); ?>">
                     <div class="b-placeholdered-input b-placeholdered-input_search b-search__input-outer">
                         <label for="search" class="b-placeholdered-input__label">Начните поиск продукции</label>
-                        <input id="search" type="text" class="b-search__input b-placeholdered-input__input" />
+                        <input id="search" name="search" type="text" class="b-search__input b-placeholdered-input__input" />
                     </div>
+                    <input type="submit" style="display:none"/>
                 </form>
             </div>
 

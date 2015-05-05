@@ -393,10 +393,10 @@ class UserController extends AbstractActionController
         // если пришли из регистрации, требуется трактовать password как credential и email как identity
         // это всё какой-то дикий костыль, и я приношу свои извинения тому бедолаге, который будет это разгребать
         if (!($postContent->get('credential'))) {
-            $postContent->set('credential', $postContent->get('password'));
+            $postContent->set('credential', $postContent->get('user_cur_password'));
         }
         if (!($postContent->get('identity'))) {
-            $postContent->set('identity', $postContent->get('email'));
+            $postContent->set('identity', $postContent->get('user_email'));
         }
 
         $request->setPost($postContent);
@@ -527,7 +527,37 @@ class UserController extends AbstractActionController
     }
 
     public function logoutAction() {
+        $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+        $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
+        $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
+        $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
+        $cache = $this->params()->fromPost('redirect', $this->params()->fromQuery('cache', false));
+
+
+        if ($redirect) {
+            if ($cache) {
+                if (strpos($redirect, '?') === false) {
+                    $redirect .= '?cache=' . time();
+                } else {
+                    $redirect .= '&cache=' . time();
+                }
+
+            }
+            return $this->redirect()->toUrl($redirect)->getHeaders()->addHeaders(
+                array(
+                    'Cache-Control' => 'no-cache',
+                    'Expires' => '-1',
+                )
+            );
+        }
+
+        return $this->redirect()->toRoute('home')->getHeaders()->addHeaders(
+            array(
+                'Cache-Control' => 'no-cache',
+                'Expires' => '-1',
+            )
+        );
     }
 
     public function updateRegisterInfoAction() {
@@ -739,8 +769,12 @@ class UserController extends AbstractActionController
 
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            $form  = $this->getServiceLocator()->get('zfcuser_register_form');
+            /** @var \User\Form\Register $form */
+            $form  = $this->getServiceLocator()->get('CustomRegisterForm');
             $user = new \ZfcUser\Entity\User();
+            if ($data['user_is_spamed']) {
+                $data['user_is_spamed'] = $data['user_is_spamed'] == "true" ? 1 : 0;
+            }
             $form->setData($data);
             if (!$form->isValid()) {
                 /** @var \Zend\Http\Response $response */
@@ -762,12 +796,12 @@ class UserController extends AbstractActionController
 
             $bcrypt = new Bcrypt();
             $bcrypt->setCost(4);
-            $user->setPassword($bcrypt->create($data['password']));
-            $user->setUsername($data['username']);
-            $user->setIsSpamed($data['is_spamed']);
-            $user->setEmail($data['email']);
-            $user->setPhone($data['phone']);
-            $user->setCity($data['city']);
+            $user->setPassword($bcrypt->create($data['user_cur_password']));
+            $user->setUsername($data['user_name']);
+            $user->setIsSpamed($data['user_is_spamed']);
+            $user->setEmail($data['user_email']);
+            $user->setPhone($data['user_tel']);
+            $user->setCity($data['user_city']);
             $user->setState(1);
             /** @var \ZfcUser\Mapper\User $userMapper */
             $userMapper = $this->getServiceLocator()->get('zfcuser_user_mapper');

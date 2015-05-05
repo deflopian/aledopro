@@ -16,7 +16,7 @@
                             <input type="text"
                                    class="b-form-control b-form-control_small"
                                    id="username"
-                                   ng-model="formData.username"
+                                   ng-model="formData.name"
                                    autocomplete="on" <?= ($this->isRegistered && $this->user->getUsername()) ?
                                 'value="' . $this->user->getUsername() . '"' : ''?> required />
                         </div>
@@ -36,7 +36,7 @@
                             <label for="email">E-mail*</label>
                         </div>
                         <div class="b-registration__cell b-registration__cell_right">
-                            <input type="text" class="b-form-control b-form-control_small" id="email" ng-model="formData.email" autocomplete="on"
+                            <input type="text" class="b-form-control b-form-control_small" id="email" ng-model="formData.mail" autocomplete="on"
                                 <?= ($this->isRegistered && $this->user->getEmail()) ? 'value="' . $this->user->getEmail() . '"' : ''?> required />
                         </div>
                     </div>
@@ -51,8 +51,8 @@
                     </div>
 
                     <div class="b-order-place__file-zone" style="width: 100%;height: auto;padding: 1rem;" ng-class="{'b-order-place__file-zone_file-uploaded' : fileName.length }">
-                        <div><input type="file" name="file" id="orderDetails" onchange="angular.element(this).scope().showFileName(this)" /></div>
-                        <input class="hidden-last-file" type="hidden" value="<?= $this->lastFile ? '1' : '0' ?>" name="lastFile" style="display: none"/>
+                        <div><input type="file" name="file" file-model="formData.file" id="orderDetails" onchange="angular.element(this).scope().showFileName(this)" /></div>
+                        <input class="hidden-last-file" type="hidden" value="<?= $this->lastFile ? '1' : '0' ?>" name="formData.service_lastFile" style="display: none"/>
 
                         <div class="b-order-place__file-zone-label" ng-hide="fileName.length">
                             <script type="text/javascript">
@@ -67,6 +67,7 @@
                         </div>
                         <div ng-show="fileName.length">
                             <span ng-bind="fileName"></span>
+
                             <div>
                                 <button type="button" class="b-order-place__file-reset close" ng-click="resetFile(angular.element(this))">
                                     &times;
@@ -76,6 +77,8 @@
                     </div>
                 </div>
                 <br />
+                <input type="text" name="form-type" ng-init="formData['form-type']=<?= \Services\Controller\ServicesController::PROJECT_ORDER_FORM ?>" style="display: none"
+                   ng-value="<?= \Services\Controller\ServicesController::PROJECT_ORDER_FORM ?>"/>
                 <div class="text-darker-gray text-center">
                     <button class="b-button b-button_gray" id="partner_reistration_button" ng-disabled="calculationService.$invalid">
                         <span class="b-button__text">

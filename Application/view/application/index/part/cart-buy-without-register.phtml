@@ -1,78 +1,123 @@
-<div class="row">
-    <div class="col-md-12 text-center"><h1>Оформление заказа без регистрации</h1></div>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">×</span></button>
+    <h4 class="modal-title text-center"><strong>Оформление заказа без регистрации</strong></h4>
 </div>
-<div class="row"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>
-<form class="form-horizontal aledo-form form-left" role="form" method="post">
-<div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        <div class="row">
-            <div class="col-md-12 text-center"><h2>Контактная информация</h2></div>
-        </div>
+<div class="modal-body">
+    <div class="popup-modal">
+        <hr class="dotted-separator" />
+        <div class="text-center b-mt1 b-mb1">Контактная информация</div>
+        <hr class="dotted-separator b-mb1" />
+        <div class="b-partner-registration">
 
-
-        <div class="form-group">
-            <label for="cbwr-name" class="col-md-3 control-label">Имя*</label>
-            <div class="col-md-9">
-                <input type="text" class="form-control" id="cbwr-name" name="name" data-required="yes">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="cbwr-phone" class="col-md-4 control-label">Контактный телефон*</label>
-            <div class="col-md-8">
-                <input type="text" class="form-control" id="cbwr-phone" name="phone" data-required="yes">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="cbwr-mail" class="col-md-3 control-label">E-mail*</label>
-            <div class="col-md-9">
-                <input type="text" class="form-control" id="cbwr-mail" name="mail" data-required="yes">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="cbwr-city" class="col-md-3 control-label">Город</label>
-            <div class="col-md-9">
-                <input type="text" class="form-control" id="cbwr-city" name="city" data-required="no">
-            </div>
-        </div>
-
-            <div class="form-group">
-                <div class="col-md-9 col-md-offset-3">
-                    <input type="checkbox" id="cbwr-spam" name="is_spamed" checked>
-                    <label for="cbwr-spam">подписаться на рассылку <br>(информация о скидках, акциях)</label>
+            <form novalidate
+                  name="registration"
+                  ng-controller="RegistrationController">
+                <div>
+                    <div class="b-registration__cell b-registration__cell_left">
+                        <label for="user_name">Имя*</label>
+                    </div>
+                    <div class="b-registration__cell b-registration__cell_right">
+                        <input type="text"
+                               class="b-form-control b-form-control_small"
+                               data-required="yes"
+                               name="user_name"
+                               id="user_name"
+                               ng-model="userInfo.user_name"
+                               autocomplete="off"
+                               required />
+                    </div>
                 </div>
-            </div>
+                <div>
+                    <div class="b-registration__cell b-registration__cell_left">
+                        <label for="user_tel">Контактный телефон*</label>
+                    </div>
+                    <div class="b-registration__cell b-registration__cell_right">
+                        <input type="text"
+                               class="b-form-control b-form-control_small"
+                               id="user_tel"
+                               name="user_tel"
+                               data-required="yes"
+                               ng-model="userInfo.user_tel"
+                               autocomplete="off"
+                               required />
+                    </div>
+                </div>
+                <div>
+                    <div class="b-registration__cell b-registration__cell_left">
+                        <label for="user_city">Город</label>
+                    </div>
+                    <div class="b-registration__cell b-registration__cell_right">
+                        <input type="text"
+                               class="b-form-control b-form-control_small"
+                               id="user_city"
+                               name="user_city"
+                               data-required="no"
+                               ng-model="userInfo.user_city"
+                               autocomplete="off"
+                            />
+                    </div>
+                </div>
+                <div>
+                    <div class="b-registration__cell b-registration__cell_left">
+                        <label for="user_email">E-mail*</label>
+                    </div>
+                    <div class="b-registration__cell b-registration__cell_right">
+                        <input type="text"
+                               class="b-form-control b-form-control_small"
+                               id="user_email"
+                               data-required="yes"
+                               name="user_email"
+                               ng-model="userInfo.user_email"
+                               autocomplete="off"
+                               required />
+                    </div>
+                </div>
 
+                <div>
+                    <div class="b-registration__cell">
+                        <input class="b-form-control b-checkbox" type="checkbox" id="user_is_spamed" name="user_is_spamed" ng-model="userInfo.user_is_spamed" />
+                        <label for="user_is_spamed">подписаться на рассылку (информация о скидках, акциях)</label>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="b-button b-button_gray"
+                         ng-disabled="registration.$invalid"
+                         ng-controller="OrderPlaceController"
+                         ng-click="makeOrder(userInfo)">
+                        <span class="b-button__text">
+                            Подтвердить
+                        </span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="b-button button-back"
+                         ng-controller="PopupController"
+                         ng-click="popupHistoryBack()">
+                            <span class="b-button__text">
+                                Назад
+                            </span>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-<div class="row"><div class="col-md-12"><div class="dotted-bottom"></div></div></div>
-
-<div class="row row-second-small">
-    <div class="col-md-3">
-        <button id="cbwr-back" class="btn btn-aledo-black">Назад</button>
-    </div>
-    <div class="col-md-4 pull-right">
-        <button id="cbwr-success" type="submit" class="btn btn-aledo-black">Подтвердить</button>
-    </div>
-</div>
-</form>
 <script type="text/javascript">
     $(function(){
-        formajax.init({
-            changeUrl: false
-        });
+//        formajax.init({
+//            changeUrl: false
+//        });
+//
+//        $('#cbwr-back').on('click', function(e){
+//            e.preventDefault();
+//            showFooBarPopup('cart-buy');
+//        });
 
-        $('#cbwr-back').on('click', function(e){
-            e.preventDefault();
-            showFooBarPopup('cart-buy');
-        });
-
-        $('#cbwr-success').on('click', function(e){
-            e.preventDefault();
-            cart.buyWithoutRegisrtation();
-        });
+//        $('#cbwr-success').on('click', function(e){
+//            e.preventDefault();
+//            cart.buyWithoutRegisrtation();
+//        });
 
 
     });

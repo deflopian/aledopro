@@ -1,5 +1,5 @@
 
-<div class="b-cart b-section">
+<div class="b-cart b-section" ng-controller="OrderPlaceController" >
 
     <div class="b-section__content">
         <table cellpadding="0" cellspacing="0" border="0" class="b-cart-table">
@@ -26,7 +26,7 @@
                 $prod = $data['product'];
                 $count = floor($data['count']);
             ?>
-            <tr class="cart-line" data-id="<?= $prod->id ?>">
+            <tr class="cart-line" ng-init="prodsInfo[<?= $prod->id ?>] = {count: <?= $count ?>, price: 0}" data-id="<?= $prod->id ?>">
                 <td class="b-cart-product-cell  b-cart-product-cell_image">
                     <a href="<?= $this->url('catalog', array('action' => 'product', 'id' => $prod->id)) ?>" class="b-cart-product-cell_image__inner">
                         <?
@@ -38,7 +38,7 @@
                     </a>
                 </td>
                 <td class="b-cart-product-cell  b-cart-product-cell_article">
-                    <div class="b-cart-product-cell_article__inner">
+                    <div class="b-cart-product-cell_article__inner" >
                         <?= $prod->id ?>
                     </div>
                 </td>
@@ -74,14 +74,14 @@
 
                 <td class="b-cart-product-cell  b-cart-product-cell_price">
                     <div class="b-cart-product-cell_price__inner">
-                        <span class="b-cart-product-cell__price"><?= $price ?></span>
+                        <span class="b-cart-product-cell__price" ng-init="prodsInfo[<?= $prod->id ?>].price = <?= $price ?>"><?= $price ?></span>
                         <span class="b-rub">Р</span>
                     </div>
                 </td>
                 <td class="b-cart-product-cell  b-cart-product-cell_count">
                     <div class="b-cart-product-cell_count__inner">
                         <div class="b-cart-product-counter">
-                            <input class="b-form-control b-cart-product-counter__input" name="count" value="<?= $count ?>" />
+                            <input class="b-form-control b-cart-product-counter__input" name="count" ng-model="prodsInfo[<?= $prod->id ?>].count" ng-change="setProdsInfo(prodsInfo)" ng-value="<?= $count ?>" />
                             <span class="b-cart-product-counter__button b-cart-product-counter__button_up font-icon-arrow-2"></span>
                             <span class="b-cart-product-counter__button b-cart-product-counter__button_down font-icon-arrow"></span>
                         </div>
@@ -118,21 +118,22 @@
                     </div>
                     <br />
                     <hr class="dotted-separator" />
-                    <form name="cartBuy" id="cart-form" method="post" action="<?= $this->url('cart',array('action'=>'saveFormAjax')) ?>"  class="b-clearfix b-order-place " ng-controller="OrderPlaceController">
+                    <form name="cartBuy" id="cart-form" method="post" class="b-clearfix b-order-place">
                         <div class="b-form-group b-form-group_order-place  b-clearfix">
                             <strong class="b-left">Я покупаю как</strong>
                             <div class="b-cart-select-type b-right">
-                                <div class="b-cart-select-type__cell">
-                                    <input type="radio" checked name="buyType" id="buyType_1" value="1"  data-figure="square" />
+                                <div class="b-cart-select-type__cell" ng-init="orderInfo.buyType=1">
+                                    <input type="radio" ng-checked="true"  ng-model="orderInfo.buyType" ng-change="setOrderInfo(orderInfo)" name="buyType" id="buyType_1" ng-value="1"  data-figure="square" />
                                     <label for="buyType_1">Физическое лицо</label>
 
                                 </div>
                                 <div class="b-cart-select-type__cell">
-                                    <input type="radio" name="buyType" id="buyType_2" value="2" data-figure="square" class="b-order-place__input" />
+                                    <input type="radio" name="buyType" ng-model="orderInfo.buyType" ng-change="setOrderInfo(orderInfo)" id="buyType_2" ng-value="2" data-figure="square" class="b-order-place__input" />
                                     <label for="buyType_2">Юридическое лицо</label>
                                     <div class="b-order-place__file-zone" ng-class="{'b-order-place__file-zone_file-uploaded' : fileName.length }">
-                                        <div><input type="file" name="file" id="orderDetails" onchange="angular.element(this).scope().showFileName(this)" /></div>
-                                        <input class="hidden-last-file" type="hidden" value="<?= $this->lastFile ? '1' : '0' ?>" name="lastFile" style="display: none"/>
+                                        <div><input type="file" name="file" id="orderDetails" file-model="orderInfo.order_file" onchange="angular.element(this).scope().showFileName(this)" /></div>
+                                        <input class="hidden-last-file" type="hidden" ng-init="orderInfo.order_lastFile = <?= $this->lastFile ? '1' : '0' ?>" value="<?= $this->lastFile ? '1' : '0' ?>" name="lastFile" style="display: none"/>
+                                        <input class="" type="hidden" ng-init="orderInfo.isAuth=<?= $this->isAuth ? '1' : '0' ?>" name="isAuth" style="display: none"/>
 
                                         <div ng-hide="fileName.length">
                                             <script type="text/javascript">
@@ -161,11 +162,24 @@
                         <hr class="dotted-separator" />
                         <div class="b-form-group b-form-group_order-place">
                             <label><strong>Написать комментарии к заказу</strong></label>
-                            <textarea name="comment" class="b-form-control b-order-place__comment"></textarea>
+                            <textarea name="comment" ng-model="orderInfo.order_comment" class="b-form-control b-order-place__comment"></textarea>
                         </div>
                         <hr class="dotted-separator" />
                         <div class="b-form-group b-form-group_order-place b-clearfix">
-                            <button type="submit" class="b-button b-button_small b-button_gray-colored b-button_yellow-background b-right" id="order_place">
+
+                            <button
+                                ng-if="!orderInfo.isAuth"
+                                class="b-button b-button_small b-button_gray-colored b-button_yellow-background b-right"
+                                    ng-controller="PopupController" ng-click="getPopup(ALEDO_POPUP_CART_BUY, {})"
+                                    id="order_place">
+                                <input type="hidden" id="order-products" name="order-products"/>
+                                <span class="b-button__text" id="send-bnt">Оформить заказ</span>
+                            </button>
+                            <button
+                                ng-if="orderInfo.isAuth"
+                                class="b-button b-button_small b-button_gray-colored b-button_yellow-background b-right"
+                                    ng-click="makeOrder({})"
+                                    id="order_place">
                                 <input type="hidden" id="order-products" name="order-products"/>
                                 <span class="b-button__text" id="send-bnt">Оформить заказ</span>
                             </button>

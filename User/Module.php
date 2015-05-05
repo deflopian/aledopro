@@ -55,6 +55,18 @@ class Module
                     $table     = new ManagerToUserTable($dbAdapter);
                     return $table;
                 },
+                'CustomRegisterForm' =>  function($sm) {
+                    $options = $sm->get('zfcuser_module_options');
+                    $form = new Form\Register(null, $options);
+                    $form->setInputFilter(new Form\RegisterFilter(
+                        new \ZfcUser\Validator\NoRecordExists(array(
+                            'mapper' => $sm->get('zfcuser_user_mapper'),
+                            'key'    => 'email'
+                        )),
+                        $options
+                    ));
+                    return $form;
+                },
             ),
         );
     }

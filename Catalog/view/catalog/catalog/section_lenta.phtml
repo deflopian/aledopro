@@ -36,9 +36,9 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
         cursor: pointer;
     }
 </style>
-<div class="b-section__content b-section__content-breadcrumbs">
+<div class="b-section__content b-section__content-breadcrumbs breadcumbs_ontop">
 
-    <div class="b-breadcrumbs">
+    <div class="b-breadcrumbs ">
         <? foreach ($breadCrumbs as $bc) { ?>
             <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
         <? } ?>

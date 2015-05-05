@@ -177,14 +177,14 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
                 </a>
                 <a href="<?= $this->url('cart') ?>" class="buy-to-cart" title="модель помещена в корзину">в корзине</a>
             </td>
-            <td class="copy-link">
+            <td class="copy-link" >
 <!--                --><?// if(in_array($prod->id, $offeredIds)){ ?>
                 <span ng-if="false">
                     <div class="icon-discount"></div>
                 </span>
                 <!--                --><?// } ?>
 
-                <a class="getlink-btn">
+                <a class="getlink-btn" title="скопировать ссылку в буфер">
                     <div class="icon-getlink zeroclipboard"
                          data-clipboard-text="http://<?=\Application\Service\MailService::CURRENT_DOMEN?>/catalog/product/{{item.id}}/"></div>
                 </a>

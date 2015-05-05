@@ -139,7 +139,7 @@ return array(
             ),
             'BjyAuthorize\Guard\Controller' => array(
                 array( 'controller' => 'Info\Controller\Info',  'roles' => array('guest','user')),
-                array( 'controller' => 'Info\Controller\Request', 'action'=>'newpassword', 'roles' => array('guest','user')),
+                array( 'controller' => 'Info\Controller\Request', 'action'=>array('newpassword', 'registerPartner'), 'roles' => array('guest','user')),
             ),
         ),
     ),

@@ -9,40 +9,40 @@
         <div class="text-center b-mt1 b-mb1">ВАШИ ПЕРСОНАЛЬНЫЕ ДАННЫЕ:</div>
         <hr class="dotted-separator b-mb1" />
         <div class="b-partner-registration">
-            <form novalidate ng-submit="submit()" name="partnerRegistration">
+            <form novalidate ng-submit="submit()" name="partnerRegistration" ng-controller="PartnerController">
                 <div class="b-partner-registration__row">
                     <div class="b-partner-registration__cell b-partner-registration__cell_left">
                         <div class="b-form-group">
                             <label for="partner_lastname">Фамилия*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_lastname" ng-model="partner_lastname" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_lastname" ng-model="formData.partner_lastname" autocomplete="off" required />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_name">Имя*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_name" ng-model="partner_name" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_name" ng-model="formData.partner_name" autocomplete="off" required />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_fathername">Отчество</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_fathername" ng-model="partner_fathername" autocomplete="off" />
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_fathername" ng-model="formData.partner_fathername" autocomplete="off" />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_city">Город*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_city" ng-model="partner_city" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_city" ng-model="formData.partner_city" autocomplete="off" required />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_tel">Контактный телефон*</label>
-                            <input type="text" input-mask="+7 (999) 999-99-99" class="b-form-control b-form-control_small" id="partner_tel" ng-model="partner_tel" autocomplete="off" required />
+                            <input type="text" input-mask="+7 (999) 999-99-99" class="b-form-control b-form-control_small" id="partner_tel" ng-model="formData.partner_tel" autocomplete="off" required />
                         </div>
                         <div class="b-form-group">
                             <label for="partners_email">E-mail*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_email" ng-model="partners_email" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_email" ng-model="formData.partner_email" autocomplete="off" required />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_password">Пароль*</label>
-                            <input type="password" class="b-form-control b-form-control_small" id="partner_password" ng-model="partner_password" autocomplete="off" required />
+                            <input type="password" class="b-form-control b-form-control_small" id="partner_password" ng-model="formData.partner_password" autocomplete="off" required />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_password_repeat">Повторите пароль*</label>
-                            <input type="password" class="b-form-control b-form-control_small" id="partner_password_repeat" ng-model="partner_password_repeat" autocomplete="off" required />
+                            <input type="password" class="b-form-control b-form-control_small" id="partner_password_repeat" ng-model="formData.partner_password_repeat" autocomplete="off" required />
                         </div>
                     </div>
                     <div class="b-partner-registration__cell b-partner-registration__cell_decoration-cell">
@@ -52,27 +52,31 @@
                     <div class="b-partner-registration__cell b-partner-registration__cell_right">
                         <div class="b-form-group">
                             <label for="partner_job_title">Занимаемая должность</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_job_title" ng-model="partner_job_title" autocomplete="off" />
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_job_title" ng-model="formData.partner_job_title" autocomplete="off" />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_company_name">Полное название компании (с юр. статусом)*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_company_name" ng-model="partner_company_name" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_company_name" ng-model="formData.partner_company_name" autocomplete="off" required />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_scope">Сфера деятельности компании*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_scope" ng-model="partner_scope" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_scope" ng-model="formData.partner_scope" autocomplete="off" required />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_brands">Основные бренды из вашего ассортимента*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_brands" ng-model="partner_brands" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_brands" ng-model="formData.partner_brands" autocomplete="off" required />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_office_tel">Телефоны офиса*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_office_tel" ng-model="partner_office_tel" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_office_tel" ng-model="formData.partner_office_tel" autocomplete="off" required />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_website">Website</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_website" ng-model="partner_website" autocomplete="off" />
+                            <input type="text" class="b-form-control b-form-control_small" id="partner_website" ng-model="formData.partner_website" autocomplete="off" />
+                        </div>
+                        <div class="b-form-group">
+                            <input class="b-form-control b-checkbox" type="checkbox" id="user_is_spamed" name="user_is_spamed" ng-model="formData.user_is_spamed" />
+                            <label for="user_is_spamed">подписаться на рассылку (информация о скидках, акциях)</label>
                         </div>
                         <br />
                         <hr class="dotted-separator" />
@@ -80,7 +84,7 @@
                             <p>*поля отмеченные звездочкой(*) обязательны к заполнению</p>
                             <p>Мы гарантируем, что Ваши персональные данные не будут переданы третьим лицам</p>
 
-                            <button class="b-button b-button_gray" id="partner_reistration_button" ng-disabled="partnerRegistration.$invalid">
+                            <button class="b-button b-button_gray" ng-click="submit()" id="partner_reistration_button" ng-disabled="partnerRegistration.$invalid">
                                             <span class="b-button__text">
                                                 отправить заявку на регистрацию
                                             </span>

@@ -1,7 +1,14 @@
 <?php
 namespace Info\Controller;
 
+use Application\Service\MailService;
+use Info\Model\PartnerRequest;
+use Info\Model\Partners;
 use Services\Controller\ServicesController;
+use User\Model\RoleLinker;
+use User\Service\UserService;
+use Zend\Crypt\Password\Bcrypt;
+use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -16,6 +23,108 @@ class RequestController extends AbstractActionController {
             'reqs' => $reqs
         );
     }
+
+    public function registerPartnerAction() {
+        /** @var Request $request */
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $postData = $request->getPost()->toArray();
+
+
+            $user = new \ZfcUser\Entity\User();
+
+            $form  = $this->getServiceLocator()->get('CustomRegisterForm');
+            $userData = array();
+            if ($postData['user_is_spamed']) {
+                $userData['user_is_spamed'] = $postData['user_is_spamed'] == "true" ? 1 : 0;
+            }
+            $userData['user_name'] = $postData['partner_lastname'] . " " . $postData['partner_name'] . " " . $postData['partner_fathername'];
+            $userData['user_email'] = $postData['partner_email'];
+            $userData['user_tel'] = $postData['partner_tel'];
+            $userData['user_city'] = $postData['partner_city'];
+            $userData['user_cur_password'] = $postData['partner_password'];
+            $userData['user_password_repeat'] = $postData['partner_password_repeat'];
+
+            $form->setData($userData);
+            if (!$form->isValid()) {
+                /** @var \Zend\Http\Response $response */
+                $response = $this->getResponse();
+
+                $response->setContent(
+                    \Zend\Json\Json::encode(
+                        array(
+                            'success' => 0,
+                            'messages' => $form->getMessages()
+                        )
+                    )
+                );
+                return $response;
+            }
+
+            $data = $form->getData();
+            /* @var $user \ZfcUser\Entity\User */
+
+            $bcrypt = new Bcrypt();
+            $bcrypt->setCost(4);
+            $user->setPassword($bcrypt->create($data['user_cur_password']));
+            $user->setUsername($data['user_name']);
+            $user->setIsSpamed($data['user_is_spamed']);
+            $user->setEmail($data['user_email']);
+            $user->setPhone($data['user_tel']);
+            $user->setCity($data['user_city']);
+            $user->setIsPartner(1);
+            $user->setState(1);
+            /** @var \ZfcUser\Mapper\User $userMapper */
+            $userMapper = $this->getServiceLocator()->get('zfcuser_user_mapper');
+            $result = $userMapper->insert($user, 'user');
+
+            $user->setId($result->getGeneratedValue());
+            $userRole = new RoleLinker();
+            $userRole->user_id = $user->getId();
+            $userRole->role_id = 'user';
+            $sm = $this->getServiceLocator();
+            $roleLinker = $sm->get('RoleLinkerTable');
+            $roleLinker->save($userRole, "user_id");
+
+            $partner = new PartnerRequest();
+            $partner->exchangeArray($postData);
+            $prTable = $this->getServiceLocator()->get('PartnerRequestTable');
+            $prTable->save($partner);
+
+            //добро пожаловать на сайт, логин, пароль
+            list($email, $mailView) = MailService::prepareRegisterUserMailData($this->serviceLocator, $user, $data['password']);
+            MailService::sendMail($email, $mailView, "Добро пожаловать на Aledo!");
+
+            if ($user->getIsSpamed()) {
+                list($email, $mailView) = MailService::prepareNewSpamedRegisterManagerData($this->serviceLocator, $user);
+                MailService::sendMail($email, $mailView, "Новый подписчик на Aledo номер " . $user->getId());
+            }
+
+            if ($user->getIsPartner()) {
+                UserService::addHistoryAction(
+                    $this->getServiceLocator(),
+                    $user->getId(),
+                    UserService::USER_ACTION_REGISTER,
+                    "",
+                    time()
+                );
+            }
+            //зарегался новый юзер. Имя, почта, телефон
+            list($email, $mailView) = MailService::prepareRegisterManagerMailData($this->serviceLocator, $user);
+            MailService::sendMail($email, $mailView, "На Aledo новый пользователь номер " . $user->getId());
+        }
+        $response = $this->getResponse();
+
+        $response->setContent(
+            \Zend\Json\Json::encode(
+                array(
+                    'success' => 1
+                )
+            )
+        );
+        return $response;
+    }
+
     public function reqPartnerViewAction(){
         $id = (int) $this->params()->fromRoute('id', 0);
         $req = $this->getServiceLocator()->get('PartnerRequestTable')->find($id);
