@@ -68,7 +68,15 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
                         </div>
 
                     </div>
-                    <div class="series-pics carousel slide" id="banner-carousel" data-ride="carousel" onmouseover="$('.carousel-indicators').show()" onmouseout="$('.carousel-indicators').hide()"">
+
+                    <div class="b-mobile-lents__carousel">
+                        <? if ($series->visible_title) { ?>
+                            <span class="banner-title backgrounded-alt" <?= !$series->visible_title ? 'style="padding-bottom: 16px;"' : '' ?>><?= $series->visible_title ?>&nbsp;&nbsp;</span><br />
+                        <? } elseif ( $series->title) { ?>
+                            <span class="banner-title backgrounded-alt" <?= !$series->title ? 'style="padding-bottom: 16px;"' : '' ?>><?= $series->title ?>&nbsp;&nbsp;</span><br />
+                        <? } ?>
+                    </div>
+                    <div class="series-pics carousel slide b-section-lents__carousel" id="banner-carousel" data-ride="carousel" onmouseover="$('.carousel-indicators').show()" onmouseout="$('.carousel-indicators').hide()"">
 
             <? if (count($series->imgs) > 1) { ?>
                     <ol class="carousel-indicators" style="display: none; margin-bottom: 0">
@@ -78,7 +86,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
                     </ol>
                 <? } ?>
 
-                    <div class="carousel-inner" style="">
+                    <div class="carousel-inner">
                         <? foreach($series->imgs as $i=>$image){ ?>
                             <div class="item <?= $i == 0? 'active': ''?>">
                                 <img class="drivers_pic" style="width: 100%" src="<?= $this->basePath() . '/images/series/' . $image->url ?>" alt="<?= $image->title?>">

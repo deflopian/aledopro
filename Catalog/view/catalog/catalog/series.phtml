@@ -14,10 +14,8 @@
  * @var \Projects\Model\ProjectImg[] $imgs
  */
 /** @var integer $scrollToProduct*/
-?>
-<div class="b-goods b-section">
+?><div class="b-goods b-section" style="padding-top: 0">
     <div class="b-section__content">
-
         <div class="b-breadcrumbs">
             <? foreach ($breadCrumbs as $bc) { ?>
             <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
@@ -146,7 +144,14 @@
                     ?>
                 </div>
 
-                <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_2" style="padding-left: 30px">
+                <div class="b-tabs-content__item fade tab-pane series-description-block" role="tabpanel" id="goods_2" style="padding-left: 30px">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div>
+                                <h2 class="series-description-block__title">Описание</h2>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-xs-12 series-description">
                     <?= (($num = strpos('<p>&nbsp;</p>', $series->text)) < 5 && $num !== false) ?
@@ -160,8 +165,8 @@
                             <div class="col-xs-12">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <div class="dotted-bottom">
-                                            <h2 class="series-title">Комплектация и условия эксплуатации</h2>
+                                        <div>
+                                            <h2 class="series-description-block__title">Комплектация и условия эксплуатации</h2>
                                         </div>
                                     </div>
                                 </div>

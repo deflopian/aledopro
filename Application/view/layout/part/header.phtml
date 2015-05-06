@@ -200,8 +200,8 @@
                 <p class="b-header-top-section__we-work hidden-xs hidden-sm">Работаем по всей РФ</p>
                 <ul class="b-header-top-section__list list-unstyled b-right">
                     <li class="b-header-top-section__list-item">
-                        <a href="/info/" class="b-highlighted-link b-header-top-section__link b-header-top-section__link_about-company">О компании</a><br class=" visible-sm-block visible-xs-block" />
-                        <a href="/partners/" class="b-highlighted-link b-header-top-section__link">Партнерам</a>
+                        <a href="/info/" class="b-highlighted-link b-header-top-section__link b-header-top-section__link_about-company <?= ($active=='info' && $action=='index') ? 'b-header-top-section__link-active' : ''?>">О компании</a><br class=" visible-sm-block visible-xs-block" />
+                        <a href="/partners/" class="b-highlighted-link b-header-top-section__link <?= $active=='partners' ? 'b-header-top-section__link-active' : ''?>">Партнерам</a>
                     </li>
 
                         <li class="b-header-top-section__list-item">
@@ -210,7 +210,7 @@
                             <? } else { ?>
                                 <a href="javascript:void(0)" id="auth_block_trigger" class="b-highlighted-link b-header-top-section__link">Войти</a><br />
                             <? } ?>
-                            <a href="/cart/" class="b-highlighted-link b-header-top-section__link">Корзина</a>
+                            <a href="/cart/" id="main-cart" class="b-highlighted-link b-header-top-section__link cart-empty">Корзина&nbsp;<span id="main-cart-badge">(<span id="main-cart-val"></span>)</span></a>
                         </li>
 
                     <li class="b-header-top-section__list-item">
@@ -227,21 +227,21 @@
         <div class="b-section__content">
             <ul class="b-main-navigation list-unstyled">
                 <li class="b-main-navigation__list-item">
-                    <a class="b-main-navigation__link b-left" href="/catalog/">Каталог</a>
+                    <a class="b-main-navigation__link b-left <?= $active=='catalog' ? 'b-main-navigation__link-active' : ''?>" href="/catalog/">Каталог</a>
                 </li>
                 <li class="b-main-navigation__list-item">
-                    <a class="b-main-navigation__link b-left" href="/projects/">Проекты</a>
+                    <a class="b-main-navigation__link b-left <?= $active=='projects' ? 'b-main-navigation__link-active' : ''?>" href="/projects/">Проекты</a>
                 </li>
                 <li class="b-main-navigation__list-item">
-                    <a class="b-main-navigation__link b-left" href="/solutions/">Решения</a>
+                    <a class="b-main-navigation__link b-left <?= $active=='solutions' ? 'b-main-navigation__link-active' : ''?>" href="/solutions/">Решения</a>
                 </li>
 
 
                 <li class="b-main-navigation__list-item">
-                    <a class="b-main-navigation__link b-main-navigation__link_payment b-left" href="/info/delivery">Доставка и оплата</a>
+                    <a class="b-main-navigation__link b-main-navigation__link_payment b-left <?= ($active=='info' && $action=='delivery') ? 'b-main-navigation__link-active' : ''?>" href="/info/delivery">Доставка и оплата</a>
                 </li>
                 <li class="b-main-navigation__list-item b-main-navigation__list-item_contacts">
-                    <a class="b-main-navigation__link b-right" href="/contacts/">Контакты</a>
+                    <a class="b-main-navigation__link b-right <?= $active=='contacts' ? 'b-main-navigation__link-active' : ''?>" href="/contacts/">Контакты</a>
                 </li>
                 <li class="b-main-navigation__list-item b-clearfix">
                     <a class="b-main-navigation__link b-search-button b-right"></a>

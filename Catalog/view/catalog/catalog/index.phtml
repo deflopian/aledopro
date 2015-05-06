@@ -3,7 +3,7 @@
 
     <div class="b-mobile-catalog visible-xs visible-sm">
         <? foreach ($this->sections as $i => $section) { ?>
-            <div class="b-mobile-catalog__item">
+            <div class="b-mobile-catalog__item" style="background-image: url('/images/section/<?= $section->url ?>')">
             <? if ($section->id == 29 || $section->id == 33) { ?>
                 <a class="b-mobile-catalog__link text-uppercase"
                    data-target="#catalog_mobile_redirect"
