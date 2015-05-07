@@ -933,6 +933,7 @@ class CatalogController extends BaseController
                 'series' => $series,
                 'imgs' => $series->imgs,
                 'docs' => $series->docs,
+                'dims' => $series->dims,
                 'offeredIds' => $offeredIds,
                 'dopProducts' => $series->dopProducts,
                 'equalParameters' => $series->equalParams,
@@ -1257,6 +1258,7 @@ class CatalogController extends BaseController
 
                 $imgs = $sl->get('Catalog\Model\SeriesImgTable')->fetchByCond('parent_id', $id, 'order asc');
                 $docs = $sl->get('Catalog\Model\SeriesDocTable')->fetchByCond('parent_id', $id, 'order asc');
+                $dims = $sl->get('Catalog\Model\SeriesDimTable')->fetchByCond('parent_id', $id, 'order asc');
                 $relatedSeriesIds = $sl->get('Catalog\Model\StoSTable')->find($id, AdminController::SERIES_TABLE);
                 $relatedSeries = array();
                 $relatedProds = array();

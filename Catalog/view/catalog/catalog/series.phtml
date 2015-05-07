@@ -179,6 +179,45 @@
                             </div>
                         </div>
                     <? } ?>
+
+                    <? if($series->text_dimming = trim($series->text_dimming)){ ?>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <h2 class="series-description-block__title">Диммирование (Управление яркостью)</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-second-xs">
+                                    <div class="col-xs-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_dimming)) < 5 && $num !== false) ?
+                                            substr($series->text_dimming, $num+13) : $series->text_dimming ?>
+                                    </div>
+                                </div>
+                                <div class="b-section-dimmers">
+                                    <? foreach($dims as $dim){ ?>
+                                        <div class="b-section-dimmers__item">
+                                            <? $type = strtolower(substr($dim->url, -3)); ?>
+                                            <a class="b-section-dimmers__item-link" href="<?= $dim->url ? $this->basePath() . '/images/series_docs/' . $dim->url . '?originalName=' . urlencode($dim->original_name) : ''?>"
+                                               target="_blank"
+                                                <? if ($type != 'jpg' && $type != 'png' && $type != 'bmp' && $type != 'pdf' ) { ?>
+
+                                                <? } ?>
+                                               onclick="ga('send', 'event', 'button', 'click', 'download', '<?= $dim->url ?>');"
+                                                >
+
+
+                                                <span class="pull-left icon-title b-section-dimmers__item-title" style="font-size: 11px; font-weight: bold"><?= $dim->title; ?> (<?= $type ?>)</span>
+                                                <span class="pull-right icon-download icon-<?= $type?> b-section-dimmers__item-icon"></span>
+                                            </a>
+                                        </div>
+                                    <? } ?>
+                                </div>
+                            </div>
+                        </div>
+                    <? } ?>
                 </div>
                 <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_3">
                     <? if ($docs) { ?>

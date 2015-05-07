@@ -316,13 +316,14 @@ class CatalogMapper {
 
         $imgTable = $this->sl->get('Catalog\Model\SeriesImgTable');
         $docsTable = $this->sl->get('Catalog\Model\SeriesDocTable');
+        $dimsTable = $this->sl->get('Catalog\Model\SeriesDimTable');
         $equalParamsTable = $this->sl->get('Catalog\Model\EqualParamsTable');
         $fileTable = $this->sl->get('FilesTable');
         foreach($series as &$ser){
             $ser->imgs = $imgTable->fetchByCond('parent_id', $ser->id, 'order asc');
             $ser->docs = $docsTable->fetchByCond('parent_id', $ser->id, 'order asc');
+            $ser->dims = $dimsTable->fetchByCond('parent_id', $ser->id, 'order asc');
             if ($ser->preview) {
-
                 $file = $fileTable->find($ser->preview);
                 if ($file) {
                     $ser->previewName = $file->name;
@@ -435,9 +436,11 @@ class CatalogMapper {
 
         $imgTable = $this->sl->get('Catalog\Model\SeriesImgTable');
         $docsTable = $this->sl->get('Catalog\Model\SeriesDocTable');
+        $dimsTable = $this->sl->get('Catalog\Model\SeriesDimTable');
         $equalParamsTable = $this->sl->get('Catalog\Model\EqualParamsTable');
         $series->imgs = $imgTable->fetchByCond('parent_id', $series->id, 'order asc');
         $series->docs = $docsTable->fetchByCond('parent_id', $series->id, 'order asc');
+        $series->dims = $dimsTable->fetchByCond('parent_id', $series->id, 'order asc');
 
         if ($series->preview) {
             $fileTable = $this->sl->get('FilesTable');

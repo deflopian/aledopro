@@ -56,6 +56,12 @@
                 <div class="editor-get-btn" data-name="text_exploit"><?= $series->text_exploit; ?></div>
             </td>
         </tr>
+        <tr>
+            <td>Диммирование (Управление яркостью)</td>
+            <td>
+                <div class="editor-get-btn" data-name="text_dimming"><?= $series->text_dimming; ?></div>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -276,6 +282,44 @@
 </div>
 
 <div class="section">
+    <h3>Диммирование</h3>
+
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-dim">Добавить документ</button>
+
+        <div class="form-inline" id="adding-form-dim" style="display: none">
+            <div class="form-group">
+                <label class="sr-only" for="inputDimName">Название продукта</label>
+                <input type="text" class="form-control" id="inputDimName" placeholder="Введите название..."/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="adding-dim-complete">Добавить</button>
+            <button type="button" class="btn btn-default" id="adding-dim-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="dim-container">
+        <? foreach($dims as $dim){ ?>
+            <tr class="entity-dim">
+                <td><?= $dim->id; ?></td>
+                <td><?= $dim->title; ?></td>
+                <td>
+                    <a href="#" class="editDimBtn">Редактировать</a>
+                    <a href="#" class="deleteDimBtn">Удалить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
     <h3>Общие поля</h3>
 
     <div class="row">
@@ -426,6 +470,7 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
         catalog.sendSortparamAjax();
 
         catalogDocs.init();
+        catalogDims.init();
 
         wysiwyg.init({
             getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',

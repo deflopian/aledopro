@@ -11,6 +11,7 @@ use Catalog\Model\EqualParams;
 use Catalog\Model\FilterFieldTable;
 use Catalog\Model\ProductInMarket;
 use Catalog\Model\ProductParam;
+use Catalog\Model\SeriesDim;
 use Catalog\Model\SeriesDoc;
 use Catalog\Model\StoS;
 use Catalog\Service\CatalogService;
@@ -46,6 +47,7 @@ class AdminController extends SampleAdminController
     const MAINPAGE_BLOCK_IMAGE_TABLE = 28;
     const INFO_PARTNERS = 29;
     const INFO_SERVICES = 30;
+    const DIM_TABLE = 31;
 
     protected $tableImg = 'SeriesImgTable';
     protected $entityImgName = 'Catalog\Model\SeriesImg';
@@ -437,6 +439,7 @@ class AdminController extends SampleAdminController
         $data = array_merge_recursive($data, CatalogService::getSeriesAndTags($allProds)); // там просто сортировка, переименовывать лень
 
         $docs = $sl->get('Catalog\Model\SeriesDocTable')->fetchByCond('parent_id', $id, 'order asc');
+        $dims = $sl->get('Catalog\Model\SeriesDimTable')->fetchByCond('parent_id', $id, 'order asc');
         $dopProdGroups = $sl->get('Catalog\Model\DopProdGroupTable')->fetchByCond('series_id', $id, 'order asc');
 
         $seoData = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SERIES, $id );
@@ -463,6 +466,7 @@ class AdminController extends SampleAdminController
             'relatedSeries' => $relatedSeries,
             'relatedProds' => $relatedProds,
             'docs' => $docs,
+            'dims' => $dims,
             'dopProdGroups' => $dopProdGroups,
             'tags' => \Zend\Json\Json::encode($data['tags']),
             'seoData'       => $seoData,
@@ -1007,6 +1011,40 @@ class AdminController extends SampleAdminController
         return $this->redirect()->toRoute('zfcadmin/catalog');
     }
 
+    public function addDimAction()
+    {
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $title = $request->getPost('title', false);
+            $parent_id = $request->getPost('parentId', false);
+
+            $success = 0;
+
+            if ($title && $parent_id) {
+                $data = array(
+                    'title' => $title,
+                    'parent_id' => $parent_id
+                );
+
+                $entity = new SeriesDim();
+                $entity->exchangeArray($data);
+
+                $newId = $this->getServiceLocator()->get('Catalog\Model\SeriesDimTable')->save($entity);
+                $success = 1;
+            }
+
+            $returnArr = array('success' => $success);
+            if($success){
+                $returnArr['newId'] = $newId;
+            }
+
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode($returnArr));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/catalog');
+    }
+
     public function delDocAction()
     {
         $request = $this->getRequest();
@@ -1016,6 +1054,26 @@ class AdminController extends SampleAdminController
 
             if ($id) {
                 $this->getServiceLocator()->get('Catalog\Model\SeriesDocTable')->del($id);
+                $success = 1;
+            }
+
+            $returnArr = array('success' => $success);
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode($returnArr));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/catalog');
+    }
+
+    public function delDimAction()
+    {
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $id = $request->getPost('id', false);
+            $success = 0;
+
+            if ($id) {
+                $this->getServiceLocator()->get('Catalog\Model\SeriesDimTable')->del($id);
                 $success = 1;
             }
 
@@ -1051,6 +1109,30 @@ class AdminController extends SampleAdminController
         );
     }
 
+    public function viewDimAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('zfcadmin/catalog');
+        }
+
+        $sl = $this->getServiceLocator();
+        $doc = $sl->get('Catalog\Model\SeriesDimTable')->find($id);
+        if ($doc === false) {
+            return $this->redirect()->toRoute('zfcadmin/catalog');
+        }
+        $series = $sl->get('Catalog\Model\SeriesTable')->find($doc->parent_id);
+        $subsection = $sl->get('Catalog\Model\SubSectionTable')->find($series->subsection_id);
+        $section = $sl->get('Catalog\Model\SectionTable')->find($subsection->section_id);
+
+        return array(
+            'doc' => $doc,
+            'series' => $series,
+            'section' => $section,
+            'subsection' => $subsection,
+        );
+    }
+
     public function saveImgAction()
     {
         $request = $this->getRequest();
@@ -1070,6 +1152,9 @@ class AdminController extends SampleAdminController
 
                     $table = $this->getServiceLocator()->get('Catalog\Model\SubSectionTable');
 
+                } elseif($type=='dims') {
+                    $folder = 'series_docs';
+                    $table = $this->getServiceLocator()->get('Catalog\Model\SeriesDimTable');
                 } else {
                     $folder = 'series_docs';
                     $table = $this->getServiceLocator()->get('Catalog\Model\SeriesDocTable');

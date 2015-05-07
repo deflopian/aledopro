@@ -154,27 +154,27 @@
                 <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
             </div>
         </div>
-        <div>
-            Серии:
-        </div>
-        <table class="table admin-table  table-striped">
-            <tr>
-                <th>Id</th>
-                <th>Название</th>
-                <th>Управление</th>
-            </tr>
-            <tbody>
-            <? foreach($relatedSeries as $ser){ ?>
-                <tr>
-                    <td><?= $ser->id; ?></td>
-                    <td><?= $ser->visible_title; ?></td>
-                    <td>
-                        <a href="#" class="removeBtn">Открепить</a>
-                    </td>
-                </tr>
-            <? } ?>
-            </tbody>
-        </table>
+<!--        <div>-->
+<!--            Серии:-->
+<!--        </div>-->
+<!--        <table class="table admin-table  table-striped">-->
+<!--            <tr>-->
+<!--                <th>Id</th>-->
+<!--                <th>Название</th>-->
+<!--                <th>Управление</th>-->
+<!--            </tr>-->
+<!--            <tbody>-->
+<!--            --><?// foreach($relatedSeries as $ser){ ?>
+<!--                <tr>-->
+<!--                    <td>--><?//= $ser->id; ?><!--</td>-->
+<!--                    <td>--><?//= $ser->visible_title; ?><!--</td>-->
+<!--                    <td>-->
+<!--                        <a href="#" class="removeBtn">Открепить</a>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            --><?// } ?>
+<!--            </tbody>-->
+<!--        </table>-->
         <div>
             Продукты:
         </div>
@@ -182,13 +182,15 @@
             <tr>
                 <th>Id</th>
                 <th>Название</th>
+                <th>Тип</th>
                 <th>Управление</th>
             </tr>
-            <tbody>
+            <tbody id="linked_prods_and_series" data-type="ptop">
             <? foreach($relatedProds as $prod){ ?>
-                <tr>
+                <tr data-id="<?= $prod->meta_id; ?>">
                     <td><?= $prod->id; ?></td>
-                    <td><?= $prod->title; ?></td>
+                    <td><?= $prod->visible_title ? $prod->visible_title : $prod->title; ?></td>
+                    <td><?= $prod->product_type == \Catalog\Controller\AdminController::SERIES_TABLE ? "Серия" : "Продукт"; ?></td>
                     <td>
                         <a href="#" class="removeBtn">Открепить</a>
                     </td>
@@ -327,5 +329,6 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
 
         catalog.link_type_1 = '<?= \Catalog\Controller\AdminController::PROJECT_TABLE ?>';
         catalog.getTagsByType(<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>);
+        $( "#linked_prods_and_series" ).sortable({stop: catalog.localChangeOrder}).disableSelection();
     });
 </script>

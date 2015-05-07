@@ -18,6 +18,7 @@ class AdminController extends SampleAdminController
     protected $entityImgName = 'Projects\Model\ProjectImg';
     protected $memberEntityName = 'Projects\Model\ProjectMember';
     private $memberTable = 'ProjectsMemberTable';
+//    private $stosTable = 'ProjectsMemberTable';
     private $pToPTable = 'ProdToProjTable';
     private $projToProjTable = 'ProjToProjTable';
 
@@ -82,14 +83,22 @@ class AdminController extends SampleAdminController
 
 
 
-            $relatedSeriesIds = $sl->get($this->pToPTable)->fetchByCond('project_id', $id);
+            $relatedSeriesIds = $sl->get($this->pToPTable)->fetchByCond('project_id', $id, 'order ASC');
             $relatedSeries = array();
             $relatedProds = array();
             foreach($relatedSeriesIds as $sid){
+
                 if ($sid->product_type ==  \Catalog\Controller\AdminController::SERIES_TABLE) {
-                    $relatedSeries[] = $serTable->find($sid->product_id);
+                    $prod = $serTable->find($sid->product_id);
+                    $prod->product_type = \Catalog\Controller\AdminController::SERIES_TABLE;
+//                    $relatedSeries[] = $serTable->find($sid->product_id);
                 } elseif ($sid->product_type ==  \Catalog\Controller\AdminController::PRODUCT_TABLE) {
-                    $relatedProds[] = $prodTable->find($sid->product_id);
+                    $prod = $prodTable->find($sid->product_id);
+                    $prod->product_type = \Catalog\Controller\AdminController::PRODUCT_TABLE;
+                }
+                if ($prod) {
+                    $prod->meta_id = $sid->id;
+                    $relatedProds[] = $prod;
                 }
 
             }
@@ -404,7 +413,18 @@ class AdminController extends SampleAdminController
         if($isImg){
             $name = $this->tableImg;
         } else {
-            $name = $type == 'prmember' ? $this->memberTable : $this->table;
+            switch ($type) {
+                case 'prmember' :
+                    $name = $this->memberTable;
+                    break;
+                case 'ptop' :
+                    $name = $this->pToPTable;
+                    break;
+                default:
+                    $name =  $this->table;
+
+            }
+//            $name = $type == 'prmember' ? $this->memberTable : $this->table;
         }
         return $name;
     }

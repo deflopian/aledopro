@@ -82,7 +82,7 @@
             </thead>
 
 
-            <tbody id="sortable">
+            <tbody>
             <!--            --><?// foreach($entities as $entity){ ?>
             <tr class="entity" ng-repeat="item in filtered = (original | filterByFields:filterModelUsername:['username'] | filterByFields:filterModelEmail:['email'] | filterByFields:filterModelAlias:['alias'] | filterByFields:filterModelCity:['city'] | filterByFields:filterModelManager:['manager_name'] | filterByFields:filterModelGroup:['group_name'])">
                 <td>{{item.user_id}}</td>

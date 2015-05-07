@@ -18,12 +18,12 @@ class ProdToProjTable extends SampleTable
         $this->initialize();
     }
 
-    public function save(SampleModel $entity)
-    {
-        $data = $entity->toArray();
-        $this->insert($data);
-        return $this->lastInsertValue;
-    }
+//    public function save(SampleModel $entity)
+//    {
+//        $data = $entity->toArray();
+//        $this->insert($data);
+//        return $this->lastInsertValue;
+//    }
 
     public function del($data)
     {

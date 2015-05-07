@@ -33,6 +33,7 @@ class CatalogService {
         AdminController::SERIES_TABLE => 'SeriesTable',
         AdminController::PRODUCT_TABLE => 'ProductTable',
         AdminController::DOC_TABLE => 'SeriesDocTable',
+        AdminController::DIM_TABLE => 'SeriesDimTable',
         AdminController::POP_SERIES_TABLE => 'PopularSeriesTable',
         AdminController::FILTER_BY_SERIES_TABLE => 'SeriesParamsTable',
         AdminController::FILTER_PARAM_TABLE => 'FilterParamTable',
@@ -384,10 +385,10 @@ RewriteRule ^.*$ index.php [NC,L]
                     $oneProduct->order = $valuesKeys[$oneProduct->$param];
                     $table->save($oneProduct);
                 } else {
-                    if ($oneProduct->sorted_by_user == 0) {
+//                    if ($oneProduct->sorted_by_user == 0) {
                         $oneProduct->order = $valuesKeys[$oneProduct->$param];
                         $table->save($oneProduct);
-                    }
+//                    }
                 }
             }
         } else {
@@ -411,10 +412,10 @@ RewriteRule ^.*$ index.php [NC,L]
 
             foreach ($products as $key => &$product) {
                 if ($isCron) {
-                    if (!$product->sorted_by_user) {
+//                    if (!$product->sorted_by_user) {
                         $products[$key]->order = $key;
                         $table->save($product);
-                    }
+//                    }
                 } else {
                     $products[$key]->order = $key;
                     $table->save($product);
@@ -449,6 +450,7 @@ RewriteRule ^.*$ index.php [NC,L]
         $projectTable = $sl->get('Projects\Model\ProjectTable');
         /** @var \Catalog\Model\SeriesDocTable $docTable */
         $docTable = $sl->get('Catalog\Model\SeriesDocTable');
+        $dimTable = $sl->get('Catalog\Model\SeriesDimTable');
         /** @var \User\Model\UserTable $userTable */
         $userTable = $sl->get('User\Model\UserTable');
 
@@ -496,6 +498,9 @@ RewriteRule ^.*$ index.php [NC,L]
                     break;
                 case AdminController::DOC_TABLE :
                     $docIds[]       = $stos->series_id_2;
+                    break;
+                case AdminController::DIM_TABLE :
+                    $dimIds[]       = $stos->series_id_2;
                     break;
                 case AdminController::USERS_TABLE :
                     $userIds[]      = $stos->series_id_2;

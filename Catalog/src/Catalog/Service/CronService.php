@@ -29,6 +29,7 @@ class CronService {
         AdminController::SERIES_TABLE => 'SeriesTable',
         AdminController::PRODUCT_TABLE => 'ProductTable',
         AdminController::DOC_TABLE => 'SeriesDocTable',
+        AdminController::DIM_TABLE => 'SeriesDimTable',
     );
 
     private static $unEditableParams = array(

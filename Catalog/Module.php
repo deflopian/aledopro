@@ -14,6 +14,7 @@ use Catalog\Model\PopularSeriesTable;
 use Catalog\Model\ProductInMarketTable;
 use Catalog\Model\ProductMainParamsTable;
 use Catalog\Model\SectionTable;
+use Catalog\Model\SeriesDimTable;
 use Catalog\Model\SeriesDocTable;
 use Catalog\Model\SeriesImgTable;
 use Catalog\Model\SeriesParamsTable;
@@ -103,6 +104,11 @@ class Module
                 'Catalog\Model\SeriesDocTable' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table     = new SeriesDocTable($dbAdapter);
+                    return $table;
+                },
+                'Catalog\Model\SeriesDimTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new SeriesDimTable($dbAdapter);
                     return $table;
                 },
                 'Catalog\Model\PopularSeriesTable' =>  function($sm) {
