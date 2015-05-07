@@ -43,52 +43,12 @@
 
             <hr class="dotted-separator dotted-separator_clients-slider"/>
             <div class="b-slider b-slider_clients">
-                <div class="b-slider__item b-slider_clients__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/clients/img_5347d6f594478.jpg" class="b-slider_clients__image"/>
-                </div>
-                <div class="b-slider__item b-slider_clients__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/clients/img_5347d7f976115.jpg" class="b-slider_clients__image"/>
-                </div>
-                <div class="b-slider__item b-slider_clients__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/clients/img_5347d74b2108a.jpg" class="b-slider_clients__image"/>
-                </div>
-                <div class="b-slider__item b-slider_clients__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/clients/img_5347d439c88a3.jpg" class="b-slider_clients__image"/>
-                </div>
-                <div class="b-slider__item b-slider_clients__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/clients/img_5347d856db30b.jpg" class="b-slider_clients__image"/>
-                </div>
-                <div class="b-slider__item b-slider_clients__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/clients/img_5347d879c0864.jpg" class="b-slider_clients__image"/>
-                </div>
-                <div class="b-slider__item b-slider_clients__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/clients/img_5347d7587d9e6.jpg" class="b-slider_clients__image"/>
-                </div>
-                <div class="b-slider__item b-slider_clients__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/clients/img_5347d7713fa0c.jpg" class="b-slider_clients__image"/>
-                </div>
-                <div class="b-slider__item b-slider_clients__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/clients/img_5347d7996caf2.jpg" class="b-slider_clients__image"/>
-                </div>
-                <div class="b-slider__item b-slider_clients__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/clients/img_5347d8898d7e7.jpg" class="b-slider_clients__image"/>
-                </div>
-                <div class="b-slider__item b-slider_clients__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/clients/img_5347d736259c8.jpg" class="b-slider_clients__image"/>
-                </div>
-
-
+                <? foreach ($this->clients as $client) { ?>
+                    <div class="b-slider__item b-slider_clients__item">
+                        <i class="b-slider-item-layout"></i>
+                        <img src="/images/clients/<?= $client->img ?>" alt="<?= $client->title ?>" class="b-slider_clients__image"/>
+                    </div>
+                <? } ?>
             </div>
         </div>
     </div>
@@ -120,27 +80,15 @@
 
             <hr class="dotted-separator dotted-separator_projects-slider"/>
             <div class="b-slider b-slider_projects">
-
-                <div class="b-slider__item b-slider_projects__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/projects/img_53e497670f497.jpg" class="b-slider_projects__image"/>
-                    <span class="b-slider_projects__title">Формула кино<br/>ТРК "Лондон Молл"</span>
-                </div>
-                <div class="b-slider__item b-slider_projects__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/projects/img_52f37447c464e.jpg" class="b-slider_projects__image"/>
-                    <span class="b-slider_projects__title">Бизнес центр <br/> "Золотая долина"</span>
-                </div>
-                <div class="b-slider__item b-slider_projects__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/projects/img_53fdc04945bc5.jpg" class="b-slider_projects__image"/>
-                    <span class="b-slider_projects__title">Загородная сауна</span>
-                </div>
-                <div class="b-slider__item b-slider_projects__item">
-                    <i class="b-slider-item-layout"></i>
-                    <img src="/images/projects/img_52f0df92aa5d7.jpg" class="b-slider_projects__image"/>
-                    <span class="b-slider_projects__title">Бизнес центр <br/> "Золотая долина"</span>
-                </div>
+                <? foreach($this->projects as $i=>$project){ ?>
+                    <a href="/projects/view/<?= $project->id ?>">
+                        <div class="b-slider__item b-slider_projects__item">
+                            <i class="b-slider-item-layout"></i>
+                            <img src="/images/projects/<?= $project->img ?>" alt="<?= $project->title ?>" class="b-slider_projects__image"/>
+                            <span class="b-slider_projects__title"><?= $project->title ?></span>
+                        </div>
+                    </a>
+                <? } ?>
             </div>
             <script type="text/javascript">
                 (function () {

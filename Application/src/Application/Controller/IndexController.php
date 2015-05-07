@@ -111,7 +111,7 @@ class IndexController extends AbstractActionController
 
         $conacts = $sl->get('ContactsTable')->find(1);
 
-        $clients = $sl->get('ClientsTable')->fetchAll();
+        $clients = $sl->get('ClientsTable')->fetchAll('order ASC');
 
         $this->layout()->noBottomLine = true;
         if ($isRobot && isset($popupId)) {
