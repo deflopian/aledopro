@@ -1,4 +1,3 @@
-
 <div class="b-main">
     <? $banner = reset($this->bannerImages) ?>
     <div class="b-main-banner">
@@ -17,157 +16,209 @@
                  }"/>
         </a>
     </div>
-    <? if (isset($this->blocks[0])) { ?>
-    <div class="b-section b-main-grid b-clearfix">
-        <div class="col-xs-12 col-md-7 b-main-grid-item "
-             image-responsive="{
-                             default : {
-             src: '/images/blockimages/<?= $this->blocks[0]->images[0]->imgName ?>',
-                                 css : {
-                                'background-position':'50% 50%',
-                                 'background-repeat': 'no-repeat',
-                                 'background-size': 'cover'
+    <div class="b-section b-our-services b-main__section">
 
-                                }
-                             },
-              1400 : {
-              src: '/images/blockimages/<?= $this->blocks[0]->images[0]->imgName ?>',
-                  css : {
-             'background-position':'50% 50%',
-                                 'background-repeat': 'no-repeat',
-                                 'background-size': 'cover'
+        <h2 class="b-main__section-heading">Наши услуги</h2>
 
-
-             }
-                 }
-             }">
-            <a class="b-main-grid-item__link" href="<?= $this->blocks[0]->images[0]->link ?>">
-
-                <div class="b-button b-button_main">
-                    <span class="b-button__text"><?= $this->blocks[0]->images[0]->title ?></span>
-                    <i class="b-button__icon"></i>
+        <div class="b-services-table-wrapper">
+            <div class="b-services-table">
+                <div class="b-services-table__cell">
+                    Сборка <br/> оборудования
                 </div>
-            </a>
-        </div>
-        <? } ?>
-        <? if (isset($this->blocks[1])) { ?>
-        <div class=" col-xs-6 col-md-5 b-main-grid-item"
-             image-responsive="{
-                             default : {
-             src: '/images/blockimages/<?= $this->blocks[1]->images[0]->imgName ?>',
-                                 css : {
-                                'background-position':'50% 50%',
-                                 'background-repeat': 'no-repeat',
-                                 'background-size': 'cover'
-                                }
-                             },
-              1400 : {
-              src: '/images/blockimages/<?= $this->blocks[1]->images[0]->imgName ?>',
-                  css : {
-             'background-position':'50% 50%',
-                                 'background-repeat': 'no-repeat',
-                                 'background-size': 'cover'
-
-             }
-                 }
-             }">
-            <a class="b-main-grid-item__link" href="<?= $this->blocks[1]->images[0]->link ?>">
-
-                <div class="b-button b-button_main">
-                    <span class="b-button__text"><?= $this->blocks[1]->images[0]->title ?></span>
-                    <i class="b-button__icon"></i>
+                <div class="b-services-table__cell">
+                    Проектирование <br/> систем освещения
                 </div>
-            </a>
-        </div>
-        <? } ?>
-        <? if (isset($this->blocks[2])) { ?>
-        <div class="col-xs-6 col-md-4 b-main-grid-item"
-             image-responsive="{
-                             default : {
-             src: '/images/blockimages/<?= $this->blocks[2]->images[0]->imgName ?>',
-                                 css : {
-                                'background-position':'50% 50%',
-                                 'background-repeat': 'no-repeat',
-                                 'background-size': 'cover'
-                                }
-                             },
-              1400 : {
-              src: '/images/blockimages/<?= $this->blocks[2]->images[0]->imgName ?>',
-                  css : {
-             'background-position':'50% 50%',
-                                 'background-repeat': 'no-repeat',
-                                 'background-size': 'cover'
-
-             }
-                 }
-             }">
-            <a class="b-main-grid-item__link" href="<?= $this->blocks[2]->images[0]->link ?>">
-
-                <div class="b-button b-button_main">
-                    <span class="b-button__text"><?= $this->blocks[2]->images[0]->title ?></span>
-                    <i class="b-button__icon"></i>
+                <div class="b-services-table__cell">
+                    Проектирование систем <br/> управления освещением
                 </div>
-            </a>
-        </div>
-        <? } ?>
-        <? if (isset($this->blocks[3])) { ?>
-        <div class="col-xs-7  col-md-4 b-main-grid-item"
-             image-responsive="{
-                             default : {
-             src: '/images/blockimages/<?= $this->blocks[3]->images[0]->imgName ?>',
-                                 css : {
-                                'background-position':'50% 50%',
-                                 'background-repeat': 'no-repeat',
-                                 'background-size': 'cover'
-                                }
-                             },
-              1400 : {
-              src: '/images/blockimages/<?= $this->blocks[3]->images[0]->imgName ?>',
-                  css : {
-             'background-position':'50% 50%',
-                                 'background-repeat': 'no-repeat',
-                                 'background-size': 'cover'
-
-             }
-                 }
-             }">
-            <a class="b-main-grid-item__link" href="<?= $this->blocks[3]->images[0]->link ?>">
-
-                <div class="b-button b-button_main">
-                    <span class="b-button__text"><?= $this->blocks[3]->images[0]->title ?></span>
-                    <i class="b-button__icon"></i>
+                <div class="b-services-table__cell">
+                    Профессиональный <br/>монтаж и установка
                 </div>
-            </a>
+            </div>
         </div>
-        <? } ?>
-        <? if (isset($this->blocks[4])) { ?>
-        <div class="col-xs-5 col-md-4 b-main-grid-item"
-             image-responsive="{
-                             default : {
-             src: '/images/blockimages/<?= $this->blocks[4]->images[0]->imgName ?>',
-                                 css : {
-                                'background-position':'50% 50%',
-                                 'background-repeat': 'no-repeat',
-                                 'background-size': 'cover',
-                                }
-                             }, 1400 : {
-              src: '/images/blockimages/<?= $this->blocks[4]->images[0]->imgName ?>',
-                  css : {
-             'background-position':'50% 50%',
-                                 'background-repeat': 'no-repeat',
-                                 'background-size': 'cover'
+    </div>
+    <div class="b-section b-our-clients b-main__section">
+        <div class="b-section__content">
+            <h2 class="b-main__section-heading">Наши клиенты</h2>
 
-             }
-                 }}">
-            <a class="b-main-grid-item__link" href="<?= $this->blocks[4]->images[0]->link ?>">
-
-                <div class="b-button b-button_main">
-                    <span class="b-button__text"><?= $this->blocks[4]->images[0]->title ?></span>
-                    <i class="b-button__icon"></i>
+            <hr class="dotted-separator dotted-separator_clients-slider"/>
+            <div class="b-slider b-slider_clients">
+                <div class="b-slider__item b-slider_clients__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/clients/img_5347d6f594478.jpg" class="b-slider_clients__image"/>
                 </div>
-            </a>
+                <div class="b-slider__item b-slider_clients__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/clients/img_5347d7f976115.jpg" class="b-slider_clients__image"/>
+                </div>
+                <div class="b-slider__item b-slider_clients__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/clients/img_5347d74b2108a.jpg" class="b-slider_clients__image"/>
+                </div>
+                <div class="b-slider__item b-slider_clients__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/clients/img_5347d439c88a3.jpg" class="b-slider_clients__image"/>
+                </div>
+                <div class="b-slider__item b-slider_clients__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/clients/img_5347d856db30b.jpg" class="b-slider_clients__image"/>
+                </div>
+                <div class="b-slider__item b-slider_clients__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/clients/img_5347d879c0864.jpg" class="b-slider_clients__image"/>
+                </div>
+                <div class="b-slider__item b-slider_clients__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/clients/img_5347d7587d9e6.jpg" class="b-slider_clients__image"/>
+                </div>
+                <div class="b-slider__item b-slider_clients__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/clients/img_5347d7713fa0c.jpg" class="b-slider_clients__image"/>
+                </div>
+                <div class="b-slider__item b-slider_clients__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/clients/img_5347d7996caf2.jpg" class="b-slider_clients__image"/>
+                </div>
+                <div class="b-slider__item b-slider_clients__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/clients/img_5347d8898d7e7.jpg" class="b-slider_clients__image"/>
+                </div>
+                <div class="b-slider__item b-slider_clients__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/clients/img_5347d736259c8.jpg" class="b-slider_clients__image"/>
+                </div>
+
+
+            </div>
         </div>
-        <? } ?>
+    </div>
+    <script type="text/javascript">
+        (function () {
+            var $this = jQuery('.b-slider_clients');
+            $this.slick({
+                dots: false,
+                infinite: true,
+                draggable: browser.mobile ? true : false,
+                speed: browser.mobile ? 300 : 500,
+                touchThreshold: browser.mobile ? 5 : 50,
+                slidesToShow: 3,
+                
+                variableWidth: true,
+                arrows: browser.mobile ? false : true,
+                prevArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_prev b-slider_clients__arrow b-slider_blog__arrow_prev\">" +
+                "</a>",
+                nextArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_next b-slider_clients__arrow b-slider_blog__arrow_next\">" +
+                "</a>"
+            });
+
+
+        })();
+    </script>
+    <div class="b-section b-our-projects b-main__section">
+        <div class="b-section__content">
+            <h1 class="b-main__section-heading">Наши проекты</h1>
+
+            <hr class="dotted-separator dotted-separator_projects-slider"/>
+            <div class="b-slider b-slider_projects">
+
+                <div class="b-slider__item b-slider_projects__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/projects/img_53e497670f497.jpg" class="b-slider_projects__image"/>
+                    <span class="b-slider_projects__title">Формула кино<br/>ТРК "Лондон Молл"</span>
+                </div>
+                <div class="b-slider__item b-slider_projects__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/projects/img_52f37447c464e.jpg" class="b-slider_projects__image"/>
+                    <span class="b-slider_projects__title">Бизнес центр <br/> "Золотая долина"</span>
+                </div>
+                <div class="b-slider__item b-slider_projects__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/projects/img_53fdc04945bc5.jpg" class="b-slider_projects__image"/>
+                    <span class="b-slider_projects__title">Загородная сауна</span>
+                </div>
+                <div class="b-slider__item b-slider_projects__item">
+                    <i class="b-slider-item-layout"></i>
+                    <img src="/images/projects/img_52f0df92aa5d7.jpg" class="b-slider_projects__image"/>
+                    <span class="b-slider_projects__title">Бизнес центр <br/> "Золотая долина"</span>
+                </div>
+            </div>
+            <script type="text/javascript">
+                (function () {
+                    var $this = jQuery('.b-slider_projects');
+                    $this.slick({
+                        dots: false,
+                        infinite: true,
+                        draggable: browser.mobile ? true : false,
+                        speed: browser.mobile ? 300 : 500,
+                        touchThreshold: browser.mobile ? 5 : 50,
+                        slidesToShow: 1,
+                        centerMode: true,
+                        variableWidth: true,
+                        arrows: browser.mobile ? false : true,
+                        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_prev b-slider_blog__arrow b-slider_blog__arrow_prev\">" +
+                        "</a>",
+                        nextArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_next b-slider_blog__arrow b-slider_blog__arrow_next\">" +
+                        "</a>"
+                    });
+
+
+                })();
+            </script>
+        </div>
+    </div>
+    <div class="b-section b-our-blog b-main__section">
+        <div class="b-section__content">
+            <h2 class="b-main__section-heading">Наш блог</h2>
+
+            <hr class="dotted-separator dotted-separator_blog-slider"/>
+            <div class="b-slider-outer">
+                <div class="b-slider b-slider_blog">
+
+                    <div class="b-slider__item b-slider_blog__item">
+                        <i class="b-slider-item-layout"></i>
+                        <img src="/images/projects/img_54f0631d9bde9.jpg" class="b-slider_blog__image"/>
+                        <span class="b-slider_blog__title">Коэффициент светопередачи: <br/> важнее, чем раньше</span>
+                    </div>
+                    <div class="b-slider__item b-slider_blog__item">
+                        <i class="b-slider-item-layout"></i>
+                        <img src="/images/projects/img_549bfca923686.jpg" class="b-slider_blog__image"/>
+                        <span class="b-slider_blog__title">Освещение витрин</span>
+                    </div>
+                    <div class="b-slider__item b-slider_blog__item">
+                        <i class="b-slider-item-layout"></i>
+                        <img src="/images/projects/img_549c01f942a3e.jpg" class="b-slider_blog__image"/>
+                        <span class="b-slider_blog__title">Коэффициент светопередачи: <br/> важнее, чем раньше</span>
+                    </div>
+                    <div class="b-slider__item b-slider_blog__item">
+                        <i class="b-slider-item-layout"></i>
+                        <img src="/images/projects/img_549c17480b756.jpg" class="b-slider_blog__image"/>
+                        <span class="b-slider_blog__title">Освещение витрин</span>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                (function () {
+                    var $this = jQuery('.b-slider_blog');
+                    $this.slick({
+                        dots: false,
+                        infinite: true,
+                        draggable: browser.mobile ? true : false,
+                        speed: browser.mobile ? 300 : 500,
+                        touchThreshold: browser.mobile ? 5 : 50,
+                        slidesToShow: 1,
+                        centerMode: true,
+                        variableWidth: true,
+                        arrows: browser.mobile ? false : true,
+                        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_prev b-slider_blog__arrow b-slider_blog__arrow_prev\">" +
+                        "</a>",
+                        nextArrow: "<a href=\"javascript:void(0)\" class=\" b-simple-arrow  b-simple-arrow_next b-slider_blog__arrow b-slider_blog__arrow_next\">" +
+                        "</a>"
+                    });
+
+
+                })();
+            </script>
+        </div>
     </div>
 </div>
 
