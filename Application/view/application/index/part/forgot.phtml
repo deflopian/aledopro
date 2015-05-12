@@ -1,31 +1,44 @@
-<div class="row">
-    <div class="col-md-12 text-center"><h1>Восстановление пароля</h1></div>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">×</span></button>
+    <h4 class="modal-title text-center"><strong>Восстановление пароля</strong></h4>
+</div>
+<div class="modal-body">
+    <div class="popup-modal">
+        <div class="b-partner-registration">
+            <form novalidate
+                  name="forgot"
+                  ng-controller="ForgotPasswordController">
+                <div>
+                    <div class="b-registration__cell b-registration__cell_left">
+                        <label for="identity">Введите ваш e-mail и мы отправим вам новый пароль*</label>
+                    </div>
+                    <div class="b-registration__cell b-registration__cell_right">
+                        <input type="text"
+                               class="b-form-control b-form-control_small"
+                               data-required="yes"
+                               name="identity"
+                               id="identity"
+                               ng-model="formData.identity"
+                               autocomplete="off"
+                               required />
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="b-button b-button_gray" ng-click="submit()" id="registration_button" ng-disabled="forgot.$invalid">
+                        <span class="b-button__text">
+                            Получить новый пароль
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-<form action="<?= $this->url('cabinet', array('action' => 'forgot'))?>" method="post"
-      class="aledo-form form-horizontal row-second-small form-left" role="form">
-
-    <div class="form-group">
-        <div class="col-md-12">
-            <label for="identity" class="col-md-12 control-label">введите ваш e-mail и мы отправим вам новый пароль</label>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-12">
-            <input type="text" name="identity" class="form-control" data-required="yes">
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-12">
-            <button type="submit" class="btn btn-aledo-black">Восстановить</button>
-        </div>
-    </div>
-</form>
-
-<script type="text/javascript">
-    $(function(){
-        window.setTimeout( function(){ formajax.init({changeUrl: false, successPopup: 'passwordsend'})}, 50);
-
-    });
-</script>
+<!--<script type="text/javascript">-->
+<!--    $(function(){-->
+<!--        window.setTimeout( function(){ formajax.init({changeUrl: false, successPopup: 'passwordsend'})}, 50);-->
+<!---->
+<!--    });-->
+<!--</script>-->

@@ -17,7 +17,7 @@
                 <img class="b-work__image" src="/Content/images/work/image_1.svg" />
             </div>
             <div class="b-work-cell b-work-cell_right">
-                <form name="work" enctype="multipart/form-data">
+                <form name="work" enctype="multipart/form-data" ng-controller="JobController">
                     <div class="b-work-form b-clearfix">
                         <div class="b-work-form__table">
                             <div class="b-work-form__row">
@@ -26,15 +26,15 @@
                                     <label for="work_name">ФИО*</label>
                                 </div>
                                 <div class="b-work-form__cell ">
-                                    <input id="work_name" name="work_name" class="b-form-control b-form-control_small" />
+                                    <input id="work_name" ng-model="formData.name" name="work_name" class="b-form-control b-form-control_small" />
                                 </div>
                             </div>
                             <div class="b-work-form__row">
                                 <div class="b-work-form__cell b-work-form__cell_left ">
-                                    <label for="work_email">E-mail*</label>
+                                    <label for="work_mail">E-mail*</label>
                                 </div>
                                 <div class="b-work-form__cell">
-                                    <input id="work_email" name="work_email" class="b-form-control b-form-control_small" />
+                                    <input id="work_mail" ng-model="formData.mail" name="work_mail" class="b-form-control b-form-control_small" />
                                 </div>
                             </div>
                             <div class="b-work-form__row">
@@ -42,26 +42,38 @@
                                     <label for="work_vacancy">Вакансия</label>
                                 </div>
                                 <div class="b-work-form__cell">
-                                    <input id="work_vacancy" name="work_vacancy" class="b-form-control b-form-control_small" />
+                                    <input id="work_vacancy" name="work_vacancy" ng-model="formData.vacancy" class="b-form-control b-form-control_small" />
                                 </div>
                             </div>
                         </div>
                         <div class="b-work-form__file text-center">
-                            <script type="text/javascript">
-                                if (browser.msie9) {
-                                    document.write("<u>Загрузите</u> файл резюме<br/>(TXT, DOC, PDF)");
-                                } else {
-                                    document.write("Перетащите файл резюме (TXT, DOC, PDF)<br/>" +
-                                    "сюда или <u>загрузите</u>");
-                                }
+                            <div class="b-work-form__file-zone" style="width: 100%;height: auto;padding: 1rem;" ng-class="{'b-order-place__file-zone_file-uploaded' : fileName.length }">
+                                <div><input type="file" name="file" file-model="formData.file" id="jobDetails" onchange="angular.element(this).scope().showFileName(this)" /></div>
 
-                            </script>
+                                <div class="b-work-form__file-zone-label" ng-hide="fileName.length">
+                                    <script type="text/javascript">
+                                        if (browser.msie9) {
+                                            document.write("<u>Загрузите</u> файл резюме<br/>(TXT, DOC, PDF)");
+                                        } else {
+                                            document.write("Перетащите файл резюме (TXT, DOC, PDF)<br/>" +
+                                            "сюда или <u>загрузите</u>");
+                                        }
 
+                                    </script>
+                                </div>
+                                <div ng-show="fileName.length">
+                                    <span ng-bind="fileName"></span>
 
+                                    <div>
+                                        <button type="button" class="b-work-form__file-reset close" ng-click="resetFile(angular.element(this))">
+                                            &times;
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-                            <input id="work_resume" name="work_resume" type="file" class="b-form-control b-form-control_file" />
                         </div>
-                        <button class="b-button b-button_white b-button_small b-right" id="work_submit">
+                        <button class="b-button b-button_white b-button_small b-right" id="work_submit" ng-click="submit()">
 
 
                             <span class="b-button__text">отправить запрос</span>

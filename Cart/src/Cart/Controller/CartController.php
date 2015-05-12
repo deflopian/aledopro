@@ -7,6 +7,7 @@ use Cart\Form\OrderForm;
 use Cart\Model\Order;
 use Cart\Model\OrderUser;
 use Cart\Model\ProdToOrder;
+use Catalog\Model\FilterFieldTable;
 use Catalog\Service\CatalogService;
 use User\Service\UserService;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -24,7 +25,7 @@ class CartController extends AbstractActionController
         $hierarchies = array();
         $productsObj = isset($_COOKIE['products_in_cart']) ? \Zend\Json\Json::decode($_COOKIE['products_in_cart']) : null;
         $products = (array)$productsObj;
-        if($products){
+        if ($products) {
             $productTable = $sl->get('Catalog\Model\ProductTable');
             $seriesTable = $sl->get('Catalog\Model\SeriesTable');
             $subsectionTable = $sl->get('Catalog\Model\SubSectionTable');
@@ -32,10 +33,10 @@ class CartController extends AbstractActionController
             $filtermParamTable = $sl->get('Catalog\Model\FilterParamTable');
             $mainParamsTable = $sl->get('Catalog\Model\ProductMainParamsTable');
             $allParamsTable = $sl->get('Catalog\Model\ProductParamsTable');
-            $allParams = $allParamsTable->fetchAll();
+            $allParams = $allParamsTable->fetchAll("", false, true);
             $colors = ApplicationService::makeIdArrayFromObjectArray($filtermParamTable->fetchByCond('field', 'color_of_light'));
             $casecolors = ApplicationService::makeIdArrayFromObjectArray($filtermParamTable->fetchByCond('field', 'case_color'));
-            foreach($products as $id=>$count){
+            foreach ($products as $id => $count) {
                 $product = $productTable->find($id);
                 $series = $seriesTable->find($product->series_id);
                 $subsection = $subsectionTable->find($series->subsection_id);
@@ -50,14 +51,17 @@ class CartController extends AbstractActionController
 
                 }
 
-
                 $product->preview_img = (isset($series->previewName) ? $series->previewName : $series->img);
                 $product->color_of_light = isset($colors[$product->color_of_light]) ? $colors[$product->color_of_light]->value : $product->color_of_light;
                 $product->case_color = isset($casecolors[$product->case_color]) ? $casecolors[$product->case_color]->value : $product->case_color;
-                $mainParamsList = $mainParamsTable->fetchByCond('product_type', $section->display_style);
+                /** @var FilterFieldTable $filterFieldTable */
+                $filterFieldTable = $this->getServiceLocator()->get('FilterFieldTable');
+                $filters = $filterFieldTable->fetchAll($subsection->id, \Catalog\Controller\AdminController::SUBSECTION_TABLE, 0, "order ASC");
                 $mainParams = array();
-                foreach ($mainParamsList as $mainParam) {
-                    $mainParams[$mainParam->field] = $allParams[$mainParam->field]->title;
+                foreach ($filters as $fkey => $filter) {
+                    if ($filter->cart_param == 1) {
+                        $mainParams[$allParams[$filter->field_id]->field] = $allParams[$filter->field_id]->title;
+                    }
                 }
                 $product->mainParams = $mainParams;
 
@@ -67,10 +71,6 @@ class CartController extends AbstractActionController
                 );
                 $prodsInCart[] = $data;
             }
-
-
-
-
         } else {
             $user = $this->zfcUserAuthentication()->hasIdentity();
             return $this->redirect()->toRoute( $user ? 'cabinet' : 'catalog');
@@ -134,13 +134,10 @@ class CartController extends AbstractActionController
             $productDataCopy = array();
 
             if ($form->isValid()) {
-
                 $data = $form->getData();
 
                 $productData = \Zend\Json\Json::decode($post['order-products']);
                 $realProductsIds = get_object_vars(\Zend\Json\Json::decode($_COOKIE['products_in_cart']));
-
-
 
                 foreach ($productData  as $id => $value) {
                     if (array_key_exists($id, $realProductsIds)) {
@@ -169,7 +166,7 @@ class CartController extends AbstractActionController
 
                 $allParamsTable = $sl->get('Catalog\Model\ProductParamsTable');
                 $filtermParamTable = $sl->get('Catalog\Model\FilterParamTable');
-                $allParams = $allParamsTable->fetchAll();
+                $allParams = $allParamsTable->fetchAll("", false, true);
 
                 $colors = ApplicationService::makeIdArrayFromObjectArray($filtermParamTable->fetchByCond('field', 'color_of_light'));
                 $caseColors = ApplicationService::makeIdArrayFromObjectArray($filtermParamTable->fetchByCond('field', 'case_color'));
@@ -191,12 +188,19 @@ class CartController extends AbstractActionController
                     $productsInfo[$id]->ip_rating = isset($ipratings[$product->ip_rating]) ? $ipratings[$product->ip_rating]->value : $product->ip_rating;
                     $productsInfo[$id]->electro_power = isset($elpowers[$product->electro_power]) ? $elpowers[$product->electro_power]->value : $product->electro_power;
                     $productsInfo[$id]->construction = isset($constructions[$product->construction]) ? $constructions[$product->construction]->value : $product->construction;
-                    $mainParamsList = $mainParamsTable->fetchByCond('product_type', $section->display_style);
-                    $mainParams = array();
 
-                    foreach ($mainParamsList as $mainParam) {
-                        $mainParams[$mainParam->field] = $allParams[$mainParam->field]->title;
+                    /** @var FilterFieldTable $filterFieldTable */
+                    $filterFieldTable = $this->getServiceLocator()->get('FilterFieldTable');
+                    $filters = $filterFieldTable->fetchAll($subsection->id, \Catalog\Controller\AdminController::SUBSECTION_TABLE, 0, "order ASC");
+                    $mainParams = array();
+                    foreach ($filters as $fkey => $filter) {
+                        if ($filter->cart_param == 1) {
+
+                            $mainParams[$allParams[$filter->field_id]->field] = $allParams[$filter->field_id]->title;
+                        }
                     }
+
+
                     $productsInfo[$id]->mainParams = $mainParams;
 
                     $trueCount = floor($prodData->count);

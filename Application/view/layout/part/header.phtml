@@ -28,7 +28,7 @@
                                placeholder="Ваш пароль"
                                class="b-form-control b-form-control_small b-form-control_auth"
                                ng-model="formData.credential" />
-                        <a href="javascript:void(0)" class="text-darker-gray b-password-recovery-trigger"><small>Забыли пароль?</small></a>
+                        <a href="javascript:void(0)" class="text-darker-gray b-password-recovery-trigger" ng-controller="PopupController" ng-click="getPopup(ALEDO_POPUP_FORGOT)"><small>Забыли пароль?</small></a>
                     </div>
                     <div class="b-authorize__col">
                         <a ng-click="submit()" class="b-button b-button_gray b-button_auth b-button_small">

@@ -48,6 +48,7 @@ class AdminController extends SampleAdminController
     const INFO_PARTNERS = 29;
     const INFO_SERVICES = 30;
     const DIM_TABLE = 31;
+    const PRODUCT_MAIN_PARAM_TABLE = 32;
 
     protected $tableImg = 'SeriesImgTable';
     protected $entityImgName = 'Catalog\Model\SeriesImg';
@@ -297,15 +298,37 @@ class AdminController extends SampleAdminController
         foreach ($filters as $filter) {
             /** @var ProductParam $field */
             $field = $paramsTable->find($filter->field_id);
+
             $filter->title = $field->title;
             $treeDataByLvl[23][] = $filter;
         }
 
-
         $treeDateByLvlJson = \Zend\Json\Json::encode($treeDataByLvl);
+
+
+//        $productParamsByLvl = array(1 => array());
+//
+//        $allParams = $paramsTable->fetchAll();
+//        foreach ($allParams as $oneParam) {
+//
+//
+//            $productParamsByLvl[self::PRODUCT_MAIN_PARAM_TABLE][] = $oneParam;
+//        }
+//        foreach ($mainParamsList as $mainParams) {
+//            /** @var ProductParam $field */
+//            $field = $paramsTable->find($mainParams->field_id);
+//            $mainParams->title = $field->title;
+//            $productParamsByLvl[23][] = $filter;
+//        }
+
+
+//        $productParamsByLvlJson = \Zend\Json\Json::encode($productParamsByLvl);
+
+
         return array(
             'section'       => $section,
             'treeDataByLvlJson' => $treeDateByLvlJson,
+//            'productParamsByLvlJson' => $productParamsByLvlJson,
             'subsections'   => $subsections,
             'tags' => \Zend\Json\Json::encode($data['tags']),
             'seoData'       => $seoData,
@@ -456,7 +479,7 @@ class AdminController extends SampleAdminController
                 $series->previewName = $file->name;
             }
         }
-
+        $productsJson = \Zend\Json\Json::encode($products);
         return array(
             'series' => $series,
             'section' => $section,
@@ -464,6 +487,7 @@ class AdminController extends SampleAdminController
             'products' => $products,
             'imgs' => $imgs,
             'relatedSeries' => $relatedSeries,
+            'productsJson' => $productsJson,
             'relatedProds' => $relatedProds,
             'docs' => $docs,
             'dims' => $dims,
@@ -494,6 +518,17 @@ class AdminController extends SampleAdminController
         $section = $sl->get('Catalog\Model\SectionTable')->find($subsection->section_id);
 
         $params = $sl->get('Catalog\Model\ProductParamsTable')->fetchAll();
+
+        //превьюшка для товара
+        $fileTable = $sl->get('FilesTable');
+        $file = $fileTable->fetchByCond('uid', $id);
+        $file = reset($file);
+
+        if ($file) {
+
+            $product->previewName = $file->name;
+            $product->preview = $file->id;
+        }
 
         return array(
             'product' => $product,

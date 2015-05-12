@@ -40,29 +40,35 @@ class FileController extends ApiController
 
         $parentObjectTableName = $this->getTableName($parentType);
         $parentObjectTable = $sl->get($parentObjectTableName);
-        $parentObject = $parentObjectTable->find($parentId);
+        if ($field != "id") {
+            $parentObject = $parentObjectTable->find($parentId);
 
-        if (!$parentObject) {
-            return $this->response->setStatusCode(400);
+            if (!$parentObject) {
+                return $this->response->setStatusCode(400);
+            }
         }
+
 
         $tableName = $this->getTableName($type);
         $table = $sl->get($tableName);
-        if (!empty($parentObject->$field)) {
-            $filename = false;
-            if (is_numeric($parentObject->$field)) {
-                $file = $table->find($parentObject->$field);
-                if ($file) {
-                    $filename = $file->name;
+        if ($field != "id") {
+            if (!empty($parentObject->$field)) {
+                $filename = false;
+                if (is_numeric($parentObject->$field)) {
+                    $file = $table->find($parentObject->$field);
+                    if ($file) {
+                        $filename = $file->name;
+                    }
+                } elseif (is_string($parentObject->$field)) {
+                    $filename = $parentObject->$field;
                 }
-            } elseif (is_string($parentObject->$field)) {
-                $filename = $parentObject->$field;
-            }
-            if ($filename) {
-                $this->unlinkFile('/images/'. $folder .'/' . $filename);
-            }
+                if ($filename) {
+                    $this->unlinkFile('/images/'. $folder .'/' . $filename);
+                }
 
+            }
         }
+
 
         $data = $data['file'];
 
@@ -93,10 +99,16 @@ class FileController extends ApiController
             $entity->path = $adapter->getFileName(null, false);
             $entity->size = $adapter->getFileSize();
             $entity->timestamp = time(true);
+            if ($field == "id") {
+                $entity->uid = $parentId;
+            }
 
             $resultId = $table->save($entity);
-            $parentObject->$field = $resultId;
-            $parentObjectTable->save($parentObject);
+            if ($field != "id") {
+                $parentObject->$field = $resultId;
+                $parentObjectTable->save($parentObject);
+            }
+
         }
 
         $result = array('name' => $adapter->getFileName(null, false), 'realName' => $filename, 'id' => $resultId);

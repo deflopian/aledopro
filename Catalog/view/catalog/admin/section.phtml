@@ -232,13 +232,13 @@
                 <div dfl-tree-hierarchy ng-cloak>[]</div>
                 <div ng-init="list = items[23];"></div>
                 <style>
-                    #sortable2 { list-style-type: none; margin: 0; padding: 0; width: 450px; }
+                    #sortable2 { list-style-type: none; margin: 0; padding: 0; max-width: 500px; }
                 </style>
                 <ul id="sortable2">
                     <li ng-repeat="(key, item) in items[23]" data-id="{{item.id}}">
                         <div class="row tree-row">
-                            <div class="col-md-10" ng-click="item.shown = !item.shown" ng-bind="item.title"></div>
-                            <div class="col-md-1" style="text-align: right; padding-right: 0">
+                            <div class="col-md-9" ng-click="item.shown = !item.shown" ng-bind="item.title"></div>
+                            <div class="col-md-1" style="text-align: right;">
                                 <span
                                     class="glyphicon glyphicon-folder-open"
                                     ng-show="item.open == 1"
@@ -248,7 +248,7 @@
                                     ng-show="item.open == 0"
                                     ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'open', 1, {sectionId:<?= $section->id?>, sectionType: 1}, 'filterCallback')"></span>
                             </div>
-                            <div class="col-md-1" style="text-align: right; padding-right: 0">
+                            <div class="col-md-1" style="text-align: right;">
                                 <span
                                     class="glyphicon glyphicon-eye-open"
                                     ng-show="item.hidden == 0"
@@ -259,6 +259,18 @@
                                     style="color: #BBBBBB"
                                     ng-show="item.hidden > 0"
                                     ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'hidden', 0, {sectionId:<?= $section->id?>, sectionType: 1}, 'filterCallback')"></span>
+                            </div>
+                            <div class="col-md-1" style="text-align: right;">
+                                <span
+                                    class="glyphicon kp-icon"
+                                    ng-show="item.cart_param == 0"
+                                    style="color: #BBBBBB"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'cart_param', 1, {sectionId:<?= $section->id?>, sectionType: 1}, 'filterCallback')">КП</span>
+                                <span
+                                    class="glyphicon kp-icon"
+                                    style="color: #c09853"
+                                    ng-show="item.cart_param == 1"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'cart_param', 0, {sectionId:<?= $section->id?>, sectionType: 1}, 'filterCallback')">КП</span>
                             </div>
                         </div>
                     </li>

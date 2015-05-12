@@ -40,11 +40,16 @@ class VacanciesController extends AbstractActionController
     public function saveFormAjaxAction()
     {
         $request = $this->getRequest();
-        if ($request->isXmlHttpRequest()) {
+        if ($request->isPost()) {
             $post = array_merge_recursive(
                 $request->getPost()->toArray(),
                 $request->getFiles()->toArray()
             );
+
+            if (!$post) {
+                $rest_json = file_get_contents("php://input");
+                $post = json_decode($rest_json, true);
+            }
 
             $success = 0;
             $messages = array();
@@ -62,6 +67,7 @@ class VacanciesController extends AbstractActionController
 
                     $data['file'] = $adapter->getFileName(null, false);
                     $vacancy = $this->getServiceLocator()->get('VacanciesTable')->find($data['vacancy']);
+
                     if (!$vacancy) {
                         $vacancy = new Vacancy();
                     }

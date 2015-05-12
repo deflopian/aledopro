@@ -81,6 +81,11 @@ class Module
                     $table     = new ProductTable($dbAdapter);
                     return $table;
                 },
+                'ProductsTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new ProductTable($dbAdapter);
+                    return $table;
+                },
                 'Catalog\Model\ProductParamsTable' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table     = new ProductParamsTable($dbAdapter);

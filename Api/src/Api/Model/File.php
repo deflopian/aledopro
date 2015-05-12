@@ -12,4 +12,5 @@ class File extends SampleModel
     public $path;
     public $size;
     public $timestamp;
+    public $uid;
 }

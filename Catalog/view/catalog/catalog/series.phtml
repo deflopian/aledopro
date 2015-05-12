@@ -215,6 +215,12 @@
                                         </div>
                                     <? } ?>
                                 </div>
+                                <div class="row">
+                                    <div class="col-xs-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_after_dimming)) < 5 && $num !== false) ?
+                                            substr($series->text_after_dimming, $num+13) : $series->text_after_dimming ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     <? } ?>

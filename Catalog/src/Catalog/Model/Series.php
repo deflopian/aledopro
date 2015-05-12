@@ -11,6 +11,7 @@ class Series extends SampleModel
     public $text;
     public $text_exploit;
     public $text_dimming;
+    public $text_after_dimming;
     public $img;
     public $img_gallery;
     public $order;

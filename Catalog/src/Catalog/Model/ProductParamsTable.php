@@ -17,13 +17,20 @@ class ProductParamsTable extends SampleTable
         $this->initialize();
     }
 
-    public function fetchAll($order = "", $idsOnly = false)
+    public function fetchAll($order = "", $idsOnly = false, $idAsKey = false)
     {
         $objArr = parent::fetchAll($order);
         $res = array();
-        foreach($objArr as $enity){
-            $res[$enity->field] = $enity;
+        if ($idAsKey) {
+            foreach($objArr as $enity){
+                $res[$enity->id] = $enity;
+            }
+        } else {
+            foreach($objArr as $enity){
+                $res[$enity->field] = $enity;
+            }
         }
+
         return $res;
     }
 }

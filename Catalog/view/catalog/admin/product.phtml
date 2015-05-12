@@ -65,6 +65,25 @@
 </div>
 
 
+<div class="section" ng-app="imageMapper">
+    <div ng-controller="ImageCtrl">
+        <h3>Превью</h3>
+
+        <div
+            ng-single-image-upload
+            parent-type="products"
+            parent-id="<?= $product->id ?>"
+            folder="products"
+            field="id"
+            img="<?= $product->previewName ? $product->previewName : "" ?>"
+            img-id ="<?= $product->preview ? $product->preview : "" ?>"
+            ></div>
+
+        <script type="application/javascript">
+            AppFactory("imageMapper", "images", ["imageMapper", "ur.file"]);
+        </script>
+    </div>
+</div>
 
 <div class="section">
     <h3>Связи</h3>
