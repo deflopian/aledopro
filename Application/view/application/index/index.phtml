@@ -1,21 +1,53 @@
 <div class="b-main">
     <? $banner = reset($this->bannerImages) ?>
-    <div class="b-main-banner">
+    <div class="b-main-banner b-slider_banners">
+        <? foreach ($this->bannerImages as $banner) { ?>
+
+<!--                <img class="b-main-banner__image"-->
+<!--                     image-responsive="{-->
+<!--                             default : {-->
+<!--                                 src:'/images/banner/--><?//= $banner->img ?><!--'-->
+<!--                             },-->
+<!--                             768 : {-->
+<!--                                 src: '/images/banner/--><?//= $banner->img ?><!--',-->
+<!--                             },-->
+<!--                             992 : {-->
+<!--                                 src: '/images/banner/--><?//= $banner->img ?><!--',-->
+<!--                             }-->
+<!--                 }"/>-->
         <a href="<?= $banner->link ?>">
-            <img class="b-main-banner__image"
-                 image-responsive="{
-                             default : {
-                                 src:'/images/banner/<?= $banner->img ?>'
-                             },
-                             768 : {
-                                 src: '/images/banner/<?= $banner->img ?>',
-                             },
-                             992 : {
-                                 src: '/images/banner/<?= $banner->img ?>',
-                             }
-                 }"/>
+            <div class="b-slider__item b-slider_banners__item">
+                <i class="b-slider-item-layout"></i>
+
+                    <img class="b-main-banner__image"
+                         src="/images/banner/<?= $banner->img ?>" alt="<?= $banner->title ?>" />
+
+            </div>
         </a>
+        <? } ?>
+
     </div>
+
+    <script type="text/javascript">
+        (function () {
+            var $this = jQuery('.b-slider_banners');
+            $this.slick({
+                dots: false,
+                infinite: true,
+                draggable: browser.mobile ? true : false,
+                speed: browser.mobile ? 300 : 500,
+                touchThreshold: browser.mobile ? 5 : 50,
+                slidesToShow: 2,
+
+                variableWidth: true,
+                arrows: browser.mobile ? false : true,
+                prevArrow: "<a class=\"left carousel-control\" href=\"javascript:void(0)\"><div class=\"aledo-banner-chevron left\"></div></a>",
+                nextArrow: "<a class=\"right carousel-control\" href=\"javascript:void(0)\"><div class=\"aledo-banner-chevron right\"></div></a>"
+//                nextArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_next b-slider_banners__arrow b-slider_blog__arrow_next\">" +
+//                "</a>"
+            });
+        })();
+    </script>
     <div class="b-section b-our-services b-main__section">
 
         <h2 class="b-main__section-heading">Наши услуги</h2>
@@ -23,16 +55,16 @@
         <div class="b-services-table-wrapper">
             <div class="b-services-table">
                 <div class="b-services-table__cell">
-                    Сборка <br/> оборудования
+                    Проектирование систем  <br/> LED-освещения
                 </div>
                 <div class="b-services-table__cell">
-                    Проектирование <br/> систем освещения
+                    Проектирование систем  <br/> управления светом
                 </div>
                 <div class="b-services-table__cell">
-                    Проектирование систем <br/> управления освещением
+                    Профессиональный монтаж <br/> LED-освещения
                 </div>
                 <div class="b-services-table__cell">
-                    Профессиональный <br/>монтаж и установка
+                    Производство LED-светильников <br/>по Вашим эскизам
                 </div>
             </div>
         </div>

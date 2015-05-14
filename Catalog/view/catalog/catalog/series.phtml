@@ -145,17 +145,22 @@
                 </div>
 
                 <div class="b-tabs-content__item fade tab-pane series-description-block" role="tabpanel" id="goods_2" style="padding-left: 30px">
+
                     <div class="row">
                         <div class="col-xs-12">
-                            <div>
-                                <h2 class="series-description-block__title">Описание</h2>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div>
+                                        <h2 class="series-description-block__title">Описание</h2>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 series-description">
-                    <?= (($num = strpos('<p>&nbsp;</p>', $series->text)) < 5 && $num !== false) ?
-                        substr($series->text, $num+13) : $series->text; ?>
+                            <div class="row row-second-xs">
+                                <div class="col-xs-12 series-description">
+                            <?= (($num = strpos('<p>&nbsp;</p>', $series->text)) < 5 && $num !== false) ?
+                                substr($series->text, $num+13) : $series->text; ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

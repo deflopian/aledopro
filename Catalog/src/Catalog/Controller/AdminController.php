@@ -49,6 +49,9 @@ class AdminController extends SampleAdminController
     const INFO_SERVICES = 30;
     const DIM_TABLE = 31;
     const PRODUCT_MAIN_PARAM_TABLE = 32;
+    const COMMERCIALS_TABLE = 33;
+    const COMMERCIAL_ROOMS_TABLE = 34;
+    const COMMERCIAL_PRODS_TABLE = 35;
 
     protected $tableImg = 'SeriesImgTable';
     protected $entityImgName = 'Catalog\Model\SeriesImg';

@@ -21,7 +21,7 @@
     <div class="b-mobile-catalog">
 
         <? foreach ($subsections as $subsecId => $subsec) { ?>
-            <div class="b-mobile-catalog__item"
+            <div class="b-mobile-catalog__item b-mobile-catalog__item_subsection"
                  style="background-image: url(<?= $this->basePath() . '/images/subsections/' . $subsec->url ?>)">
                 <a class="b-mobile-catalog__link text-uppercase" data-id="<?= $subsec->id ?>"
                    data-target="#catalog_mobile_redirect"

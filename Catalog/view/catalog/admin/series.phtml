@@ -129,27 +129,25 @@
             </div>
         </div>
     </form>
-    <div class="section" ng-app="imageMapper">
-        <div ng-controller="ImageCtrl">
-            <h3>Загрузить изображение для отфильтрованных продуктов</h3>
 
-            <div
-                ng-single-image-upload
-                parent-type="products"
-                parent-id="0"
-                folder="products"
-                field="id"
-                img=""
-                img-id ="0"
-                ></div>
+    <div id="userTable" >
 
-            <script type="application/javascript">
-                AppFactory("imageMapper", "images", ["imageMapper", "ur.file"]);
-            </script>
-        </div>
-    </div>
-    <div id="userTable">
         <solo-table make-sortable="3" items-on-page="20">
+            <div class="section">
+                <div>
+                    <h3>Загрузить изображение для отфильтрованных продуктов</h3>
+
+                    <div
+                        ng-single-image-upload
+                        parent-type="products"
+                        parent-id="0"
+                        folder="products"
+                        field="id"
+                        img=""
+                        img-id ="0"
+                        ></div>
+                </div>
+            </div>
             <div solo-table-data ng-cloak>
                 <?= $productsJson ?>
             </div>
@@ -195,7 +193,7 @@
         </solo-table>
     </div>
     <script>
-        AppFactory("userTable", "example1", ["solo.table"]);
+        AppFactory("userTable", "example1", ["solo.table", "imageMapper", "ur.file"]);
     </script>
 </div>
 

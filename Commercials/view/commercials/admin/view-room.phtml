@@ -1,0 +1,190 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/commercials') ?>">Отчёты</a>
+    >
+    <? /** @var \Reports\Model\Report $entity */ ?>
+    <span id="title"><?= $entity->name; ?></span>
+</h1>
+
+<h2>Каталоги</h2>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <div id="entityMapper">
+        <div ng-controller="EntityCtrl">
+
+            <div
+                ng-entity
+                entity-id="<?= $entity->id ?>"
+                entity-type="<?= \Catalog\Controller\AdminController::COMMERCIAL_ROOMS_TABLE?>"
+                >
+
+                <div ng-entity-data>
+                    <?= $roomJson ?>
+                </div>
+                <div ng-entity-schema>
+                    [
+                        {
+                            "title" : "title",
+                            "type" : "text",
+                            "default" : "",
+                            "label" : "Название"
+                        }
+                    ]
+                </div>
+
+                <table class="table admin-table table-striped">
+                    <tbody>
+                    <tr ng-repeat="description in schema">
+                        <td>{{description.label}}</td>
+                        <td>
+                            <div ng-if="description.type == 'text'">
+                                <div ng-text-field></div>
+                            </div>
+                            <div ng-if="description.type == 'image'">
+                                <div ng-controller="ImageCtrl">
+                                    <div
+                                        ng-single-image-upload
+                                        parent-type="commercial"
+                                        folder="commercials"
+                                        field="img"
+                                        ></div>
+                                </div>
+                            </div>
+                            <div ng-if="description.type == 'file'">
+                                <div>
+                                    <div
+                                        ng-single-file-upload
+                                        parent-type="commercial"
+                                        folder="commercials"
+                                        field="file"
+                                        ></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+
+            <script type="application/javascript">
+                AppFactory("entityMapper", "entityMapper2", ["entityMapper", "imageMapper", "fileMapper"]);
+            </script>
+        </div>
+    </div>
+</div>
+
+<div class="section" ng-app="dflTree">
+    <div ng-controller="DflTreeCtrl">
+        <h3>Акции</h3>
+        <div class="col-md-6">
+            <dfl-tree parent-type="project">
+                <div dfl-tree-data ng-cloak><?= $treeDateByLvlJson ?></div>
+
+                <div dfl-tree-hierarchy ng-cloak><?= $treeHierarchyJson ?></div>
+
+                <div ng-repeat="(key, item) in items[1]">
+                    <div class="row tree-row">
+                        <div class="col-md-1">
+                        <span
+                            class="btn small-icon glyphicon glyphicon-plus"
+                            ng-show="!items[1][key].shown"
+                            ng-click="items[1][key].shown = true"></span>
+                        <span
+                            class="btn small-icon glyphicon glyphicon-minus"
+                            ng-show="items[1][key].shown"
+                            ng-click="items[1][key].shown = false"></span>
+                        </div>
+                        <div class="col-md-10" ng-click="items[1][key].shown = !items[1][key].shown" ng-bind="items[1][key].title"></div>
+                        <div class="col-md-2 pull-right" style="text-align: right; padding-right: 0">
+                        </div>
+                    </div>
+
+                    <div ng-if="hierarchy[key] && items[1][key].shown">
+                        <div ng-repeat="(subsectionId, series) in hierarchy[key]">
+                            <div style="margin-left: 15px;" class="row tree-row">
+                                <div class="col-md-1">
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-plus"
+                                    ng-show="!items[2][subsectionId].shown"
+                                    ng-click="items[2][subsectionId].shown = true"></span>
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-minus"
+                                    ng-show="items[2][subsectionId].shown"
+                                    ng-click="items[2][subsectionId].shown = false"></span>
+                                </div>
+                                <div class="col-md-10" ng-click="items[2][subsectionId].shown = !items[2][subsectionId].shown" ng-bind="items[2][subsectionId].title"></div>
+                                <div class="col-md-2 pull-right" style="text-align: right; padding-right: 0">
+                                </div>
+                            </div>
+
+
+                            <div ng-if="series && items[2][subsectionId].shown">
+                                <div ng-repeat="(seriesId, products) in series">
+                                    <div style="margin-left: 30px;" class="row tree-row">
+                                        <div class="col-md-1">
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-plus"
+                                    ng-show="!items[3][seriesId].shown"
+                                    ng-click="items[3][seriesId].shown = true"></span>
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-minus"
+                                    ng-show="items[3][seriesId].shown"
+                                    ng-click="items[3][seriesId].shown = false"></span>
+                                        </div>
+                                        <div class="col-md-10" ng-bind="items[3][seriesId].title" ng-click="items[3][seriesId].shown = !items[3][seriesId].shown"></div>
+                                        <div class="col-md-2 pull-right" style="text-align: right; padding-right: 0">
+                                        </div>
+                                    </div>
+                                    <div ng-if="products && items[3][seriesId].shown">
+                                        <div ng-repeat="(productId, staff) in products">
+                                            <div style="margin-left: 45px;" class="row tree-row">
+                                                <div class="col-md-10 col-md-offset-1" ng-bind="items[4][productId].title"></div>
+                                                <div class="col-md-1 pull-right" style="text-align: right; padding-right: 0">
+                                                <span
+                                                    class="glyphicon glyphicon-ok-circle"
+                                                    style="color: #BBBBBB"
+                                                    ng-show="items[4][productId].is_commercial == 0"
+                                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::COMMERCIAL_ROOMS_TABLE ?>', '<?= $entity->id ?>', 'add', 1, {sectionType: '<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>', sectionId: productId, old_price: items[4][productId].price_without_nds}, 'commercialCallback')"></span>
+                                                <span
+                                                    class="glyphicon glyphicon-ok-circle"
+                                                    style="color: #B5BD26"
+                                                    ng-show="items[4][productId].is_commercial > 0"
+                                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::COMMERCIAL_ROOMS_TABLE ?>', '<?= $entity->id ?>', 'remove', 0, {sectionType: '<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>', sectionId: productId, old_price: items[4][productId].price_without_nds}, 'commercialCallback')"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dfl-tree>
+        </div>
+        <script type="application/javascript">
+            AppFactory("dflTree", "trees", ["dflTree"]);
+        </script>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentId = '<?= $entity->id ?>';
+        catalog.type = 'prmember';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/commercials') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/commercials', array('action'=> 'view')) ?>';
+        catalog.init();
+        catalog.initEditables();
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.editablesSave,
+            config: 'config-info'
+        });
+    });
+
+
+</script>

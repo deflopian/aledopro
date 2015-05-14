@@ -13,6 +13,9 @@ use Catalog\Model\DopProdGroup;
 use Catalog\Model\FilterField;
 use Catalog\Model\ProductInMarket;
 use Catalog\Model\ProductParam;
+use Commercials\Model\Commercial;
+use Commercials\Model\CommercialProd;
+use Commercials\Model\CommercialRoom;
 use Documents\Model\Document;
 use Zend\Di\ServiceLocatorInterface;
 use Zend\Validator\File\ExcludeMimeType;
@@ -43,6 +46,9 @@ class CatalogService {
         AdminController::USERS_TABLE => 'UserTable',
         AdminController::FILTER_FIELD_TABLE => 'FilterFieldTable',
         AdminController::DOCUMENT_TABLE => 'DocumentsTable',
+        AdminController::COMMERCIALS_TABLE => 'CommercialsTable',
+        AdminController::COMMERCIAL_ROOMS_TABLE => 'CommercialRoomsTable',
+        AdminController::COMMERCIAL_PRODS_TABLE => 'CommercialProdsTable',
         AdminController::MAINPAGE_BLOCK_TABLE => 'MainPageBlocksTable',
         AdminController::MAINPAGE_BLOCK_IMAGE_TABLE => 'MainPageBlockImagesTable'
     );
@@ -590,6 +596,15 @@ RewriteRule ^.*$ index.php [NC,L]
                 break;
             case AdminController::DOCUMENT_TABLE:
                 $entity = new Document();
+                break;
+            case AdminController::COMMERCIALS_TABLE:
+                $entity = new Commercial();
+                break;
+            case AdminController::COMMERCIAL_ROOMS_TABLE:
+                $entity = new CommercialRoom();
+                break;
+            case AdminController::COMMERCIAL_PRODS_TABLE:
+                $entity = new CommercialProd();
                 break;
 
             case AdminController::MAINPAGE_BLOCK_TABLE:

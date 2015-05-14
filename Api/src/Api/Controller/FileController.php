@@ -35,6 +35,9 @@ class FileController extends ApiController
 
         $parentType = $data['parentType'];
         $parentId = $data['parentId'];
+        if (!is_numeric($parentId)) {
+            $parentId = \Zend\Json\Json::decode($parentId);
+        }
         $folder = $data['folder'];
         $field = $data['field'];
 
@@ -92,18 +95,37 @@ class FileController extends ApiController
             ));
         $resultId = 0;
         if($adapter->receive($filename)){
-            $entity = new File();
-            $entity->name = $adapter->getFileName(null, false);
-            $entity->type = FileTable::TYPE_IMAGE;
-            $entity->real_name = $filename;
-            $entity->path = $adapter->getFileName(null, false);
-            $entity->size = $adapter->getFileSize();
-            $entity->timestamp = time(true);
-            if ($field == "id") {
-                $entity->uid = $parentId;
-            }
+            //если приходит массив айдишек, сохраняем файл для каждой
+            if (is_array($parentId)) {
+                foreach ($parentId as $pid) {
+                    $entity = new File();
+                    $entity->name = $adapter->getFileName(null, false);
+                    $entity->type = FileTable::TYPE_IMAGE;
+                    $entity->real_name = $filename;
+                    $entity->path = $adapter->getFileName(null, false);
+                    $entity->size = $adapter->getFileSize();
+                    $entity->timestamp = time(true);
+                    if ($field == "id") {
+                        $entity->uid = $pid;
+                    }
 
-            $resultId = $table->save($entity);
+                    $resultId = $table->save($entity);
+                }
+
+            } else {
+                $entity = new File();
+                $entity->name = $adapter->getFileName(null, false);
+                $entity->type = FileTable::TYPE_IMAGE;
+                $entity->real_name = $filename;
+                $entity->path = $adapter->getFileName(null, false);
+                $entity->size = $adapter->getFileSize();
+                $entity->timestamp = time(true);
+                if ($field == "id") {
+                    $entity->uid = $parentId;
+                }
+
+                $resultId = $table->save($entity);
+            }
             if ($field != "id") {
                 $parentObject->$field = $resultId;
                 $parentObjectTable->save($parentObject);

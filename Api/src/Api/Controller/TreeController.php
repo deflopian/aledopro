@@ -6,6 +6,7 @@ use Api\Model\FileTable;
 use Catalog\Mapper\CatalogMapper;
 use Catalog\Model\FilterField;
 use Catalog\Service\CatalogService;
+use Commercials\Model\CommercialProd;
 use Discount\Mapper\DiscountMapper;
 use Discount\Model\Discount;
 use Discount\Model\DiscountTable;
@@ -96,6 +97,36 @@ class TreeController extends ApiController
 
             $res = $entityTable->save($entity);
             return $this->response->setContent($res)->setStatusCode(200);
+        } elseif ($type == \Catalog\Controller\AdminController::COMMERCIAL_ROOMS_TABLE) {
+
+            $entityTable = $sl->get('CommercialProdsTable');
+            if (array_key_exists("add", $data)) {
+                $entity = new CommercialProd();
+                $entity->product_id = $options['sectionId'];
+                $entity->room_id = $itemId;
+                $entity->old_price = $options['old_price'];
+                $entityTable->save($entity);
+
+                return $this->response->setContent(1)->setStatusCode(200);
+            } elseif (array_key_exists("remove", $data)) {
+                $entity = $entityTable->fetchByConds(
+                    array(
+                        "product_id" => $options['sectionId'],
+                        "room_id"    => $itemId
+                    )
+                );
+                $entity = reset($entity);
+                if ($entity) {
+                    $entityTable->del($entity->id);
+                    return $this->response->setContent(0)->setStatusCode(200);
+                } else {
+                    return $this->response->setStatusCode(404);
+                }
+
+            }
+
+            return $this->response->setStatusCode(400);
+
         } else {
             $entity = CatalogService::getEntityByType($sl, $itemId, $type);
         }
