@@ -302,7 +302,7 @@ class AdminController extends SampleAdminController
                 $base = sprintf('%s://%s', $uri->getScheme(), $uri->getHost());
 
                 //todome: ИСПРАВИТЬ, КОГДА БУДЕТ ЗАПУЩЕН ПРОД!!!!!!!!!
-                $base = 'http://stage.aledo-pro.ru';
+                $base = 'http://aledo-pro.ru';
                 //////////////////
 
                 $url = $base. '/images/uploaded/' . $adapter->getFileName(null, false);

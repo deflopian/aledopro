@@ -4,7 +4,8 @@
 <div class="b-contacts-page b-section">
     <div class="b-section__content">
         <div class="b-contacts-table text-center">
-            <div class="b-contacts-table__cell b-contacts-cell dotted-right">
+<!--            <div class="b-contacts-table__cell b-contacts-cell dotted-right">-->
+            <div class="b-contacts-table__cell b-contacts-cell">
                 <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">
                     ОФИС В САНКТ-ПЕТЕРБУРГЕ
                 </h4>
@@ -26,29 +27,29 @@
 
                 <div id="map_spb" class="b-map"></div>
             </div>
-            <div class="b-contacts-table__cell b-contacts-cell b-contacts-cell_right">
-                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">
-                    ПРЕДСТАВИТЕЛЬСТВО В МОСКВЕ
-                </h4>
-
-                <div class="b-mb4">
-                    <?= $contacts->adress ?>
-                </div>
-                <div class="b-mb2 b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_upper b-dotted-decorated_fully">
-                    <?= $contacts->work_time ?>
-                </div>
-
-                <p>
-                    <?= str_replace(' ', '&nbsp;', $contacts->phone) ?><br/>
-                    <?= str_replace(' ', '&nbsp;', $contacts->fax) ?><br/>
-                    <a class="b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully"
-                       href="mailto:<?= $contacts->mail ?>"> <?= $contacts->mail ?></a>
-                </p>
-                <br/>
-
-                <div id="map_msc" class="b-map"></div>
-
-            </div>
+<!--            <div class="b-contacts-table__cell b-contacts-cell b-contacts-cell_right">-->
+<!--                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">-->
+<!--                    ПРЕДСТАВИТЕЛЬСТВО В МОСКВЕ-->
+<!--                </h4>-->
+<!---->
+<!--                <div class="b-mb4">-->
+<!--                    --><?//= $contacts->adress ?>
+<!--                </div>-->
+<!--                <div class="b-mb2 b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_upper b-dotted-decorated_fully">-->
+<!--                    --><?//= $contacts->work_time ?>
+<!--                </div>-->
+<!---->
+<!--                <p>-->
+<!--                    --><?//= str_replace(' ', '&nbsp;', $contacts->phone) ?><!--<br/>-->
+<!--                    --><?//= str_replace(' ', '&nbsp;', $contacts->fax) ?><!--<br/>-->
+<!--                    <a class="b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully"-->
+<!--                       href="mailto:--><?//= $contacts->mail ?><!--"> --><?//= $contacts->mail ?><!--</a>-->
+<!--                </p>-->
+<!--                <br/>-->
+<!---->
+<!--                <div id="map_msc" class="b-map"></div>-->
+<!---->
+<!--            </div>-->
         </div>
     </div>
 </div>

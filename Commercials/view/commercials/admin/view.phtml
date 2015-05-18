@@ -1,11 +1,11 @@
 <h1>
-    <a href="<?= $this->url('zfcadmin/commercials') ?>">Отчёты</a>
+    <a href="<?= $this->url('zfcadmin/commercials') ?>">Коммерческие предложения</a>
     >
-    <? /** @var \Reports\Model\Report $entity */ ?>
-    <span id="title"><?= $entity->name; ?></span>
+    <? /** @var \Commercials\Model\Commercial $entity */ ?>
+    <span id="title"><?= $entity->title; ?></span>
 </h1>
 
-<h2>Каталоги</h2>
+<h2>КП: <?= $entity->title; ?></h2>
 
 <div class="section">
     <div class="row">

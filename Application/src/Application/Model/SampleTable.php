@@ -176,6 +176,7 @@ class SampleTable extends AbstractTableGateway
 
     public function selectLike($column, $regex, $fields = '*', $specialCondition = '')
     {
+
         if (is_array($fields)) {
             $fields = '(' . implode(',', $fields) . ')';
         }
@@ -194,10 +195,10 @@ class SampleTable extends AbstractTableGateway
 
             $sql_part2 .= ') ';
             $sql_part3 = $specialCondition;
-            $sql = $sql_part1 . $sql_part2 . $sql_part3;
+            $sql = $sql_part1 . $sql_part2 . $sql_part3  . " LIMIT 100";
 
         } else {
-            $sql = 'SELECT ' . $fields . ' FROM ' . $this->table . ' WHERE ' . $column . " REGEXP '" . $regex . "' " . $specialCondition;
+            $sql = 'SELECT ' . $fields . ' FROM ' . $this->table . ' WHERE ' . $column . " REGEXP '" . $regex . "' " . $specialCondition . " LIMIT 100";
         }
         $resultAsArray = array();
         try {
@@ -208,6 +209,7 @@ class SampleTable extends AbstractTableGateway
         foreach ($results as $oneRes) {
             $resultAsArray[] = $oneRes;
         }
+
         return $resultAsArray;
     }
 

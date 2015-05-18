@@ -67,6 +67,7 @@ class AdminController extends SampleAdminController {
     {
         $sl = $this->getServiceLocator();
         $commercialRoomMapper = CommercialRoomMapper::getInstance($sl);
+        $commercialMapper = CommercialMapper::getInstance($sl);
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('zfcadmin/'.$this->url);
@@ -76,12 +77,19 @@ class AdminController extends SampleAdminController {
             return $this->redirect()->toRoute('zfcadmin/' . $this->url);
         }
 
+        $commercial = $commercialMapper->get($entity->commercial_id);
+
         $commercialRoomJson = \Zend\Json\Json::encode($entity);
         $linkedIds = array();
-
+        $linkedCounts = array();
         if ($entity->prods) {
             foreach ($entity->prods as $prod) {
                 $linkedIds[] = $prod->product_id;
+                if ($prod->count || $prod->count === 0 || $prod->count === "0") {
+                    $linkedCounts[$prod->product_id] = $prod->count;
+                } else {
+                    $linkedCounts[$prod->product_id] = 1;
+                }
             }
         }
 
@@ -126,7 +134,7 @@ class AdminController extends SampleAdminController {
                 $sectionId = $subsection['parentId'];
                 if (isset($treeHierarchy[$sectionId][$subsectionId][$product->series_id])) {
                     $treeHierarchy[$sectionId][$subsectionId][$product->series_id][$product->id] = $product->id;
-                    $treeDateByLvl[\Catalog\Controller\AdminController::PRODUCT_TABLE][$product->id] = array('title' => $product->title, 'parentId' => $product->series_id, 'is_commercial' => in_array($product->id, $linkedIds));
+                    $treeDateByLvl[\Catalog\Controller\AdminController::PRODUCT_TABLE][$product->id] = array('title' => $product->title, 'parentId' => $product->series_id, 'is_commercial' => in_array($product->id, $linkedIds), 'commercial_count' => $linkedCounts[$product->id]);
                     if (in_array($product->id, $linkedIds)) {
                         $treeDateByLvl[\Catalog\Controller\AdminController::SERIES_TABLE][$product->series_id]['shown'] = true;
                         $prevSer = $treeDateByLvl[\Catalog\Controller\AdminController::SERIES_TABLE][$product->series_id];
@@ -151,6 +159,7 @@ class AdminController extends SampleAdminController {
 
         return array(
             'entity' => $entity,
+            'commercial' => $commercial,
             'roomJson' => $commercialRoomJson,
             'treeDateByLvlJson' => $treeDateByLvlJson,
             'treeHierarchyJson' => $treeHierarchyJson,

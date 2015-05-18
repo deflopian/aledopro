@@ -1,11 +1,14 @@
 <h1>
-    <a href="<?= $this->url('zfcadmin/commercials') ?>">Отчёты</a>
+    <a href="<?= $this->url('zfcadmin/commercials') ?>">Коммерческие предложения</a>
     >
-    <? /** @var \Reports\Model\Report $entity */ ?>
-    <span id="title"><?= $entity->name; ?></span>
+    <? /** @var \Commercials\Model\CommercialRoom $entity */ ?>
+    <a href="/admin/commercials/view/<?= $entity->commercial_id; ?>/"><?= $commercial->title; ?></a>
+    >
+
+    <span id="title"><?= $entity->title; ?></span>
 </h1>
 
-<h2>Каталоги</h2>
+<h2>Помещение: <?= $entity->title; ?></h2>
 
 <div class="section">
     <h3>Основная информация</h3>
@@ -77,13 +80,24 @@
 
 <div class="section" ng-app="dflTree">
     <div ng-controller="DflTreeCtrl">
-        <h3>Акции</h3>
-        <div class="col-md-6">
+        <h3>Продукты в КП</h3>
+        <div class="col-md-12">
             <dfl-tree parent-type="project">
                 <div dfl-tree-data ng-cloak><?= $treeDateByLvlJson ?></div>
 
                 <div dfl-tree-hierarchy ng-cloak><?= $treeHierarchyJson ?></div>
-
+                <div ng-repeat="(pkey, product) in items[4]" ng-show="product.is_commercial == 1" class="row" style="margin-bottom: 5px">
+                    <div class="col-md-6">{{product.title}}</div>
+                    <div class="col-md-4"><input ng-model="product.commercial_count" /> </div>
+                    <div class="col-md-2">
+                        <span
+                        class="glyphicon glyphicon-remove"
+                        style="color: #B5BD26"
+                        ng-click="changeField('<?= \Catalog\Controller\AdminController::COMMERCIAL_ROOMS_TABLE ?>', '<?= $entity->id ?>', 'remove', 0, {sectionType: '<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>', sectionId: pkey, old_price: items[4][pkey].price_without_nds, count: items[4][pkey].commercial_count}, 'commercialCallback')"></span>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-md-6">
                 <div ng-repeat="(key, item) in items[1]">
                     <div class="row tree-row">
                         <div class="col-md-1">
@@ -160,6 +174,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                </div>
                 </div>
             </dfl-tree>
         </div>

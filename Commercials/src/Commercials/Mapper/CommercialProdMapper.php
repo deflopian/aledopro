@@ -7,6 +7,7 @@
  */
 namespace Commercials\Mapper;
 
+use Application\Service\ApplicationService;
 use Catalog\Mapper\CatalogMapper;
 use Commercials\Model\CommercialProdsTable;
 use Commercials\Model\CommercialProd;
@@ -76,6 +77,12 @@ class CommercialProdMapper {
     public function getList($roomId, $recursive = false, $withMainParams = false) {
         $items = $this->table->fetchByCond('room_id', $roomId);
         $fileTable = $this->sl->get('FilesTable');
+        $filtermParamTable = $this->sl->get('Catalog\Model\FilterParamTable');
+        if ($withMainParams) {
+            $colors = ApplicationService::makeIdArrayFromObjectArray($filtermParamTable->fetchByCond('field', 'color_of_light'));
+            $casecolors = ApplicationService::makeIdArrayFromObjectArray($filtermParamTable->fetchByCond('field', 'case_color'));
+        }
+
         if ($recursive) {
             $cm = CatalogMapper::getInstance($this->sl);
             $filterFieldTable = $this->sl->get('FilterFieldTable');
@@ -90,18 +97,39 @@ class CommercialProdMapper {
                     $product->previewName = $file->name;
                     $product->preview = $file->id;
                 }
+
+
                 $item->product = $product;
                 if ($withMainParams) {
-                    $series = $cm->getSeriesOne($product->series_id);
                     $allParamsTable = $this->sl->get('Catalog\Model\ProductParamsTable');
                     $allParams = $allParamsTable->fetchAll("", false, true);
-                    $filters = $filterFieldTable->fetchAll($series->subsection_id, \Catalog\Controller\AdminController::SUBSECTION_TABLE, 0, "order ASC");
+
+
+                    $item->product->color_of_light = isset($colors[$item->product->color_of_light]) ? $colors[$item->product->color_of_light]->value : $item->product->color_of_light;
+                    $item->product->case_color = isset($casecolors[$item->product->case_color]) ? $casecolors[$item->product->case_color]->value : $item->product->case_color;
+
+                    foreach ($allParams as $kp => $kv) {
+                        $field = $kv->field;
+                        if ($item->product->$field) {
+                            $item->product->$field = $kv->pre_value . $item->product->$field . $kv->post_value;
+                        }
+                    }
+
+                    $series = $cm->getSeriesOne($product->series_id);
+
+
+
+                    $subsection = $cm->getSubsection($series->subsection_id);
+                    $filters = $filterFieldTable->fetchAll($series->subsection_id, \Catalog\Controller\AdminController::SUBSECTION_TABLE, $subsection->section_id, "order ASC");
+
                     $mainParams = array();
                     foreach ($filters as $fkey => $filter) {
+
                         if ($filter->cart_param == 1) {
                             $mainParams[$allParams[$filter->field_id]->field] = $allParams[$filter->field_id]->title;
                         }
                     }
+
                     $item->mainParams = $mainParams;
                 }
             }

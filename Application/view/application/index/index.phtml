@@ -29,6 +29,7 @@
     </div>
 
     <script type="text/javascript">
+        $('.b-slider_banners__item').width($(window).width());
         (function () {
             var $this = jQuery('.b-slider_banners');
             $this.slick({
@@ -37,8 +38,8 @@
                 draggable: browser.mobile ? true : false,
                 speed: browser.mobile ? 300 : 500,
                 touchThreshold: browser.mobile ? 5 : 50,
-                slidesToShow: 2,
-
+                slidesToShow: 1,
+                centerMode: true,
                 variableWidth: true,
                 arrows: browser.mobile ? false : true,
                 prevArrow: "<a class=\"left carousel-control\" href=\"javascript:void(0)\"><div class=\"aledo-banner-chevron left\"></div></a>",
@@ -113,13 +114,15 @@
             <hr class="dotted-separator dotted-separator_projects-slider"/>
             <div class="b-slider b-slider_projects">
                 <? foreach($this->projects as $i=>$project){ ?>
-                    <a href="/projects/view/<?= $project->id ?>">
+
                         <div class="b-slider__item b-slider_projects__item">
+                        <a href="/projects/view/<?= $project->id ?>">
                             <i class="b-slider-item-layout"></i>
                             <img src="/images/projects/<?= $project->img ?>" alt="<?= $project->title ?>" class="b-slider_projects__image"/>
                             <span class="b-slider_projects__title"><?= $project->title ?></span>
+                        </a>
                         </div>
-                    </a>
+
                 <? } ?>
             </div>
             <script type="text/javascript">

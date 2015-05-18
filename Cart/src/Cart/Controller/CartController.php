@@ -330,14 +330,14 @@ class CartController extends AbstractActionController
                             }
                         }
 
-                                    if (isset($userInfo)) {
+                        if (isset($userInfo)) {
                             //отправляем юзеру письмо с деталями заказа
 
                             list($email, $mailView, $from) = MailService::prepareOrderUserMailData($this->serviceLocator, $userInfo, $orderId, $order, $productsInfo, $ptosIds);
                             MailService::sendMail($email, $mailView, "Детали заказа", $from);
 
                             //сообщаем менеджеру детали нового заказа
-                            if (false) {
+
                             list($email, $mailView, $from) = MailService::prepareOrderManagerMailData($this->serviceLocator, $userInfo, $orderId, $order, $productsInfo, $ptosIds, $isRegistered, $filePath);
                             if ($email != MailService::$currentManagerMail) {
                                 MailService::sendMail($email, $mailView, "Новый заказ номер " . $orderId . " на Aledo", $from);
@@ -353,7 +353,7 @@ class CartController extends AbstractActionController
                             }
                             MailService::sendMail(MailService::$currentManagerMail, $mailView, "Новый заказ номер " . $orderId . " на Aledo");
 //                            MailService::sendMail("deflopian@gmail.com", $mailView, "Новый заказ номер " . $orderId . " на Aledo");
-                                            }
+
                         }
                     }
                 }

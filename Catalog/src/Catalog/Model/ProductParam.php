@@ -12,4 +12,5 @@ class ProductParam extends SampleModel
     public $post_value;
     public $text;
     public $term_id;
+    public $is_pv; //значение параметра заменяется айдишкой, а само значение попадает в отдельную табличку
 }

@@ -125,7 +125,7 @@ class SearchController extends AbstractActionController
         $resultsByProducts = $productTable->selectLike('title', $query, '*', $specialCondition);
         $fileTable = $this->getServiceLocator()->get('FilesTable');
 
-        $resultsBySeries = $seriesTable->selectLike(array('title', 'visible_title'), $query, '*', ' AND `deleted` != 1');
+        $resultsBySeries = $seriesTable->selectLike(array('title', 'visible_title'), $query, '*', ' AND (`deleted` != 1 OR `deleted` IS NULL)');
         $resultsBySections = $sectionTable->selectLike('title', $query, '*', ' AND `deleted` != 1');
         $resultsBySubSections = $subsectionTable->selectLike('title', $query, '*', ' AND `deleted` != 1');
         $resultsByArticles = $articlesTable->selectLike('title', $query);
@@ -139,8 +139,11 @@ class SearchController extends AbstractActionController
         }
         $emptySeries = array();
         if ($resultsBySeries) {
+
             foreach($resultsBySeries as $serKey => $oneSeries){
+
                 if (empty($oneSeries->subsection_id)) {
+
                     unset($resultsBySeries[$serKey]);
                 } else {
                     if ($oneSeries->preview) {
@@ -149,6 +152,7 @@ class SearchController extends AbstractActionController
                             $resultsBySeries[$serKey]->previewName = $file->name;
                         }
                     }
+
                     $ss = $subsectionTable->find($oneSeries->subsection_id);
                     if (!$ss) {
                         unset($resultsBySeries[$serKey]);
@@ -195,6 +199,7 @@ class SearchController extends AbstractActionController
 
         $newsSorted = ApplicationService::sortForThreeArrays($resultsByNews);
         $articlesSorted = ApplicationService::sortForThreeArrays($resultsByArticles);
+
 
         $results = array(
             'count' => array(
