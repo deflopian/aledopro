@@ -1,0 +1,122 @@
+<script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+
+
+<div class="b-contacts-page b-section">
+    <div class="b-section__content">
+        <div class="b-contacts-table text-center">
+<!--            <div class="b-contacts-table__cell b-contacts-cell dotted-right">-->
+            <div class="b-contacts-table__cell b-contacts-cell">
+                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">
+                    ОФИС В САНКТ-ПЕТЕРБУРГЕ
+                </h4>
+
+                <div class="b-mb4">
+                    <?= $contacts->adress ?>
+                </div>
+                <div class="b-mb2 b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_upper b-dotted-decorated_fully">
+                    <?= $contacts->work_time ?>
+                </div>
+
+                <p>
+                    <?= str_replace(' ', '&nbsp;', $contacts->phone) ?><br/>
+                    <?= str_replace(' ', '&nbsp;', $contacts->fax) ?><br/>
+                    <a class="b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully"
+                       href="mailto:<?= $contacts->mail ?>"> <?= $contacts->mail ?></a>
+                </p>
+                <br/>
+
+                <div id="map_spb" class="b-map"></div>
+            </div>
+<!--            <div class="b-contacts-table__cell b-contacts-cell b-contacts-cell_right">-->
+<!--                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">-->
+<!--                    ПРЕДСТАВИТЕЛЬСТВО В МОСКВЕ-->
+<!--                </h4>-->
+<!---->
+<!--                <div class="b-mb4">-->
+<!--                    --><?//= $contacts->adress ?>
+<!--                </div>-->
+<!--                <div class="b-mb2 b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_upper b-dotted-decorated_fully">-->
+<!--                    --><?//= $contacts->work_time ?>
+<!--                </div>-->
+<!---->
+<!--                <p>-->
+<!--                    --><?//= str_replace(' ', '&nbsp;', $contacts->phone) ?><!--<br/>-->
+<!--                    --><?//= str_replace(' ', '&nbsp;', $contacts->fax) ?><!--<br/>-->
+<!--                    <a class="b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully"-->
+<!--                       href="mailto:--><?//= $contacts->mail ?><!--"> --><?//= $contacts->mail ?><!--</a>-->
+<!--                </p>-->
+<!--                <br/>-->
+<!---->
+<!--                <div id="map_msc" class="b-map"></div>-->
+<!---->
+<!--            </div>-->
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function Map() {
+        var _options = {
+            map: null,
+            placemarks: [],
+            container: "map_spb",
+            mapOptions: {
+                center: [59.909567, 30.306876],
+                zoom: 17,
+                controls: ['smallMapDefaultSet']
+            }
+        }, _ = _options, map;
+        var _init = function (settings) {
+            _ = jQuery.extend(true, _, settings);
+
+            _createMap();
+        };
+        var _createMap = function () {
+
+            map = _.map = new ymaps.Map(_.container, _.mapOptions);
+        };
+        var _addPlacemark = function (coords) {
+            var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
+                '<div style="height: 49px;  width: 73px;">' +
+                '<img style="width: 73px; height: 49px;"' +
+                'src="/Content/images/small-aledo-logo-without-title.png"/>' +
+                '</div>'
+            );
+
+            var placemark = new ymaps.Placemark(coords, {}, {
+
+                iconLayout: 'default#image',
+                iconImageHref: '/Content/images/aledo-map-marker.png',
+                iconImageSize: [28, 46],
+                iconImageOffset: [-14, -46],
+                balloonContentLayout: BalloonContentLayout,
+                balloonPanelMaxMapArea: 0,
+                hideIconOnBalloonOpen: false,
+                balloonOffset: [0, -46]
+            });
+            _.map.geoObjects.add(placemark);
+            _.placemarks.push(placemark);
+            placemark.balloon.open();
+            return placemark;
+        };
+        return {
+            init: _init,
+            addPlacemark: _addPlacemark
+        };
+    }
+    ymaps.ready(function () {
+        var mapInstance = Map();
+        mapInstance.init();
+        mapInstance.addPlacemark([59.909567, 30.306876])
+    });
+    ymaps.ready(function () {
+        var mapInstance = Map();
+        mapInstance.init({
+            mapOptions: {
+                center: [55.725564, 37.645519]
+            },
+            container: "map_msc"
+        });
+        mapInstance.addPlacemark([55.725564, 37.645519])
+    });
+
+</script>
