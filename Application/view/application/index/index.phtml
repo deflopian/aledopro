@@ -2,7 +2,7 @@
     <? $banner = reset($this->bannerImages) ?>
     <div class="b-main-banner b-slider_banners">
         <? foreach ($this->bannerImages as $banner) { ?>
-        <a href="<?= $banner->link ?>">
+        <a href="<?= $banner->link ?>" class="b-slider_banners__slider">
             <div class="b-slider__item b-slider_banners__item">
                 <i class="b-slider-item-layout"></i>
 
@@ -16,30 +16,24 @@
     </div>
 
     <script type="text/javascript">
-        $('.b-slider_banners__item').width($(window).width());
 
-        window.onresize = function(event) {
-            $('.b-slider_banners__item').width($(window).width());
-        };
 
         (function () {
             var $this = jQuery('.b-slider_banners');
             $this.slick({
                 dots: false,
                 infinite: true,
-                draggable: browser.mobile ? true : false,
+                draggable: true,
                 speed: browser.mobile ? 300 : 700,
                 touchThreshold: browser.mobile ? 5 : 50,
                 slidesToShow: 1,
-                centerMode: true,
+
                 autoplay: true,
                 autoplaySpeed: 4000,
-                variableWidth: true,
+
                 arrows: browser.mobile ? false : true,
                 prevArrow: "<a class=\"left carousel-control\" href=\"javascript:void(0)\"><div class=\"aledo-banner-chevron left\"></div></a>",
                 nextArrow: "<a class=\"right carousel-control\" href=\"javascript:void(0)\"><div class=\"aledo-banner-chevron right\"></div></a>"
-//                nextArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_next b-slider_banners__arrow b-slider_blog__arrow_next\">" +
-//                "</a>"
             });
         })();
     </script>
@@ -110,7 +104,7 @@
                 <? foreach($this->projects as $i=>$project){ ?>
 
                         <div class="b-slider__item b-slider_projects__item">
-                        <a href="/projects/view/<?= $project->id ?>">
+                    <a href="/projects/view/<?= $project->id ?>">
                             <i class="b-slider-item-layout"></i>
                             <img src="/images/projects/<?= $project->img ?>" alt="<?= $project->title ?>" class="b-slider_projects__image"/>
                             <span class="b-slider_projects__title"><?= $project->title ?></span>
