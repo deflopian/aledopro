@@ -2,19 +2,6 @@
     <? $banner = reset($this->bannerImages) ?>
     <div class="b-main-banner b-slider_banners">
         <? foreach ($this->bannerImages as $banner) { ?>
-
-<!--                <img class="b-main-banner__image"-->
-<!--                     image-responsive="{-->
-<!--                             default : {-->
-<!--                                 src:'/images/banner/--><?//= $banner->img ?><!--'-->
-<!--                             },-->
-<!--                             768 : {-->
-<!--                                 src: '/images/banner/--><?//= $banner->img ?><!--',-->
-<!--                             },-->
-<!--                             992 : {-->
-<!--                                 src: '/images/banner/--><?//= $banner->img ?><!--',-->
-<!--                             }-->
-<!--                 }"/>-->
         <a href="<?= $banner->link ?>">
             <div class="b-slider__item b-slider_banners__item">
                 <i class="b-slider-item-layout"></i>
@@ -30,16 +17,23 @@
 
     <script type="text/javascript">
         $('.b-slider_banners__item').width($(window).width());
+
+        window.onresize = function(event) {
+            $('.b-slider_banners__item').width($(window).width());
+        };
+
         (function () {
             var $this = jQuery('.b-slider_banners');
             $this.slick({
                 dots: false,
                 infinite: true,
                 draggable: browser.mobile ? true : false,
-                speed: browser.mobile ? 300 : 500,
+                speed: browser.mobile ? 300 : 700,
                 touchThreshold: browser.mobile ? 5 : 50,
                 slidesToShow: 1,
                 centerMode: true,
+                autoplay: true,
+                autoplaySpeed: 4000,
                 variableWidth: true,
                 arrows: browser.mobile ? false : true,
                 prevArrow: "<a class=\"left carousel-control\" href=\"javascript:void(0)\"><div class=\"aledo-banner-chevron left\"></div></a>",

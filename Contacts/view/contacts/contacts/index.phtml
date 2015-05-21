@@ -7,17 +7,17 @@
         <div class="b-contacts-table text-center">
             <div class="b-contacts-table__cell b-contacts-cell dotted-right">
                 <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">КОНТАКТЫ</h4>
-                <div class="b-mb4">
+                <div class="b-mb4" style="margin-bottom: 2rem">
                     <?= $contacts->adress?>
                 </div>
-                <p class="b-mb2 b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_upper b-dotted-decorated_fully">
+                <div class="b-mb2 b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_upper b-dotted-decorated_fully">
                     <?= $contacts->work_time?>
-                </p>
-                <p>
+                </div>
+                <div>
                     <?= str_replace(' ', '&nbsp;', $contacts->phone) ?><br />
                     <?= str_replace(' ', '&nbsp;', $contacts->fax) ?><br />
-                    <a class="b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully" href="mailto:<?= $contacts->mail?>"> <?= $contacts->mail?></a>
-                </p>
+                    <a href="mailto:<?= $contacts->mail?>"> <?= $contacts->mail?></a>
+                </div>
             </div>
             <div class="b-contacts-table__cell b-contacts-cell b-contacts-cell_right">
                 <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">СВЯЖИТЕСЬ С НАМИ</h4>

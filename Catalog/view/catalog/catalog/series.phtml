@@ -28,7 +28,7 @@
         <? foreach($imgs as $img) { ?>
             <? if (!$series->preview && $series->img_gallery == $img->url) continue; ?>
             <? if (!$series->preview && $i++ == 0) continue; ?>
-            <div class="b-goods-gallery-item"><i class="b-goods-gallery-item__layout"></i>
+            <div class="b-goods-gallery-item"><i class="b-goods-gallery-item__layout" style="width: 1px"></i>
                 <? $src = $img->url ? $this->basePath() . '/images/series/' . $img->url : $this->basePath() . '/images/empty-series.png' ?>
                 <a class="b-goods-gallery-item__link" href="<?= $src ?>" rel="gallery">
                     <img class="b-goods-gallery-item__image" src="<?= $src ?>" alt="<?= $series->visible_title; ?> url" />
@@ -460,7 +460,10 @@
 <script>
     popup.renderCartedLines();
     catalogClient.scrollToProduct = <?= $scrollToProduct ? $scrollToProduct : 'false'  ?>;
-    catalogClient.initUrl();
+    $(function() {
+        catalogClient.initUrl();
+    });
+
 
 
     <? if ($admin) : ?>
