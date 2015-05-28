@@ -36,6 +36,7 @@ class NewsController extends AbstractActionController
 
         $this->layout()->pageTitle = $oneNews->title;
         $this->layout()->breadCrumbs  = array(
+            array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
             array('link'=> $this->url()->fromRoute('news'), 'text'=>ucfirst('Новости'))
         );
         $htmlViewPart = new ViewModel();
@@ -66,6 +67,7 @@ class NewsController extends AbstractActionController
 
             'pageTitle' => 'Новости',
             'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
                 array('link'=> $this->url()->fromRoute('blog'), 'text'=>ucfirst('Блог'))
             ),
         ));

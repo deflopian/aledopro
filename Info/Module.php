@@ -59,6 +59,10 @@ class Module
                     $table     = new PartnersTable($dbAdapter);
                     return $table;
                 },
+                'Partnerform' =>  function($sm) {
+                    $form = new Form\PartnerForm(null);
+                    return $form;
+                },
                 'InfoServicesTable' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table     = new ServicesTable($dbAdapter);

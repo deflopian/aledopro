@@ -14,6 +14,12 @@
  * @var \Projects\Model\ProjectImg[] $imgs
  */
 /** @var integer $scrollToProduct*/
+
+mb_internal_encoding("UTF-8");
+function mb_ucfirst($text) {
+    return mb_strtoupper(mb_substr($text, 0, 1)) . mb_substr($text, 1);
+}
+
 ?><div class="b-goods b-section" style="padding-top: 0">
     <div class="b-section__content">
         <div class="b-breadcrumbs">
@@ -75,11 +81,22 @@
                     <li class="b-tabs__tab">
                         <a class="b-tabs__link " role="tab" href="#goods_3" data-toggle="tab" aria-controls="goods_3">Материалы для скачивания</a>
                     </li>
-                    <? $dopgtitle = "Блоки питания";
-                    $dopProductsGroup = reset($dopProducts); ?>
-                    <? if ($dopProducts && $dopProductsGroup) { ?>
+                    <? $dopgtitle = "Источники питания"; ?>
+                    <? $dpGroups = array(); ?>
+                    <? foreach ($dopProducts as $dpgkey => $dopProductsGroup) {
+                        if (($dptitle = mb_ucfirst(trim($dopProductsGroup['title']))) == $dopgtitle) {
+                            $dpGroups[] = $dopProductsGroup;
+                            unset($dopProducts[$dpgkey]);
+                        }
+                     } ?>
+                    <? if (!count($dpGroups)) {
+                        $dpGroups = array(reset($dopProducts));
+                        $dopgtitle = isset($dpGroups[0]['title']) ? mb_ucfirst(trim($dpGroups[0]['title'])) : false;
+                        array_shift($dopProducts);
+                    } ?>
+                    <? if ($dopgtitle && $dpGroups) { ?>
                     <li class="b-tabs__tab">
-                        <a class="b-tabs__link "  role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4"><?= $dopProductsGroup['title'] ?></a>
+                        <a class="b-tabs__link "  role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4"><?= $dopgtitle ?></a>
                     </li>
                     <? } ?>
 
@@ -88,10 +105,11 @@
 
             <div class="b-tabs-content b-tabs-content_goods tab-content">
                 <div class="b-tabs-content__item fade in active tab-pane" role="tabpanel" id="goods_1">
+
                     <div class="catalog" style="position: relative; <?= $view !== \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES ? '' : 'margin-top: 70px;' ?>">
                         <div class="row row-second-xs" id="serpopup-table-container">
                             <div class="col-xs-12" id="testApp_<?= $series->id ?>" >
-<!--                                <div ng-controller="SoloTableCtrl">-->
+
                                 <?
 
                                 switch($view){
@@ -122,16 +140,59 @@
                                     )
                                 ); ?>
 
-<!--                                </div>-->
-
                             </div>
 
 
                         </div>
                     </div>
+                    <? foreach ($dopProducts as $oneGroup) { ?>
 
+                        <div style="position: relative">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div>
+                                        <h2 class="series-description-block__title"><?= mb_ucfirst(trim($oneGroup['title'])) ?></h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row row-second">
+                                <div class="col-xs-12" id="testApp_<?= $oneGroup['id'] ?>">
+                                    <?
+                                    $view = ($oneGroup['display_style'] > 0 ? $oneGroup['display_style'] : $oneGroup['view'] );
+                                    switch($view){
+                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES: //це пиздец
+                                            $tpl = 'product-table-profili';
+                                            break;
+                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER: //це пиздец
+                                            $tpl = 'product-table-pitaine';
+                                            break;
+                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS: //це пиздец
+                                            $tpl = 'product-table-lenti';
+                                            break;
+                                        default:
+                                            $tpl = 'product-table';
+                                            break;
+                                    }
 
+                                    echo $this->partial(
+                                        'catalog/catalog/part/part/'. $tpl .'.phtml',
+                                        array(
+                                            'products' => $oneGroup['products'],
+                                            'offeredIds'   => $this->offeredIds,
+                                            'selectedProdId'   => $this->selectedProdId,
+                                            'user' => $this->user,
+                                            'serNum' => $oneGroup['id'],
+                                            'hierarchies' => $this->hierarchies,
+                                            'discounts' => $this->discounts,
+                                            'nonFilter' => true,
+                                        )
+                                    );
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
 
+                    <? } ?>
 
                     <?=
                     $this->partial(
@@ -255,47 +316,53 @@
                     <? } ?>
                 </div>
                 <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_4">
-                    <? foreach ($dopProducts as $oneGroup) { ?>
-                        <div style="position: relative">
-                            <div class="row row-second">
-                                <div class="col-xs-12" id="testApp_<?= $oneGroup['id'] ?>">
-                                    <?
-                                    $view = ($oneGroup['display_style'] > 0 ? $oneGroup['display_style'] : $oneGroup['view'] );
-                                    switch($view){
-                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES: //це пиздец
-                                            $tpl = 'product-table-profili';
-                                            break;
-                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER: //це пиздец
-                                            $tpl = 'product-table-pitaine';
-                                            break;
-                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS: //це пиздец
-                                            $tpl = 'product-table-lenti';
-                                            break;
-                                        default:
-                                            $tpl = 'product-table';
-                                            break;
-                                    }
+                    <? foreach ($dpGroups as $num => $dpGroup) { ?>
 
-                                    echo $this->partial(
-                                        'catalog/catalog/part/part/'. $tpl .'.phtml',
-                                        array(
-                                            'products' => $oneGroup['products'],
-                                            'offeredIds'   => $this->offeredIds,
-                                            'selectedProdId'   => $this->selectedProdId,
-                                            'user' => $this->user,
-                                            'serNum' => $oneGroup['id'],
-                                            'hierarchies' => $this->hierarchies,
-                                            'discounts' => $this->discounts,
-                                            'nonFilter' => true,
-                                        )
-                                    );
-                                    ?>
+                    <div style="position: relative">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div>
+                                    <h2 class="series-description-block__title"><?= mb_ucfirst($dpGroup['title']) ?></h2>
                                 </div>
                             </div>
                         </div>
+                        <div class="row row-second-xs">
+                            <div class="col-xs-12" id="testApp_<?= $dpGroup['id'] ?>">
+                                <?
+                                $view = ($dpGroup['display_style'] > 0 ? $dpGroup['display_style'] : $dpGroup['view'] );
+                                switch($view){
+                                    case \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES: //це пиздец
+                                        $tpl = 'product-table-profili';
+                                        break;
+                                    case \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER: //це пиздец
+                                        $tpl = 'product-table-pitaine';
+                                        break;
+                                    case \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS: //це пиздец
+                                        $tpl = 'product-table-lenti';
+                                        break;
+                                    default:
+                                        $tpl = 'product-table';
+                                        break;
+                                }
 
+                                echo $this->partial(
+                                    'catalog/catalog/part/part/'. $tpl .'.phtml',
+                                    array(
+                                        'products' => $dpGroup['products'],
+                                        'offeredIds'   => $this->offeredIds,
+                                        'selectedProdId'   => $this->selectedProdId,
+                                        'user' => $this->user,
+                                        'serNum' => $dpGroup['id'],
+                                        'hierarchies' => $this->hierarchies,
+                                        'discounts' => $this->discounts,
+                                        'nonFilter' => true,
+                                    )
+                                );
+                                ?>
+                            </div>
+                        </div>
+                    </div>
                     <? } ?>
-
                 </div>
             </div>
         </div>

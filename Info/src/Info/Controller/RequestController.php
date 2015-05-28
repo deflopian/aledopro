@@ -2,6 +2,7 @@
 namespace Info\Controller;
 
 use Application\Service\MailService;
+use Info\Form\PartnerForm;
 use Info\Model\PartnerRequest;
 use Info\Model\Partners;
 use Services\Controller\ServicesController;
@@ -11,6 +12,8 @@ use Zend\Crypt\Password\Bcrypt;
 use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use ZfcUser\Entity\User;
+use ZfcUserTest\Factory\UserMapperFactoryTest;
 
 class RequestController extends AbstractActionController {
 
@@ -45,20 +48,85 @@ class RequestController extends AbstractActionController {
             $userData['user_cur_password'] = $postData['partner_password'];
             $userData['user_password_repeat'] = $postData['partner_password_repeat'];
 
-            $form->setData($userData);
-            if (!$form->isValid()) {
-                /** @var \Zend\Http\Response $response */
-                $response = $this->getResponse();
+            //пытаемся авторизоваться
+            if ($this->zfcUserAuthentication()->hasIdentity()) {
+                /** @var User $user */
+                $user = $this->zfcUserAuthentication()->getIdentity();
 
-                $response->setContent(
-                    \Zend\Json\Json::encode(
-                        array(
-                            'success' => 0,
-                            'messages' => $form->getMessages()
-                        )
-                    )
-                );
-                return $response;
+                if ($user->getEmail() == $postData['partner_email']) {
+                    if ($user->getIsPartner()) {
+                        $response = $this->getResponse();
+
+                        $response->setContent(
+                            \Zend\Json\Json::encode(
+                                array(
+                                    'success' => 1,
+                                    'errors' => array('main' => 'user already partner')
+                                )
+                            )
+                        );
+                        return $response;
+                    }
+                    /** @var PartnerForm $partnerForm */
+                    $partnerForm = $this->getServiceLocator()->get('PartnerForm');
+
+
+                    $partnerForm->setData($postData);
+
+                    if ($partnerForm->isValid()) {
+                        $partner = new PartnerRequest();
+                        $partner->exchangeArray($partnerForm->getData());
+                        $prTable = $this->getServiceLocator()->get('PartnerRequestTable');
+                        $prTable->save($partner);
+
+                        $user->setIsPartner(0);
+                        $user->setState(1);
+                        /** @var \ZfcUser\Mapper\User $userMapper */
+                        $userMapper = $this->getServiceLocator()->get('zfcuser_user_mapper');
+                        $result = $userMapper->update($user);
+
+                        $response = $this->getResponse();
+
+                        $response->setContent(
+                            \Zend\Json\Json::encode(
+                                array(
+                                    'success' => 1,
+                                    'errors' => $partnerForm->getMessages()
+                                )
+                            )
+                        );
+                        return $response;
+                    } else {
+                        $response = $this->getResponse();
+
+                        $response->setContent(
+                            \Zend\Json\Json::encode(
+                                array(
+                                    'success' => 0,
+                                    'errors' => $partnerForm->getMessages()
+                                )
+                            )
+                        );
+                        return $response;
+                    }
+                } else {
+                    //пользователь залогинен, но запрашивает партнёрство не для себя
+                    $form->setData($userData);
+                    if (!$form->isValid()) {
+                        /** @var \Zend\Http\Response $response */
+                        $response = $this->getResponse();
+
+                        $response->setContent(
+                            \Zend\Json\Json::encode(
+                                array(
+                                    'success' => 0,
+                                    'errors' => $form->getMessages()
+                                )
+                            )
+                        );
+                        return $response;
+                    }
+                }
             }
 
             $data = $form->getData();
@@ -72,7 +140,7 @@ class RequestController extends AbstractActionController {
             $user->setEmail($data['user_email']);
             $user->setPhone($data['user_tel']);
             $user->setCity($data['user_city']);
-            $user->setIsPartner(1);
+            $user->setIsPartner(0);
             $user->setState(1);
             /** @var \ZfcUser\Mapper\User $userMapper */
             $userMapper = $this->getServiceLocator()->get('zfcuser_user_mapper');
@@ -93,11 +161,11 @@ class RequestController extends AbstractActionController {
 
             //добро пожаловать на сайт, логин, пароль
             list($email, $mailView) = MailService::prepareRegisterUserMailData($this->serviceLocator, $user, $data['password']);
-            MailService::sendMail($email, $mailView, "Добро пожаловать на Aledo!");
+            MailService::sendMail(MailService::$developerMail, $mailView, "Добро пожаловать на Aledo!");
 
             if ($user->getIsSpamed()) {
                 list($email, $mailView) = MailService::prepareNewSpamedRegisterManagerData($this->serviceLocator, $user);
-                MailService::sendMail($email, $mailView, "Новый подписчик на Aledo номер " . $user->getId());
+                MailService::sendMail(MailService::$developerMail, $mailView, "Новый подписчик на Aledo номер " . $user->getId());
             }
 
             if ($user->getIsPartner()) {
@@ -111,7 +179,7 @@ class RequestController extends AbstractActionController {
             }
             //зарегался новый юзер. Имя, почта, телефон
             list($email, $mailView) = MailService::prepareRegisterManagerMailData($this->serviceLocator, $user);
-            MailService::sendMail($email, $mailView, "На Aledo новый пользователь номер " . $user->getId());
+            MailService::sendMail(MailService::$developerMail, $mailView, "На Aledo новый пользователь номер " . $user->getId());
         }
         $response = $this->getResponse();
 

@@ -46,7 +46,7 @@
         <img src="/images/service/<?= $entity->img4_name ?>" />
 
     </div>
-    <div class="b-section__content b-section__content_partnership text-center">
+    <div class="b-section__content b-section__content_partnership text-center" ng-controller="PopupController" ng-init="checkDefaultPopup()">
         <div class="b-partnership text-left">
             <div class="b-partnership__row">
                 <div class="b-partnership__cell b-partnership__cell_left">
@@ -56,7 +56,7 @@
                     </p>
                     <ul class="b-partnership__list list-unstyled">
                         <li class="b-partnership__list-item">
-                            Пройдите регистрацию <strong><a ng-controller="PopupController" href="javascript:void(0)" ng-click="getPopup(ALEDO_POPUP_REGISTER)">здесь</a></strong>
+                            Пройдите регистрацию <strong><a href="javascript:void(0)" ng-click="getPopup(ALEDO_POPUP_REGISTER)">здесь</a></strong>
                             <i class="b-partnership__list-item-num">1</i>
                         </li>
                         <li class="b-partnership__list-item">
@@ -85,7 +85,7 @@
                     </p>
                     <ul class="b-partnership__list list-unstyled">
                         <li class="b-partnership__list-item">
-                            Заполните карту партнёра <strong><a ng-controller="PopupController" href="javascript:void(0)" ng-click="getPopup(ALEDO_POPUP_PARTNER_CARD)">здесь</a></strong>
+                            Заполните карту партнёра <strong><a href="javascript:void(0)" ng-click="getPopup(ALEDO_POPUP_PARTNER_CARD)">здесь</a></strong>
                             <i class="b-partnership__list-item-num">1</i>
                         </li>
                         <li class="b-partnership__list-item">
@@ -112,12 +112,12 @@
                     <div>
                         <div class=" b-form-group b-form-group_inline">
                             <label for="service_feedback_fio">ФИО*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="service_feedback_fio" ng-model="fio" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small" id="service_feedback_fio" ng-model="formData.fio" autocomplete="off" required />
                         </div>
                         <div class="b-form-group b-form-group_inline b-ml3">
                             <label for="service_feedback_email">E-mail*</label>
 
-                            <input type="text" class="b-form-control b-form-control_small" id="service_feedback_email" ng-model="email" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small" id="service_feedback_email" ng-model="formData.email" autocomplete="off" required />
 
                         </div>
                     </div>
@@ -125,7 +125,7 @@
                         <label for="service_feedback_text">
                             Текст сообщения
                         </label>
-                        <textarea class="b-form-control b-form-control_small" ng-model="text" id="service_feedback_text" minlength="30" required></textarea>
+                        <textarea class="b-form-control b-form-control_small" ng-model="formData.text" id="service_feedback_text" minlength="20" required></textarea>
                     </div>
                     <button class="b-button b-button_yellow-background b-button_small  b-button_gray-colored b-mb3 " ng-disabled="serviceFeedback.$invalid" id="service_feedback_button" type="submit">
                         <span class="b-button__text">

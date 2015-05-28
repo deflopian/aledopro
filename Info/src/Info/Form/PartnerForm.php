@@ -37,7 +37,7 @@ class PartnerForm extends Form
         foreach($textFields as $name=>$required){
             $inputFilter->add(array(
                 'name' => $name,
-                'required' => true,
+                'required' => $required,
                 'validators' => $messages['text'],
                 'filters' => array(
                     array('name' => 'stringtrim'),
@@ -52,21 +52,18 @@ class PartnerForm extends Form
     private function getTextFields()
     {
         return array(
-            'name' => true,
-            'activity' => true,
-            'job' => false,
-            'phone' => true,
-            'email' => true,
-            'company_name' => true,
-            'company_activity' => true,
-            'brands_sample' => true,
-            'post_index' => false,
-            'city' => false,
-            'adress' => false,
-            'company_phone' => true,
-            'company_fax' => false,
-            'company_email' => true,
-            'company_website' => true,
+            'partner_lastname' => false,
+            'partner_name' => true,
+            'partner_fathername' => false,
+            'partner_city' => false,
+            'partner_tel' => false,
+            'partner_email' => true,
+            'partner_company_name' => true,
+            'partner_job_title' => false,
+            'partner_scope' => true,
+            'partner_brands' => true,
+            'partner_office_tel' => true,
+            'partner_website' => false,
         );
     }
 }

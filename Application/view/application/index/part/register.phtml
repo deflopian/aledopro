@@ -127,9 +127,19 @@
                                        name="user_name"
                                        id="user_name"
                                        ng-model="formData.user_name"
+                                       ng-init="formData.user_name=''"
                                        autocomplete="off"
+                                       ng-change="validityOnChange('user_name')"
                                        required />
+                                <div class=""
+                                     ng-show="registration.user_name.$dirty && registration.user_name.$invalid">
+                                    <small class="b-form-error"
+                                           ng-show="registration.user_name.$error.stringLengthTooShort">
+                                        Длина поля должна быть по меньшей мере 3 символа
+                                    </small>
+                                </div>
                             </div>
+
                         </div>
                         <div>
                             <div class="b-registration__cell b-registration__cell_left">
@@ -142,22 +152,27 @@
                                        name="user_tel"
                                        data-required="yes"
                                        ng-model="formData.user_tel"
+                                       ng-init="formData.user_tel=''"
                                        autocomplete="off"
+                                       ng-change="validityOnChange('user_tel')"
                                        required />
                             </div>
                         </div>
                         <div>
                             <div class="b-registration__cell b-registration__cell_left">
-                                <label for="user_city">Город</label>
+                                <label for="user_city">Город*</label>
                             </div>
                             <div class="b-registration__cell b-registration__cell_right">
                                 <input type="text"
                                        class="b-form-control b-form-control_small"
                                        id="user_city"
                                        name="user_city"
-                                       data-required="no"
+                                       data-required="yes"
                                        ng-model="formData.user_city"
+                                       ng-init="formData.user_city=''"
+                                       ng-change="validityOnChange('user_city')"
                                        autocomplete="off"
+                                       required
                                     />
                             </div>
                         </div>
@@ -172,40 +187,55 @@
                                        data-required="yes"
                                        name="user_email"
                                        ng-model="formData.user_email"
+                                       ng-init="formData.user_email=''"
+                                       ng-change="validityOnChange('user_email')"
                                        autocomplete="off"
                                        required />
-                            </div>
-                        </div>
-                        <div>
-                            <div class="b-registration__cell b-registration__cell_left">
-                                <label for="user_email">E-mail*</label>
-                            </div>
-                            <div class="b-registration__cell b-registration__cell_right">
-                                <input type="checkbox"
-                                       class="b-form-control b-form-control_small"
-                                       id="user_email"
-                                       data-required="yes"
-                                       name="user_email"
-                                       ng-model="formData.user_email"
-                                       autocomplete="off"
-                                       required />
+                                <div class=""
+                                     ng-show="registration.user_email.$dirty && registration.user_email.$invalid">
+                                    <small class="b-form-error"
+                                           ng-show="registration.user_email.$error.recordFound">
+                                        Пользователь с таким Email уже зарегистрирован
+                                    </small>
+                                    <small class="b-form-error"
+                                           ng-show="registration.user_email.$error.stringLengthTooShort">
+                                        Длина поля должна быть по меньшей мере 3 символа
+                                    </small>
+                                    <small class="b-form-error"
+                                           ng-show="registration.user_email.$error.wrong_format">
+                                        Неправильный формат почты
+                                    </small>
+                                </div>
                             </div>
                         </div>
 
                         <div class="b-registration__table">
                             <div class="b-registration__row">
                                 <div class="b-registration__cell b-registration__cell_left">
-                                    <label for="user_password">Пароль*</label>
+                                    <label for="user_cur_password">Пароль*</label>
                                 </div>
                                 <div class="b-registration__cell b-registration__cell_right">
                                     <input type="password"
                                            class="b-form-control b-form-control_small"
                                            id="user_cur_password"
                                            ng-model="formData.user_cur_password"
+                                           ng-init="formData.user_cur_password=''"
                                            data-required="yes"
                                            name="user_cur_password"
+                                           ng-change="validityOnChange('user_cur_password')"
                                            autocomplete="off"
                                            required />
+                                    <div class=""
+                                         ng-show="registration.user_cur_password.$dirty && registration.user_cur_password.$invalid">
+                                        <small class="b-form-error"
+                                               ng-show="registration.user_cur_password.$error.is_empty">
+                                            Поле не может быть пустым
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="registration.user_cur_password.$error.stringLengthTooShort">
+                                            Длина поля должна быть по меньшей мере 6 символов
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="b-registration__row">
@@ -217,12 +247,40 @@
                                            class="b-form-control b-form-control_small"
                                            id="user_password_repeat"
                                            ng-model="formData.user_password_repeat"
+                                           ng-init="formData.user_password_repeat=''"
                                            autocomplete="off"
                                            name="user_password_repeat"
+                                           ng-change="validityOnChange('user_password_repeat')"
                                            data-required="yes"
                                            required />
+                                    <div class=""
+                                         ng-show="registration.user_password_repeat.$dirty && registration.user_password_repeat.$invalid">
+                                        <small class="b-form-error"
+                                               ng-show="registration.user_password_repeat.$error.is_empty">
+                                            Поле не может быть пустым
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="registration.user_password_repeat.$error.notSame">
+                                            Пароли не совпадают
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="registration.user_password_repeat.$error.stringLengthTooShort">
+                                            Длина поля должна быть по меньшей мере 6 символов
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="b-registration__row">
+                            <input class="b-form-control b-checkbox"
+                                   type="checkbox"
+                                   id="user_is_spamed"
+                                   ng-model="formData.user_is_spamed"
+                                   ng-init="formData.user_is_spamed=true"
+                                />
+                            <label for="user_is_spamed">подписаться на рассылку (информация о скидках, акциях)</label>
+
                         </div>
                         <div class="text-center">
                             <div class="b-button b-button_gray" ng-click="submit()" id="registration_button" ng-disabled="registration.$invalid">

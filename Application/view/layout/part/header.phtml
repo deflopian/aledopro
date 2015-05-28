@@ -20,6 +20,12 @@
                                placeholder="Ваш e-mail"
                                class="b-form-control b-form-control_small b-form-control_auth"
                                ng-model="formData.identity" />
+                        <div class=""  style="margin-top: -0.7rem;"
+                             ng-show="loginError">
+                            <small class="b-form-error">
+                                Неправильный логин или пароль
+                            </small>
+                        </div>
                     </div>
                     <div class="b-authorize__col">
                         <input name="credential"
@@ -199,9 +205,18 @@
             <div class="b-header-top-section__right">
                 <p class="b-header-top-section__we-work hidden-xs hidden-sm">Работаем по всей РФ</p>
                 <ul class="b-header-top-section__list list-unstyled b-right">
-                    <li class="b-header-top-section__list-item">
+                    <li class="b-header-top-section__list-item" style="text-align: right">
                         <a href="/info/" class="b-highlighted-link b-header-top-section__link b-header-top-section__link_about-company <?= ($active=='info' && $action=='index') ? 'b-header-top-section__link-active' : ''?>">О компании</a><br class=" visible-sm-block visible-xs-block" />
                         <a href="/partners/" class="b-highlighted-link b-header-top-section__link <?= $active=='partners' ? 'b-header-top-section__link-active' : ''?>">Партнерам</a>
+                        <? if ($isManager && $godModeId && $godModeName) { ?>
+                            <div style="font-size: 1.1rem;">
+                            <span style="color: #666; padding-left: 10px; padding-top: 5px; line-height: 20px; display: inline-block;">
+                                Пользователь номер <?= $godModeId ?> (<?= $godModeName ?>) 
+                            </span>
+
+                            <a class="pull-right" style="color: #666; padding-top: 5px; line-height: 20px; display: inline-block" href="/cabinet/godModeOff">[Отмена]</a>
+                            </div>
+                        <? } ?>
                     </li>
 
                         <li class="b-header-top-section__list-item">

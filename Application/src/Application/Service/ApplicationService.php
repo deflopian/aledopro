@@ -27,6 +27,8 @@ class ApplicationService
     const ALEDO_POPUP_PARTNER_CARD = 9;
     const ALEDO_POPUP_SERVICE_CALCULATE = 10;
     const ALEDO_POPUP_FORGOT = 11;
+    const ALEDO_POPUP_ORDER_SUCCESS = 12;
+    const ALEDO_POPUP_QUESTION_SUCCESS = 13;
 
     private static $aledoPopups = array(
         self::ALEDO_POPUP_ERROR => 'error',
@@ -41,6 +43,8 @@ class ApplicationService
         self::ALEDO_POPUP_PARTNER_CARD => 'partner-card',
         self::ALEDO_POPUP_SERVICE_CALCULATE => 'service_calculate',
         self::ALEDO_POPUP_FORGOT => 'forgot',
+        self::ALEDO_POPUP_ORDER_SUCCESS => 'ordersend',
+        self::ALEDO_POPUP_QUESTION_SUCCESS => 'question_send',
     );
     
     private static $bannerPositionNames = array(

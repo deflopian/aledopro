@@ -8,7 +8,7 @@
             <form novalidate
                   name="forgot"
                   ng-controller="ForgotPasswordController">
-                <div>
+                <div class="b-registration__row">
                     <div class="b-registration__cell b-registration__cell_left">
                         <label for="identity">Введите ваш e-mail и мы отправим вам новый пароль*</label>
                     </div>
@@ -21,6 +21,16 @@
                                ng-model="formData.identity"
                                autocomplete="off"
                                required />
+                    </div>
+                </div>
+                <div class="b-registration__row">
+                    <div class="b-registration__cell b-registration__cell_left">
+                    </div>
+                    <div class="b-registration__cell b-registration__cell_right"
+                         ng-show="userNotFound">
+                        <small class="b-form-error">
+                            К сожалению, пользователь с таким email не найден. Проверьте правильность ввода или <a href="javascript:void(0)" ng-click="getPopup(ALEDO_POPUP_REGISTER, {})">зарегистрируйтесь</a>
+                        </small>
                     </div>
                 </div>
 

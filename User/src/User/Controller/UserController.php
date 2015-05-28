@@ -511,9 +511,16 @@ class UserController extends AbstractActionController
         $form->setData($post);
 
         if (!$form->isValid()) {
-            /** @var Response $response */
             $response = $this->getResponse();
-            return $response->setStatusCode(400);
+            $response->setContent(
+                \Zend\Json\Json::encode(
+                    array(
+                        'success' => 0,
+                        'errors' => $form->getMessages()
+                    )
+                )
+            );
+            return $response;
         }
 
         // clear adapters
@@ -589,11 +596,12 @@ class UserController extends AbstractActionController
             if (!$form->isValid()) {
                 $response = $this->getResponse();
 
+                $messages = $form->getMessages();
                 $response->setContent(
                     \Zend\Json\Json::encode(
                         array(
                             'success' => 0,
-                            'messages' => $form->getMessages()
+                            'messages' => $messages
                         )
                     )
                 );
@@ -617,7 +625,8 @@ class UserController extends AbstractActionController
                         \Zend\Json\Json::encode(
                             array(
                                 'success' => 0,
-                                'messages' => array('global' => "Your password is incorrect"),
+
+                                'messages' => array('password' => array("PasswordIncorrect" => "")),
                                 'passHash' => $passHash
                             )
                         )
@@ -639,7 +648,7 @@ class UserController extends AbstractActionController
             }
 
             $user->setUsername($data['username']);
-            $user->setIsSpamed($data['is_spamed'] == 'on' ? true : false);
+            $user->setIsSpamed(($data['is_spamed'] == 'true' ) ? true : false);
             $user->setPhone($data['phone']);
             $user->setCity($data['city']);
             $user->setState(1);
@@ -718,6 +727,25 @@ class UserController extends AbstractActionController
                 return $response;
             }
 
+            $bcrypt = new Bcrypt();
+            $bcrypt->setCost(4);
+            $passHash = $bcrypt->verify($data['credential'], $user->getPassword());
+            if (!$passHash) {
+                $response = $this->getResponse();
+
+                $response->setContent(
+                    \Zend\Json\Json::encode(
+                        array(
+                            'success' => 0,
+
+                            'messages' => array('credential' => array("PasswordIncorrect" => "")),
+                            'passHash' => $passHash
+                        )
+                    )
+                );
+                return $response;
+            }
+
             $data = $form->getData();
             /* @var $user \ZfcUser\Entity\User */
             if (isset($data['newCredential']) && !empty($data['newCredential'])) {
@@ -784,6 +812,7 @@ class UserController extends AbstractActionController
                     \Zend\Json\Json::encode(
                         array(
                             'success' => 0,
+                            'errors' => $form->getMessages(),
                             'messages' => $form->getMessages()
                         )
                     )

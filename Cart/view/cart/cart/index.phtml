@@ -166,20 +166,22 @@
                             <textarea name="comment" ng-model="orderInfo.order_comment" class="b-form-control b-order-place__comment"></textarea>
                         </div>
                         <hr class="dotted-separator" />
-                        <div class="b-form-group b-form-group_order-place b-clearfix">
+                        <div class="b-form-group b-form-group_order-place b-clearfix" ng-controller="PopupController">
 
                             <button
                                 ng-if="!orderInfo.isAuth"
                                 class="b-button b-button_small b-button_gray-colored b-button_yellow-background b-right"
-                                    ng-controller="PopupController" ng-click="getPopup(ALEDO_POPUP_CART_BUY, {})"
+                                    ng-click="getPopup(ALEDO_POPUP_CART_BUY, {})"
                                     id="order_place">
                                 <input type="hidden" id="order-products" name="order-products"/>
                                 <span class="b-button__text" id="send-bnt">Оформить заказ</span>
                             </button>
                             <button
+
                                 ng-if="orderInfo.isAuth"
                                 class="b-button b-button_small b-button_gray-colored b-button_yellow-background b-right"
-                                    ng-click="makeOrder({})"
+                                ng-controller="OrderPlaceController"
+                                ng-click="makeOrder({})"
                                     id="order_place">
                                 <input type="hidden" id="order-products" name="order-products"/>
                                 <span class="b-button__text" id="send-bnt">Оформить заказ</span>

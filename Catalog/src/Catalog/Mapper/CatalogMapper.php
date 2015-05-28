@@ -149,9 +149,10 @@ class CatalogMapper {
      * @param bool $getAllSeries
      * @param bool $getAllProducts
      * @param array $parentsTree
+     * @param bool $isExcludeIds
      * @return Section $section
      */
-    public function getSection($id, $getAllSubSection = false, $getAllSeries = false, $getAllProducts = false, $parentsTree = array()) {
+    public function getSection($id, $getAllSubSection = false, $getAllSeries = false, $getAllProducts = false, $parentsTree = array(), $isExcludeIds = true) {
 
         if (is_numeric($id)) {
             $section = $this->getSectionTable()->find($id);
@@ -166,7 +167,7 @@ class CatalogMapper {
         }
         if ($getAllSubSection) {
             $ssAg = SubsectionsAggregator::getInstance();
-            $ssAg->addSubsections($this->getSubsections($section->id, $getAllSeries, $getAllProducts, $parentsTree));
+            $ssAg->addSubsections($this->getSubsections($section->id, $getAllSeries, $getAllProducts, $parentsTree, $isExcludeIds));
         }
 
 
@@ -198,9 +199,10 @@ class CatalogMapper {
      * @param bool $getAllSeries
      * @param bool $getAllProducts
      * @param array $parentsTree
+     * @param bool $isExcludeIds
      * @return bool|SubSection|SubSection[]
      */
-    public function getSubsections($parentId, $getAllSeries = false, $getAllProducts = false, $parentsTree = array()) {
+    public function getSubsections($parentId, $getAllSeries = false, $getAllProducts = false, $parentsTree = array(), $isExcludeIds = true) {
         if (is_numeric($parentId)) {
             $subsections = $this->getSubSectionTable()->fetchByCond('section_id', $parentId, 'order asc');
         } else {
@@ -218,7 +220,7 @@ class CatalogMapper {
                     $parentsTree[AdminController::SECTION_TABLE] = $oneSubsection->section_id;
                 }
 
-                $seAg->addSeries($this->getSeries($oneSubsection->id, $getAllProducts, $parentsTree));
+                $seAg->addSeries($this->getSeries($oneSubsection->id, $getAllProducts, $parentsTree, $isExcludeIds));
             }
 
         }
@@ -301,9 +303,10 @@ class CatalogMapper {
      * @param $parentId
      * @param bool $getAllProducts
      * @param array $parentsTree
+     * @param bool $isExcludeIds
      * @return bool|Series|Series[]
      */
-    public function getSeries($parentId, $getAllProducts = false, $parentsTree = array()) {
+    public function getSeries($parentId, $getAllProducts = false, $parentsTree = array(), $isExcludeIds = true) {
         if (is_numeric($parentId)) {
             $series = $this->getSeriesTable()->fetchByCond('subsection_id', $parentId, 'order asc');
         } else {
@@ -348,8 +351,12 @@ class CatalogMapper {
                 }
                 $parentsTree[AdminController::SERIES_TABLE] = $oneSeries->id;
                 $parentsTree[AdminController::SUBSECTION_TABLE] = $oneSeries->subsection_id;
+                if ($isExcludeIds) {
+                    $prods = $this->getProducts($oneSeries->id, $parentsTree, $excludeIds);
+                } else {
+                    $prods = $this->getProducts($oneSeries->id, $parentsTree);
+                }
 
-                $prods = $this->getProducts($oneSeries->id, $parentsTree, $excludeIds);
                 $prods = CatalogService::changeIntParamsWithStringVals($prods, $this->sl->get('Catalog\Model\FilterParamTable'));
                 $pAg->addProducts($prods);
 

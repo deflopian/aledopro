@@ -21,7 +21,7 @@ class MailService
 {
     public static $currentManagerMail = "info@aledo-pro.ru";
     private static $kaledoscopManagerMail = "info@kaledoscop.ru";
-//    public static $currentManagerMail = "deflopian@gmail.com";
+    public static $developerMail = "deflopian@gmail.com";
     const CURRENT_DOMEN = "aledo-pro.ru";
 
     public static function sendMail($email, $data, $subject = "Новый заказ", $from = false)
@@ -872,5 +872,29 @@ class MailService
         $formView = $sl->get('viewrenderer')->render($view);
 
         return array(self::$kaledoscopManagerMail, $formView);
+    }
+
+    /**
+     * @param $sl
+     * @param $data
+     * @return array
+     */
+    public static function prepareFeedbackMessage($sl, $data)
+    {
+
+        if (!isset($data['fio']) || !is_string($data['fio']) || !isset($data['email']) || !is_string($data['email'])) {
+            return false;
+        }
+
+        $view = new ViewModel(array(
+            'params' => $data,
+        ));
+        $view->setTerminal(true);
+
+        $view->setTemplate('application/index/email/feedback-message');
+
+        $formView = $sl->get('viewrenderer')->render($view);
+
+        return array(self::$developerMail, $formView);
     }
 }

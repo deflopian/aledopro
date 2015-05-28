@@ -14,11 +14,14 @@
             <th>Управление</th>
         </tr>
         <tbody>
+        <?
+        /** @var $reqs \Info\Model\PartnerRequest[] */
+        ?>
         <? foreach($reqs as $req){ ?>
             <tr class="entity">
                 <td><?= $req->id; ?></td>
-                <td><?= $req->company_name; ?></td>
-                <td><?= $req->name; ?></td>
+                <td><?= $req->partner_company_name; ?></td>
+                <td><?= $req->partner_lastname . " " . $req->partner_name . " " . $req->partner_fathername ?></td>
                 <td><?= \Application\Service\ApplicationService::getFormedDate($req->date); ?></td>
                 <td>
                     <a href="#" class="editBtn">Смотреть</a>

@@ -65,8 +65,9 @@ class CatalogController extends BaseController
                     $ownedUser = $this->getServiceLocator()->get('UserTable')->find($user->getGodModeId());
 
                     if ($ownedUser) {
+
                         $this->layout()->setVariable('godModeId', $ownedUser->user_id);
-                        $this->layout()->setVariable('godModeName', ($ownedUser->alias ? $ownedUser->alias : $ownedUser->userNumame));
+                        $this->layout()->setVariable('godModeName', ($ownedUser->alias ? $ownedUser->alias : $ownedUser->username));
                         $this->layout()->setVariable('godModePartnerGroupId', $ownedUser->partner_group);
                         UserService::$isManager = true;
                         UserService::$godModeId = $ownedUser->user_id;
@@ -328,6 +329,7 @@ class CatalogController extends BaseController
             'seoData' => $seoData,
             'pageTitle' => $section->title,
             'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
                 array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог'))
             ),
         ));
@@ -338,6 +340,7 @@ class CatalogController extends BaseController
             'pageTitle' => $section->title,
             'section' => $section,
             'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
                 array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
             ),
             'slidersData' => \Zend\Json\Json::encode($filterData['sliders']),
@@ -558,6 +561,7 @@ class CatalogController extends BaseController
             'seoData' => $seoData,
             'pageTitle' => $subsection->title,
             'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
                 array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
                 $breadCrumbsSection
             ),
@@ -568,6 +572,7 @@ class CatalogController extends BaseController
             'seoData' => $seoData,
             'pageTitle' => $subsection->title,
             'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
                 array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
                 $breadCrumbsSection
             ),
@@ -1094,6 +1099,7 @@ class CatalogController extends BaseController
             'seoData' => $seoData,
             'pageTitle' => $series->visible_title ? $series->visible_title : $series->title,
             'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
                 array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
                 $breadCrumbsSection,
                 $breadCrumbsSubsection
@@ -1108,6 +1114,7 @@ class CatalogController extends BaseController
             'prevProd' => $prevProd,
             'pageTitle' => $series->visible_title ? $series->visible_title : $series->title,
             'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
                 array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
                 $breadCrumbsSection,
                 $breadCrumbsSubsection

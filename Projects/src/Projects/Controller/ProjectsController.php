@@ -98,6 +98,7 @@ class ProjectsController extends AbstractActionController
         }
         $this->layout()->pageTitle = $project->title;
         $this->layout()->breadCrumbs  = array(
+            array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
             array('link'=> $this->url()->fromRoute('projects'), 'text'=>ucfirst('Проекты'))
         );
         $htmlViewPart = new ViewModel();

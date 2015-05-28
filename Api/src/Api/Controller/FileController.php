@@ -98,6 +98,10 @@ class FileController extends ApiController
             //если приходит массив айдишек, сохраняем файл для каждой
             if (is_array($parentId)) {
                 foreach ($parentId as $pid) {
+                    $oldEntity = $table->fetchByCond('uid', $pid);
+                    foreach ($oldEntity as $oneE) {
+                        $table->del($oneE->id);
+                    }
                     $entity = new File();
                     $entity->name = $adapter->getFileName(null, false);
                     $entity->type = FileTable::TYPE_IMAGE;
@@ -122,6 +126,10 @@ class FileController extends ApiController
                 $entity->timestamp = time(true);
                 if ($field == "id") {
                     $entity->uid = $parentId;
+                    $oldEntity = $table->fetchByCond('uid', $parentId);
+                    foreach ($oldEntity as $oneE) {
+                        $table->del($oneE->id);
+                    }
                 }
 
                 $resultId = $table->save($entity);
@@ -163,9 +171,15 @@ class FileController extends ApiController
             $parentObjectTableName = $this->getTableName($parentType);
             $parentObjectTable = $sl->get($parentObjectTableName);
             $parentObject = $parentObjectTable->find($parentId);
+            if ($field == "id") {
+                if ($tableName == "FilesTable") {
+                    $table->del($file);
+                }
+            } else {
+                $parentObject->$field = false;
+                $parentObjectTable->save($parentObject);
+            }
 
-            $parentObject->$field = false;
-            $parentObjectTable->save($parentObject);
 
             $this->unlinkFile('/images/'. $folder .'/' . $filename);
         } else {

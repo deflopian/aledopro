@@ -211,7 +211,7 @@
         <div style="display:none" id="imagesLoadedShowRoom">
             <? foreach ($showRoom as $banner) { ?>
                 <div class="b-slider__item">
-                    <i class="b-slider-item-layout"></i>
+                    <i class="b-slider-item-layout" style="width: 1px"></i>
                     <img class="b-slider__image" src="/images/showroom/<?= $banner->img_name ?>"/>
                 </div>
             <? } ?>
@@ -295,7 +295,7 @@
             <? /** @var $team \Team\Model\Worker[] */ ?>
             <? foreach ($team as $worker) { ?>
                 <div class="b-slider__item b-slider_our-team__item">
-                    <i class="b-slider-item-layout"></i>
+                    <i class="b-slider-item-layout" style="width: 1px"></i>
                     <img class="b-slider__image" src="/images/team/<?= $worker->img_name ?>"/>
 
                     <div class="b-slider__title">

@@ -1,4 +1,5 @@
-
+<? /** @var ZfcUser\Entity\User|false $user  */ ?>
+<? $user = $this->user; ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">×</span></button>
     <h4 class="modal-title text-center"><strong>РЕГИСТРАЦИЯ КАРТЫ ПАРТНЕРА</strong></h4>
@@ -14,35 +15,205 @@
                     <div class="b-partner-registration__cell b-partner-registration__cell_left">
                         <div class="b-form-group">
                             <label for="partner_lastname">Фамилия*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_lastname" ng-model="formData.partner_lastname" autocomplete="off" required />
+                            <input type="text"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_lastname"
+                                   ng-model="formData.partner_lastname"
+
+                                   name="partner_lastname"
+                                   ng-change="validityOnChange('partner_lastname')"
+                                   autocomplete="off"
+                                <? if (!$user) { ?>
+                                    required
+                                <? } ?>
+                                />
+                            <div class=""
+                                 ng-show="partnerRegistration.partner_lastname.$dirty && partnerRegistration.partner_lastname.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_lastname.$error.is_empty">
+                                    Поле не может быть пустым
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_lastname.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
                             <label for="partner_name">Имя*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_name" ng-model="formData.partner_name" autocomplete="off" required />
+                            <input type="text"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_name" ng-model="formData.partner_name"
+                                   name="partner_name"
+                                <? if ($user) { ?>
+                                    ng-init="formData.partner_name = '<?= $user->getUsername() ?>'"
+                                <? } ?>
+                                   autocomplete="off"
+                                   ng-change="validityOnChange('partner_name')"
+                                   required />
+                            <div class=""
+                                 ng-show="partnerRegistration.partner_name.$dirty && partnerRegistration.partner_name.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_name.$error.is_empty">
+                                    Поле не может быть пустым
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_name.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
                             <label for="partner_fathername">Отчество</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_fathername" ng-model="formData.partner_fathername" autocomplete="off" />
+                            <input type="text"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_fathername"
+
+                                   name="partner_fathername"
+                                   ng-model="formData.partner_fathername"
+                                   autocomplete="off" />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_city">Город*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_city" ng-model="formData.partner_city" autocomplete="off" required />
+                            <input type="text"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_city"
+                                <? if ($user) { ?>
+                                    ng-init="formData.partner_city = '<?= $user->getCity() ?>'"
+                                <? } ?>
+                                   name="partner_city"
+                                   ng-model="formData.partner_city"
+                                   ng-change="validityOnChange('partner_city')"
+                                   autocomplete="off"
+                                <? if (!$user) { ?>
+                                    required
+                                <? } ?>
+                                />
+                            <div class=""
+                                 ng-show="partnerRegistration.partner_city.$dirty && partnerRegistration.partner_city.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_city.$error.is_empty">
+                                    Поле не может быть пустым
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_city.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
                             <label for="partner_tel">Контактный телефон*</label>
-                            <input type="text" input-mask="+7 (999) 999-99-99" class="b-form-control b-form-control_small" id="partner_tel" ng-model="formData.partner_tel" autocomplete="off" required />
+                            <input type="text"
+                                   input-mask="+7 (999) 999-99-99"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_tel"
+                                   name="partner_tel"
+                                   ng-model="formData.partner_tel"
+                                <? if ($user) { ?>
+                                    ng-init="formData.partner_tel = '<?= $user->getPhone() ?>'"
+                                <? } ?>
+                                   ng-change="validityOnChange('partner_tel')"
+                                   autocomplete="off"
+                                <? if (!$user) { ?>
+                                    required
+                                <? } ?>
+                                />
+                            <div class=""
+                                 ng-show="partnerRegistration.partner_tel.$dirty && partnerRegistration.partner_tel.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_tel.$error.is_empty">
+                                    Поле не может быть пустым
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_tel.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
-                            <label for="partners_email">E-mail*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_email" ng-model="formData.partner_email" autocomplete="off" required />
+                            <label for="partner_email">E-mail*</label>
+                            <input type="text"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_email"
+                                   name="partner_email"
+
+                                   ng-model="formData.partner_email"
+                                <? if ($user) { ?>
+                                    ng-init="formData.partner_email = '<?= $user->getEmail() ?>'"
+                                <? } ?>
+                                   ng-change="validityOnChange('partner_email')"
+                                   autocomplete="off" required />
+                            <div class=""
+                                 ng-show="partnerRegistration.partner_email.$dirty && partnerRegistration.partner_email.$invalid">
+                                <? if (!$registered) { ?>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_email.$error.recordFound">
+                                    Пользователь с таким Email уже зарегистрирован
+                                </small>
+                                <? } ?>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_email.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_email.$error.wrong_format">
+                                    Неправильный формат почты
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
                             <label for="partner_password">Пароль*</label>
-                            <input type="password" class="b-form-control b-form-control_small" id="partner_password" ng-model="formData.partner_password" autocomplete="off" required />
+                            <input type="password"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_password"
+                                   ng-model="formData.partner_password"
+                                   name="partner_password"
+                                   ng-change="validityOnChange('partner_password')"
+                                   autocomplete="off"
+                                <? if (!$user) { ?>
+                                   required
+                                <? } ?>
+                                />
+                            <div class=""
+                                 ng-show="partnerRegistration.partner_password.$dirty && partnerRegistration.partner_password.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_password.$error.is_empty">
+                                    Поле не может быть пустым
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_password.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 6 символов
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
                             <label for="partner_password_repeat">Повторите пароль*</label>
-                            <input type="password" class="b-form-control b-form-control_small" id="partner_password_repeat" ng-model="formData.partner_password_repeat" autocomplete="off" required />
+                            <input type="password"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_password_repeat"
+                                   ng-model="formData.partner_password_repeat"
+                                   name="partner_password_repeat"
+                                   ng-change="validityOnChange('partner_password_repeat')"
+                                   autocomplete="off"
+                                <? if (!$user) { ?>
+                                    required
+                                <? } ?>
+                                />
+                            <div class=""
+                                 ng-show="partnerRegistration.partner_password_repeat.$dirty && partnerRegistration.partner_password_repeat.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_password_repeat.$error.is_empty">
+                                    Поле не может быть пустым
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_password_repeat.$error.notSame">
+                                    Пароли не совпадают
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_password_repeat.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 6 символов
+                                </small>
+                            </div>
                         </div>
                     </div>
                     <div class="b-partner-registration__cell b-partner-registration__cell_decoration-cell">
@@ -52,30 +223,115 @@
                     <div class="b-partner-registration__cell b-partner-registration__cell_right">
                         <div class="b-form-group">
                             <label for="partner_job_title">Занимаемая должность</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_job_title" ng-model="formData.partner_job_title" autocomplete="off" />
+                            <input type="text"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_job_title"
+                                   ng-model="formData.partner_job_title"
+                                   name="partner_job_title"
+                                   ng-change="validityOnChange('partner_job_title')"
+                                   autocomplete="off" />
                         </div>
                         <div class="b-form-group">
                             <label for="partner_company_name">Полное название компании (с юр. статусом)*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_company_name" ng-model="formData.partner_company_name" autocomplete="off" required />
+                            <input type="text"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_company_name"
+                                   ng-model="formData.partner_company_name"
+                                   ng-change="validityOnChange('partner_company_name')"
+                                   autocomplete="off" required />
+                            <div class=""
+                                 ng-show="partnerRegistration.partner_company_name.$dirty && partnerRegistration.partner_company_name.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_company_name.$error.is_empty">
+                                    Поле не может быть пустым
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_company_name.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
                             <label for="partner_scope">Сфера деятельности компании*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_scope" ng-model="formData.partner_scope" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small"
+                                   id="partner_scope"
+                                   ng-model="formData.partner_scope"
+                                   name="partner_scope"
+                                   ng-change="validityOnChange('partner_scope')"
+                                   autocomplete="off"
+                                   required
+                                />
+                            <div class=""
+                                 ng-show="partnerRegistration.partner_scope.$dirty && partnerRegistration.partner_scope.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_scope.$error.is_empty">
+                                    Поле не может быть пустым
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_scope.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
                             <label for="partner_brands">Основные бренды из вашего ассортимента*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_brands" ng-model="formData.partner_brands" autocomplete="off" required />
+                            <input type="text" class="b-form-control b-form-control_small"
+                                   id="partner_brands"
+                                   ng-model="formData.partner_brands"
+                                   name="partner_brands"
+                                   ng-change="validityOnChange('partner_brands')"
+                                   autocomplete="off" required />
+                            <div class=""
+                                 ng-show="partnerRegistration.partner_brands.$dirty && partnerRegistration.partner_brands.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_brands.$error.is_empty">
+                                    Поле не может быть пустым
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_brands.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
                             <label for="partner_office_tel">Телефоны офиса*</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_office_tel" ng-model="formData.partner_office_tel" autocomplete="off" required />
+                            <input type="text"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_office_tel"
+                                   ng-model="formData.partner_office_tel"
+                                   name="partner_office_tel"
+                                   ng-change="validityOnChange('partner_office_tel')"
+                                   autocomplete="off" required />
+                            <div class=""
+                                 ng-show="partnerRegistration.partner_office_tel.$dirty && partnerRegistration.partner_office_tel.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_office_tel.$error.is_empty">
+                                    Поле не может быть пустым
+                                </small>
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_office_tel.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
                             <label for="partner_website">Website</label>
-                            <input type="text" class="b-form-control b-form-control_small" id="partner_website" ng-model="formData.partner_website" autocomplete="off" />
+                            <input type="text"
+                                   class="b-form-control b-form-control_small"
+                                   id="partner_website"
+                                   name="partner_website"
+                                   ng-model="formData.partner_website"
+                                   ng-change="validityOnChange('partner_website')"
+                                   autocomplete="off" />
                         </div>
                         <div class="b-form-group">
-                            <input class="b-form-control b-checkbox" type="checkbox" id="user_is_spamed" name="user_is_spamed" ng-model="formData.user_is_spamed" />
+                            <input class="b-form-control b-checkbox"
+                                   type="checkbox"
+                                   id="user_is_spamed"
+                                   name="user_is_spamed"
+                                   ng-model="formData.user_is_spamed"
+                                   ng-init="formData.user_is_spamed=true"
+                                />
                             <label for="user_is_spamed">подписаться на рассылку (информация о скидках, акциях)</label>
                         </div>
                         <br />

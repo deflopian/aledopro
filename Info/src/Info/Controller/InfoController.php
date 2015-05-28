@@ -334,7 +334,7 @@ class InfoController extends AbstractActionController
         $this->layout()->pageTitle = 'Текущий курс — ' . $rate . '<span class="b-rub">Р</span>';
         $this->layout()->rate = true;
         $this->layout()->noBottomLine = true;
-        return array('rateString' => $rateContent);
+        return array('rateString' => $rateContent, 'rate' => $rate);
 
     }
 
@@ -350,6 +350,26 @@ class InfoController extends AbstractActionController
         }
 
         return $this->redirect()->toRoute('home');
+    }
+
+    public function feedbackAction()
+    {
+        $request = $this->getRequest();
+        $success = 0;
+        if ($request->isPost()) {
+            $post = $request->getPost()->toArray();
+
+            //сообщаем менеджеру о новой заявке
+            list($email, $mailView) = MailService::prepareFeedbackMessage($this->serviceLocator, $post);
+            MailService::sendMail($email, $mailView, "Новый вопрос");
+            $success = 1;
+        }
+
+        $response = $this->getResponse();
+        $response->setContent(\Zend\Json\Json::encode(array(
+            'success' => $success
+        )));
+        return $response;
     }
 
     private function renderPage($id)

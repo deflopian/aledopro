@@ -198,13 +198,15 @@ class IndexController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $type = $request->getPost('type', false);
+            $params = $request->getPost('params', false);
             if (!$type) {
                 $rest_json = file_get_contents("php://input");
                 $post = json_decode($rest_json, true);
                 $type = isset($post['type']) ? $post['type'] : false;
+                $params = isset($post['params']) ? $post['params'] : false;
             }
             $url = $request->getPost('url', false);
-            $params = $request->getPost('params', false);
+
             $success = 0;
             $content = '';
 
@@ -248,6 +250,12 @@ class IndexController extends AbstractActionController
                     if ($type === 'register' || $type === 'registerFromCart' || $type === ApplicationService::ALEDO_POPUP_REGISTER || $type === ApplicationService::ALEDO_POPUP_CART_REGISTER) {
                         $registerForm = $sl->get('zfcuser_register_form');
                         $htmlViewPart->setVariable('form', $registerForm);
+                    }
+
+
+                    if ($type === 'partner-card' || $type == ApplicationService::ALEDO_POPUP_PARTNER_CARD) {
+//                        var_dump($this->zfcUserAuthentication()->getIdentity());
+                        $htmlViewPart->setVariable('user', $this->zfcUserAuthentication()->getIdentity());
                     }
 
                     if ($type === 'regsuccess' || $type === 'regsuccessFromCart' || $type === ApplicationService::ALEDO_POPUP_REGISTER_SUCCESS || $type === ApplicationService::ALEDO_POPUP_CART_REGISTER_SUCCESS) {

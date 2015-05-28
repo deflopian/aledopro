@@ -100,10 +100,24 @@
                                 </div>
                                 <div class="b-change-data__cell b-change-data__cell_right">
                                     <input type="text" class="b-form-control" id="change_name"
-                                           ng-init="formData.username='<?= $user->username ?>'"
+                                           name="username"
                                            ng-model="formData.username"
-                                           autocomplete="off" required ng-value="<?= $user->username ?>" >
+                                           ng-init="formData.username='<?= $user->username ?>'"
+                                           ng-change="validityOnChange('username')"
+                                           autocomplete="off" required>
+                                    <div class=""
+                                         ng-show="changeData.username.$dirty && changeData.username.$invalid">
+                                        <small class="b-form-error"
+                                               ng-show="changeData.username.$error.is_empty">
+                                            Поле не может быть пустым
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="changeData.username.$error.stringLengthTooShort">
+                                            Длина поля должна быть по меньшей мере 3 символа
+                                        </small>
+                                    </div>
                                 </div>
+
                             </div>
                             <div class="b-form-group b-form-group_change-data">
                                 <div class="b-change-data__cell b-change-data__cell_left">
@@ -111,20 +125,46 @@
                                 </div>
                                 <div class="b-change-data__cell b-change-data__cell_right">
                                     <input type="text" class="b-form-control" id="change_tel"
-                                           ng-init="formData.phone='<?= $user->phone ?>'"
+                                           name="phone"
                                            ng-model="formData.phone"
-                                           autocomplete="off" required ng-value="<?= $user->phone ?>" >
+                                           ng-init="formData.phone='<?= $user->phone ?>'"
+                                           ng-change="validityOnChange('phone')"
+                                           autocomplete="off" required >
+                                    <div class=""
+                                         ng-show="changeData.phone.$dirty && changeData.phone.$invalid">
+                                        <small class="b-form-error"
+                                               ng-show="changeData.phone.$error.is_empty">
+                                            Поле не может быть пустым
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="changeData.phone.$error.stringLengthTooShort">
+                                            Длина поля должна быть по меньшей мере 3 символа
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="b-form-group b-form-group_change-data">
                                 <div class="b-change-data__cell b-change-data__cell_left">
-                                    <label for="change_city">Город</label>
+                                    <label for="change_city">Город*</label>
                                 </div>
                                 <div class="b-change-data__cell b-change-data__cell_right">
                                     <input type="text" class="b-form-control" id="change_city"
-                                           ng-init="formData.city='<?= $user->city ?>'"
+                                            name="city"
                                            ng-model="formData.city"
-                                           autocomplete="off" required ng-value="<?= $user->city ?>" >
+                                           ng-init="formData.city='<?= $user->city ?>'"
+                                           ng-change="validityOnChange('city')"
+                                           autocomplete="off" required>
+                                    <div class=""
+                                         ng-show="changeData.city.$dirty && changeData.city.$invalid">
+                                        <small class="b-form-error"
+                                               ng-show="changeData.city.$error.is_empty">
+                                            Поле не может быть пустым
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="changeData.city.$error.stringLengthTooShort">
+                                            Длина поля должна быть по меньшей мере 3 символа
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="b-form-group b-form-group_change-data">
@@ -132,15 +172,32 @@
                                     <label for="change_password">Текущий пароль*</label>
                                 </div>
                                 <div class="b-change-data__cell b-change-data__cell_right">
-                                    <input type="text" class="b-form-control" id="change_password"
+                                    <input type="password" class="b-form-control" id="change_password"
+                                           name="password"
                                            ng-model="formData.password"
+                                           ng-change="validityOnChange('password')"
                                            autocomplete="off" required >
+                                    <div class=""
+                                         ng-show="changeData.password.$dirty && changeData.password.$invalid">
+                                        <small class="b-form-error"
+                                               ng-show="changeData.password.$error.is_empty">
+                                            Поле не может быть пустым
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="changeData.password.$error.PasswordIncorrect">
+                                            Неверный пароль
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="changeData.password.$error.stringLengthTooShort">
+                                            Длина поля должна быть по меньшей мере 6 символов
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="b-form-group b-form-group_change-data">
                                 <input type="checkbox"
-                                       ng-init="formData.is_spamed='<?= $user->is_spamed ?>'"
-                                       ng-model="formData.is_spamed" ng-checked="<?= $user->is_spamed ? 'true' : 'false' ?>" id="change_delivery" <?= $user->is_spamed ? 'checked' : '' ?> />
+                                       name="is_spamed"
+                                       ng-model="formData.is_spamed" ng-init="formData.is_spamed=<?= $user->is_spamed ? 'true' : 'false' ?>" id="change_delivery" />
                                 <label for="change_delivery">
                                     *подписаться на рассылку (информация о скидках, акциях)
                                 </label>
@@ -164,7 +221,25 @@
                                 <div class="b-change-data__cell b-change-data__cell_right" align="right">
                                     <input type="password" class="b-form-control" id="change_pwd_password"
                                            ng-model="formData.credential"
+                                           ng-init="formData.credential=''"
+                                           ng-change="validityOnChange('credential')"
+                                           name="credential"
                                            autocomplete="off" required />
+                                    <div class=""
+                                         ng-show="changePassword.credential.$dirty && changePassword.credential.$invalid">
+                                        <small class="b-form-error"
+                                               ng-show="changePassword.credential.$error.is_empty">
+                                            Поле не может быть пустым
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="changePassword.credential.$error.PasswordIncorrect">
+                                            Неверный пароль
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="changePassword.credential.$error.stringLengthTooShort">
+                                            Длина поля должна быть по меньшей мере 6 символов
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="b-form-group b-form-group_change-data">
@@ -173,9 +248,24 @@
                                 </div>
                                 <div class="b-change-data__cell b-change-data__cell_right" align="right">
                                     <input type="text" class="b-form-control" id="change_pwd_new_password"
+                                           name="newCredential"
                                            ng-model="formData.newCredential"
+                                           ng-init="formData.newCredential=''"
+                                           ng-change="validityOnChange('newCredential')"
                                            autocomplete="off" required />
+                                    <div class=""
+                                         ng-show="changePassword.newCredential.$dirty && changePassword.newCredential.$invalid">
+                                        <small class="b-form-error"
+                                               ng-show="changePassword.newCredential.$error.is_empty">
+                                            Поле не может быть пустым
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="changePassword.newCredential.$error.stringLengthTooShort">
+                                            Длина поля должна быть по меньшей мере 6 символов
+                                        </small>
+                                    </div>
                                 </div>
+
                             </div>
                             <div class="b-form-group b-form-group_change-data">
                                 <div class="b-change-data__cell b-change-data__cell_left">
@@ -184,7 +274,25 @@
                                 <div class="b-change-data__cell b-change-data__cell_right" align="right" style="vertical-align: top">
                                     <input type="text" class="b-form-control" id="change_pwd_new_password_repeat"
                                            ng-model="formData.newCredentialVerify"
+                                           ng-init="formData.newCredentialVerify=''"
+                                           name="newCredentialVerify"
+                                           ng-change="validityOnChange('newCredentialVerify')"
                                            autocomplete="off" required />
+                                    <div class=""
+                                         ng-show="changePassword.newCredentialVerify.$dirty && changePassword.newCredentialVerify.$invalid">
+                                        <small class="b-form-error"
+                                               ng-show="changePassword.newCredentialVerify.$error.is_empty">
+                                            Поле не может быть пустым
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="changePassword.newCredentialVerify.$error.notSame">
+                                            Пароли не совпадают
+                                        </small>
+                                        <small class="b-form-error"
+                                               ng-show="changePassword.newCredentialVerify.$error.stringLengthTooShort">
+                                            Длина поля должна быть по меньшей мере 6 символов
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
 
@@ -202,6 +310,20 @@
             </div>
         </div>
         <script type="text/javascript">
+            $(function() {
+                $('a.b-tabs__link').click(function (e) {
+                    $(this).tab('show');
+                });
+
+                // Javascript to enable link to tab
+                var url = document.location.toString();
+                if (url.match('#')) {
+                    var hash = url.split('#')[1].substring(1);
+                    $('a.b-tabs__link[href=#'+hash+']').tab('show') ;
+                }
+            });
+
+
             jQuery(".b-order-history__button, .b-order-history__order-number").on("click", function() {
                 var $this = jQuery(this),
                     $row = $this.closest("tr");

@@ -3,7 +3,10 @@
     >
     <a href="<?= $this->url('zfcadmin/requests', array('action' => 'reqPartner')) ?>">Партнерские заявки</a>
     >
-    <?= $req->company_name; ?>
+    <?
+    /** @var $req \Info\Model\PartnerRequest */
+    ?>
+    <?= $req->partner_company_name; ?>
 </h1>
 
 <div class="section">
@@ -11,63 +14,31 @@
         <tbody>
         <tr>
             <td>Имя отправителя</td>
-            <td><?= $req->name ?></td>
-        </tr>
-        <tr>
-            <td>Род дейятельности</td>
-            <td><?= $req->activity ?></td>
-        </tr>
-        <tr>
-            <td>Должность</td>
-            <td><?= $req->job ?></td>
-        </tr>
-        <tr>
-            <td>Мобильный</td>
-            <td><?= $req->phone ?></td>
-        </tr>
-        <tr>
-            <td>Почта</td>
-            <td><?= $req->email ?></td>
+            <td><?= $req->partner_lastname . " " . $req->partner_name . " " . $req->partner_fathername ?></td>
         </tr>
         <tr>
             <td>Название компании</td>
-            <td><?= $req->company_name ?></td>
+            <td><?= $req->partner_company_name ?></td>
         </tr>
         <tr>
             <td>Сфера деятельности компании</td>
-            <td><?= $req->company_activity ?></td>
+            <td><?= $req->partner_scope ?></td>
         </tr>
         <tr>
-            <td>Примеры брендов</td>
-            <td><?= $req->brands_sample ?></td>
+            <td>Должность</td>
+            <td><?= $req->partner_job_title ?></td>
         </tr>
         <tr>
-            <td>Почтовый индекс</td>
-            <td><?= $req->post_index ?></td>
-        </tr>
-        <tr>
-            <td>Город/область</td>
-            <td><?= $req->city ?></td>
-        </tr>
-        <tr>
-            <td>Адрес</td>
-            <td><?= $req->adress ?></td>
-        </tr>
-        <tr>
-            <td>Телефон</td>
-            <td><?= $req->company_phone ?></td>
-        </tr>
-        <tr>
-            <td>Факс</td>
-            <td><?= $req->company_fax ?></td>
-        </tr>
-        <tr>
-            <td>Почта</td>
-            <td><?= $req->company_email ?></td>
+            <td>Офисный телефон</td>
+            <td><?= $req->partner_office_tel ?></td>
         </tr>
         <tr>
             <td>Вебсайт</td>
-            <td><?= $req->company_website ?></td>
+            <td><?= $req->partner_website ?></td>
+        </tr>
+        <tr>
+            <td>Примеры брендов</td>
+            <td><?= $req->partner_brands ?></td>
         </tr>
         <tr>
             <td>Дата</td>

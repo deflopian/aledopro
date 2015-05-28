@@ -1,13 +1,17 @@
 <?php
 namespace Catalog\Controller;
 
+use Api\Model\File;
+use Api\Model\FileTable;
 use Application\Service\MailService;
+use Catalog\Mapper\CatalogMapper;
 use Catalog\Model\FilterParam;
 use Catalog\Model\ParamToSeries;
 use Catalog\Model\Series;
 use Catalog\Model\SeriesParams;
 use Catalog\Service\ElecService;
 use Catalog\Service\GMCService;
+use Catalog\Service\ProductsAggregator;
 use Catalog\Service\YMLService;
 use News\Model\News;
 use Catalog\Controller\AdminController;
@@ -49,6 +53,41 @@ class CronController extends BaseController
         }, 100); // execute before executing action logic
     }
 
+    public function myVerySpecialScriptAction() {
+
+        $sl = $this->getServiceLocator();
+        $cm = CatalogMapper::getInstance($sl);
+        $cm->getSection(3, true, true, true, array(), false);
+        $prodAgg = ProductsAggregator::getInstance();
+        $prods = $prodAgg->getProducts();
+
+        $fileTable = $sl->get('FilesTable');
+        $num = 0;
+        foreach ($prods as $prod) {
+            $imgName = $prod->file_custom;
+            $file = $fileTable->fetchByCond('uid', $prod->id);
+
+            if (!empty($imgName) && !count($file)) {
+
+                if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/product_docs/' . $imgName) && !file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/products/' . $imgName)) {
+                    copy($_SERVER['DOCUMENT_ROOT'] . '/images/product_docs/' . $imgName, $_SERVER['DOCUMENT_ROOT'] . '/images/products/' . $imgName);
+                }
+
+                $entity = new File();
+                $entity->name = $imgName;
+                $entity->type = FileTable::TYPE_IMAGE;
+                $entity->real_name = $imgName;
+                $entity->path = $imgName;
+                $entity->size = 0;
+                $entity->timestamp = time(true);
+                $entity->uid = $prod->id;
+
+                $fileTable->save($entity);
+                $num++;
+            }
+        }
+        return array('num' => $num);
+    }
 
     public function getfileAction() {
         $token = $this->params()->fromQuery('token', null);
@@ -137,7 +176,11 @@ class CronController extends BaseController
         $seriesTable = $this->getServiceLocator()->get('Catalog\Model\SeriesTable');
         $allSeries = $seriesTable->fetchAll();
         foreach ($allSeries as $oneser) {
-            CatalogService::makesort('free_balance', $oneser->id, 2, $this->getServiceLocator());
+            if (in_array($oneser->subsection_id, array(30,31,32))) {
+                CatalogService::makesort('power', $oneser->id, 2, $this->getServiceLocator());
+            } else {
+                CatalogService::makesort('free_balance', $oneser->id, 2, $this->getServiceLocator());
+            }
         }
         return false;
     }

@@ -1,7 +1,7 @@
 <form novalidate
-      name="login-form"
+      name="login"
       method="post"
-      id="login-form"
+      id="login"
       action="<?= $this->url('cabinet', array('action' => 'login'))?>"
       ng-controller="LoginController">
 
@@ -31,13 +31,22 @@
                    class="b-form-control b-form-control_small b-registration__cell b-registration__cell_right"
                    ng-model="formData.credential" />
             </div>
-
+        </div>
+        <div class="b-registration__row">
+            <div class="b-registration__cell b-registration__cell_left">
+            </div>
+            <div class="b-registration__cell b-registration__cell_right"
+                 ng-show="loginError">
+                <small class="b-form-error">
+                    Неправильная пара логин/пароль
+                </small>
+            </div>
         </div>
 
 
         <div class="b-registration__row">
             <div class="b-registration__cell b-registration__cell_left"></div>
-            <a href="javascript:void(0)" class="b-registration__cell b-registration__cell_right text-darker-gray b-password-recovery-trigger" style="text-align: right" ng-controller="PopupController" ng-click="getPopup(ALEDO_POPUP_FORGOT)"><small>Забыли пароль?</small></a>
+            <a href="javascript:void(0)" class="b-registration__cell b-registration__cell_right text-darker-gray b-password-recovery-trigger" style="text-align: right" ng-controller="PopupController" ng-click="getPopup(ALEDO_POPUP_FORGOT, {})"><small>Забыли пароль?</small></a>
         </div>
         <div class="b-registration__row">
             <div class="b-registration__cell b-registration__cell_left"></div>
