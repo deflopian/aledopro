@@ -107,6 +107,11 @@ class ProjectsController extends AbstractActionController
                 'imgs'      => $imgs,
                 'members'   => $members,
                 'relatedSeries'   => $relatedSeries,
+                'pageTitle' => $project->title,
+                'breadCrumbs'  => array(
+                    array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+                    array('link'=> $this->url()->fromRoute('projects'), 'text'=>ucfirst('Проекты')),
+                ),
                 'nextProd' => $nextProd,
                 'prevProd' => $prevProd,
                 'relatedProjects' => $relatedProjects,
@@ -153,6 +158,10 @@ class ProjectsController extends AbstractActionController
 
         return array(
             'seoData' => $seoData,
+            'pageTitle' => 'Проекты',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
             'projects' => $projects,
             'rubric' => $rubric,
             'parentUrl'     => '/projects/',

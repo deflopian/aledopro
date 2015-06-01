@@ -1,4 +1,4 @@
-﻿<?
+<?
 /**
  * @var array $members
  * @var \Catalog\Model\SeriesDoc[] $docs
@@ -14,17 +14,16 @@
  * @var \Projects\Model\ProjectImg[] $imgs
  */
 /** @var integer $scrollToProduct*/
-
 mb_internal_encoding("UTF-8");
 function mb_ucfirst($text) {
     return mb_strtoupper(mb_substr($text, 0, 1)) . mb_substr($text, 1);
 }
-
-?><div class="b-goods b-section" style="padding-top: 0">
-    <div class="b-section__content">
+?>
+<div class="b-goods b-section" style="padding-top: 0">
+    <div class="b-section__content" style="padding-left: 30px;">
         <div class="b-breadcrumbs">
             <? foreach ($breadCrumbs as $bc) { ?>
-            <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
             <? } ?>
             <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
         </div>
@@ -81,10 +80,10 @@ function mb_ucfirst($text) {
                     <li class="b-tabs__tab">
                         <a class="b-tabs__link " role="tab" href="#goods_3" data-toggle="tab" aria-controls="goods_3">Материалы для скачивания</a>
                     </li>
-                    <? $dopgtitle = "Источники питания"; ?>
+                    <? $dopgtitle = "источники питания"; ?>
                     <? $dpGroups = array(); ?>
                     <? foreach ($dopProducts as $dpgkey => $dopProductsGroup) {
-                        if (($dptitle = mb_ucfirst(trim($dopProductsGroup['title']))) == $dopgtitle) {
+                        if (strpos($dptitle = mb_strtolower($dopProductsGroup['title']), $dopgtitle) !== false || strpos($dptitle = mb_strtolower($dopProductsGroup['title']), "источник питания") !== false) {
                             $dpGroups[] = $dopProductsGroup;
                             unset($dopProducts[$dpgkey]);
                         }
@@ -96,7 +95,7 @@ function mb_ucfirst($text) {
                     } ?>
                     <? if ($dopgtitle && $dpGroups) { ?>
                     <li class="b-tabs__tab">
-                        <a class="b-tabs__link "  role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4"><?= $dopgtitle ?></a>
+                        <a class="b-tabs__link "  role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4"><?= mb_ucfirst($dopgtitle) ?></a>
                     </li>
                     <? } ?>
 

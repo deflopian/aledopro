@@ -81,10 +81,12 @@ class AdminController extends SampleAdminController {
 
         $commercialRoomJson = \Zend\Json\Json::encode($entity);
         $linkedIds = array();
+        $lindedProdsByProdId = array();
         $linkedCounts = array();
         if ($entity->prods) {
             foreach ($entity->prods as $prod) {
                 $linkedIds[] = $prod->product_id;
+                $lindedProdsByProdId[$prod->product_id] = $prod->id;
                 if ($prod->count || $prod->count === 0 || $prod->count === "0") {
                     $linkedCounts[$prod->product_id] = $prod->count;
                 } else {
@@ -134,7 +136,7 @@ class AdminController extends SampleAdminController {
                 $sectionId = $subsection['parentId'];
                 if (isset($treeHierarchy[$sectionId][$subsectionId][$product->series_id])) {
                     $treeHierarchy[$sectionId][$subsectionId][$product->series_id][$product->id] = $product->id;
-                    $treeDateByLvl[\Catalog\Controller\AdminController::PRODUCT_TABLE][$product->id] = array('title' => $product->title, 'parentId' => $product->series_id, 'is_commercial' => in_array($product->id, $linkedIds), 'commercial_count' => $linkedCounts[$product->id]);
+                    $treeDateByLvl[\Catalog\Controller\AdminController::PRODUCT_TABLE][$product->id] = array('id' => $product->id, 'title' => $product->title, 'parentId' => $product->series_id, 'is_commercial' => in_array($product->id, $linkedIds), 'commercial_count' => $linkedCounts[$product->id]);
                     if (in_array($product->id, $linkedIds)) {
                         $treeDateByLvl[\Catalog\Controller\AdminController::SERIES_TABLE][$product->series_id]['shown'] = true;
                         $prevSer = $treeDateByLvl[\Catalog\Controller\AdminController::SERIES_TABLE][$product->series_id];
@@ -148,10 +150,19 @@ class AdminController extends SampleAdminController {
 
         $treeDateByLvlJson = \Zend\Json\Json::encode($treeDateByLvl);
         $treeHierarchyJson = \Zend\Json\Json::encode($treeHierarchy);
+        $commercials = array();
+        foreach ($treeDateByLvl[4] as $prodId => $item) {
+            if ($item['is_commercial']) {
+                $commercials[$lindedProdsByProdId[$prodId]] = $item;
+            }
+        }
+
+        $commercialsJson = \Zend\Json\Json::encode($commercials);
 
         $return['treeDateByLvlJson'] = $treeDateByLvlJson;
 
         $return['treeHierarchyJson'] = $treeHierarchyJson;
+        $return['commercialsJson'] = $commercialsJson;
 
 
 
@@ -163,6 +174,7 @@ class AdminController extends SampleAdminController {
             'roomJson' => $commercialRoomJson,
             'treeDateByLvlJson' => $treeDateByLvlJson,
             'treeHierarchyJson' => $treeHierarchyJson,
+            'commercialsJson' => $commercialsJson,
         );
     }
 

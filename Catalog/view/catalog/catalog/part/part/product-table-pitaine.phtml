@@ -107,7 +107,7 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
         ng-class="{selectedProd: item.id == selectedProdId, productIncart: elCarto[item.id]==1 }"
         class="item product-line"
         data-id="{{item.id}}"
-        <? if (!$nonFilter) { ?>
+        <? if (true  || !$nonFilter) { ?>
         ng-show="item.id != 162461"
         <? } ?>
         >

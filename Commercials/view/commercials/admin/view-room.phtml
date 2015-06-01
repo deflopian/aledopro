@@ -82,18 +82,32 @@
     <div ng-controller="DflTreeCtrl">
         <h3>Продукты в КП</h3>
         <div class="col-md-12">
-            <dfl-tree parent-type="project">
+            <dfl-tree>
+                <div dfl-tree-list ng-cloak><?= $commercialsJson ?></div>
                 <div dfl-tree-data ng-cloak><?= $treeDateByLvlJson ?></div>
 
                 <div dfl-tree-hierarchy ng-cloak><?= $treeHierarchyJson ?></div>
-                <div ng-repeat="(pkey, product) in items[4]" ng-show="product.is_commercial == 1" class="row" style="margin-bottom: 5px">
+
+                <div ng-repeat="(pkey, product) in list" ng-show="product.is_commercial == 1" ng-form name="commercialProds" class="row" style="margin-bottom: 5px">
                     <div class="col-md-6">{{product.title}}</div>
-                    <div class="col-md-4"><input ng-model="product.commercial_count" /> </div>
+                    <div class="col-md-4">
+                        <div class="tree-hierarchy__block-count count-block">
+                            <input class="count-block_input" name="commercial_count" id="commercial_count_{{pkey}}" ng-model="product.commercial_count" />
+                            <div class="count-block_save-btn glyphicon glyphicon-save" style="color: crimson"
+                                 ng-show="commercialProds.commercial_count.$dirty"
+                                 ng-click="changeField('<?= \Catalog\Controller\AdminController::COMMERCIAL_PRODS_TABLE ?>', pkey, 'count', product.commercial_count); commercialProds.commercial_count.$setPristine(true)"
+                                ></div>
+                            <div class="count-block_save-btn glyphicon glyphicon-ok" style="color: cadetblue"
+                                 ng-show="commercialProds.commercial_count.$pristine"></div>
+                            <label class="count-block_label" for="commercial_count_{{pkey}}">шт.</label>
+                        </div>
+
+                    </div>
                     <div class="col-md-2">
                         <span
                         class="glyphicon glyphicon-remove"
                         style="color: #B5BD26"
-                        ng-click="changeField('<?= \Catalog\Controller\AdminController::COMMERCIAL_ROOMS_TABLE ?>', '<?= $entity->id ?>', 'remove', 0, {sectionType: '<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>', sectionId: pkey, old_price: items[4][pkey].price_without_nds, count: items[4][pkey].commercial_count}, 'commercialCallback')"></span>
+                        ng-click="changeField('<?= \Catalog\Controller\AdminController::COMMERCIAL_ROOMS_TABLE ?>', '<?= $entity->id ?>', 'remove', 0, {sectionType: '<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>', sectionId: product.id, old_price: items[4][product.id].price_without_nds, count: product.commercial_count}, 'commercialCallback')"></span>
                     </div>
                 </div>
                 <div class="row">

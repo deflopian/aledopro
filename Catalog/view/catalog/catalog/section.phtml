@@ -62,9 +62,9 @@
                 </div>
             </div>
             <div id="catalog-filterbar-place"></div>
-
+            <? $subsecNum = 0; ?>
             <? foreach ($subsections as $subsecId => $subsec) { ?>
-                <div class="row row-second" id="subsec-<?= $subsecId ?>">
+                <div class="row <?= ($subsecNum++ == 0) ? '' : 'row-second' ?>" id="subsec-<?= $subsecId ?>">
                     <div class="col-xs-12">
                         <a class="catalog-section-bar" data-id="<?= $subsec->id ?>"
                            href="<?= empty($subsec->display_name) ?

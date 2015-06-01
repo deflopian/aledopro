@@ -14,7 +14,14 @@
 
 
 <div class="b-project-page">
-
+    <div class="b-section__content" style="padding-left: 30px;">
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+    </div>
     <div class="b-slider-outer b-section">
         <div style="display: none" id="imagesLoadedProject">
             <? foreach ($imgs as $img) { ?>
@@ -242,7 +249,7 @@
                     <div class="b-about-project__cell b-about-project__cell_center">
                     </div>
                     <div class="b-about-project__cell b-about-project__cell_right  b-about-project__cell_heading">
-                        <h4 class="b-about-project__heading b-about-project__heading_products">продукты в работе</h4>
+                        <h4 class="b-about-project__heading b-about-project__heading_products">Оборудование в проекте</h4>
                     </div>
                 </div>
                 <div class="b-about-project__row">

@@ -57,7 +57,7 @@ class CommercialService {
                 $sheet->getRowDimension($currentRow)->setRowHeight(200/1.33);
                 $sheet = self::formatDiapason($sheet, 'A' . $currentRow, 'G' . ($currentRow));
                 $price = CatalogService::getTruePrice($prod->product->price_without_nds);
-                $count = $prod->product->free_balance;
+                $count = $prod->count ? $prod->count : 1    ;
 
                 //попарно мержим строки
                 for ($i=1; $i<=7; $i++) {
@@ -73,6 +73,15 @@ class CommercialService {
                 $sheet->setCellValue('B' . $currentRow, $prod->product->title);
 
                 $sheet->setCellValueExplicit('B' . ($currentRow + 1), "Показать на сайте", \PHPExcel_Cell_DataType::TYPE_STRING2, TRUE)->getHyperlink()->setUrl('http://www.aledo-pro.ru/catalog/product/' . $prod->product->id);
+
+                // Config
+                $link_style_array = [
+                    'font'  => [
+                        'color' => ['rgb' => '0000FF'],
+                        'underline' => 'single'
+                    ]
+                ];
+                $sheet->getStyle('B' . ($currentRow + 1))->applyFromArray($link_style_array);
 
                 if ($prod->product->previewName) {
                     $objDrawing = new \PHPExcel_Worksheet_MemoryDrawing();
@@ -103,7 +112,7 @@ class CommercialService {
                         $objDrawing->setWidth(200);
                         $objDrawing->setCoordinates('C' . $currentRow);
                         $objDrawing->setWorksheet($sheet);
-                        $maxWidth = 220;
+                        $maxWidth = 240;
                         $offsetX = ($maxWidth - $objDrawing->getWidth())/2;
                         $objDrawing->setOffsetX($offsetX);
                         $objDrawing->setOffsetY(20);
@@ -160,7 +169,7 @@ class CommercialService {
 
         $sheet->getColumnDimension('A')->setWidth(80/8);
         $sheet->getColumnDimension('B')->setWidth(350/8);
-        $sheet->getColumnDimension('C')->setWidth(220/8);
+        $sheet->getColumnDimension('C')->setWidth(260/8);
         $sheet->getColumnDimension('D')->setWidth(270/8);
         $sheet->getColumnDimension('E')->setWidth(120/8);
         $sheet->getColumnDimension('F')->setWidth(120/8);
@@ -203,6 +212,7 @@ class CommercialService {
         );
 
         $sheet->getStyle($begin . ':' . $end)->applyFromArray($style);
+        $sheet->getStyle($begin . ':' . $end)->getAlignment()->setWrapText(true);
 
         return $sheet;
 

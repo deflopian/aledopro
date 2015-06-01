@@ -105,9 +105,9 @@ class TreeController extends ApiController
                 $entity->product_id = $options['sectionId'];
                 $entity->room_id = $itemId;
                 $entity->old_price = $options['old_price'];
-                $entityTable->save($entity);
+                $lastId = $entityTable->save($entity);
 
-                return $this->response->setContent(1)->setStatusCode(200);
+                return $this->response->setContent($lastId)->setStatusCode(200);
             } elseif (array_key_exists("remove", $data)) {
                 $entity = $entityTable->fetchByConds(
                     array(
@@ -127,6 +127,15 @@ class TreeController extends ApiController
 
             return $this->response->setStatusCode(400);
 
+        } elseif ($type == \Catalog\Controller\AdminController::COMMERCIAL_PRODS_TABLE) {
+
+            $entityTable = $sl->get('CommercialProdsTable');
+            $entity = $entityTable->find($itemId);
+            foreach ($data as $field => $val) {
+                $entity->$field = $val;
+            }
+            $entityTable->save($entity);
+            return $this->response->setContent($entity->id)->setStatusCode(200);
         } else {
             $entity = CatalogService::getEntityByType($sl, $itemId, $type);
         }

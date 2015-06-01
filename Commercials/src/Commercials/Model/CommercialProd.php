@@ -17,5 +17,6 @@ class CommercialProd extends SampleModel
     public $room_id;
     public $product_id;
     public $old_price;
+    public $count;
     //$product
 }

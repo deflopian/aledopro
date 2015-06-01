@@ -15,16 +15,26 @@
         <? } ?>
     </div>
 <div class="section b-section__content catalog hidden-xs hidden-sm">
-    <div class="row">
+    <div class="b-section__content b-section__content-breadcrumbs">
+
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+
+    </div>
+    <div class="row row-second-xs">
         <div class="col-xs-6">
             <? include 'part/filter-small.phtml' ?>
         </div>
     </div>
 
     <div id="catalog-filterbar-place"></div>
-
+    <? $num = 0; ?>
     <? foreach($subsections as $subsecId=>$subsection){ ?>
-        <div class="row row-second" id="subsec-<?= $subsecId?>">
+        <div class="row <?= ($num++ == 0) ? '': 'row-second' ?>" id="subsec-<?= $subsecId?>">
             <div class="col-xs-12">
                 <div class="row">
                     <div class="col-xs-12">
