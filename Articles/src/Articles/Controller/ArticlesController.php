@@ -60,7 +60,7 @@ class ArticlesController extends AbstractActionController
 
     public function indexAction()
     {
-        return $this->redirect()->toRoute('blog');
+      //  return $this->redirect()->toRoute('blog');
     }
 
     public function getPopupContentAction()
