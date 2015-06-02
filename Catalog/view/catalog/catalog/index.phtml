@@ -1,3 +1,11 @@
+<div class="b-section__content">
+    <div class="b-breadcrumbs" style=" ">
+        <? foreach ($breadCrumbs as $bc) { ?>
+            <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+        <? } ?>
+        <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+    </div>
+</div>
 <? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
 <? include 'part/part/mobile-modal.phtml'; ?>
 
@@ -26,9 +34,9 @@
     </div>
     <div class="b-section__content hidden-xs hidden-sm">
         <? foreach ($this->sections as $i => $section) { ?>
-            <div class="row <?= $i == 0 ? 'row-second' : 'row-second-large' ?>">
+            <div class="row <?= $i == 0 ? '' : 'row-second-large' ?>">
             <div class="col-xs-3 mobile-left-margin-1">
-                    <div class="row row-second" id="section-<?= $section->id ?>" style="padding-right: 15px">
+                    <div class="row <?= $i == 0 ? '' : 'row-second' ?>" id="section-<?= $section->id ?>" style="padding-right: 15px">
                         <div class="col-xs-12">
                             <div class="black2-top"></div>
                             <div class="catalog-bar-icon"></div>

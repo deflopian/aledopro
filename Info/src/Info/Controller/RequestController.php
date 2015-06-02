@@ -77,13 +77,33 @@ class RequestController extends AbstractActionController {
                         $partner = new PartnerRequest();
                         $partner->exchangeArray($partnerForm->getData());
                         $prTable = $this->getServiceLocator()->get('PartnerRequestTable');
-                        $prTable->save($partner);
+                        $requestId = $prTable->save($partner);
 
                         $user->setIsPartner(0);
                         $user->setState(1);
                         /** @var \ZfcUser\Mapper\User $userMapper */
                         $userMapper = $this->getServiceLocator()->get('zfcuser_user_mapper');
                         $result = $userMapper->update($user);
+
+
+                        list($email, $mailView) = MailService::prepareUserRequestPartnershipMailData($this->serviceLocator, $partner, $user);
+                        MailService::sendMail($email, $mailView, "Ваша заявка принята");
+
+                        //сообщаем менеджеру детали нового заказа
+                        list($email, $mailView, $from) = MailService::prepareManagerRequestPartnershipMailData($this->serviceLocator, $partner, $requestId, $user);
+                        MailService::sendMail($email, $mailView, "Новая заявка по партнёрству номер " . $requestId . " на Aledo", $from);
+
+
+
+                        if ($user->getIsPartner()) {
+                            UserService::addHistoryAction(
+                                $this->getServiceLocator(),
+                                $user->getId(),
+                                UserService::USER_ACTION_REGISTER,
+                                "",
+                                time()
+                            );
+                        }
 
                         $response = $this->getResponse();
 
@@ -157,16 +177,27 @@ class RequestController extends AbstractActionController {
             $partner = new PartnerRequest();
             $partner->exchangeArray($postData);
             $prTable = $this->getServiceLocator()->get('PartnerRequestTable');
-            $prTable->save($partner);
+            $requestId = $prTable->save($partner);
 
             //добро пожаловать на сайт, логин, пароль
             list($email, $mailView) = MailService::prepareRegisterUserMailData($this->serviceLocator, $user, $data['password']);
-            MailService::sendMail(MailService::$developerMail, $mailView, "Добро пожаловать на Aledo!");
+            MailService::sendMail($email, $mailView, "Добро пожаловать на Aledo!");
 
             if ($user->getIsSpamed()) {
                 list($email, $mailView) = MailService::prepareNewSpamedRegisterManagerData($this->serviceLocator, $user);
-                MailService::sendMail(MailService::$developerMail, $mailView, "Новый подписчик на Aledo номер " . $user->getId());
+                MailService::sendMail($email, $mailView, "Новый подписчик на Aledo номер " . $user->getId());
             }
+
+            //зарегался новый юзер. Имя, почта, телефон
+            list($email, $mailView) = MailService::prepareRegisterManagerMailData($this->serviceLocator, $user);
+            MailService::sendMail($email, $mailView, "На Aledo новый пользователь номер " . $user->getId());
+
+            list($email, $mailView) = MailService::prepareUserRequestPartnershipMailData($this->serviceLocator, $partner, $user);
+            MailService::sendMail($email, $mailView, "Ваша заявка принята");
+
+            //сообщаем менеджеру детали нового заказа
+            list($email, $mailView, $from) = MailService::prepareManagerRequestPartnershipMailData($this->serviceLocator, $partner, $requestId, $user);
+            MailService::sendMail($email, $mailView, "Новая заявка по партнёрству номер " . $requestId . " на Aledo", $from);
 
             if ($user->getIsPartner()) {
                 UserService::addHistoryAction(
@@ -177,9 +208,7 @@ class RequestController extends AbstractActionController {
                     time()
                 );
             }
-            //зарегался новый юзер. Имя, почта, телефон
-            list($email, $mailView) = MailService::prepareRegisterManagerMailData($this->serviceLocator, $user);
-            MailService::sendMail(MailService::$developerMail, $mailView, "На Aledo новый пользователь номер " . $user->getId());
+
         }
         $response = $this->getResponse();
 

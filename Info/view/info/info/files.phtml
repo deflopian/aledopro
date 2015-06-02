@@ -1,5 +1,14 @@
 
 <div class="b-download-page">
+
+    <div class="b-section__content">
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+    </div>
     <div class="b-section b-section_catalogs" id="/catalogs"
          image-responsive="{
                              default : {

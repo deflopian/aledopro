@@ -1,8 +1,14 @@
 <div class="b-guarantee-page b-section">
+
     <div class="b-section__content">
-        <br/>
-        <h4><?= $entity->title ?></h4>
-        <hr class="solid-separator"/>
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+    </div>
+    <div class="b-section__content b-guarantee">
         <div class="text-center" style="padding-left: 15%; padding-right: 15%">
             <br /><br />
             <?= $entity->text1 ?>

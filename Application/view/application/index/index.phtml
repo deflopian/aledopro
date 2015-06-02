@@ -102,7 +102,7 @@
             <hr class="dotted-separator dotted-separator_projects-slider"/>
             <div class="b-slider b-slider_projects">
                 <? foreach($this->projects as $i=>$project){ ?>
-
+                        <? if ($project->id == 43) continue; ?>
                         <div class="b-slider__item b-slider_projects__item">
                     <a href="/projects/view/<?= $project->id ?>">
                             <i class="b-slider-item-layout"></i>

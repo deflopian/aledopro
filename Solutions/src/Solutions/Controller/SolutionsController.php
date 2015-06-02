@@ -46,6 +46,10 @@ class SolutionsController extends AbstractActionController
 
         return array(
             'seoData' => $seoData,
+            'pageTitle' => 'Решения',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
             'solutions' => $solutions,
             'parentUrl'     => '/solutions/',
             'firstSolution' => $firstSolution
@@ -123,6 +127,12 @@ class SolutionsController extends AbstractActionController
         $htmlViewPart
             ->setVariables(array(
                 'solution'   => $solution,
+
+                'pageTitle' => $solution->title,
+                'breadCrumbs'  => array(
+                    array('link'=> $this->url()->fromRoute('solutions'), 'text'=>ucfirst('Решения')),
+                    array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+                ),
 //                'relatedProds'   => $relatedProds,
 //                'nextSol' => $nextSol,
 //                'prevSol' => $prevSol,

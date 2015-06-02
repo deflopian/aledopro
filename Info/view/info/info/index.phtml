@@ -2,7 +2,17 @@
 /** @var $entity \Info\Model\About */
 ?>
 <div class="b-about-page">
+
     <div class="b-section">
+
+        <div class="b-section__content">
+            <div class="b-breadcrumbs">
+                <? foreach ($breadCrumbs as $bc) { ?>
+                    <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+                <? } ?>
+                <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+            </div>
+        </div>
         <div class="b-section__content text-center">
             <br/><br/>
 
@@ -24,8 +34,9 @@
                 </div>
                 <div class="b-tabs-content b-tabs-content_about">
                     <div class="b-tabs-content__item fade in active" id="about_1">
+                        <div class="text-left">
                         <?= $entity->text_1 ?>
-
+                        </div>
                     </div>
                     <div class="b-tabs-content__item fade" id="about_2">
                         <h4><?= $entity->text_2_header_1 ?></h4>

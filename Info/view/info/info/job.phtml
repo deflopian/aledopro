@@ -1,3 +1,12 @@
+
+<div class="b-section__content">
+    <div class="b-breadcrumbs">
+        <? foreach ($breadCrumbs as $bc) { ?>
+            <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+        <? } ?>
+        <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+    </div>
+</div>
 <div class="b-section b-section_work" image-responsive="{
                              default : {
              src: '/images/job/<?= $entity->img_1000_name ?>',
@@ -11,6 +20,7 @@
 
              }
                  }}">
+
     <div class="b-section__content">
         <div class="b-work text-white">
             <div class="b-work-cell b-work-cell_left">

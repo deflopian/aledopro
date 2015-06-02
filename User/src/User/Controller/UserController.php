@@ -280,6 +280,11 @@ class UserController extends AbstractActionController
         return array(
             'user' => $user,
             'orders' => $orders,
+
+            'pageTitle' => 'Личный кабинет',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
         );
     }
 

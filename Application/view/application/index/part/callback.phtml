@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" onclick="function(){location.reload()}"><span data-dismiss="modal">×</span></button>
+    <h4 class="modal-title text-center"><strong>Запрос отправлен!</strong></h4>
+</div>
+<div class="modal-body">
+    <div class="popup-modal">
+        <div id="lightbox-01-m-t" class="lightbox-m-t lightbox-01-m-t">
+            <h3>Хотите, Мы перезвоним Вам через 30 секунд?</h3>
+            <form action="#" class="callback-m-t" onsubmit="return send_order_m_t();">
+                <input type="text" class="text-m-t" id="customer_contact_m_t" value="" placeholder="Введите Ваш телефон">
+                <input type="submit" value="Жду звонка!" class="submit-m-t">
+            </form>
+            <p>Наш оператор позвонит Вам <br>и проконсультирует по всем вопросам!</p>
+            <br>
+            <p id="error_hint_m_t" style="color: red;">&nbsp;</p>
+            <div class="lightbox-03-m-t-ccc">*Звонок бесплатный</div>
+            <div class="lightbox-03-m-t-copy-w">
+                <a class="lightbox-03-m-t-copy" href="http://hookmyvisit.com" target="_blank">
+                    <img src="http://hookmyvisit.com/images/gif-text-blurred-wout-shadow-indexa.gif">
+                </a>
+            </div>
+        </div>
+        <div id="lightbox-03-m-t" class="lightbox-m-t lightbox-03-m-t">
+            <a href="#" class="btn-close-m-t" onclick="hide_thank(); return false;">Закрыть</a>
+            <h3>Хотите, Мы перезвоним Вам через 30 секунд?</h3>
+            <form class="callback-m-t">
+                <div class="text-new">Соединение...</div>
+                <div class="submit-new"></div>
+            </form>
+            <p>Наш оператор позвонит Вам <br>и проконсультирует по всем вопросам!</p>
+            <div class="lightbox-03-m-t-ccc">*Звонок бесплатный</div>
+            <div class="lightbox-03-m-t-copy-w">
+                <a class="lightbox-03-m-t-copy" href="http://hookmyvisit.com" target="_blank">
+                    <img src="http://hookmyvisit.com/images/gif-text-blurred-wout-shadow-indexa.gif">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -95,6 +95,10 @@ class InfoController extends AbstractActionController
         return array(
             'comments' => $comments,
             'team' => $team,
+            'pageTitle' => 'О компании',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
             'entity' => $entity,
             'showRoom' => $showRoom,
             'linkedProjects' => $linkedProjects
@@ -193,6 +197,10 @@ class InfoController extends AbstractActionController
         $return['instructions'] = $instructions;
         $return['entity'] = $entity;
 
+        $return['pageTitle'] = 'Скачать';
+        $return['breadCrumbs']  = array(
+            array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+        );
         return $return;
     }
     public function guaranteeAction(){
@@ -200,7 +208,12 @@ class InfoController extends AbstractActionController
         $entity = $guaranteeTable->find(1);
 
         return array(
-            'entity' => $entity
+            'entity' => $entity,
+
+            'pageTitle' => 'Сервис и гарантия',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
         );
     }
     public function jobAction(){
@@ -222,7 +235,12 @@ class InfoController extends AbstractActionController
             }
         }
         return array(
-            'entity' => $entity
+            'entity' => $entity,
+
+            'pageTitle' => 'Работа у нас',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
         );
     }
 
@@ -245,7 +263,12 @@ class InfoController extends AbstractActionController
             }
         }
         return array(
-            'entity' => $entity
+            'entity' => $entity,
+
+            'pageTitle' => 'Преимущества',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
         );
     }
 
@@ -267,7 +290,12 @@ class InfoController extends AbstractActionController
             }
         }
         return array(
-            'entity' => $entity
+            'entity' => $entity,
+
+            'pageTitle' => 'Партнёрам',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
         );
     }
 
@@ -289,7 +317,12 @@ class InfoController extends AbstractActionController
             }
         }
         return array(
-            'entity' => $entity
+            'entity' => $entity,
+
+            'pageTitle' => 'Сервис aledo-pro',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
         );
     }
 
@@ -299,7 +332,12 @@ class InfoController extends AbstractActionController
         $entity = $deliveryTable->find(1);
 
         return array(
-            'entity' => $entity
+            'entity' => $entity,
+
+            'pageTitle' => 'Доставка и оплата',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
         );
     }
     public function partnerAction() {
@@ -463,10 +501,12 @@ class InfoController extends AbstractActionController
                 $saveData = $form->getData();
                 $entity = new PartnerRequest();
                 $entity->exchangeArray($saveData);
-
+                if ($this->zfcUserAuthentication()->hasIdentity()) {
+                    $user = $this->zfcUserAuthentication()->getIdentity();
+                }
                 $requestId = $sl->get('PartnerRequestTable')->save($entity);
 
-                list($email, $mailView) = MailService::prepareUserRequestPartnershipMailData($this->serviceLocator, $entity);
+                list($email, $mailView) = MailService::prepareUserRequestPartnershipMailData($this->serviceLocator, $entity, $user);
                 MailService::sendMail($email, $mailView, "Ваша заявка принята");
 
                 //сообщаем менеджеру детали нового заказа

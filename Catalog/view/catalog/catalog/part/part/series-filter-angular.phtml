@@ -3,7 +3,7 @@
 ?>
 <? if (!$nonFilter) { ?>
 
-<div class="row" >
+<div class="row" style="font-size: 12px;">
     <div class="col-xs-12" >
         <div style="background-color: #989898; color: #ffffff; margin-top: 10px; margin-bottom: 20px; padding: 12px">
 
@@ -17,12 +17,9 @@
                         </div>
 
                     </div>
-                    <div class="col-xs-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
-                        <div class="row"  style="text-align: left">
-                            <div class="col-xs-12">
-                                <div class="icon-filter"></div>
-                            </div>
-                        </div>
+                    <div class="filter-column-header_icon filter-param-<?= $serNum ?>" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
+
+                        <div class="icon-filter"></div>
                     </div>
 
 
@@ -32,9 +29,9 @@
             <div>
                 <div class="row">
                     <div class="col-xs-3 filter-before-<?= $serNum ?>"> </div>
-                    <div class="col-xs-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
-                        <div class="row" ng-repeat="tag in getTags(name)" ng-show="showTags">
-                            <div class="col-xs-12">
+                    <div class="filter-column-header_tag filter-param-<?= $serNum ?>" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
+
+                            <div ng-repeat="tag in getTags(name)" ng-show="showTags">
                                 <input id="f-<?=$serNum?>{{name}}-val-{{tag.key}}" type="checkbox"
                                        name="{{name}}" value="{{tag.value}}"
                                        ng-true-value="'{{tag.hash}}'"
@@ -44,7 +41,6 @@
                                 <label for="f-<?=$serNum?>{{name}}-val-{{tag.key}}" style="font-weight: normal">{{tag.value}}</label>
 
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -62,24 +58,21 @@
                             </div>
 
                     </div>
-                    <div class="col-xs-2 filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div style="border-bottom: 1px solid white; padding-bottom: 20px; margin-bottom: 10px" >
-                                    {{paramNames[name]}}
-                                </div>
+                    <div class="series-filter__column filter-column filter-param-<?= $serNum ?>"  style="padding-right: 0" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
+
+                        <div class="filter-column-header">
+                            <div style="border-bottom: 1px solid white; padding-bottom: 20px; margin-bottom: 10px; padding-left: 3px;" >
+                                {{paramNames[name]}}
                             </div>
                         </div>
-                        <div class="row" ng-repeat="(i, val) in vals[name]" >
-                            <div class="col-xs-12">
-                                <input id="f-<?=$serNum?>{{name}}-val-{{i}}" type="checkbox"
-                                       name="{{name}}" value="{{val.value}}"
-                                       ng-true-value="'{{val.hash}}'"
-                                       ng-false-value="false"
-                                       class="filter-checkbox"
-                                       ng-model="possibleVals[name][i]">
-                                <label for="f-<?=$serNum?>{{name}}-val-{{i}}"  ng-class="{disabledFilterParam: !checkVal(name, val.value)}" style="font-weight: normal">{{printValue(val, name, i)}}</label>
-                            </div>
+                        <div ng-repeat="(i, val) in vals[name]" class="filter-column-body__item">
+                            <input id="f-<?=$serNum?>{{name}}-val-{{i}}" type="checkbox"
+                                   name="{{name}}" value="{{val.value}}"
+                                   ng-true-value="'{{val.hash}}'"
+                                   ng-false-value="false"
+                                   class="filter-checkbox"
+                                   ng-model="possibleVals[name][i]">
+                            <label for="f-<?=$serNum?>{{name}}-val-{{i}}"  ng-class="{disabledFilterParam: !checkVal(name, val.value)}" style="font-weight: normal">{{printValue(val, name, i)}}</label>
                         </div>
                     </div>
                     <div class="col-xs-1 pull-right" style="position: absolute; bottom: 0; right: 0; cursor: pointer; text-align: right" ng-show="!showTags">
@@ -122,7 +115,7 @@
     }
 
     $(function(){
-        $('.filter-before-<?= $serNum ?>').css('width', getWidthBeforeColumn("<?= reset($filteredFields) ?>", "<?= $serNum ?>")-12);
+        $('.filter-before-<?= $serNum ?>').css('width', getWidthBeforeColumn("<?= reset($filteredFields) ?>", "<?= $serNum ?>"));
 
         $('.filter-param-<?= $serNum ?>').each(function() {
 

@@ -18,6 +18,9 @@ class CartController extends AbstractActionController
     public function indexAction()
     {
         $this->layout()->pageTitle = 'Корзина';
+        $this->layout()->breadCrumbs = array(
+            array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+        );
 
         $prodsInCart = array();
         $sl = $this->getServiceLocator();
@@ -108,6 +111,12 @@ class CartController extends AbstractActionController
         }
 
         $return['isAuth'] = $this->zfcUserAuthentication()->hasIdentity();
+
+
+        $return['pageTitle'] = 'Корзина';
+        $return['breadCrumbs'] = array(
+            array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+        );
         return $return;
     }
 

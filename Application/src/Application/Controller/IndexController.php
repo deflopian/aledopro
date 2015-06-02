@@ -96,7 +96,7 @@ class IndexController extends AbstractActionController
             $projectsByRubric[$pbkey] = array_slice($pbr, 0, 6);
         }
 
-        $projects = array_slice($projects, 0, 6);
+
 
         $fileTable = $this->getServiceLocator()->get('FilesTable');
         foreach ($projects as &$one) {

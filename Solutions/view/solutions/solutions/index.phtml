@@ -1,23 +1,19 @@
-<!--<div class="section">-->
-<!--    <div class="row row-second popup-buttons-container" data-type="solutions">-->
-<!--        --><?// foreach($solutions as $i=>$project){ ?>
-<!--            <div class="col-md-4 popup-buttton project-tile-other" data-id="--><?//= $project->id ?><!--">-->
-<!--                <div class="tile-title">--><?//= $project->title ?><!--</div>-->
-<!--                <div class="tile-text">--><?//= $project->adress ?><!--</div>-->
-<!--                <img src="--><?//= $this->basePath() . '/images/solutions/' . $project->img ?><!--" alt="--><?//= $project->title ?><!--"/>-->
-<!--            </div>-->
-<!--            --><?// if(($i+1)%3==0){echo'</div><div class="row row-second popup-buttons-container" data-type="solutions">';} ?>
-<!--        --><?// } ?>
-<!--    </div>-->
-<!--</div>-->
 <?
 /**
  * @var $solutions \Solutions\Model\Solution[]
  * @var $firstSolution \Solutions\Model\Solution
  */
 ?>
-<div class="b-solutions b-section">
+<div class="b-section">
     <div class="b-section__content">
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+    </div>
+    <div class="b-solutions b-section__content">
         <div class="b-solutions-table">
 
             <div class="b-solutions-table__cell b-solutions-table__cell_right visible-xs-block visible-sm-block">

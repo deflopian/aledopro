@@ -10,7 +10,7 @@
         <div class="text-center b-mt1 b-mb1">ВАШИ ПЕРСОНАЛЬНЫЕ ДАННЫЕ:</div>
         <hr class="dotted-separator b-mb1" />
         <div class="b-partner-registration">
-            <form novalidate ng-submit="submit()" name="partnerRegistration" ng-controller="PartnerController">
+            <form novalidate name="partnerRegistration" ng-controller="PartnerController">
                 <div class="b-partner-registration__row">
                     <div class="b-partner-registration__cell b-partner-registration__cell_left">
                         <div class="b-form-group">
@@ -340,11 +340,11 @@
                             <p>*поля отмеченные звездочкой(*) обязательны к заполнению</p>
                             <p>Мы гарантируем, что Ваши персональные данные не будут переданы третьим лицам</p>
 
-                            <button class="b-button b-button_gray" ng-click="submit()" id="partner_reistration_button" ng-disabled="partnerRegistration.$invalid">
+                            <div class="b-button b-button_gray" ng-click="submit()" id="partner_reistration_button" ng-disabled="partnerRegistration.$invalid">
                                             <span class="b-button__text">
                                                 отправить заявку на регистрацию
                                             </span>
-                            </button>
+                            </div>
                         </div>
                     </div>
                 </div>

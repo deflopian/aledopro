@@ -10,6 +10,7 @@ use Discount\Service\DiscountService;
 use Info\Model\PartnerRequest;
 use Reports\Model\Report;
 use Services\Controller\ServicesController;
+use User\Model\User;
 use Zend\Mail\Headers;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail as SendmailTransport;
@@ -179,16 +180,17 @@ class MailService
     /**
      * @param $sl
      * @param PartnerRequest $request
+     * @param \ZfcUser\Entity\User $user
      *
      * @return array
      */
-    public static function prepareUserRequestPartnershipMailData($sl, $request)
+    public static function prepareUserRequestPartnershipMailData($sl, $request, $user)
     {
-        $email = $request->email;
+        $email = $user->getEmail();
 
 
         $view = new ViewModel(array(
-            'username' => $request->name
+            'username' => $request->partner_lastname . " " . $request->partner_name . " " . $request->partner_fathername
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-user-request-partnership');
@@ -200,40 +202,38 @@ class MailService
     /**
      * @param $sl
      * @param PartnerRequest $partnerRequest
+     * @param \ZfcUser\Entity\User $user
      *
      * @return array
      */
-    public static function prepareManagerRequestPartnershipMailData($sl, $partnerRequest, $requestId)
+    public static function prepareManagerRequestPartnershipMailData($sl, $partnerRequest, $requestId, $user)
     {
         $params1 = array();
         $params2 = array();
 
-        $params1['Ф.И.О.'] = $partnerRequest->name ? $partnerRequest->name : "не указано";
-        $params1['E-Mail'] = $partnerRequest->email ? $partnerRequest->email : "не указано";
-        $params1['Род деятельности'] = $partnerRequest->activity ? $partnerRequest->activity : "не указано";
-        $params1['Должность'] = $partnerRequest->job ? $partnerRequest->job : "не указано";
-        $params1['Номер телефона'] = $partnerRequest->phone ? $partnerRequest->phone : "не указано";
+        $name = $partnerRequest->partner_lastname . " " . $partnerRequest->partner_name . " " . $partnerRequest->partner_fathername;
+        $params1['Ф.И.О.'] = $name ? $name : "не указано";
+        $params1['E-Mail'] = $user->getEmail() ? $user->getEmail() : "не указано";
+        $params1['Должность'] = $partnerRequest->partner_job_title ? $partnerRequest->partner_job_title : "не указано";
+        $params1['Номер телефона'] = $user->getPhone() ? $user->getPhone() : "не указано";
 
-        $params2['Название компании'] = $partnerRequest->company_name ? $partnerRequest->company_name : "не указано";
-        $params2['Сфера деятельности'] = $partnerRequest->company_activity ? $partnerRequest->company_activity : "не указано";
-        $params2['Примеры брендов'] = $partnerRequest->brands_sample ? $partnerRequest->brands_sample : "не указано";
-        $params2['Индекс'] = $partnerRequest->post_index ? $partnerRequest->post_index : "не указано";
-        $params2['Область/Город'] = $partnerRequest->city ? $partnerRequest->city : "не указано";
-        $params2['Улица, номер дома офиса'] = $partnerRequest->adress ? $partnerRequest->adress : "не указано";
-        $params2['Телефон'] = $partnerRequest->company_phone ? $partnerRequest->company_phone : "не указано";
-        $params2['Факс'] = $partnerRequest->company_fax ? $partnerRequest->company_fax : "не указано";
-        $params2['E-mail'] = $partnerRequest->company_email ? $partnerRequest->company_email : "не указано";
-        $params2['Website'] = $partnerRequest->company_website ? $partnerRequest->company_website : "не указано";
+        $params2['Полное название компании'] = $partnerRequest->partner_company_name ? $partnerRequest->partner_company_name : "не указано";
+        $params2['Сфера деятельности'] = $partnerRequest->partner_scope ? $partnerRequest->partner_scope : "не указано";
+        $params2['Примеры брендов'] = $partnerRequest->partner_brands ? $partnerRequest->partner_brands : "не указано";
+        $params2['Область/Город'] = $user->getCity() ? $user->getCity() : "не указано";
+        $params2['Телефоны офиса'] = $partnerRequest->partner_office_tel ? $partnerRequest->partner_office_tel : "не указано";
+        $params2['Website'] = $partnerRequest->partner_website ? $partnerRequest->partner_website : "не указано";
 
         $view = new ViewModel(array(
             'paramsClient' => $params1,
             'paramsCompany' => $params2,
             'requestId' => $requestId,
         ));
+
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-manager-request-partnership');
         $formView = $sl->get('viewrenderer')->render($view);
-        return array(self::$currentManagerMail, $formView, $partnerRequest->email ? $partnerRequest->email : $partnerRequest->company_email);
+        return array(self::$currentManagerMail, $formView, $user->getEmail());
     }
 
 

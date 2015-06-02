@@ -1,7 +1,17 @@
+
+<div class="b-section__content">
+    <div class="b-breadcrumbs">
+        <? foreach ($breadCrumbs as $bc) { ?>
+            <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+        <? } ?>
+        <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+    </div>
+</div>
 <div class="b-projects b-section">
     <div class="b-section__content">
         <div class="b-projects__row">
             <? foreach($this->projects as $i=>$project){ ?>
+                <? if ($project->id == 43) continue; ?>
             <div class="b-projects-item">
                 <a class="b-projects-item__link" href="/projects/view/<?= $project->id ?>/">
                     <img class="b-projects-item__image" src="/images/projects/<?= $project->previewName ?>" />

@@ -6,7 +6,7 @@ $series = $this->series;
 
 if (isset($this->subsections[$section->id])) {
     ?>
-    <div class="row row-second">
+    <div class="row <?= $i == 0 ? '' : 'row-second' ?>">
         <? foreach($this->subsections[$section->id] as $i => $subsec){
             if(($i+1)%5==0){ echo'</div><div class="row row-second">'; }
             ?>

@@ -136,6 +136,11 @@ class CatalogController extends BaseController
             'sections' => $sections,
             'subsections' => $subsecs,
             'series' => $wantedSeries,
+
+            'pageTitle' => 'Каталог',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
         );
     }
 

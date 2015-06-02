@@ -51,6 +51,11 @@ class ContactsController extends AbstractActionController
 
         return array(
             'contacts' => $contacts,
+
+            'pageTitle' => 'Контакты',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            ),
         );
     }
 

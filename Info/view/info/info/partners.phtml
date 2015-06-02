@@ -1,5 +1,15 @@
 <div class="b-partners-page">
+
+    <div class="b-section__content">
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+    </div>
     <div class="b-section b-partners-page__1st-section">
+
         <div class="b-section__content">
             <div class=" b-business-proposal">
                 <div class="b-business-proposal__inner">

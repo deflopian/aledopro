@@ -1,5 +1,14 @@
 <div class="b-service-page b-section">
     <script src="/Scripts/jquery.maskedinput.js"></script>
+
+    <div class="b-section__content" style="padding-left: 30px;">
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+    </div>
     <? /** @var $entity \Info\Model\Service */ ?>
     <div class="b-section b-section_service">
         <div class="b-section__content">

@@ -2,6 +2,15 @@
     /** @var $entity \Info\Model\Pluses */
 ?>
 <div class="b-section b-advantages-page">
+
+    <div class="b-section__content">
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+    </div>
     <div class="b-section__content">
         <h1 class="b-advantages-page__heading text-center"><?= $entity->title ?></h1>
         <hr class="dotted-separator" />
