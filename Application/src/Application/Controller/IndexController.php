@@ -39,7 +39,7 @@ class IndexController extends AbstractActionController
         }
         $popupContent = false;
         $solutions = $sl->get('SolutionsTable')->fetchAll('order asc');
-        $projects = $sl->get('ProjectsTable')->fetchAll('order asc');
+        $projects = $sl->get('ProjectsTable')->fetchByCond('rubric_id', 1, 'order asc');
         $rubrics = $sl->get('ProjectRubricTable')->fetchAll();
 
         $projectsByRubric = array();

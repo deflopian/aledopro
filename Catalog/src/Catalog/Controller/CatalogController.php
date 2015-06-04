@@ -112,6 +112,7 @@ class CatalogController extends BaseController
             $series = $this->getSeriesTable()->fetchByCond('subsection_id', $wantedSubsectionsIds, 'order asc');
         } else {
             $series = $this->getSeriesTable()->fetchByConds(array('subsection_id' => $wantedSubsectionsIds, 'deleted' => 0), array(), 'order asc');
+            $series = $this->getSeriesTable()->fetchByConds(array('subsection_id' => $wantedSubsectionsIds, 'deleted' => 0), array(), 'order asc');
         }
         $wantedSeries = array();
         $fileTable = $this->getServiceLocator()->get('FilesTable');
@@ -929,13 +930,12 @@ class CatalogController extends BaseController
         $offeredIds = $sl->get('OfferContentTable')->fetchAll('', true);
 
         $dopProducts = $series->dopProducts;
-        $series->show_scroll_btn = false;
-        foreach ($dopProducts as $gr) {
-            if (strpos($gr['title'], 'источник') !== false || strpos($gr['title'], 'ИСТОЧНИК') !== false || strpos($gr['title'], 'Источник') !== false) {
-                $series->show_scroll_btn = true;
-                break;
-            }
-        }
+//        foreach ($dopProducts as $gr) {
+//            if (strpos($gr['title'], 'источник') !== false || strpos($gr['title'], 'ИСТОЧНИК') !== false || strpos($gr['title'], 'Источник') !== false) {
+//                $series->show_scroll_btn = true;
+//                break;
+//            }
+//        }
 
         $view = new ViewModel();
         $view
@@ -945,6 +945,7 @@ class CatalogController extends BaseController
                 'docs' => $series->docs,
                 'dims' => $series->dims,
                 'offeredIds' => $offeredIds,
+                'sectionId' => $metasubsection->section_id,
                 'dopProducts' => $series->dopProducts,
                 'equalParameters' => $series->equalParams,
                 'shownEqualParams' => $series->shownEqualParams,

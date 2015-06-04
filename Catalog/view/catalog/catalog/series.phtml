@@ -101,12 +101,22 @@ function mb_ucfirst($text) {
 
                 </ul>
             </div>
-
+            <?
+            if ($this->sectionId == 1) {
+                $attention = 'Источник питания к данной лампе приобретается отдельно.';
+            } else {
+                $attention = 'Источник питания к данному светильнику приобретается отдельно.';
+            } ?>
             <div class="b-tabs-content b-tabs-content_goods tab-content">
                 <div class="b-tabs-content__item fade in active tab-pane" role="tabpanel" id="goods_1">
-
+                    <? if ($series->show_scroll_btn) { ?>
+                    <div class="attention-block">
+                        <span class="attention-block_important">Важно!</span>
+                        <a href="#goods_4" class="attention-block_message"><?= $attention ?></a>
+                    </div>
+                    <? } ?>
                     <div class="catalog" style="position: relative; <?= $view !== \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES ? '' : 'margin-top: 70px;' ?>">
-                        <div class="row row-second-xs" id="serpopup-table-container">
+                        <div class="row" id="serpopup-table-container">
                             <div class="col-xs-12" id="testApp_<?= $series->id ?>" >
 
                                 <?
@@ -119,6 +129,7 @@ function mb_ucfirst($text) {
                                         $tpl = 'product-table';
                                         break;
                                 }
+
 
                                 $displayStyle = $view;
                                 $serNum = 1;
@@ -549,4 +560,16 @@ function mb_ucfirst($text) {
         mainpage.scrollTo($('.scrollable_power:first'));
     }
 
+</script>
+
+<script type="application/javascript">
+    $(window).keyup(function(event) {
+        if(event.ctrlKey){
+            if (event.keyCode==37) {
+                document.location = "/catalog/series/<?= $this->prevProd->id ?>";
+            } else if (event.keyCode==39) {
+                document.location = "/catalog/series/<?= $this->nextProd->id ?>";
+            }
+        }
+    });
 </script>

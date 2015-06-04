@@ -10,6 +10,7 @@
 <div class="b-projects b-section">
     <div class="b-section__content">
         <div class="b-projects__row">
+            <? $j = 0; ?>
             <? foreach($this->projects as $i=>$project){ ?>
                 <? if ($project->id == 43) continue; ?>
             <div class="b-projects-item">
@@ -21,6 +22,12 @@
                     </div>
                 </a>
             </div>
+                <? $j++; ?>
+            <? } ?>
+            <? if ($j%2==1) { ?>
+                <div class="b-projects-item">
+                    <img class="b-projects-item__image" src="/images/projects/asap.jpg" />
+                </div>
             <? } ?>
         </div>
     </div>

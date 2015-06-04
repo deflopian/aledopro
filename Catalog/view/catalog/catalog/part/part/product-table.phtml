@@ -83,13 +83,12 @@
     <div solo-table-pos-vals style="display: none;">
         <?= $posVals ?>
     </div>
+    <? include 'series-filter-angular.phtml'; ?>
     <div class="row">
         <div class="col-xs-12">
             <span style="font-weight: bold">Цены на предлагаемую продукцию зависят от курса у.е.</span>
         </div>
     </div>
-    <? include 'series-filter-angular.phtml'; ?>
-
     <table class="table table-hover table-aledo table-products" id="table-products_<?= $serNum ?>" style="width: 100%;">
         <thead>
         <tr ng-init="printScopeId(tds)">

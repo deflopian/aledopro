@@ -146,10 +146,28 @@ class RequestController extends AbstractActionController {
                         );
                         return $response;
                     }
+                    $data = $form->getData();
                 }
+            } else {
+                $form->setData($userData);
+                if (!$form->isValid()) {
+                    /** @var \Zend\Http\Response $response */
+                    $response = $this->getResponse();
+
+                    $response->setContent(
+                        \Zend\Json\Json::encode(
+                            array(
+                                'success' => 0,
+                                'errors' => $form->getMessages()
+                            )
+                        )
+                    );
+                    return $response;
+                }
+                $data = $form->getData();
             }
 
-            $data = $form->getData();
+
             /* @var $user \ZfcUser\Entity\User */
 
             $bcrypt = new Bcrypt();

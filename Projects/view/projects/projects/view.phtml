@@ -107,7 +107,8 @@
 
                     },
                     _initFancy = function () {
-                        _.$imagesLinks = _.$slider.find(".b-slider__item:not(.slick-cloned) > a");
+                        _.$imagesLinks = _.$slider.find(".b-slider__item > a");
+//                        _.$imagesLinks = _.$slider.find(".b-slider__item:not(.slick-cloned) > a");
                         _.$fancy = _.$imagesLinks.fancybox({
                             opacity: true,
                             padding: 20,
@@ -118,7 +119,7 @@
                             transitionOut: 'elastic',
                             helpers: {
                                 overlay: {
-                                    closeClick: false
+                                    closeClick: true
                                 }
                             },
                             prevSpeed: _.animatingSpeed,
@@ -476,4 +477,18 @@
     }
 
     ProjectProductSlider().init();
+
+
+</script>
+
+<script type="application/javascript">
+    $(window).keyup(function(event) {
+        if(event.ctrlKey){
+            if (event.keyCode==37) {
+                document.location = "/projects/view/<?= $this->prevProd->id ?>";
+            } else if (event.keyCode==39) {
+                document.location = "/projects/view/<?= $this->nextProd->id ?>";
+            }
+        }
+    });
 </script>

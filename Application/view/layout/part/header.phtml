@@ -9,6 +9,7 @@
                 <form novalidate
                       name="login-form"
                       method="post"
+                      ng-enter="submit()"
                       id="login-form"
                       action="<?= $this->url('cabinet', array('action' => 'login'))?>"
                       ng-controller="LoginController">
@@ -203,7 +204,22 @@
                 </a>
             </div>
             <div class="b-header-top-section__right">
-                <p class="b-header-top-section__we-work hidden-xs hidden-sm">Работаем по всей РФ</p>
+                <div class="b-header-top-section__we-work hidden-xs hidden-sm">
+                    <ul class="b-header-top-section__list list-unstyled b-right">
+                        <li class="b-header-top-section__list-item b-header-top-section__we-work__list-item" style="text-align: right">
+
+                        </li>
+
+                        <li class="b-header-top-section__list-item b-header-top-section__we-work__list-item">
+                            <? /** @var $user \ZfcUser\Entity\User */ ?>
+                            <? if ($user = $this->zfcUserIdentity()) { ?>
+                                Привет, <?= $user->getUsername() ?>!
+                            <? } ?>
+                        </li>
+
+                        <li class="b-header-top-section__list-item b-header-top-section__we-work__list-item">Работаем по всей РФ</li>
+                    </ul>
+                </div>
                 <ul class="b-header-top-section__list list-unstyled b-right">
                     <li class="b-header-top-section__list-item" style="text-align: right">
                         <a href="/info/" class="b-highlighted-link b-header-top-section__link b-header-top-section__link_about-company <?= ($active=='info' && $action=='index') ? 'b-header-top-section__link-active' : ''?>">О компании</a><br class=" visible-sm-block visible-xs-block" />

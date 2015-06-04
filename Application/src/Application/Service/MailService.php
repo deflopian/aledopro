@@ -895,6 +895,6 @@ class MailService
 
         $formView = $sl->get('viewrenderer')->render($view);
 
-        return array(self::$developerMail, $formView);
+        return array(self::$currentManagerMail, $formView);
     }
 }

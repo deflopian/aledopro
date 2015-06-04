@@ -63,9 +63,10 @@ class AdminController extends SampleAdminController
 //            $allProds = ApplicationService::makeIdArrayFromObjectArray($prodTable->fetchAll());
 //            $allSeries = ApplicationService::makeIdArrayFromObjectArray($prodTable->fetchAll());
 //            $data = CatalogService::getSeriesAndTags($allProds); // там просто сортировка, переименовывать лень
-            $data = CatalogService::getSeriesAndTags($allSeries, $id);
+            $data = CatalogService::getSeriesAndTags($allSeries, 0);
             $allProds = ApplicationService::makeIdArrayFromObjectArray($sl->get('Catalog\Model\ProductTable')->fetchAll());
             $data = array_merge_recursive($data, CatalogService::getSeriesAndTags($allProds));
+
             $return['tags'] = \Zend\Json\Json::encode($data['tags']);
 
             $projTags = $sl->get($this->table)->fetchAll();

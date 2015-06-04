@@ -34,7 +34,7 @@ class ProjectsController extends AbstractActionController
         $imgs = $this->getImgTable()->fetchByCond('parent_id', $id, 'order asc');
         $members = $this->getMemberTable()->fetchByCond('parent_id', $id, 'order asc');
         $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::PROJECTS, $id );
-        $relatedSeriesIds = $this->getProdToProjTable()->fetchByCond('project_id', $id);
+        $relatedSeriesIds = $this->getProdToProjTable()->fetchByCond('project_id', $id, 'order asc');
         $relatedSeries = array();
 
         $seriesTable = $sl->get('Catalog/Model/SeriesTable');

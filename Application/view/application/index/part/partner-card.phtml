@@ -19,7 +19,7 @@
                                    class="b-form-control b-form-control_small"
                                    id="partner_lastname"
                                    ng-model="formData.partner_lastname"
-
+                                   ng-init="formData.partner_lastname = ''"
                                    name="partner_lastname"
                                    ng-change="validityOnChange('partner_lastname')"
                                    autocomplete="off"
@@ -47,6 +47,8 @@
                                    name="partner_name"
                                 <? if ($user) { ?>
                                     ng-init="formData.partner_name = '<?= $user->getUsername() ?>'"
+                                <? } else { ?>
+                                    ng-init="formData.partner_name = ''"
                                 <? } ?>
                                    autocomplete="off"
                                    ng-change="validityOnChange('partner_name')"
@@ -71,6 +73,7 @@
 
                                    name="partner_fathername"
                                    ng-model="formData.partner_fathername"
+                                   ng-init="formData.partner_fathername = ''"
                                    autocomplete="off" />
                         </div>
                         <div class="b-form-group">
@@ -80,6 +83,8 @@
                                    id="partner_city"
                                 <? if ($user) { ?>
                                     ng-init="formData.partner_city = '<?= $user->getCity() ?>'"
+                                <? } else { ?>
+                                    ng-init="formData.partner_city = ''"
                                 <? } ?>
                                    name="partner_city"
                                    ng-model="formData.partner_city"
@@ -111,6 +116,8 @@
                                    ng-model="formData.partner_tel"
                                 <? if ($user) { ?>
                                     ng-init="formData.partner_tel = '<?= $user->getPhone() ?>'"
+                                <? } else { ?>
+                                   ng-init="formData.partner_tel = ''"
                                 <? } ?>
                                    ng-change="validityOnChange('partner_tel')"
                                    autocomplete="off"
@@ -140,6 +147,8 @@
                                    ng-model="formData.partner_email"
                                 <? if ($user) { ?>
                                     ng-init="formData.partner_email = '<?= $user->getEmail() ?>'"
+                                <? } else { ?>
+                                    ng-init="formData.partner_email = ''"
                                 <? } ?>
                                    ng-change="validityOnChange('partner_email')"
                                    autocomplete="off" required />
@@ -167,6 +176,7 @@
                                    class="b-form-control b-form-control_small"
                                    id="partner_password"
                                    ng-model="formData.partner_password"
+                                   ng-init="formData.partner_password = ''"
                                    name="partner_password"
                                    ng-change="validityOnChange('partner_password')"
                                    autocomplete="off"
@@ -192,6 +202,7 @@
                                    class="b-form-control b-form-control_small"
                                    id="partner_password_repeat"
                                    ng-model="formData.partner_password_repeat"
+                                   ng-init="formData.partner_password_repeat = ''"
                                    name="partner_password_repeat"
                                    ng-change="validityOnChange('partner_password_repeat')"
                                    autocomplete="off"
@@ -227,6 +238,7 @@
                                    class="b-form-control b-form-control_small"
                                    id="partner_job_title"
                                    ng-model="formData.partner_job_title"
+                                   ng-init="formData.partner_job_title = ''"
                                    name="partner_job_title"
                                    ng-change="validityOnChange('partner_job_title')"
                                    autocomplete="off" />
@@ -236,7 +248,9 @@
                             <input type="text"
                                    class="b-form-control b-form-control_small"
                                    id="partner_company_name"
+                                   name="partner_company_name"
                                    ng-model="formData.partner_company_name"
+                                   ng-init="formData.partner_company_name = ''"
                                    ng-change="validityOnChange('partner_company_name')"
                                    autocomplete="off" required />
                             <div class=""
@@ -256,6 +270,7 @@
                             <input type="text" class="b-form-control b-form-control_small"
                                    id="partner_scope"
                                    ng-model="formData.partner_scope"
+                                   ng-init="formData.partner_scope = ''"
                                    name="partner_scope"
                                    ng-change="validityOnChange('partner_scope')"
                                    autocomplete="off"
@@ -278,6 +293,7 @@
                             <input type="text" class="b-form-control b-form-control_small"
                                    id="partner_brands"
                                    ng-model="formData.partner_brands"
+                                   ng-init="formData.partner_brands = ''"
                                    name="partner_brands"
                                    ng-change="validityOnChange('partner_brands')"
                                    autocomplete="off" required />
@@ -299,6 +315,7 @@
                                    class="b-form-control b-form-control_small"
                                    id="partner_office_tel"
                                    ng-model="formData.partner_office_tel"
+                                   ng-init="formData.partner_office_tel = ''"
                                    name="partner_office_tel"
                                    ng-change="validityOnChange('partner_office_tel')"
                                    autocomplete="off" required />
@@ -321,6 +338,7 @@
                                    id="partner_website"
                                    name="partner_website"
                                    ng-model="formData.partner_website"
+                                   ng-init="formData.partner_website = ''"
                                    ng-change="validityOnChange('partner_website')"
                                    autocomplete="off" />
                         </div>
@@ -331,6 +349,7 @@
                                    name="user_is_spamed"
                                    ng-model="formData.user_is_spamed"
                                    ng-init="formData.user_is_spamed=true"
+
                                 />
                             <label for="user_is_spamed">подписаться на рассылку (информация о скидках, акциях)</label>
                         </div>
