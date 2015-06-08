@@ -327,7 +327,13 @@
                 // Javascript to enable link to tab
                 var url = document.location.toString();
                 if (url.match('#')) {
-                    var hash = url.split('#')[1].substring(1);
+                    var hash = "";
+                    if (url.split('#')[1].substring(0,1) == '/') {
+                        hash = url.split('#')[1].substring(1);
+                    } else {
+                        hash = url.split('#')[1];
+                    }
+
                     $('a.b-tabs__link[href=#'+hash+']').tab('show') ;
                 }
             });

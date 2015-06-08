@@ -28,15 +28,20 @@
                     <a href="mailto:<?= $contacts->mail?>"> <?= $contacts->mail?></a>
                 </div>
             </div>
-<!--            <div class="b-contacts-table__cell b-contacts-cell b-contacts-cell_right">-->
-<!--                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">СВЯЖИТЕСЬ С НАМИ</h4>-->
-<!--                <div>-->
-<!--                    <h4>Или вы можете</h4>-->
+            <? if (false && ($user=$this->ZfcUserIdentity()) && $user->getId() == 2) { ?>
+            <div class="b-contacts-table__cell b-contacts-cell b-contacts-cell_right">
+                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">СВЯЖИТЕСЬ С НАМИ</h4>
+                <div>
+                    <h4>Или вы можете</h4>
+                    <a href="javascript:void(0)" class="b-button b-button_yellow-bordered b-button_gray-colored" ng-controller="PopupController" ng-click="getPopup(ALEDO_POPUP_CALLBACK, {})">
+                        <span class="b-button__text">   заказать обратный звонок</span>
+                    </a>
 <!--                    <a href="#callbackhunter" class="b-button b-button_yellow-bordered b-button_gray-colored">-->
 <!--                        <span class="b-button__text">   заказать обратный звонок</span>-->
 <!--                    </a>-->
-<!--                </div>-->
-<!--            </div>-->
+                </div>
+            </div>
+            <? } ?>
         </div>
         <hr class="dotted-separator" />
         <h4 class="text-center">КАРТА ПРОЕЗДА К ОФИСУ</h4>
