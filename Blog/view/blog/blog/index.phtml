@@ -26,6 +26,7 @@
             <div class="b-section__content b-blog-article__inner">
                 <div class="b-blog-article__left">
                     <img class="b-blog-article__image" src="/images/articles/<?= $article->preview_name ?>"/>
+
                 </div>
                 <div class="b-blog-article__right">
                     <div class="b-blog-article__preview">
@@ -36,15 +37,14 @@
                                     <a href="javascript:void(0)" class="b-blog-article-rubrics__item">качество</a>
                             </div>
                             <? } ?>
-                            <p class="b-blog-article__text">
-                                <?= $article->text_short ?>....<a href="/articles/view/<?= $article->id ?>" class="b-blog-article__link-more">читать далее</a>
+                            <p class="b-blog-article__text" text-cut="{'lines':3, 'text' : '.b-blog-article__cutted-text'}">
+                                <span class="b-blog-article__cutted-text">
+                                <?= $article->text_short ?></span><a href="/articles/view/<?= $article->id ?>" class="b-blog-article__link-more">читать далее</a>
                             </p>
                     </div>
                 </div>
             </div>
         </div>
         <? } ?>
-
-
     </div>
 </div>
