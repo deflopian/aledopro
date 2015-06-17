@@ -37,10 +37,10 @@
                                     <a href="javascript:void(0)" class="b-blog-article-rubrics__item">качество</a>
                             </div>
                             <? } ?>
-                            <p class="b-blog-article__text" text-cut="{'lines':3, 'text' : '.b-blog-article__cutted-text'}">
+                            <div class="b-blog-article__text" text-cut="{'lines':3, 'text' : '.b-blog-article__cutted-text'}">
                                 <span class="b-blog-article__cutted-text">
-                                <?= $article->text_short ?></span><a href="/articles/view/<?= $article->id ?>" class="b-blog-article__link-more">читать далее</a>
-                            </p>
+                                <?= strip_tags($article->text_short) ?></span><a href="/articles/view/<?= $article->id ?>" class="b-blog-article__link-more">читать далее</a>
+                            </div>
                     </div>
                 </div>
             </div>

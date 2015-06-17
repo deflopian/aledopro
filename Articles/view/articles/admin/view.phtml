@@ -116,6 +116,35 @@
 
 <div class="section">
     <h3>Теги</h3>
+    <div id="ng-tagit" ng-controller="TagsCtrl">
+        <tags-input ng-model="tags"
+                    ng-init='tags=<?= $currentTags?>'
+                    replace-spaces-with-dashes="false"
+                    on-tag-added="addTag(<?= $entity->id ?>, $tag)"
+                    display-property="label"
+            >
+            <auto-complete
+                source='loadItems($query, <?= $tags ?>)'
+                min-length="1"
+                select-first-match="true"
+                template="my-custom-template"
+                load-on-focus="true" load-on-empty="true" max-results-to-show="32"
+                ></auto-complete>
+        </tags-input>
+        <script type="text/ng-template" id="my-custom-template">
+            <div class="btn btn-default">
+                <span class="tagit-label" ng-bind-html="$highlight($getDisplayText())"></span>
+            </div>
+        </script>
+    </div>
+    <script type="application/javascript">
+        AppFactory("ng-tagit", "tagit", ["ngTagsInput", "fuckit"]);
+
+    </script>
+</div>
+
+<div class="section">
+    <h3>Теги</h3>
     <div class="addPanel">
         <button type="button" class="btn btn-default" id="tagit-add">Добавить тег</button>
 
@@ -165,3 +194,5 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
         });
     });
 </script>
+
+

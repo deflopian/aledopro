@@ -135,10 +135,17 @@ class AdminController extends SampleAdminController
             foreach ($tagLinks as $link) {
                 $tagIds[] = $link->tag_id;
             }
-            if (count($allTags)>0) {
+            if (count($allTags)>0 && count($tagIds)>0) {
                 $tags = $tagsTable->fetchByCond('id', $tagIds);
             } else {
                 $tags = array();
+            }
+            $currentTags = array();
+            foreach ($tags as $tag) {
+                $name = array();
+                $name['label'] = $tag->name;
+                $name['value'] = $tag->id;
+                $currentTags[] = $name;
             }
 
             $names = array();
@@ -165,7 +172,7 @@ class AdminController extends SampleAdminController
                 }
             }
             $return['entity']->blocks = $blocks;
-            $return['currentTags'] = $tags;
+            $return['currentTags'] = \Zend\Json\Json::encode($currentTags);
             $allSeries = $seriesTable->fetchAll('order asc');
             $data = CatalogService::getSeriesAndTags($allSeries);
             $return['tags'] = \Zend\Json\Json::encode($names);
@@ -174,6 +181,21 @@ class AdminController extends SampleAdminController
         }
 
         return $return;
+    }
+
+    public function addTagAction() {
+        $post = $this->getRequest()->getPost()->toArray();
+        var_dump($post);
+    }
+
+    public function addNewTagAction() {
+        $post = $this->getRequest()->getPost()->toArray();
+        var_dump($post);
+    }
+
+    public function removeTagAction() {
+        $post = $this->getRequest()->getPost()->toArray();
+        var_dump($post);
     }
 
     public function saveTagitAction()

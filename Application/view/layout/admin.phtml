@@ -14,13 +14,16 @@
         ->prependStylesheet($this->basePath() . '/Content/css/libs/jquery.tagit.css')
         ->prependStylesheet($this->basePath() . '/Content/css/libs/bootstrap-editable.css')
         ->prependStylesheet($this->basePath() . '/Content/css/libs/bootstrap.css')
+        ->prependStylesheet($this->basePath() . '/Content/css/libs/ng-tags-input.css')
+        ->prependStylesheet($this->basePath() . '/Content/css/libs/ng-tags-input.bootstrap.css')
     ?>
 
     <!-- Scripts -->
     <?= $this->headScript()
         ->prependFile($this->basePath() . '/js/libs/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
         ->prependFile($this->basePath() . '/js/admin.js')
-        ->prependFile($this->basePath() . '/js/libs/angular-1.1.5.js')
+//        ->prependFile($this->basePath() . '/js/libs/angular-1.1.5.js')
+        ->prependFile($this->basePath() . '/Scripts/angular.js')
 //        ->appendFile($this->basePath() . '/js/libs/angular.min.js')
         ->appendFile($this->basePath() . '/js/angular-file.js')
         ->appendFile($this->basePath() . '/js/dfl-tree.js')
@@ -44,6 +47,7 @@
         ->prependFile($this->basePath() . '/js/libs/bootstrap.js')
         ->prependFile($this->basePath() . '/js/libs/jquery-ui.min.js')
         ->prependFile($this->basePath() . '/js/libs/jquery-1.10.2.min.js')
+        ->appendFile($this->basePath() . '/js/libs/ng-tags-input.js')
     ?>
 </head>
 
