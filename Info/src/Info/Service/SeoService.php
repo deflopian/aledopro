@@ -29,6 +29,7 @@ class SeoService {
     const FILES = 22;
     const DELIVERY = 23;
     const PARTNERS = 24;
+    const ARTICLE_BLOCKS = 25;
 
 
     public static function renderSeoForm($sl, $seoData)

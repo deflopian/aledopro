@@ -124,6 +124,9 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER;
 </div>
 
 <script type="text/javascript">
+    $(function() {
+        popup.initCopyLinkBtns();
+    });
     var screenWidth = $("html").width();
     $('.series-pics').css('width', screenWidth);
     $('.series-pics').css('margin-left', -(screenWidth-$('.catalog :first').width())/2-15);

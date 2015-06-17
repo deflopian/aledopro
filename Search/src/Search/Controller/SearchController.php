@@ -130,8 +130,16 @@ class SearchController extends AbstractActionController
         $resultsBySubSections = $subsectionTable->selectLike('title', $query, '*', ' AND `deleted` != 1');
         $resultsByArticles = $articlesTable->selectLike('title', $query);
         $resultsByNews = $newsTable->selectLike('title', $query);
-        $resultsByProjects = $projectsTable->selectLike('title', $query);
-
+        $resultsByProjects = $projectsTable->selectLike('title', $query, '*', ' AND `rubric_id` = 1');
+        foreach ($resultsByProjects as &$one) {
+            if ($one->preview) {
+                $file = $fileTable->find($one->preview);
+                if ($file) {
+                    $one->previewName = $file->name;
+                }
+            }
+            $arrayIds[] = $one->id;
+        }
         //получаем картинки для продуктов
         $sortedProds = array();
         if ($oneProdById !== false) {
@@ -220,6 +228,11 @@ class SearchController extends AbstractActionController
             'articles' => $articlesSorted,
             'projects' => $resultsByProjects,
             'one_product' => $oneProdById,
+            'pageTitle' => $count .' Результатов поиска "'. $search .'"',
+            'breadCrumbs'  => array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+                array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Поиск'))
+            ),
         );
 
 

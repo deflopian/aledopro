@@ -14,6 +14,14 @@ class BlogController extends AbstractActionController
 
     }
 
+    public function brandsAction() {
+
+    }
+
+    public function viewBrandAction() {
+
+    }
+
     public function indexAction()
     {
         $sl = $this->getServiceLocator();
@@ -27,7 +35,19 @@ class BlogController extends AbstractActionController
         foreach($terms as $term){
             $sortedTerms[$term->letter-1][] = $term;
         }
+        $fileTable = $this->getServiceLocator()->get('FilesTable');
+        foreach ($articles as &$article) {
 
+            foreach (array('preview') as $imgField) {
+                if ($article->$imgField) {
+                    $file = $fileTable->find($article->$imgField);
+                    if ($file) {
+                        $imgFieldAndName = $imgField . "_name";
+                        $article->$imgFieldAndName = $file->name;
+                    }
+                }
+            }
+        }
         $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::BLOG, 1 );
         $this->layout()->pageTitle = 'Блог';
         $this->layout()->setVariables(

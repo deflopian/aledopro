@@ -75,12 +75,12 @@ class CommercialService {
                 $sheet->setCellValueExplicit('B' . ($currentRow + 1), "Показать на сайте", \PHPExcel_Cell_DataType::TYPE_STRING2, TRUE)->getHyperlink()->setUrl('http://www.aledo-pro.ru/catalog/product/' . $prod->product->id);
 
                 // Config
-                $link_style_array = [
-                    'font'  => [
-                        'color' => ['rgb' => '0000FF'],
+                $link_style_array = array(
+                    'font'  => array(
+                        'color' => array('rgb' => '0000FF'),
                         'underline' => 'single'
-                    ]
-                ];
+                    )
+                );
                 $sheet->getStyle('B' . ($currentRow + 1))->applyFromArray($link_style_array);
 
                 if ($prod->product->previewName) {

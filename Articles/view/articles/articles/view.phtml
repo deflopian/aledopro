@@ -7,45 +7,36 @@
  * @var \Articles\Model\Article $nextProd
  */
 ?>
+<div class="b-section b-article">
 
-<div class="series-pics" style="position: relative; top: -73px">
-    <?= \Catalog\Service\CatalogService::renderPopupNav($sl, $prevProd, $nextProd, 'articles', true); //навигация ?>
-</div>
-    <div class="container" style="padding-bottom: 10px">
-        <div class="row">
-            <div class="col-md-12 text-center text-small">
-                <?= \Application\Service\ApplicationService::getFormedDate($article->date) ?>
-            </div>
-        </div>
+    <div class="b-section__content">
+        <? if ($article->title) { ?>
+            <h2 class="b-article__heading"><?= $article->title ?></h2>
+        <? } ?>
+            <hr class="dotted-separator b-article__separator"/>
+        <? if ($article->img) { ?>
+            <img src="/images/articles/<?= $article->img ?>"/>
+        <? } ?>
+        <? if ($article->text) { ?>
+            <?= $article->text ?>
+        <? } ?>
 
-        <div class="row">
-            <div class="col-md-12 text-center"><h1><?= $article->title; ?></h1></div>
-        </div>
+        <? foreach ($article->blocks as $block) { ?>
+            <? if (!$block->title && !$block->text && !$block->img_name) continue; ?>
+                <hr class="dotted-separator b-article__separator"/>
+            <? if ($block->title) { ?>
+                <h2 class="b-article__heading"><?= $block->title ?></h2>
+            <? } ?>
+            <? if ($block->text) { ?>
+                <?= $block->text ?>
+            <? } ?>
+            <? if ($block->img_name) { ?>
+                <img src="/images/articles/<?= $block->img_name ?>"/>
+            <? } ?>
+        <? } ?>
 
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3"><?= $article->text ?></div>
-        </div>
-
-        <div class="row row-second">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="row">
-                    <div class="col-md-12"><div class="title-line"></div></div>
-                    <div class="col-md-12 text-center">
-                        <h2>Упомянутые серии</h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <? foreach($relatedSeries as $series){ ?>
-                        <div class="col-md-4 series-tile news-popup" data-id="<?= $series->id; ?>">
-                            <?= \Catalog\Service\CatalogService::renderSeriesTile(
-                                $sl,$series,$this->url('catalog', array('action'=>'subsection', 'id'=>$series->subsection_id))
-                            ) ?>
-                        </div>
-                    <? }?>
-                </div>
-            </div>
-        </div>
     </div>
+</div>
 
 <script>
     popup.pageTitle = '<?= $this->seoData->title ? $this->seoData->title : $news->title ?>';

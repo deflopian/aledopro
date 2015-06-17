@@ -1,8 +1,11 @@
 <?php
 namespace Articles;
 
+use Articles\Model\ArticleBlockTable;
+use Articles\Model\ArticleTagTable;
 use Articles\Model\StoATable;
 use Articles\Model\ArticleTable;
+use Articles\Model\TagToArticleTable;
 
 class Module
 {
@@ -32,6 +35,21 @@ class Module
                 'ArticlesTable' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table     = new ArticleTable($dbAdapter);
+                    return $table;
+                },
+                'ArticleBlocksTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new ArticleBlockTable($dbAdapter);
+                    return $table;
+                },
+                'TagToArticlesTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new TagToArticleTable($dbAdapter);
+                    return $table;
+                },
+                'ArticleTagsTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new ArticleTagTable($dbAdapter);
                     return $table;
                 },
                 'SeriesToArticlesTable' =>  function($sm) {

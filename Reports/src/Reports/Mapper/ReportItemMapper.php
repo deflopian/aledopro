@@ -78,6 +78,26 @@ class ReportItemMapper {
 
     /**
      * @param int $id
+     */
+    public function delete($id) {
+        $this->table->del($id);
+    }
+
+    /**
+     * @param int $reportId
+     * @return integer;
+     */
+    public function deleteList($reportId) {
+        $items = $this->table->fetchByCond('report_id', $reportId);
+        $res = count($items);
+        foreach ($items as $item) {
+            $this->table->del($item->id);
+        }
+        return $res;
+    }
+
+    /**
+     * @param int $id
      * @return ReportItem | false
      */
     public function get($id) {

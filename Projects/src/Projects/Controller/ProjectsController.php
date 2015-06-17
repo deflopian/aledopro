@@ -25,9 +25,9 @@ class ProjectsController extends AbstractActionController
         $sl = $this->getServiceLocator();
 
         $id = intval($this->params()->fromRoute('id', 0));
-        if ($id == 43) {
-            return $this->redirect()->toRoute('projects');
-        }
+//        if ($id == 43) {
+//            return $this->redirect()->toRoute('projects');
+//        }
         /** @var Project $project */
         $project = $this->getProjectTable()->find($id);
 

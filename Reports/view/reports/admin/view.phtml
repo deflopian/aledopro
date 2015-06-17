@@ -37,15 +37,20 @@
     <table class="table  admin-table table-striped">
         <tr>
             <th>Id</th>
+            <th>Id элемента</th>
             <th>Название</th>
             <th>Управление</th>
         </tr>
         <tbody>
         <? foreach($entity->items as $item){ ?>
             <tr>
+                <td><?= $item->id; ?></td>
                 <td><?= $item->linked_id; ?></td>
                 <td><?= $item->title; ?></td>
-                <td><a href="<?= $item->url; ?>"><div class="btn btn-default">Перейти</div></a></td>
+                <td>
+                    <a href="<?= $item->url; ?>"><div class="btn btn-default">Перейти</div></a>
+                    <a href="#" class="deleteBtn">Удалить</a>
+                </td>
             </tr>
         <? } ?>
         </tbody>
@@ -59,6 +64,7 @@
         catalog.type = 'prmember';
         catalog.baseUrl = '<?= $this->url('zfcadmin/reports') ?>';
         catalog.editUrl = '<?= $this->url('zfcadmin/reports', array('action'=> 'view')) ?>';
+        catalog.page_info_type = "report_item";
         catalog.init();
         catalog.initEditables();
 

@@ -24,6 +24,7 @@ class ReportMapper {
     const REPORT_TYPE_PRODUCT_ZERO_PRICE = 2;
     const REPORT_TYPE_SEND_MAIL = 3;
     const REPORT_TYPE_ORPHAN_PRODUCTS = 4;
+    const REPORT_TYPE_NEW_PRODUCTS = 5;
 
     /**
      * @param $sl ServiceLocatorInterface
@@ -113,11 +114,19 @@ class ReportMapper {
     public function getList($type = self::REPORT_TYPE_ALL) {
         $reports = array();
         if ($type == self::REPORT_TYPE_ALL) {
-            $reports = $this->table->fetchAll("id DESC", false, 40);
+            $reports = $this->table->fetchAll("id DESC", false, 20);
         } else {
-            $reports = $this->table->fetchByCond("type", $type);
+            $reports = $this->table->fetchByCond("type", $type, "id DESC", 20);
         }
         return $reports;
+    }
+
+    public function delete($id, $cascade = false) {
+        $this->table->del($id);
+        if ($cascade) {
+            $itemsMapper = ReportItemMapper::getInstance($this->sl);
+            $itemsMapper->deleteList($id);
+        }
     }
 
     /**

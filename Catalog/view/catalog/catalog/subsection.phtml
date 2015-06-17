@@ -25,12 +25,12 @@
                 </div>
             </div>
             <div id="catalog-filterbar-place"></div>
-            <div class="row row-second" data-type="catalog" data-action="series">
+            <div class="row row-second subsection" data-type="catalog" data-action="series">
                 <? $i = 0; foreach($series as $ser){ ?>
                     <div class="col-xs-3 series-tile" data-id="<?= $ser->id ?>">
                         <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $ser); ?>
                     </div>
-                <? if(($i+1)%4==0){ echo '</div><div class="row row-second-small" data-type="catalog" data-action="series">'; }
+                <? if(($i+1)%4==0){ echo '</div><div class="row row-second subsection" data-type="catalog" data-action="series">'; }
                     $i++;
                 } ?>
             </div>

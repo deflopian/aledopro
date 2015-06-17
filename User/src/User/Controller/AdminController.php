@@ -349,6 +349,9 @@ class AdminController extends SampleAdminController
                             MailService::sendMail($email, $mailView, "Вам назначен новый клиент на Aledo номер " . $oldEntity->user_id);
                         }
                     }
+                    if ($post['name'] == 'is_partner' && $post['value'] == 1) {
+                        $data['partner_group'] = 0;
+                    }
                     $entity = new $this->entityName;
                     $entity->exchangeArray($data);
                     $this->getServiceLocator()->get('UserTable')->save($entity);

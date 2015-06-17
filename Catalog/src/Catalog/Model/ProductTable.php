@@ -37,6 +37,21 @@ class ProductTable extends SampleTable
         return $res;
     }
 
+
+
+    /**
+     * Remove all contents of the table
+     * @return array
+     */
+    public function fetchAllIds()
+    {
+        /** @var $adapter \Zend\Db\Adapter\Adapter */
+        $adapter = $this->getAdapter();
+        $res = $adapter->query('SELECT `id` FROM `' . $this->table . '` WHERE 1=1', $adapter::QUERY_MODE_EXECUTE);
+
+        return $res->toArray();
+    }
+
     public function updateWhere($where, $what) {
 
         $sql = 'UPDATE ' . $this->table . ' SET ' . $what . " WHERE " . $where;

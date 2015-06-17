@@ -248,6 +248,13 @@
                         <a href="javascript:void(0)" class="b-header-top-section__link link_tel">8 (800) 555 56 72</a><br />
                         <a href="javascript:void(0)" class="b-header-top-section__link link_tel">8 (812) 448 58 49</a>
                     </li>
+                    <? if (($user=$this->ZfcUserIdentity()) && $user->getId() == 2) { ?>
+                    <div class="collback-btn">
+                        <a class="collback-btn_link" href="#pozvonim">
+                            <img class="collback-btn_image" src="/images/callback.svg" />
+                        </a>
+                    </div>
+                    <? } ?>
                 </ul>
 
 

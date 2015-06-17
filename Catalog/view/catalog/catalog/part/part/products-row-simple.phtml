@@ -69,10 +69,10 @@
         <meta itemprop="currency" content="RUB" />
         <span itemprop="seller" itemscope itemtype="http://schema.org/Organization">
                 <meta itemprop="name" content="Aledo" />
-                <meta itemprop="address" content="<?= strip_tags($contacts->adress) ?>" />
-                <meta itemprop="telephone" content="<?= $contacts->phone?>" />
-                <meta itemprop="faxNumber" content="<?= $contacts->fax ?>" />
-                <meta itemprop="email" content="<?= $contacts->mail ?>" />
+                <meta itemprop="address" content="<?= strip_tags($contacts_->adress) ?>" />
+                <meta itemprop="telephone" content="<?= $contacts_->phone?>" />
+                <meta itemprop="faxNumber" content="<?= $contacts_->fax ?>" />
+                <meta itemprop="email" content="<?= $contacts_->mail ?>" />
             </span>
        <span itemprop="price"><?= \Catalog\Service\CatalogService::getTruePrice($this->product->price_without_nds); ?></span>&nbsp;<span class="b-rub">Р</span>
     </td>

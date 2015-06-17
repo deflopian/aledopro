@@ -42,6 +42,24 @@ class ArticlesController extends AbstractActionController
             $relatedSeries[] = $seriesTable->find($rser->series_id);
         }
 
+        $blocksTable = $this->getServiceLocator()->get('ArticleBlocksTable');
+        $blocks = $blocksTable->fetchByCond('article_id', $id, 'order ASC');
+        $fileTable = $this->getServiceLocator()->get('FilesTable');
+        foreach ($blocks as &$block) {
+
+            foreach (array('img') as $imgField) {
+                if ($block->$imgField) {
+                    $file = $fileTable->find($block->$imgField);
+                    if ($file) {
+                        $imgFieldAndName = $imgField . "_name";
+                        $block->$imgFieldAndName = $file->name;
+                    }
+                }
+            }
+        }
+        $article->blocks = $blocks;
+
+
         $this->layout()->pageTitle = $article->title;
         $this->layout()->breadCrumbs  = array(
             array('link'=> $this->url()->fromRoute('blog'), 'text'=>ucfirst('Блог'))

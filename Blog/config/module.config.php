@@ -4,11 +4,32 @@ return array(
         'invokables' => array(
             'Blog\Controller\Blog' => 'Blog\Controller\BlogController',
             'blog' => 'Blog\Controller\BlogController',
+            'BlogController' => 'Blog\Controller\BlogController',
         ),
     ),
 
     'router' => array(
         'routes' => array(
+            'brands' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/brands[/]',
+                    'defaults' => array(
+                        'controller' => 'Blog\Controller\Blog',
+                        'action'     => 'brands',
+                    ),
+                ),
+            ),
+            'onebrand' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/onebrand[/]',
+                    'defaults' => array(
+                        'controller' => 'Blog\Controller\Blog',
+                        'action'     => 'viewBrand',
+                    ),
+                ),
+            ),
             'blog' => array(
                 'type'    => 'segment',
                 'options' => array(
@@ -39,6 +60,8 @@ return array(
         'guards'                => array(
             'BjyAuthorize\Guard\Route' => array(
                 array('route' => 'blog', 'roles' => array('guest', 'user')),
+                array('route' => 'brands', 'roles' => array('guest', 'user')),
+                array('route' => 'onebrand', 'roles' => array('guest', 'user')),
             ),
             'BjyAuthorize\Guard\Controller' => array(
                 array('controller' => 'Blog\Controller\Blog', 'roles' => array('guest', 'user', 'admin')),

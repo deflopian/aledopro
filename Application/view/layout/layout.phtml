@@ -3,7 +3,7 @@
 
 <?
 $sl = $this->getHelperPluginManager()->getServiceLocator();
-$contacts = \Contacts\Controller\ContactsController::getContacts($sl);
+$contacts_ = \Contacts\Controller\ContactsController::getContacts($sl);
 $sections = \Catalog\Controller\CatalogController::getSections($sl);
 
 $uri = substr($_SERVER["REQUEST_URI"], 1);
@@ -413,8 +413,8 @@ $url = $uriArr[0]
     <div class="swipe-layout" ng-controller="SwipeController" ng-swipe-left="swipe('left')"
          ng-swipe-right="swipe('right')"></div>
 </div>
-<!--<link rel="stylesheet" href="//cdn.callbackhunter.com/widget/tracker.css">-->
-<!--<script type="text/javascript" src="//cdn.callbackhunter.com/widget/tracker.js" charset="UTF-8"></script>-->
-<!--<script type="text/javascript">var hunter_code="636672b23a00165d4f43be806e2953a4";</script>-->
+<? if (($user=$this->ZfcUserIdentity()) && $user->getId() == 2) { ?>
+<script src="//api.pozvonim.com/widget/callback/v2/251/connect" id="check-code-pozvonim" charset="UTF-8"></script>
+<? } ?>
 </body>
 </html>

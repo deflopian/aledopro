@@ -58,6 +58,10 @@ class CatalogService {
     const DISPLAY_STYLE_POWER = 2;      //раздел питание
     const DISPLAY_STYLE_PROFILES = 3;   //раздел профили
 
+    public static $intFields = array(
+        'ip_rating','color_of_light','electro_power','construction','case_color','socle','bulb','color_temperature','cri'
+    );
+
     private static $unEditableParams = array(
         'id', 'section_id', 'subsection_id', 'series_id', 'order', 'file'
     );
@@ -787,14 +791,10 @@ RewriteRule ^.*$ index.php [NC,L]
 
     public static function changeIntParamsWithStringVals($products, $filterParamsTable)
     {
-        $intFields = array(
-            'ip_rating','color_of_light','electro_power','construction','case_color','socle','bulb','color_temperature','cri'
-        );
-
-        $params = $filterParamsTable->fetchAll();
+                $params = $filterParamsTable->fetchAll();
         $sortedParams = ApplicationService::makeIdArrayFromObjectArray($params);
         foreach($products as &$prod){
-            foreach($intFields as $filedName){
+            foreach(self::$intFields as $filedName){
                 $prod->origin[$filedName] = $prod->$filedName;
                 $prod->$filedName = isset($sortedParams[$prod->$filedName]) ? $sortedParams[$prod->$filedName]->value : $prod->$filedName;
 

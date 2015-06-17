@@ -12,4 +12,5 @@ class Article extends SampleModel
     public $img;
     public $date;
     public $order;
+    public $preview;
 }

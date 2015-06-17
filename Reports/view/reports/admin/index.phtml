@@ -3,31 +3,35 @@
 <div class="section">
     <h3>Список отчётов</h3>
 
-    <table class="table admin-table table-striped">
-        <tr>
-            <th>Id</th>
-            <th>Название</th>
-            <th>Управление</th>
-        </tr>
-        <tbody id="sortable">
-        <? foreach($entities as $entity){ ?>
-            <tr class="entity">
-                <td><?= $entity->id; ?></td>
-                <td><?= $entity->name; ?></td>
-                <td>
-                    <a href="#" class="editBtn">Редактировать</a>
-                    <a href="#" class="deleteBtn">Удалить</a>
-                </td>
+    <? foreach($entities as $entityTable){ ?>
+        <h4><?= $entityTable[0] ?></h4>
+        <table class="table admin-table table-striped">
+            <tr>
+                <th>Id</th>
+                <th>Название</th>
+                <th>Управление</th>
             </tr>
-        <? } ?>
-        </tbody>
-    </table>
+            <tbody>
+            <? foreach($entityTable[1] as $entity){ ?>
+                <tr class="entity">
+                    <td><?= $entity->id; ?></td>
+                    <td><?= $entity->name; ?></td>
+                    <td>
+                        <a href="/admin/reports/view/<?= $entity->id; ?>">Редактировать</a>
+                        <a href="#" class="deleteBtn">Удалить</a>
+                    </td>
+                </tr>
+            <? } ?>
+            </tbody>
+        </table>
+    <? } ?>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function(){
         catalog.baseUrl = '<?= $this->url('zfcadmin/reports') ?>';
         catalog.editUrl = '<?= $this->url('zfcadmin/reports', array('action'=> 'view')) ?>';
+        catalog.page_info_type = "report";
         catalog.init();
     });
 </script>

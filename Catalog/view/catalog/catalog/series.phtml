@@ -80,22 +80,18 @@ function mb_ucfirst($text) {
                     <li class="b-tabs__tab">
                         <a class="b-tabs__link " role="tab" href="#goods_3" data-toggle="tab" aria-controls="goods_3">Материалы для скачивания</a>
                     </li>
-                    <? $dopgtitle = "источники питания"; ?>
+                    <? $dopgtitle = false; ?>
                     <? $dpGroups = array(); ?>
-                    <? foreach ($dopProducts as $dpgkey => $dopProductsGroup) {
-                        if (strpos($dptitle = mb_strtolower($dopProductsGroup['title']), $dopgtitle) !== false || strpos($dptitle = mb_strtolower($dopProductsGroup['title']), "источник питания") !== false) {
-                            $dpGroups[] = $dopProductsGroup;
-                            unset($dopProducts[$dpgkey]);
-                        }
-                     } ?>
-                    <? if (!count($dpGroups)) {
-                        $dpGroups = array(reset($dopProducts));
-                        $dopgtitle = isset($dpGroups[0]['title']) ? mb_ucfirst(trim($dpGroups[0]['title'])) : false;
-                        array_shift($dopProducts);
+
+                    <? $ppna = reset($dopProducts);
+                    if (count($dopProducts) && strpos($dptitle = mb_strtolower($ppna['title']), "рефлектор") === false && strpos($dptitle = mb_strtolower($ppna['title']), "источник питания") === false && strpos($dptitle = mb_strtolower($ppna['title']), "источники питания") === false) {
+                        $dpGroups = $ppna;
+                        $dopgtitle = isset($dpGroups['title']) ? mb_ucfirst(trim($dpGroups['title'])) : false;
+                        //array_shift($dopProducts);
                     } ?>
                     <? if ($dopgtitle && $dpGroups) { ?>
                     <li class="b-tabs__tab">
-                        <a class="b-tabs__link "  role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4"><?= mb_ucfirst($dopgtitle) ?></a>
+                        <a class="b-tabs__link " role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4"><?= mb_ucfirst($dopgtitle) ?></a>
                     </li>
                     <? } ?>
 
@@ -103,21 +99,32 @@ function mb_ucfirst($text) {
             </div>
             <?
             if ($this->sectionId == 1) {
-                $attention = 'Источник питания к данной лампе приобретается отдельно.';
+                $attention = 'Источник питания приобретается отдельно.';
             } else {
-                $attention = 'Источник питания к данному светильнику приобретается отдельно.';
+                $attention = 'Источник питания приобретается отдельно.';
             } ?>
             <div class="b-tabs-content b-tabs-content_goods tab-content">
                 <div class="b-tabs-content__item fade in active tab-pane" role="tabpanel" id="goods_1">
-                    <? if ($series->show_scroll_btn) { ?>
-                    <div class="attention-block">
-                        <span class="attention-block_important">Важно!</span>
-                        <a role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4" class="attention-block_message"><?= $attention ?></a>
-                    </div>
+                    <? if ($series->show_scroll_btn == 1) { ?>
+                        <div class="attention-block">
+                            <span class="attention-block_important">Важно!</span>
+                            <span class="attention-block_message">Источник питания приобретается отдельно.</span>
+                            <a href="javascript:void(0)" onclick="mainpage.scrollTo($('#dopprods'), 40, true, true)" class="attention-block_btn">Перейти к источникам</a>
+                        </div>
+                    <? } elseif ($series->show_scroll_btn == 2) { ?>
+                        <div class="attention-block">
+                            <span class="attention-block_important">Важно!</span>
+                            <span class="attention-block_message">Источник питания в комплекте</span>
+                        </div>
+                    <? } elseif ($series->show_scroll_btn == 3) { ?>
+                        <div class="attention-block">
+                            <span class="attention-block_important">Важно!</span>
+                            <span class="attention-block_message">Источник питания встроен в корпус светильника</span>
+                        </div>
                     <? } ?>
                     <div class="catalog" style="position: relative; <?= $view !== \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES ? '' : 'margin-top: 70px;' ?>">
                         <div class="row" id="serpopup-table-container">
-                            <div class="col-xs-12" id="testApp_<?= $series->id ?>" >
+                            <div class="col-xs-12" id="testApp_<?= $series->id ?>" style="overflow-y: hidden; overflow-x: visible; position: static">
 
                                 <?
 
@@ -150,11 +157,23 @@ function mb_ucfirst($text) {
                                     )
                                 ); ?>
 
+
                             </div>
 
-
                         </div>
+                        <? if (count($this->products) > 5) { ?>
+                        <div class="row ">
+                            <div class="col-xs-12">
+                                <div class="product-table_allmods-block">
+                                    <div class="product-table_allmods-block__label arrow-show" onclick="seriesTableShowBlock($('#testApp_<?= $series->id ?>'))">Все модификации<span class="allmods-block__open-arrow"></span></div>
+                                    <div class="product-table_allmods-block__label arrow-hidden" style="display: none" onclick="seriesTableHideBlock($('#testApp_<?= $series->id ?>'))">Все модификации<span class="allmods-block__close-arrow"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <? } ?>
                     </div>
+                    <? if (!$dopgtitle) { ?>
+                    <div id="dopprods" name="dopprods">
                     <? foreach ($dopProducts as $oneGroup) { ?>
 
                         <div style="position: relative">
@@ -203,7 +222,8 @@ function mb_ucfirst($text) {
                         </div>
 
                     <? } ?>
-
+                    </div>
+                    <? } ?>
                     <?=
                     $this->partial(
                         "catalog/catalog/part/links-block.phtml",
@@ -326,7 +346,7 @@ function mb_ucfirst($text) {
                     <? } ?>
                 </div>
                 <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_4">
-                    <? foreach ($dpGroups as $num => $dpGroup) { ?>
+                    <? foreach ($dopProducts as $num => $dpGroup) { ?>
 
                     <div style="position: relative">
                         <div class="row">
@@ -377,6 +397,47 @@ function mb_ucfirst($text) {
             </div>
         </div>
         <script type="text/javascript">
+            <? if (count($this->products) > 5) { ?>
+            $(function() {seriesTableHideBlock($('#testApp_<?= $series->id ?>'), true)});
+            <? } ?>
+            function seriesTableShowBlock(elem) {
+                var h = 0;
+                var soloTable = elem.find('solo-table').find('table');
+                h = $('#angular-filter').height() + 30 + soloTable.height();
+                $('.product-table_allmods-block__label.arrow-show').hide();
+                $('.product-table_allmods-block__label.arrow-hidden').show();
+                elem.animate({
+                    height: h
+                });
+
+            }
+
+            function seriesTableHideBlock(elem, preload) {
+                var h = 0;
+                var soloTable = elem.find('solo-table').find('table');
+                h = $('#angular-filter').height() + 30;
+                var i = 0;
+
+                soloTable.find('tr').each(function() {
+                    if (i++ <= 5) {
+                        h += $(this).height();
+                        if (i>1) {
+                            h += 15;
+                        }
+                    }
+                });
+//                elem.height(h + "px");
+                $('.product-table_allmods-block__label.arrow-hidden').hide();
+                $('.product-table_allmods-block__label.arrow-show').show();
+                if (preload) {
+                    elem.height(h);
+                } else {
+                    elem.animate({
+                        height: h
+                    });
+                }
+
+            }
             (function () {
                 var $comparingElements = jQuery(".b-goods-characteristics-list, .b-goods-title"),
                     $table = jQuery(".b-goods-flexiable-table"),
@@ -416,7 +477,7 @@ function mb_ucfirst($text) {
             location.hash=h;
             $(this).tab('show');
         });
-        $('a.attention-block_message').click(function (e) {
+        $('a.attention-block_btn').click(function (e) {
             $('a.b-tabs__link[href="#goods_4"]').trigger('click');
         });
 
@@ -552,7 +613,9 @@ function mb_ucfirst($text) {
         catalogClient.initUrl();
     });
 
-
+    $(function() {
+        popup.initCopyLinkBtns();
+    });
 
     <? if ($admin) : ?>
     catalog.parentId = '<?= $series->id ?>';

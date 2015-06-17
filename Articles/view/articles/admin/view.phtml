@@ -16,6 +16,24 @@
                 <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
             </td>
         </tr>
+        <tr id="imageMapper">
+            <td>Превью</td>
+            <td>
+                <div
+                    ng-single-image-upload
+                    parent-type="article"
+                    parent-id="<?= $entity->id ?>"
+                    folder="articles"
+                    field="preview"
+                    img="<?= $entity->preview_name ? $entity->preview_name : "" ?>"
+                    img-id ="<?= $entity->preview ? $entity->preview : "" ?>"
+                    ></div>
+
+                <script type="application/javascript">
+                    AppFactory("imageMapper", "images", ["imageMapper", "ur.file"]);
+                </script>
+            </td>
+        </tr>
         <tr>
             <td>Изображение</td>
             <td>
@@ -52,42 +70,71 @@
                 <div class="editor-get-btn" data-name="text"><?= $entity->text; ?></div>
             </td>
         </tr>
+
+        <? foreach ($entity->blocks as $i => $block) { ?>
+            <tr>
+                <td colspan="2"><b>Блок номер <?= $i+1 ?></b></td>
+            </tr>
+            <tr>
+                <td>Заголовок</td>
+                <td>
+                    <a href="#" data-type="text" data-name="title_<?= $block->id ?>" class="editable-param" data-id="<?= \Info\Service\SeoService::ARTICLE_BLOCKS ?>">
+                        <?= $block->title; ?>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>Текст</td>
+                <td>
+                    <div class="editor-get-btn" data-name="text_<?= $block->id ?>" data-id="<?= \Info\Service\SeoService::ARTICLE_BLOCKS ?>">
+                        <?= $block->text; ?>
+                    </div>
+                </td>
+            </tr>
+            <tr id="imageMapper<?= $i?>">
+                <td>Изображение</td>
+                <td>
+                    <div
+                        ng-single-image-upload
+                        parent-type="articleBlock"
+                        parent-id="<?= $block->id ?>"
+                        folder="articles"
+                        field="img"
+                        img="<?= $block->img_name ? $block->img_name : "" ?>"
+                        img-id ="<?= $block->img ? $block->img : "" ?>"
+                        ></div>
+
+                    <script type="application/javascript">
+                        AppFactory("imageMapper<?= $i?>", "images", ["imageMapper", "ur.file"]);
+                    </script>
+                </td>
+            </tr>
+        <? } ?>
         </tbody>
     </table>
 </div>
 
 <div class="section">
-    <h3>Упомянутые серии</h3>
+    <h3>Теги</h3>
     <div class="addPanel">
-        <button type="button" class="btn btn-default" id="tagit-add">Добавить серию</button>
+        <button type="button" class="btn btn-default" id="tagit-add">Добавить тег</button>
 
         <div id="tagit-form" style="display: none">
-            <ul id="tagit-series"></ul>
+            <ul id="tagit-series">
+                <? foreach ($currentTags as $tag) { ?>
+                <li>
+                    <span class="tagit-label"><?= $tag->name ?></span>
+                    <a class="tagit-close"><span class="text-icon">×</span><span class="ui-icon ui-icon-close"></span></a>
+                    <input type="hidden" value="<?= $tag->id ?>" name="tags" class="tagit-hidden-field">
+                </li>
+                <? } ?>
+            </ul>
             <input type="hidden" id="tagit-series-res" name="seriesIds"/>
 
             <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
             <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
         </div>
     </div>
-
-    <table class="table admin-table  table-striped">
-        <tr>
-            <th>Id</th>
-            <th>Название</th>
-            <th>Управление</th>
-        </tr>
-        <tbody>
-        <? foreach($relatedSeries as $ser){ ?>
-            <tr>
-                <td><?= $ser->id; ?></td>
-                <td><?= $ser->visible_title; ?></td>
-                <td>
-                    <a href="#" class="removeBtn">Открепить</a>
-                </td>
-            </tr>
-        <? } ?>
-        </tbody>
-    </table>
 </div>
 <?
 $sl = $this->getHelperPluginManager()->getServiceLocator();
@@ -114,7 +161,7 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
             tags: <?= $tags; ?>,
             inputField: $("#tagit-series"),
             outputField: $('#tagit-series-res'),
-            placeholder: 'Введите название или ID серии'
+            placeholder: 'Название тега'
         });
     });
 </script>

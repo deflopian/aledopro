@@ -10,11 +10,11 @@
     $posVals = \Catalog\Service\CatalogService::getValsJSON($products, $filteredFields, $prevProdCount, $params);
 
     $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, $series, $hierarchies, $discounts, $filteredFields, true);
-
+    $itemsOnPage = $this->countOnPage ? $this->countOnPage : false;
 ?>
 
 
-<solo-table make-sortable="3"  ng-cloak>
+<solo-table make-sortable="3" <?= $itemsOnPage ? 'items-on-page="' . $itemsOnPage . '"' : ''?> ng-cloak>
     <div solo-table-data style="display: none;">
         [<?= $products ?>]
     </div>
@@ -95,7 +95,8 @@
             <th class="{{th.name}}-header" ng-repeat="(key, th) in tds" sort-by='{{th.name}}'>{{th.label}}</th>
             <th class="buy-item-header"></th>
             <th class="copy-link-header"></th>
-            <th></th>
+            <th class="offer-btn-header"></th>
+            <th class="buyback-btn-header"></th>
         </tr>
         </thead>
         <tbody>
@@ -178,7 +179,7 @@
                          title="Скопировать ссылку в буфер обмена"
                          data-clipboard-text="http://<?=\Application\Service\MailService::CURRENT_DOMEN?>/catalog/product/{{item.id}}/"></div>
                 </a>
-                <a class="buy-back-btn" ng-click="removeItemFromCart(item.id)" title="убрать из корзины"><div class="icon-whitecross"></div></a>
+
 
 
             </td>
@@ -187,7 +188,13 @@
                     <div class="icon-offer"></div>
                 </span>
             </td>
+            <td style="padding: 0">
+                <a class="buy-back-btn" ng-click="removeItemFromCart(item.id)" title="убрать из корзины"><div class="icon-whitecross"></div></a>
+            </td>
         </tr>
         </tbody>
     </table>
+    <? if ($itemsOnPage) { ?>
+
+    <? } ?>
 </solo-table>

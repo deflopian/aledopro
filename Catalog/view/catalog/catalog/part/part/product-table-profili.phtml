@@ -67,6 +67,7 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
             <th class="buy-item-header"></th>
             <th class="copy-link-header"></th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -151,15 +152,19 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
                          title="Скопировать ссылку в буфер обмена"
                          data-clipboard-text="<?= \Application\Service\MailService::CURRENT_DOMEN ?>/catalog/product/{{item.id}}/"></div>
                 </a>
-                <a class="buy-back-btn" ng-click="removeItemFromCart(item.id)" title="убрать из корзины"><div class="icon-whitecross"></div></a>
-                <span ng-show="item.is_offer > 0">
-                    <div class="icon-offer"></div>
-                </span>
+<!--                <a class="buy-back-btn" ng-click="removeItemFromCart(item.id)" title="убрать из корзины"><div class="icon-whitecross"></div></a>-->
+<!--                <span ng-show="item.is_offer > 0">-->
+<!--                    <div class="icon-offer"></div>-->
+<!--                </span>-->
             </td>
             <td style="padding: 0">
                 <span ng-show="item.is_offer">
                     <div class="icon-offer"></div>
                 </span>
+            </td>
+
+            <td style="padding: 0">
+                <a class="buy-back-btn" ng-click="removeItemFromCart(item.id)" title="убрать из корзины"><div class="icon-whitecross"></div></a>
             </td>
         </tr>
         </tbody>

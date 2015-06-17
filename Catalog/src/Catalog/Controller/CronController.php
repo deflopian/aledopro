@@ -132,7 +132,13 @@ class CronController extends BaseController
                 echo 'Ошибка при загрузке файла с <a href="http://www.planar.spb.ru/ekdb/kgoods.csv">http://www.planar.spb.ru/ekdb/kgoods.csv</a>';
             }
 
-
+            $products = $this->getServiceLocator()->get('Catalog\Model\ProductTable')->fetchAllIds();
+            $prodIds = array();
+            foreach ($products as $product) {
+                $prodIds[] = $product['id'];
+            }
+            $str = implode(',', $prodIds);
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/products.txt', $str);
 
             $result = file_put_contents($newPathFile, $fileContent);
             if ($result !== false) {
@@ -140,6 +146,9 @@ class CronController extends BaseController
             } else {
                 echo 'Неизвестная ошибка при сохранении файла в директорию ' . $newPathFile;
             }
+            //удаляем весь хлам, оставшийся с прошлого раза
+
+            $this->getServiceLocator()->get('Catalog\Model\ParamToSeriesTable')->truncate();
 
             //удаляем весь хлам, оставшийся с прошлого раза
             CronService::deleteOldProducts(
@@ -148,6 +157,8 @@ class CronController extends BaseController
             );
             //сортируем весь хлам, оставшийся с момента прошлой загрузки файла
             CronService::sortOldProducts($this->getServiceLocator());
+
+
 
             file_put_contents($prevModifiedPath, $last_modified);
 
@@ -159,6 +170,8 @@ class CronController extends BaseController
             if (file_exists($linePath)) {
                 unlink( $linePath );
             }
+        } else {
+
         }
         return array();
 
@@ -219,9 +232,21 @@ class CronController extends BaseController
 
         $scvPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->csvName;
         $linePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->lineCSVFilePath;
+        $productsPath = $_SERVER['DOCUMENT_ROOT'] . '/products.txt';
+
+
 
         if (!file_exists($scvPath)) {
             return array();
+        }
+
+        $productsIds = array();
+        if (file_exists($productsPath)) {
+            $str = file_get_contents($productsPath);
+            $productsIdsNon = explode(',', $str);
+            foreach ($productsIdsNon as $pid) {
+                $productsIds[$pid] = 1;
+            }
         }
 
         //в $productSeries храним текущие диапазоны значений для каждой из серий
@@ -230,11 +255,14 @@ class CronController extends BaseController
         if (file_exists($linePath)) {
             $zeroPriceReport = $reportMapper->getLast(ReportMapper::REPORT_TYPE_PRODUCT_ZERO_PRICE);
             $orphanSeriesReport = $reportMapper->getLast(ReportMapper::REPORT_TYPE_ORPHAN_SERIES);
+            $newProdsReport = $reportMapper->getLast(ReportMapper::REPORT_TYPE_NEW_PRODUCTS);
         } else {
             $osConfig = ReportConfig::$infoByTypes[ReportMapper::REPORT_TYPE_ORPHAN_SERIES];
             $zpConfig = ReportConfig::$infoByTypes[ReportMapper::REPORT_TYPE_PRODUCT_ZERO_PRICE];
+            $npConfig = ReportConfig::$infoByTypes[ReportMapper::REPORT_TYPE_NEW_PRODUCTS];
             $zeroPriceReport = $reportMapper->add($zpConfig["name"], ReportMapper::REPORT_TYPE_PRODUCT_ZERO_PRICE, $zpConfig["text"]);
             $orphanSeriesReport = $reportMapper->add($osConfig["name"], ReportMapper::REPORT_TYPE_ORPHAN_SERIES, $osConfig["text"]);
+            $newProdsReport = $reportMapper->add($npConfig["name"], ReportMapper::REPORT_TYPE_NEW_PRODUCTS, $npConfig["text"]);
         }
 
 
@@ -281,17 +309,33 @@ class CronController extends BaseController
                     );
             }
 
-            if ($product->series_id > 0 && ($product->price_without_nds == 0 || is_null($product->price_without_nds))) {
+            if (count($productsIds) > 0 && !array_key_exists($product->id, $productsIds)) {
+                if (!$product->id) {
+                    var_dump($product);
+                } else {
+                    $item = new ReportItem();
+                    $item->linked_id = $product->id;
+                    $item->linked_type = AdminController::PRODUCT_TABLE;
+                    $item->report_id = $newProdsReport->id;
+                    $item->title = $product->title;
+                    $item->url = "/admin/catalog/product/" . $item->linked_id;
 
-                $item = new ReportItem();
-                $item->linked_id = $product->id;
-                $item->linked_type = AdminController::PRODUCT_TABLE;
-                $item->report_id = $zeroPriceReport->id;
-                $item->title = $product->title;
-                $item->url = "/admin/catalog/product/" . $item->linked_id . "/";
+                    $newProdsReport = $reportMapper->addItems($newProdsReport, array($item));
+                }
 
-                $zeroPriceReport = $reportMapper->addItems($zeroPriceReport, array($item));
             }
+
+//            if ($product->series_id > 0 && ($product->price_without_nds == 0 || is_null($product->price_without_nds))) {
+//
+//                $item = new ReportItem();
+//                $item->linked_id = $product->id;
+//                $item->linked_type = AdminController::PRODUCT_TABLE;
+//                $item->report_id = $zeroPriceReport->id;
+//                $item->title = $product->title;
+//                $item->url = "/admin/catalog/product/" . $item->linked_id . "/";
+//
+//                $zeroPriceReport = $reportMapper->addItems($zeroPriceReport, array($item));
+//            }
 
             $products[$pKey] = $product;
 
@@ -300,6 +344,10 @@ class CronController extends BaseController
 
         $seriesIdsRev = array();
         foreach ($products as $key => $oneProd) {
+            if (!$oneProd->id) {
+                unset($products[$key]);
+                continue;
+            }
             $oneProd->checked = 1;
             $seriesIdsRev[$oneProd->series_id] = 1;
             $products[$key] = $oneProd->toArray();
@@ -329,13 +377,20 @@ class CronController extends BaseController
         }
 
         if (!file_exists($scvPath)) {
-            if (isset($orphanSeriesReport->items) && count($orphanSeriesReport->items) > 0) {
-                list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $orphanSeriesReport);
-                MailService::sendMail($email, $mailView, "Новый отчёт номер " . $orphanSeriesReport->id . " по добавленным сериям");
-            }
-            if (isset($zeroPriceReport->items) && count($zeroPriceReport->items) > 0) {
-                list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $zeroPriceReport);
-                MailService::sendMail($email, $mailView, "Новый отчёт номер " . $zeroPriceReport->id . " по продуктам без цены");
+//            if (isset($orphanSeriesReport->items) && count($orphanSeriesReport->items) > 0) {
+//                list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $orphanSeriesReport);
+//                MailService::sendMail($email, $mailView, "Новый отчёт номер " . $orphanSeriesReport->id . " по добавленным сериям");
+//            }
+//            if (isset($zeroPriceReport->items) && count($zeroPriceReport->items) > 0) {
+//                list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $zeroPriceReport);
+//                MailService::sendMail($email, $mailView, "Новый отчёт номер " . $zeroPriceReport->id . " по продуктам без цены");
+//            }
+            if (isset($newProdsReport->items) && count($newProdsReport->items) > 0) {
+                list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $newProdsReport);
+                MailService::sendMail($email, $mailView, "Отчёт номер " . $newProdsReport->id . " по новым продуктам");
+                MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт номер " . $newProdsReport->id . " по новым продуктам");
+            } elseif (count($newProdsReport->items) == 0) {
+                $reportMapper->delete($newProdsReport->id);
             }
         }
 

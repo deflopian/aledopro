@@ -9,7 +9,7 @@
 <a href="<?= $url ?>">
     <div class="tile-title-series">
         <? if ($series->is_offer) { ?>
-            <span style="position: absolute; top: 10px; left: -12px">
+            <span style="position: absolute; top: 10px; left: -20px">
                 <div class="icon-offer"></div>
             </span>
         <? } ?>
@@ -28,11 +28,7 @@
 <? } else { ?>
     <a href="<?= $url ?>">
         <div class="tile-title-series">
-            <? if ($series->is_offer) { ?>
-                <span style="position: absolute; top: 10px; left: -12px">
-                <div class="icon-offer"></div>
-                </span>
-            <? } ?>
+
             <span>
                 <?= $series->visible_title ?>
             </span>
@@ -42,6 +38,13 @@
         <? } else { ?>
             <? $src = $series->img ? $this->basePath() . '/images/series/' . $series->img : $this->basePath() . '/images/empty-series.png' ?>
         <? } ?>
+        <div style="position: relative">
         <img src="<?= $src ?>" alt="<?= $series->visible_title ?>"/>
+        <? if ($series->is_offer) { ?>
+            <span style="position: absolute; top: 0; left: 0">
+            <div class="icon-offer"></div>
+            </span>
+        <? } ?>
+        </div>
     </a>
 <? } ?>

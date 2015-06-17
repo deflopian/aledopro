@@ -17,7 +17,7 @@
 
     <div id="catalog-filterbar-place"></div>
 
-    <div class="row row-second" data-type="catalog"  data-action="series">
+    <div class="row row-second subsection" data-type="catalog"  data-action="series">
         <?
         if(isset($series)){
             $i = 0;
@@ -26,7 +26,7 @@
                     <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $ser);?>
                 </div>
                 <?
-                if(($i+1)%6==0){ echo '</div><div class="row row-second" data-type="catalog" data-action="series">'; }
+                if(($i+1)%6==0){ echo '</div><div class="row row-second subsection" data-type="catalog" data-action="series">'; }
                 $i++;
             }
         }
@@ -46,6 +46,7 @@
 
 
 <script type="text/javascript">
+
     $(function(){
         popup.init({
             bid: <?= $this->bid ?>,

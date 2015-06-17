@@ -9,6 +9,7 @@ namespace Commercials\Mapper;
 
 use Application\Service\ApplicationService;
 use Catalog\Mapper\CatalogMapper;
+use Catalog\Service\CatalogService;
 use Commercials\Model\CommercialProdsTable;
 use Commercials\Model\CommercialProd;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -78,16 +79,26 @@ class CommercialProdMapper {
         $items = $this->table->fetchByCond('room_id', $roomId);
         $fileTable = $this->sl->get('FilesTable');
         $filtermParamTable = $this->sl->get('Catalog\Model\FilterParamTable');
-        if ($withMainParams) {
-            $colors = ApplicationService::makeIdArrayFromObjectArray($filtermParamTable->fetchByCond('field', 'color_of_light'));
-            $casecolors = ApplicationService::makeIdArrayFromObjectArray($filtermParamTable->fetchByCond('field', 'case_color'));
-        }
+
+//        if ($withMainParams) {
+//            $colors = ApplicationService::makeIdArrayFromObjectArray($filtermParamTable->fetchByCond('field', 'color_of_light'));
+//            $casecolors = ApplicationService::makeIdArrayFromObjectArray($filtermParamTable->fetchByCond('field', 'case_color'));
+//        }
 
         if ($recursive) {
             $cm = CatalogMapper::getInstance($this->sl);
             $filterFieldTable = $this->sl->get('FilterFieldTable');
-            foreach ($items as &$item) {
+            $sortedParams = array();
+            if ($withMainParams) {
+                $params = $filtermParamTable->fetchAll();
+                $sortedParams = ApplicationService::makeIdArrayFromObjectArray($params);
+            }
+            foreach ($items as $key => &$item) {
                 $product = $cm->getProduct($item->product_id);
+                if (!$product) {
+                    unset($items[$key]);
+                    continue;
+                }
 //превьюшка для товара
 
                 $file = $fileTable->fetchByCond('uid', $product->id);
@@ -99,21 +110,17 @@ class CommercialProdMapper {
                 }
 
 
-                $item->product = $product;
+
                 if ($withMainParams) {
                     $allParamsTable = $this->sl->get('Catalog\Model\ProductParamsTable');
                     $allParams = $allParamsTable->fetchAll("", false, true);
 
 
-                    $item->product->color_of_light = isset($colors[$item->product->color_of_light]) ? $colors[$item->product->color_of_light]->value : $item->product->color_of_light;
-                    $item->product->case_color = isset($casecolors[$item->product->case_color]) ? $casecolors[$item->product->case_color]->value : $item->product->case_color;
 
-                    foreach ($allParams as $kp => $kv) {
-                        $field = $kv->field;
-                        if ($item->product->$field) {
-                            $item->product->$field = $kv->pre_value . $item->product->$field . $kv->post_value;
-                        }
-                    }
+//                    $item->product->color_of_light = isset($colors[$item->product->color_of_light]) ? $colors[$item->product->color_of_light]->value : $item->product->color_of_light;
+//                    $item->product->case_color = isset($casecolors[$item->product->case_color]) ? $casecolors[$item->product->case_color]->value : $item->product->case_color;
+
+
 
                     $series = $cm->getSeriesOne($product->series_id);
 
@@ -126,12 +133,26 @@ class CommercialProdMapper {
                     foreach ($filters as $fkey => $filter) {
 
                         if ($filter->cart_param == 1) {
-                            $mainParams[$allParams[$filter->field_id]->field] = $allParams[$filter->field_id]->title;
+                            $f = $allParams[$filter->field_id];
+                            $fName = $f->field;
+                            if (in_array($f->field, CatalogService::$intFields)) {
+
+                                $product->$fName = isset($sortedParams[$product->$fName]) ? $sortedParams[$product->$fName]->value : $product->$fName;
+
+                            }
+                            $mainParams[$f->field] = $f->title;
+                            $product->$fName = $f->pre_value . $product->$fName . $f->post_value;
+//                            if (in_array($f->field, CatalogService::$intFields)) {
+//                                $fName = $f->field;
+//                                $product->$fName = isset($sortedParams[$fName]) ? $sortedParams[$fName]->value : $product->$fName;
+//                            }
+//                            $mainParams[$f->field] = $f->title;
                         }
                     }
-
                     $item->mainParams = $mainParams;
                 }
+
+                $item->product = $product;
             }
         }
         return $items;

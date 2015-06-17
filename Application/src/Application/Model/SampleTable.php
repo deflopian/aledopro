@@ -20,6 +20,19 @@ class SampleTable extends AbstractTableGateway
     }
 
     /**
+     * Remove all contents of the table
+     * @return $this
+     */
+    public function truncate()
+    {
+        /** @var $adapter \Zend\Db\Adapter\Adapter */
+        $adapter = $this->getAdapter();
+        $adapter->query('TRUNCATE TABLE `' . $this->table . '`', $adapter::QUERY_MODE_EXECUTE);
+
+        return $this;
+    }
+
+    /**
      * @param $id
      * @return SampleModel|null
      */
@@ -54,15 +67,18 @@ class SampleTable extends AbstractTableGateway
      * @param $column - колонка поиска
      * @param $value - значение поиска. может быть массивом, тогда будет поиско whereIN
      * @param string $order
+     * @param int $limit
      * @return array
      */
-    public function fetchByCond($column, $value, $order = "")
+    public function fetchByCond($column, $value, $order = "", $limit = 0)
     {
         $select = new Select($this->table);
         if($order){
             $select->order($order);
         }
-
+        if($limit){
+            $select->limit($limit);
+        }
         $where = new Where();
         if(is_array($value)){
             $where->in($column, $value);

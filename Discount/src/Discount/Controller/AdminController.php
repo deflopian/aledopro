@@ -740,24 +740,31 @@ class AdminController extends SampleAdminController
     public function removeParentTagitAction()
     {
         $request = $this->getRequest();
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($this->getRequest()->isPost()) {
             $id = $request->getPost('id', false);
             $userId = $request->getPost('userId', false);
             $seriesId = $request->getPost('parentId', false);
             $type = $request->getPost('type', false);
             $isGroup = $request->getPost('isGroup', 0);
             $success = 0;
-
+            if ($id === false && $type === false) {
+                $data = \Zend\Json\Json::decode($this->getRequest()->getContent(), \Zend\Json\Json::TYPE_ARRAY);
+                $id = $data['id'];
+                $type = $data['type'];
+            }
             if ($id) {
                 $sl = $this->getServiceLocator();
                 if($type){
+
                     switch($type){
 
                         case \Catalog\Controller\AdminController::USERS_TABLE:
                             $table = $sl->get(CatalogService::getTableName(\Catalog\Controller\AdminController::USERS_TABLE));
                             $user = $table->find($id);
+
                             if($user){
                                 $user->is_partner = 0;
+                                $user->partner_group = 0;
                                 $table->save($user);
                                 $success = 1;
                             }

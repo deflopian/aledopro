@@ -1,49 +1,62 @@
 <? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
-
-<div class="section">
+<div class="b-section__content">
+    <div class="b-breadcrumbs" style=" ">
+        <? foreach ($breadCrumbs as $bc) { ?>
+            <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+        <? } ?>
+        <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+    </div>
+</div>
+<div class="b-section__content">
 
     <?
     if(isset($count) && $count['total']) { ?>
-        <ul class="nav nav-tabs">
-            <?
-            $blogActive = $projectsActive = true;
-            if($catalog['series'] || $catalog['products']){
-                $blogActive = $projectsActive = false;
-                ?>
-                <li class="active"><a href="#tab-catalog" class="btn-aledo-tab"  data-toggle="tab">В каталоге</a></li>
-            <? } ?>
+    <div class="b-tabs-wrapper b-tabs-wrapper_goods "  role="tabpanel">
+        <div class="b-goods-tabs">
+            <ul class="b-tabs list-unstyled b-tabs_goods" role="tablist">
+                <?
+                $blogActive = $projectsActive = true;
+                if($catalog['series'] || $catalog['products']){
+                    $blogActive = $projectsActive = false;
+                    ?>
+                    <li class="b-tabs__tab  active">
+                        <a class="b-tabs__link " role="tab" href="#catalog" data-toggle="tab" aria-controls="catalog" >В каталоге</a>
+                    </li>
+                <? } ?>
+                <? if($news || $articles){
+                    $projectsActive = false;
+                    ?>
+                    <li class="b-tabs__tab">
+                        <a class="b-tabs__link " role="tab" href="#blog"  data-toggle="tab" aria-controls="blog">В блоге</a>
+                    </li>
+                <? } ?>
+                <? if($projects){ ?>
+                    <li class="b-tabs__tab">
+                        <a class="b-tabs__link " role="tab" href="#projects"  data-toggle="tab" aria-controls="projects">В проектах</a>
+                    </li>
+                <? } ?>
+            </ul>
+        </div>
+        <div class="b-tabs-content b-tabs-content_goods tab-content">
 
-            <? if($news || $articles){
-                $projectsActive = false;
-                ?>
-                <li <?= $blogActive ? 'class="active"' : ''?>><a href="#tab-blog" class="btn-aledo-tab" data-toggle="tab">В блоге</a></li>
-            <? } ?>
-
-            <? if($projects){ ?>
-                <li <?= $projectsActive ? 'class="active"' : ''?>><a href="#tab-projects" class="btn-aledo-tab" data-toggle="tab">В проектах</a></li>
-            <? } ?>
-            <!--            <li><a href="#tab-proejcts" class="btn-aledo-tab" data-toggle="tab">В проектах</a></li>-->
-        </ul>
-
-        <div class="tab-content">
             <? if($catalog['series'] || $catalog['products']){ ?>
-                <div class="tab-pane active" id="tab-catalog">
+                <div class="b-tabs-content__item fade in active tab-pane" role="tabpanel" id="catalog">
                     <? if($catalog['series']){ ?>
-                        <div class="row row-second-big">
+                        <div class="row">
                             <div class="col-md-12"><h3>Найдено серий: <?= $count['series']; ?></h3></div>
                         </div>
                         <div class="row row-second-small" data-type="catalog">
-                            <? foreach($catalog['series'] as $i=>$series){ ?>
-                                <div class="col-md-2 series-tile popup-buttton mobile-left-margin-1" data-id="<?= $series->id ?>">
+                            <? $j=1; foreach($catalog['series'] as $i=>$series){ ?>
+                                <div class="col-md-2 series-tile" data-id="<?= $series->id ?>">
                                     <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $series, false, true); ?>
                                 </div>
-                                <? if(($i+1)%6 == 0) { echo'</div><div class="row row-second" data-type="catalog">'; } ?>
+                                <? if(($j++)%6 == 0) { echo'</div><div class="row row-second" data-type="catalog">'; } ?>
                             <? } ?>
                         </div>
                     <? } ?>
 
                     <? if($catalog['products']){ ?>
-                        <div class="row row-second-big">
+                        <div class="row <?= $catalog['series'] ? 'row-second-big' : ''?>">
                             <div class="col-md-12"><h3>Найдено продуктов: <?= $count['products']; ?></h3></div>
                         </div>
                         <div class="row row-second-small">
@@ -62,9 +75,9 @@
             <? } ?>
 
             <? if($news || $articles){ ?>
-                <div class="tab-pane <?= $blogActive?'active':''?>" id="tab-blog">
+                <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="blog">
                     <? if($count['news']){ ?>
-                        <div class="row row-second-big">
+                        <div class="row">
                             <div class="col-md-12"><h3>Найдено новостей: <?= $count['news']; ?></h3></div>
                         </div>
                         <div class="row row-second-small">
@@ -88,7 +101,7 @@
                     <? } ?>
 
                     <? if($count['articles']){ ?>
-                        <div class="row row-second-big">
+                        <div class="row <?= $count['news'] ? 'row-second-big' : ''?>">
                             <div class="col-md-12"><h3>Найдено статей: <?= $count['articles']; ?></h3></div>
                         </div>
                         <div class="row row-second-small">
@@ -114,23 +127,40 @@
             <? } ?>
 
             <? if($projects){ ?>
-                <div class="tab-pane <?= $projectsActive ?'active':''?>" id="tab-projects">
-                    <div class="row row-second-big">
+                <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="projects">
+                    <div class="row">
                         <div class="col-md-12"><h3>Найдено проектов: <?= $count['projects']; ?></h3></div>
                     </div>
-                    <div class="row row-second-small popup-buttons-container" data-type="projects">
-                        <? foreach($projects as $i=>$project){ ?>
-                            <div class="col-md-4 popup-buttton project-tile-other" data-id="<?= $project->id ?>">
-                                <div class="tile-title"><?= $project->title ?></div>
-                                <div class="tile-text"><?= $project->adress ?></div>
-                                <img src="<?= $this->basePath() . '/images/projects/' . $project->img ?>" alt="<?= $project->title ?>"/>
-                            </div>
-                            <? if(($i+1)%3==0){echo'</div><div class="row row-second popup-buttons-container" data-type="projects">';} ?>
-                        <? } ?>
+                    <div class="b-projects b-section">
+                        <div class="b-projects__row">
+                            <? foreach($projects as $i=>$project){ ?>
+<!--                                --><?// if ($project->id == 43) continue; ?>
+                                <div class="b-projects-item">
+                                    <a class="b-projects-item__link" href="/projects/view/<?= $project->id ?>/">
+                                        <img class="b-projects-item__image" src="/images/projects/<?= $project->previewName ?>" />
+                                        <div class="b-button b-button_projects">
+                                            <span class="b-button__text"><?= $project->title ?></span>
+                                            <i class="b-button__icon"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                            <? } ?>
+                        </div>
                     </div>
+<!--                    <div class="row row-second-small popup-buttons-container" data-type="projects">-->
+<!--                        --><?// foreach($projects as $i=>$project){ ?>
+<!--                            <div class="col-md-4 popup-buttton project-tile-other" data-id="--><?//= $project->id ?><!--">-->
+<!--                                <div class="tile-title">--><?//= $project->title ?><!--</div>-->
+<!--                                <div class="tile-text">--><?//= $project->adress ?><!--</div>-->
+<!--                                <img src="--><?//= $this->basePath() . '/images/projects/' . $project->img ?><!--" alt="--><?//= $project->title ?><!--"/>-->
+<!--                            </div>-->
+<!--                            --><?// if(($i+1)%3==0){echo'</div><div class="row row-second popup-buttons-container" data-type="projects">';} ?>
+<!--                        --><?// } ?>
+<!--                    </div>-->
                 </div>
             <? } ?>
         </div>
+    </div>
     <? } else { ?>
         <div class="row">
             <div class="col-md-12 text-center">
@@ -143,11 +173,11 @@
 
 <script type="text/javascript">
     $(function(){
-        //popup.init({});
-
-        $('.btn-aledo-tab').click(function (e) {
-            e.preventDefault()
+        $('a.b-tabs__link').click(function (e) {
+//            e.preventDefault();
+            var h = $(this).attr('href');
+            location.hash=h;
             $(this).tab('show');
-        })
+        });
     })
 </script>

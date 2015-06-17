@@ -74,7 +74,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="row row-second" data-type="catalog">
+                <div class="row row-second subsection" data-type="catalog">
                     <?
                     if (isset($seAgg)) {
                         $i = 0;
@@ -83,7 +83,7 @@
                                 <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $ser); ?>
                             </div>
                             <? if (($i + 1) % 4 == 0) {
-                                echo '</div><div class="row row-second-small" data-type="catalog">';
+                                echo '</div><div class="row row-second-small subsection" data-type="catalog">';
                             }
                             $i++;
                         }

@@ -6,6 +6,7 @@ use Catalog\Controller\AdminController;
 use Catalog\Controller\CronController;
 use Catalog\Model\FilterParam;
 use Catalog\Model\ParamToSeries;
+use Catalog\Model\ParamToSeriesTable;
 use Catalog\Model\Product;
 use Catalog\Model\Series;
 use Catalog\Model\SeriesParams;
