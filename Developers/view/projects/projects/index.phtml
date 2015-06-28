@@ -1,0 +1,34 @@
+
+<div class="b-section__content">
+    <div class="b-breadcrumbs">
+        <? foreach ($breadCrumbs as $bc) { ?>
+            <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+        <? } ?>
+        <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+    </div>
+</div>
+<div class="b-developers b-section">
+    <div class="b-section__content">
+        <div class="b-developers__row">
+            <? $j = 0; ?>
+            <? foreach($this->developers as $i=>$developer){ ?>
+<!--                --><?// if ($developer->id == 43) continue; ?>
+            <div class="b-developers-item">
+                <a class="b-developers-item__link" href="/developers/view/<?= $developer->id ?>/">
+                    <img class="b-developers-item__image" src="/images/developers/<?= $developer->previewName ?>" />
+                    <div class="b-button b-button_developers">
+                        <span class="b-button__text"><?= $developer->title ?></span>
+                        <i class="b-button__icon"></i>
+                    </div>
+                </a>
+            </div>
+                <? $j++; ?>
+            <? } ?>
+            <? if ($j%2==1) { ?>
+                <div class="b-developers-item">
+                    <img class="b-developers-item__image" src="/images/developers/asap.jpg" />
+                </div>
+            <? } ?>
+        </div>
+    </div>
+</div>

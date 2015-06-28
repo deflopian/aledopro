@@ -1,0 +1,335 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/developers') ?>">Проекты</a>
+    >
+    <span id="title"><?= $entity->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <table class="table admin-table ">
+        <tbody>
+        <tr>
+            <td>Название</td>
+            <td>
+                <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Выберите категорию</td>
+            <td>
+                <a href="#" data-type="select" data-name="rubric_id"
+                   data-source='<?= \Zend\Json\Json::encode($rubrics); ?>'
+                   data-value="<?= $entity->rubric_id; ?>" class="editable-param">
+                    <?= $rubrics[$entity->rubric_id] ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Адрес</td>
+            <td>
+                <a href="#" data-type="textarea" data-name="adress" class="editable-param"><?= $entity->adress; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Описание</td>
+            <td>
+                <div class="editor-get-btn" data-name="text"><?= $entity->text; ?></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section" ng-app="imageMapper">
+    <div ng-controller="ImageCtrl">
+        <h3>Превью</h3>
+
+        <div
+            ng-single-image-upload
+            parent-type="developer"
+            parent-id="<?= $entity->id ?>"
+            folder="developers"
+            field="preview"
+            img="<?= $entity->previewName ? $entity->previewName : "" ?>"
+            img-id ="<?= $entity->preview ? $entity->preview : "" ?>"
+            ></div>
+
+        <script type="application/javascript">
+            AppFactory("imageMapper", "images", ["imageMapper", "ur.file"]);
+        </script>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Изображения</h3>
+
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-img">Добавить изображения</button>
+
+        <div class="form-inline" id="adding-form-img" style="display: none">
+            <form id="img-form" method="post" enctype="multipart/form-data">
+                <p>
+                    <input type="file" name="images[]" multiple="multiple"/>
+                    <input type="hidden" name="id" value="<?= $entity->id ?>"/>
+                    <input type="hidden" name="min_height" value="500"/>
+                </p>
+
+                <p>
+                    <input type="submit" class="btn btn-default"/>
+                    <button type="button" class="btn btn-default" id="adding-cancel-img">Отмена</button>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <div id="images-container">
+        <? foreach($imgs as $img){ ?>
+            <div class="admin-img" data-id="<?= $img->id ?>" >
+                <div class="admin-img-del">
+                    <button class="btn btn-xs btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                </div>
+
+                <? if($img->type == \Application\Service\ApplicationService::MEDIA_TYPE_IMG){ ?>
+                    <img style="height: 100%" src="<?= $this->basePath() . '/images/developers/' . $img->url ?>" alt=""/>
+                <? } ?>
+            </div>
+        <? } ?>
+    </div>
+
+    <div class="sample admin-img" data-id="" style="display: none">
+        <div class="admin-img-del">
+            <button class="btn btn-xs btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+        </div>
+        <img style="height: 100%" src="" alt=""/>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Участники</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-entity">Добавить участника</button>
+
+        <div class="form-inline" id="adding-form" style="display: none">
+            <div class="form-group">
+                <label class="sr-only" for="inputName">Название</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Введите название..."/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="adding-complete">Добавить</button>
+            <button type="button" class="btn btn-default" id="adding-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Имя</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+        <? foreach($members as $member){ ?>
+            <tr class="entity">
+                <td><?= $member->id; ?></td>
+                <td><?= $member->title; ?></td>
+                <td>
+                    <a href="#" class="editBtn">Редактировать</a>
+                    <a href="#" class="deleteBtn">Удалить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+
+        <h3>Используемые продукты</h3>
+        <div class="addPanel">
+            <button type="button" class="btn btn-default" id="tagit-add">Добавить серию или продукт</button>
+
+            <div id="tagit-form" style="display: none">
+                <ul id="tagit-series"></ul>
+                <input type="hidden" id="tagit-series-res" name="seriesIds"/>
+
+                <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
+                <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
+            </div>
+        </div>
+<!--        <div>-->
+<!--            Серии:-->
+<!--        </div>-->
+<!--        <table class="table admin-table  table-striped">-->
+<!--            <tr>-->
+<!--                <th>Id</th>-->
+<!--                <th>Название</th>-->
+<!--                <th>Управление</th>-->
+<!--            </tr>-->
+<!--            <tbody>-->
+<!--            --><?// foreach($relatedSeries as $ser){ ?>
+<!--                <tr>-->
+<!--                    <td>--><?//= $ser->id; ?><!--</td>-->
+<!--                    <td>--><?//= $ser->visible_title; ?><!--</td>-->
+<!--                    <td>-->
+<!--                        <a href="#" class="removeBtn">Открепить</a>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            --><?// } ?>
+<!--            </tbody>-->
+<!--        </table>-->
+        <div>
+            Продукты:
+        </div>
+        <table class="table admin-table  table-striped">
+            <tr>
+                <th>Id</th>
+                <th>Название</th>
+                <th>Тип</th>
+                <th>Управление</th>
+            </tr>
+            <tbody id="linked_prods_and_series" data-type="ptop">
+            <? foreach($relatedProds as $prod){ ?>
+                <tr data-id="<?= $prod->meta_id; ?>">
+                    <td><?= $prod->id; ?></td>
+                    <td><?= $prod->visible_title ? $prod->visible_title : $prod->title; ?></td>
+                    <td><?= $prod->product_type == \Catalog\Controller\AdminController::SERIES_TABLE ? "Серия" : "Продукт"; ?></td>
+                    <td>
+                        <a href="#" class="removeBtn">Открепить</a>
+                    </td>
+                </tr>
+            <? } ?>
+            </tbody>
+        </table>
+</div>
+<div class="section">
+    <h3>Связанные проекты</h3>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="tagit-proj-add">Добавить проект</button>
+
+        <div id="tagit-proj-form" style="display: none">
+            <ul id="tagit-proj-product"></ul>
+            <input type="hidden" id="tagit-proj-res" name="productIds"/>
+
+            <button type="button" class="btn btn-default" id="tagit-proj-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="tagit-proj-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody>
+        <? foreach($relatedDevelopers as $proj){ ?>
+            <tr>
+                <td><?= $proj->id; ?></td>
+                <td><?= $proj->title; ?></td>
+                <td>
+                    <a href="#" class="removeBtn-proj">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="section">
+    <h3>Связи</h3>
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-3">
+            <label for="linkType">Тип элемента</label>
+            <select name="linkType" class="form-control" onchange="catalog.getTagsByType($(this).val())">
+                <option value="<?=\Catalog\Controller\AdminController::PRODUCT_TABLE ?>">Продукт</option>
+                <option value="<?=\Catalog\Controller\AdminController::SERIES_TABLE ?>">Серия</option>
+                <option value="<?=\Catalog\Controller\AdminController::SUBSECTION_TABLE ?>">Подраздел</option>
+                <option value="<?=\Catalog\Controller\AdminController::SECTION_TABLE ?>" selected>Раздел</option>
+                <option value="<?=\Catalog\Controller\AdminController::SOLUTION_TABLE ?>">Решение</option>
+                <option value="<?=\Catalog\Controller\AdminController::PROJECT_TABLE ?>">Проект</option>
+            </select>
+        </div>
+    </div>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="linktagit-add">Добавить существующий элемент</button>
+
+        <div id="linktagit-form" style="display: none">
+            <ul id="tagit-links" ></ul>
+            <input type="hidden" id="tagit-links-res" name="linksIds"/>
+
+            <button type="button" class="btn btn-default" id="linktagit-save">Добавить</button>
+            <button type="button" class="btn btn-default" id="linktagit-cancel">Отмена</button>
+        </div>
+    </div>
+    <table class="table admin-table  table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Тип</th>
+            <th>Название</th>
+            <th>Управление</th>
+        </tr>
+        <tbody id="sortable">
+
+        <? /** @var $links array */
+        foreach($links as $link){ ?>
+            <tr class="entity" data-linktype="<?= $link[0] ?>">
+                <td><?= $link[1]->id ?></td>
+                <td><?= $link[3] ?></td>
+                <td><?= $link[1]->title ?></td>
+                <td>
+                    <a href="#" class="removeLinkBtn">Открепить</a>
+                </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+</div>
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentId = '<?= $entity->id ?>';
+        catalog.type = 'prmember';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/developers') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/developers', array('action'=> 'viewMember')) ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::PROJECTS ?>';
+        catalog.init();
+        catalog.initEditables();
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.editablesSave
+        });
+
+        imgUploader.init({
+            type: 'multiple',
+            delFunction: imgUploader.editablesDel,
+            imgUrl: '<?= $this->basePath() . '/images/developers/' ?>'
+        });
+
+        tagit.init({
+            tags: <?= $tags; ?>,
+            type: 'stos',
+            min: 2,
+            inputField: $("#tagit-series"),
+            outputField: $('#tagit-series-res'),
+            placeholder: 'Введите название или ID продукта'
+        });
+
+        relprojTaigt.init({
+            tags: <?= $projTags; ?>,
+            inputField: $("#tagit-proj-product"),
+            outputField: $('#tagit-proj-res'),
+            placeholder: 'Введите название проекта'
+        });
+
+        catalog.link_type_1 = '<?= \Catalog\Controller\AdminController::PROJECT_TABLE ?>';
+        catalog.getTagsByType(<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>);
+        $( "#linked_prods_and_series" ).sortable({stop: catalog.localChangeOrder}).disableSelection();
+    });
+</script>

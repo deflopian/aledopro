@@ -1,103 +1,125 @@
+<script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-<script src="/Scripts/google.routes.js"></script>
 
-<div class="b-section__content">
-    <div class="b-breadcrumbs">
-        <? foreach ($breadCrumbs as $bc) { ?>
-            <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
-        <? } ?>
-        <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
-    </div>
-</div>
 <div class="b-contacts-page b-section">
     <div class="b-section__content">
         <div class="b-contacts-table text-center">
-<!--            <div class="b-contacts-table__cell b-contacts-cell dotted-right">-->
-            <div class="b-contacts-table__cell b-contacts-cell">
-                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">КОНТАКТЫ</h4>
-                <div class="b-mb4" style="margin-bottom: 2rem">
-                    <?= $contacts->adress?>
+            <div class="b-contacts-table__cell b-contacts-cell dotted-right">
+<!--            <div class="b-contacts-table__cell b-contacts-cell">-->
+                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">
+                    ОФИС В САНКТ-ПЕТЕРБУРГЕ
+                </h4>
+
+                <div class="b-mb4">
+                    <?= $contacts[0]->adress ?>
                 </div>
                 <div class="b-mb2 b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_upper b-dotted-decorated_fully">
-                    <?= $contacts->work_time?>
+                    <?= $contacts[0]->work_time ?>
                 </div>
-                <div>
-                    <?= str_replace(' ', '&nbsp;', $contacts->phone) ?><br />
-                    <?= str_replace(' ', '&nbsp;', $contacts->fax) ?><br />
-                    <a href="mailto:<?= $contacts->mail?>"> <?= $contacts->mail?></a>
-                </div>
+
+                <p>
+                    <?= str_replace(' ', '&nbsp;', $contacts[0]->phone) ?><br/>
+                    <?= str_replace(' ', '&nbsp;', $contacts[0]->fax) ?><br/>
+                    <a class="b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully"
+                       href="mailto:<?= $contacts[0]->mail ?>"> <?= $contacts[0]->mail ?></a>
+                </p>
+                <br/>
+
+                <div id="map_spb" class="b-map"></div>
             </div>
-            <? if (($user=$this->ZfcUserIdentity()) && $user->getId() == 2) { ?>
+
+
             <div class="b-contacts-table__cell b-contacts-cell b-contacts-cell_right">
-                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">СВЯЖИТЕСЬ С НАМИ</h4>
-                <div>
-                    <h4>Или вы можете</h4>
-<!--                    <a href="javascript:void(0)" class="b-button b-button_yellow-bordered b-button_gray-colored" ng-controller="PopupController" ng-click="getPopup(ALEDO_POPUP_CALLBACK, {})">-->
-<!--                        <span class="b-button__text">   заказать обратный звонок</span>-->
-<!--                    </a>-->
-                    <a href="#pozvonim" class="b-button b-button_yellow-bordered b-button_gray-colored">
-                        <span class="b-button__text">   заказать обратный звонок</span>
-                    </a>
-                </div>
-            </div>
-            <? } ?>
-        </div>
-        <hr class="dotted-separator" />
-        <h4 class="text-center">КАРТА ПРОЕЗДА К ОФИСУ</h4>
-        <hr class="dotted-separator" />
-        <div class="b-routing-map"></div>
+                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">
+                    ПРЕДСТАВИТЕЛЬСТВО В МОСКВЕ
+                </h4>
 
-        <div class="b-route-table">
-            <div class="b-route-table__cell b-route-cell b-route-cell_left dotted-right">
-                <h4 class="b-route-cell__heading">КАК ДОБРАТЬСЯ</h4>
-                <hr class="dotted-separator b-mb1" />
-
-
-                <div class="b-form-group">
-                    <label for="routeFrom" class="b-form-label">Откуда:</label>
-                    <input type="text" class="b-form-control" id="routeFrom" value="СПб, Балтийская" />
+                <div class="b-mb4">
+                    <?= $contacts[1]->adress ?>
                 </div>
-                <div class="b-form-group">
-                    <label for="routeInclude" class="b-form-label">Через (необязательно):</label>
-                    <input type="text" class="b-form-control" id="routeInclude" />
+                <div class="b-mb2 b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_upper b-dotted-decorated_fully">
+                    <?= $contacts[1]->work_time ?>
                 </div>
-                <br />
-                <div class="b-form-group">
-                    <p>Каким образом:</p>
-                    <div>
-                        <input type="radio" name="driverType" checked="checked" id="driverType_1" value="1" />
-                        <label for="driverType_1" >На машине</label>
-                    </div><div>
-                        <input type="radio" name="driverType" id="driverType_2" value="2"/>
-                        <label for="driverType_2">Пешком</label>
-                    </div><div>
-                        <input type="radio" name="driverType" id="driverType_3" value="3" />
-                        <label for="driverType_3">Общественным транспортом</label>
-                    </div>
-                </div>
-                <a href="javascript:void(0)" class="b-button b-button_yellow-background" onclick="contactsMap.calcRoute()">
-                    <span class="b-button__text">построить маршрут</span>
 
-                </a>
+                <p>
+                    <?= str_replace(' ', '&nbsp;', $contacts[1]->phone) ?><br/>
+                    <?= str_replace(' ', '&nbsp;', $contacts[1]->fax) ?><br/>
+                    <a class="b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully"
+                       href="mailto:<?= $contacts[1]->mail ?>"> <?= $contacts[1]->mail ?></a>
+                </p>
+                <br/>
 
-            </div>
-            <div class="b-route-table__cell b-route-cell b-route-cell_right">
-                <h4 class="b-route-cell__heading">МАРШРУТ</h4>
-                <hr class="dotted-separator b-mb1" />
-                <div class="b-route-preview">
-                    <p>Введите адрес места отправления в колонке слева и нажмите кнопку <strong>Построить маршрут</strong></p>
-                    <img class="b-route-preview__image" src="/Content/images/contacts.svg" />
-                </div>
-                <div class="b-route-steps-wrapper" style="display: none;">
+                <div id="map_msc" class="b-map"></div>
 
-                </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        window.contactsMap = new ContactsMap();
-        //initialize();
-        window.contactsMap.init();
-    </script>
 </div>
+<script type="text/javascript">
+    function Map() {
+        var _options = {
+            map: null,
+            placemarks: [],
+            container: "map_spb",
+            mapOptions: {
+                center: [59.909567, 30.306876],
+                zoom: 17,
+                controls: ['smallMapDefaultSet']
+            }
+        }, _ = _options, map;
+        var _init = function (settings) {
+            _ = jQuery.extend(true, _, settings);
+
+            _createMap();
+        };
+        var _createMap = function () {
+
+            map = _.map = new ymaps.Map(_.container, _.mapOptions);
+        };
+        var _addPlacemark = function (coords) {
+            var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
+                '<div style="height: 49px;  width: 73px;">' +
+                '<img style="width: 73px; height: 49px;"' +
+                'src="/Content/images/small-aledo-logo-without-title.png"/>' +
+                '</div>'
+            );
+
+            var placemark = new ymaps.Placemark(coords, {}, {
+
+                iconLayout: 'default#image',
+                iconImageHref: '/Content/images/aledo-map-marker.png',
+                iconImageSize: [28, 46],
+                iconImageOffset: [-14, -46],
+                balloonContentLayout: BalloonContentLayout,
+                balloonPanelMaxMapArea: 0,
+                hideIconOnBalloonOpen: false,
+                balloonOffset: [0, -46]
+            });
+            _.map.geoObjects.add(placemark);
+            _.placemarks.push(placemark);
+            placemark.balloon.open();
+            return placemark;
+        };
+        return {
+            init: _init,
+            addPlacemark: _addPlacemark
+        };
+    }
+    ymaps.ready(function () {
+        var mapInstance = Map();
+        mapInstance.init();
+        mapInstance.addPlacemark([59.909567, 30.306876])
+    });
+    ymaps.ready(function () {
+        var mapInstance = Map();
+        mapInstance.init({
+            mapOptions: {
+                center: [55.724632, 37.645761]
+            },
+            container: "map_msc"
+        });
+        mapInstance.addPlacemark([55.724632, 37.645761]);
+//        mapInstance.addPlacemark([55.725564, 37.645519])
+    });
+
+</script>

@@ -25,12 +25,13 @@
         <div class="b-blog-article">
             <div class="b-section__content b-blog-article__inner">
                 <div class="b-blog-article__left">
+                    <a href="/articles/view/<?= $article->id ?>" style="text-decoration: none">
                     <img class="b-blog-article__image" src="/images/articles/<?= $article->preview_name ?>"/>
-
+                    </a>
                 </div>
                 <div class="b-blog-article__right">
                     <div class="b-blog-article__preview">
-                        <h2 class="b-blog-article__heading"><?= $article->title ?></h2>
+                        <a href="/articles/view/<?= $article->id ?>"  style="text-decoration: none"><h2 class="b-blog-article__heading"><?= $article->title ?></h2></a>
                             <? if (false) { ?>
                             <div class="b-blog-article-rubrics">
                                 Рубрики: <a href="javascript:void(0)" class="b-blog-article-rubrics__item">технологии</a>,

@@ -277,6 +277,7 @@ class SampleAdminController extends AbstractActionController
             $id = $request->getPost('id', false);
             $type = $request->getPost('type', false);
             $pi_type = $request->getPost('page_info_type', false);
+            $minHeight = $request->getPost('min_height', false);
             $return['success'] = 0;
             $lastPicId = 0;
             if($id){
@@ -288,8 +289,8 @@ class SampleAdminController extends AbstractActionController
                     //todome: сделать проверку файлов. валидацию.
 
                     //todome: сделать работу с видео!!!!
-
                     $filename = $image['name'];
+
                     $adapter = new \Zend\File\Transfer\Adapter\Http();
                     $adapter->setDestination($this->getFoler('/images/'.$this->url));
                     $adapter->addFilter('File\Rename',
@@ -305,6 +306,26 @@ class SampleAdminController extends AbstractActionController
                         //todome: проверку типа - изображение ли это?! или видео!?
 
                         $imgData['url'] = $adapter->getFileName('images_'.$i.'_', false);
+
+                        if ($minHeight) {
+                            list($width, $height) = getimagesize($this->getFoler('/images/'.$this->url) . '/' . $imgData['url']);
+
+                            $percent = $minHeight/$height;
+                            if ($percent < 1) {
+                                $newheight = $minHeight;
+                                $newwidth = round($width * $percent);
+
+                                $thumb = imagecreatetruecolor($newwidth, $newheight);
+                                imagealphablending($thumb, false);
+                                $source = imagecreatefromjpeg($this->getFoler('/images/'.$this->url) . '/' . $imgData['url']);
+                                imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+                                $res = imagejpeg($thumb, $this->getFoler('/images/'.$this->url) . '/min_' . $imgData['url']);
+//                                imagedestroy($thumb);
+                            }
+// Масштабирование
+
+                        }
 
                         if ($lastPicId != 0) {
                             $imgData['id'] = ++$lastPicId;

@@ -22,14 +22,29 @@
             <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
         </div>
     </div>
+    <div style="display: none">
+        <? foreach($imgs as $img) { ?>
+            <? $src = $this->basePath() . '/images/projects/'  . $img->url ?>
+
+            <img style="display: none" src="<?= $src ?>" />
+
+        <? } ?>
+    </div>
     <div class="b-slider-outer b-section">
         <div style="display: none" id="imagesLoadedProject">
             <? foreach ($imgs as $img) { ?>
                 <div class="b-slider__item b-slider_project__item">
                     <i class="b-slider-item-layout" style="width: 1px"></i>
-                    <a href="/images/projects/<?= $img->url ?>" rel="gallery">
-                        <img class="b-slider__image" src="/images/projects/<?= $img->url ?>"/>
+                    <? $minUrl = 'min_' . $img->url ?>
+                    <? $src = $this->basePath() . '/images/projects/' . $img->url ?>
+                    <? $minSrc = $this->basePath() . '/images/projects/' . $minUrl ?>
+
+                    <a class="b-goods-gallery-item__link" href="<?= $src ?>" rel="gallery">
+                        <img class="b-slider__image" src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $img->url) ? $minSrc : $src ?>" alt="<?= $series->visible_title; ?> url" />
                     </a>
+<!--                    <a href="/images/projects/--><?//= $img->url ?><!--" rel="gallery">-->
+<!--                        <img class="b-slider__image" src="/images/projects/--><?//= $img->url ?><!--"/>-->
+<!--                    </a>-->
                 </div>
             <? } ?>
         </div>

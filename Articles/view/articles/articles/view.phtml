@@ -33,6 +33,9 @@
             <? if ($block->img_name) { ?>
                 <img src="/images/articles/<?= $block->img_name ?>"/>
             <? } ?>
+            <? if ($block->textafter) { ?>
+                <?= $block->textafter ?>
+            <? } ?>
         <? } ?>
 
     </div>

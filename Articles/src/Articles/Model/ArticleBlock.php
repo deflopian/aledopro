@@ -10,6 +10,7 @@ class ArticleBlock extends SampleModel
     public $article_id;
     public $title;
     public $text;
+    public $textafter;
     public $img;
     public $hidden = 0;
 }

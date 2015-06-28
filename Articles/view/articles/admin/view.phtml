@@ -84,7 +84,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Текст</td>
+                <td>Текст перед картинкой</td>
                 <td>
                     <div class="editor-get-btn" data-name="text_<?= $block->id ?>" data-id="<?= \Info\Service\SeoService::ARTICLE_BLOCKS ?>">
                         <?= $block->text; ?>
@@ -107,6 +107,15 @@
                     <script type="application/javascript">
                         AppFactory("imageMapper<?= $i?>", "images", ["imageMapper", "ur.file"]);
                     </script>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Текст после картинки</td>
+                <td>
+                    <div class="editor-get-btn" data-name="textafter_<?= $block->id ?>" data-id="<?= \Info\Service\SeoService::ARTICLE_BLOCKS ?>">
+                        <?= $block->textafter; ?>
+                    </div>
                 </td>
             </tr>
         <? } ?>

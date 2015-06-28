@@ -264,6 +264,7 @@
                     <input type="file" name="images[]" multiple="multiple"/>
                     <input type="hidden" name="id" value="<?= $series->id ?>"/>
                     <input type="hidden" name="type" value="series"/>
+                    <input type="hidden" name="min_height" value="500"/>
                 </p>
 
                 <p>
@@ -518,6 +519,7 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
         catalog.parentId = '<?= $series->id ?>';
         catalog.baseUrl = '<?= $this->url('zfcadmin/catalog') ?>';
         catalog.editUrl = '<?= $this->url('zfcadmin/catalog', array('action'=> 'product')) ?>';
+        catalog.minHeight = 500;
         catalog.init();
         catalog.initEditables();
         catalog.sendSortparamAjax();

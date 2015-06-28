@@ -1,0 +1,58 @@
+<h1>Контакты</h1>
+
+<div class="section">
+    <table class="table admin-table  table-striped">
+        <tbody>
+        <tr>
+            <td>Адрес</td>
+            <td>
+                <div class="editor-get-btn" data-name="adress"><?= $contact->adress; ?></div>
+            </td>
+        </tr>
+        <tr>
+            <td>Адрес склада</td>
+            <td>
+                <div class="editor-get-btn" data-name="adress_storage"><?= $contact->adress_storage; ?></div>
+            </td>
+        </tr>
+        <tr>
+            <td>Время работы</td>
+            <td>
+                <div class="editor-get-btn" data-name="work_time"><?= $contact->work_time; ?></div>
+            </td>
+        </tr>
+        <tr>
+            <td>Телефон</td>
+            <td>
+                <a href="#" data-type="text" data-name="phone" class="editable-param"><?= $contact->phone; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Факс</td>
+            <td>
+                <a href="#" data-type="text" data-name="fax" class="editable-param"><?= $contact->fax; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Почта</td>
+            <td>
+                <a href="#" data-type="text" data-name="mail" class="editable-param"><?= $contact->mail; ?></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        catalog.parentId = '<?= $contact->id ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/contacts') ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::INDEX ?>';
+        catalog.initEditables();
+
+        wysiwyg.init({
+            getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
+            saveFunction: wysiwyg.editablesSave
+        });
+    });
+</script>
