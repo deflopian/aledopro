@@ -1,8 +1,145 @@
-страница бренда
-<?php
-/**
- * Created by PhpStorm.
- * User: deflopian
- * Date: 15.06.2015
- * Time: 18:28
- */ 
+<div class="b-brand b-section">
+    <div class="b-section__content">
+        <div class="b-breadcrumbs">
+            <a class="b-breadcrumbs__item" href="/">Главная</a>&nbsp;/
+            <a class="b-breadcrumbs__item" href="/">Проектные партнеры</a>&nbsp;/
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active">QisDesign</strong>
+        </div>
+    </div>
+    <div class="b-section__content b-section__content_brand">
+        <img src="/Content/images/developers/brand_image_1.jpg" class="b-brand__main-image"/>
+
+        <div class=" b-brand-info">
+            <div class="b-brand-info__left">
+                <img class="b-brand-info__logo" src="/Content/images/developers/icon_1.jpg"/>
+            </div>
+            <div class="b-brand-info__right">
+                <a href="javascript:void(0)" class="b-brand-info__link">www.qisdesing.com</a>
+            </div>
+        </div>
+        <div class="b-brand__text">
+
+            <p>Если для проекта выбраны LED-светильники – обратите внимание на значение CRI, от этого  зависит качество света. Почему отличный проект может быть испорчен неправильно. Что такое CRI и как добиться того, чтобы предметы в свете LED выглядели натурально.
+</p><p>
+            Сегодня мы хотим поговорить о качестве освещения и вспомнить о таком понятии как коэффициент цветопередачи. Если для проекта выбраны LED-светильники – обратите внимание на значение CRI, от этого  зависит качество света. Почему отличный проект может быть испорчен неправильно. Что такое CRI и как добиться того, чтобы предметы в свете LED выглядели натурально.
+            </p><p>
+            Сегодня мы хотим поговорить о качестве освещения и вспомнить о таком понятии как коэффициент цветопередачи.</p>
+        </div>
+
+
+
+        <div class="b-brand-catalogs">
+            <h2 class="b-brand-catalogs__heading text-center">Каталоги QisDesign</h2>
+            <div class="b-slider b-slider_brand-catalogs">
+
+
+                <div class="b-slider__item b-slider_brand-catalogs__item">
+                    <div class="b-slider_brand-catalogs__item-inner">
+                        <a href="javascript:void(0)"
+                           class="b-slider_brand-catalogs__link"
+                            >
+                            <div class="b-slider_brand-catalogs__item-title">
+                                <div class="b-slider_brand-catalogs__item-title-inner">
+                                    каталог 2014
+                                </div>
+
+                            </div>
+                        </a>
+                        <img class="b-slider_brand-catalogs__image" src="/Content/images/developers/icon-preview-1.png"/>
+
+                        <div class="b-slider_brand-catalogs__item-title">
+                            <div class="b-slider_brand-catalogs__item-title-inner">
+                                каталог 2014
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="b-slider__item b-slider_brand-catalogs__item">
+                    <div class="b-slider_brand-catalogs__item-inner">
+                        <a href="javascript:void(0)"
+                           class="b-slider_brand-catalogs__link"
+                            >
+                            <div class="b-slider_brand-catalogs__item-title">
+                                <div class="b-slider_brand-catalogs__item-title-inner">
+                                    каталог 2014
+                                </div>
+
+                            </div>
+                        </a>
+                        <img class="b-slider_brand-catalogs__image" src="/Content/images/developers/icon-preview-2.png"/>
+
+                        <div class="b-slider_brand-catalogs__item-title">
+                            <div class="b-slider_brand-catalogs__item-title-inner">
+                                каталог 2014
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="b-slider__item b-slider_brand-catalogs__item">
+                    <div class="b-slider_brand-catalogs__item-inner">
+                        <a href="javascript:void(0)"
+                           class="b-slider_brand-catalogs__link"
+                            >
+                            <div class="b-slider_brand-catalogs__item-title">
+                                <div class="b-slider_brand-catalogs__item-title-inner">
+                                    каталог 2014
+                                </div>
+
+                            </div>
+                        </a>
+                        <img class="b-slider_brand-catalogs__image" src="/Content/images/developers/icon-preview-3.png"/>
+
+                        <div class="b-slider_brand-catalogs__item-title">
+                            <div class="b-slider_brand-catalogs__item-title-inner">
+                                каталог 2014
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="b-slider__item b-slider_brand-catalogs__item">
+                    <div class="b-slider_brand-catalogs__item-inner">
+                        <a href="javascript:void(0)"
+                           class="b-slider_brand-catalogs__link"
+                            >
+                            <div class="b-slider_brand-catalogs__item-title">
+                                <div class="b-slider_brand-catalogs__item-title-inner">
+                                    каталог 2014
+                                </div>
+
+                            </div>
+
+                        </a>
+                        <img class="b-slider_brand-catalogs__image" src="/Content/images/developers/icon-preview-2.png"/>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>  </div>
+<script type="text/javascript">
+    (function () {
+        var $this = jQuery('.b-slider_brand-catalogs');
+        $this.slick({
+            dots: false,
+            infinite: true,
+            draggable: browser.mobile ? true : false,
+            speed: browser.mobile ? 300 : 500,
+            touchThreshold: browser.mobile ? 5 : 50,
+            slidesToShow:3,
+variableWidth:false,
+            arrows: browser.mobile ? false : true,
+            prevArrow: "<a href=\"javascript:void(0)\"" +
+            " class=\"b-simple-arrow  b-simple-arrow_prev b-slider_blog__arrow_prev\">" +
+            "</a>",
+            nextArrow: "<a href=\"javascript:void(0)\"" +
+            " class=\"b-simple-arrow  b-simple-arrow_next b-slider_blog__arrow_next\">" +
+            "</a>"
+        });
+
+
+    })();
+</script>
