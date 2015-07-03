@@ -49,21 +49,6 @@ class Module
                     $table     = new DeveloperImgTable($dbAdapter);
                     return $table;
                 },
-                'DevelopersMemberTable' =>  function($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $table     = new DeveloperMemberTable($dbAdapter);
-                    return $table;
-                },
-                'ProdToProjTable' =>  function($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $table     = new ProdToProjTable($dbAdapter);
-                    return $table;
-                },
-                'ProjToProjTable' => function($sm) {
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $table = new ProjToProjTable($dbAdapter);
-                    return $table;
-                },
             ),
         );
     }

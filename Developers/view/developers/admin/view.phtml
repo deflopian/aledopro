@@ -1,6 +1,7 @@
 <h1>
     <a href="<?= $this->url('zfcadmin/developers') ?>">Проекты</a>
     >
+    <? /** @var $entity \Developers\Model\Developer */ ?>
     <span id="title"><?= $entity->title; ?></span>
 </h1>
 
@@ -25,13 +26,19 @@
             </td>
         </tr>
         <tr>
-            <td>Адрес</td>
+            <td>URL</td>
             <td>
-                <a href="#" data-type="textarea" data-name="adress" class="editable-param"><?= $entity->adress; ?></a>
+                <a href="#" data-type="text" data-name="url" class="editable-param"><?= $entity->url; ?></a>
             </td>
         </tr>
         <tr>
-            <td>Описание</td>
+            <td>Краткое описание</td>
+            <td>
+                <div class="editor-get-btn" data-name="description"><?= $entity->description; ?></div>
+            </td>
+        </tr>
+        <tr>
+            <td>Текст</td>
             <td>
                 <div class="editor-get-btn" data-name="text"><?= $entity->text; ?></div>
             </td>
@@ -40,9 +47,9 @@
     </table>
 </div>
 
-<div class="section" ng-app="imageMapper">
+<div class="section" id="imageMapper">
     <div ng-controller="ImageCtrl">
-        <h3>Превью</h3>
+        <h3>Лого</h3>
 
         <div
             ng-single-image-upload
@@ -56,6 +63,26 @@
 
         <script type="application/javascript">
             AppFactory("imageMapper", "images", ["imageMapper", "ur.file"]);
+        </script>
+    </div>
+</div>
+
+<div class="section" id="imageMapper2">
+    <div ng-controller="ImageCtrl">
+        <h3>Изображение</h3>
+
+        <div
+            ng-single-image-upload
+            parent-type="developer"
+            parent-id="<?= $entity->id ?>"
+            folder="developers"
+            field="img"
+            img="<?= $entity->imgName ? $entity->imgName : "" ?>"
+            img-id ="<?= $entity->img ? $entity->img : "" ?>"
+            ></div>
+
+        <script type="application/javascript">
+            AppFactory("imageMapper2", "images2", ["imageMapper", "ur.file"]);
         </script>
     </div>
 </div>
@@ -103,137 +130,6 @@
         <img style="height: 100%" src="" alt=""/>
     </div>
 </div>
-
-<div class="section">
-    <h3>Участники</h3>
-    <div class="addPanel">
-        <button type="button" class="btn btn-default" id="add-entity">Добавить участника</button>
-
-        <div class="form-inline" id="adding-form" style="display: none">
-            <div class="form-group">
-                <label class="sr-only" for="inputName">Название</label>
-                <input type="text" class="form-control" id="inputName" placeholder="Введите название..."/>
-            </div>
-
-            <button type="button" class="btn btn-default" id="adding-complete">Добавить</button>
-            <button type="button" class="btn btn-default" id="adding-cancel">Отмена</button>
-        </div>
-    </div>
-
-    <table class="table admin-table  table-striped">
-        <tr>
-            <th>Id</th>
-            <th>Имя</th>
-            <th>Управление</th>
-        </tr>
-        <tbody id="sortable">
-        <? foreach($members as $member){ ?>
-            <tr class="entity">
-                <td><?= $member->id; ?></td>
-                <td><?= $member->title; ?></td>
-                <td>
-                    <a href="#" class="editBtn">Редактировать</a>
-                    <a href="#" class="deleteBtn">Удалить</a>
-                </td>
-            </tr>
-        <? } ?>
-        </tbody>
-    </table>
-</div>
-
-<div class="section">
-
-        <h3>Используемые продукты</h3>
-        <div class="addPanel">
-            <button type="button" class="btn btn-default" id="tagit-add">Добавить серию или продукт</button>
-
-            <div id="tagit-form" style="display: none">
-                <ul id="tagit-series"></ul>
-                <input type="hidden" id="tagit-series-res" name="seriesIds"/>
-
-                <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
-                <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
-            </div>
-        </div>
-<!--        <div>-->
-<!--            Серии:-->
-<!--        </div>-->
-<!--        <table class="table admin-table  table-striped">-->
-<!--            <tr>-->
-<!--                <th>Id</th>-->
-<!--                <th>Название</th>-->
-<!--                <th>Управление</th>-->
-<!--            </tr>-->
-<!--            <tbody>-->
-<!--            --><?// foreach($relatedSeries as $ser){ ?>
-<!--                <tr>-->
-<!--                    <td>--><?//= $ser->id; ?><!--</td>-->
-<!--                    <td>--><?//= $ser->visible_title; ?><!--</td>-->
-<!--                    <td>-->
-<!--                        <a href="#" class="removeBtn">Открепить</a>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--            --><?// } ?>
-<!--            </tbody>-->
-<!--        </table>-->
-        <div>
-            Продукты:
-        </div>
-        <table class="table admin-table  table-striped">
-            <tr>
-                <th>Id</th>
-                <th>Название</th>
-                <th>Тип</th>
-                <th>Управление</th>
-            </tr>
-            <tbody id="linked_prods_and_series" data-type="ptop">
-            <? foreach($relatedProds as $prod){ ?>
-                <tr data-id="<?= $prod->meta_id; ?>">
-                    <td><?= $prod->id; ?></td>
-                    <td><?= $prod->visible_title ? $prod->visible_title : $prod->title; ?></td>
-                    <td><?= $prod->product_type == \Catalog\Controller\AdminController::SERIES_TABLE ? "Серия" : "Продукт"; ?></td>
-                    <td>
-                        <a href="#" class="removeBtn">Открепить</a>
-                    </td>
-                </tr>
-            <? } ?>
-            </tbody>
-        </table>
-</div>
-<div class="section">
-    <h3>Связанные проекты</h3>
-    <div class="addPanel">
-        <button type="button" class="btn btn-default" id="tagit-proj-add">Добавить проект</button>
-
-        <div id="tagit-proj-form" style="display: none">
-            <ul id="tagit-proj-product"></ul>
-            <input type="hidden" id="tagit-proj-res" name="productIds"/>
-
-            <button type="button" class="btn btn-default" id="tagit-proj-save">Добавить</button>
-            <button type="button" class="btn btn-default" id="tagit-proj-cancel">Отмена</button>
-        </div>
-    </div>
-
-    <table class="table admin-table  table-striped">
-        <tr>
-            <th>Id</th>
-            <th>Название</th>
-            <th>Управление</th>
-        </tr>
-        <tbody>
-        <? foreach($relatedDevelopers as $proj){ ?>
-            <tr>
-                <td><?= $proj->id; ?></td>
-                <td><?= $proj->title; ?></td>
-                <td>
-                    <a href="#" class="removeBtn-proj">Открепить</a>
-                </td>
-            </tr>
-        <? } ?>
-        </tbody>
-    </table>
-</div>
-
 
 
 <div class="section">
@@ -310,22 +206,6 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
             type: 'multiple',
             delFunction: imgUploader.editablesDel,
             imgUrl: '<?= $this->basePath() . '/images/developers/' ?>'
-        });
-
-        tagit.init({
-            tags: <?= $tags; ?>,
-            type: 'stos',
-            min: 2,
-            inputField: $("#tagit-series"),
-            outputField: $('#tagit-series-res'),
-            placeholder: 'Введите название или ID продукта'
-        });
-
-        relprojTaigt.init({
-            tags: <?= $projTags; ?>,
-            inputField: $("#tagit-proj-product"),
-            outputField: $('#tagit-proj-res'),
-            placeholder: 'Введите название проекта'
         });
 
         catalog.link_type_1 = '<?= \Catalog\Controller\AdminController::PROJECT_TABLE ?>';

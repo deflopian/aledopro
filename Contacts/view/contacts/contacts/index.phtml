@@ -78,8 +78,8 @@
         };
         var _addPlacemark = function (coords) {
             var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
-                '<div style="height: 49px;  width: 73px;">' +
-                '<img style="width: 73px; height: 49px;"' +
+                '<div style="height: 25px;  width: 37px;">' +
+                '<img style="width: 37px; height: 25px;"' +
                 'src="/Content/images/small-aledo-logo-without-title.png"/>' +
                 '</div>'
             );
@@ -93,8 +93,10 @@
                 balloonContentLayout: BalloonContentLayout,
                 balloonPanelMaxMapArea: 0,
                 hideIconOnBalloonOpen: false,
+                balloonMaxWidth: 36,
                 balloonOffset: [0, -46]
             });
+            console.log(placemark, placemark.balloon);
             _.map.geoObjects.add(placemark);
             _.placemarks.push(placemark);
             placemark.balloon.open();

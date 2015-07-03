@@ -9,7 +9,8 @@ class Developer extends SampleModel
     public $title;
     public $img;
     public $text;
-    public $pdf;
+    public $description;
+    public $url;
     public $rubric_id;
     public $preview;
     public $order;

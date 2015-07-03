@@ -35,10 +35,10 @@ class DeveloperMapper {
     }
 
     /**
-     * @returnDevelopersts\Model\DeveloperTable
+     * @return \Developers\Model\DeveloperTable
      */
     private function getDeveloperTable() {
-        return $this->sl->gDevelopersectsTable');
+        return $this->sl->get('DevelopersTable');
     }
 
     /**
@@ -52,7 +52,7 @@ class DeveloperMapper {
         return self::$instance;
     }
 
-    public function feDevelopersojects() {
+    public function fetchDevelopers() {
         return $this->getDeveloperTable()->fetchAll();
     }
 }

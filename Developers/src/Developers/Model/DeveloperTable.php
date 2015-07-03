@@ -7,7 +7,7 @@ use Zend\Db\ResultSet\ResultSet;
 
 class DeveloperTable extends SampleTable
 {
-    protected $table ='developer';
+    protected $table ='developers';
 
     public function __construct(Adapter $adapter)
     {

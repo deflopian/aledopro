@@ -387,8 +387,8 @@ class CronController extends BaseController
 //            }
             if (isset($newProdsReport->items) && count($newProdsReport->items) > 0) {
                 list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $newProdsReport);
-                MailService::sendMail($email, $mailView, "Отчёт номер " . $newProdsReport->id . " по новым продуктам");
-                MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт номер " . $newProdsReport->id . " по новым продуктам");
+                MailService::sendMail($email, $mailView, "Отчёт по новым продуктам номер " . $newProdsReport->id);
+                MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт по новым продуктам номер " . $newProdsReport->id);
             } elseif (count($newProdsReport->items) == 0) {
                 $reportMapper->delete($newProdsReport->id);
             }

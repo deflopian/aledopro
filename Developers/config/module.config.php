@@ -9,10 +9,24 @@ return array(
 
     'router' => array(
         'routes' => array(
+            'brands' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/brands[/:action][/:id][/][:hash]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Developers\Controller\Developers',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'developers' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/developers[/:action][/:id][/][:hash]',
+                    'route'    => '/brands[/:action][/:id][/][:hash]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',

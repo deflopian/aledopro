@@ -17,109 +17,45 @@ class DevelopersController extends AbstractActionController
 {
     private $developerTable;
     private $imgTable;
-    private $memberTable;
-    private $prodtoprojTable;
-    protected $pageInfoType = SeoService::PROJECTS;
+    protected $pageInfoType = SeoService::DEVELOPERS;
 
     public function viewAction() {
         $sl = $this->getServiceLocator();
 
         $id = intval($this->params()->fromRoute('id', 0));
-//        if ($id == 43) {
-//            return $this->redirect()->toRoute('developers');
-//        }
         /** @var Developer $developer */
         $developer = $this->getDeveloperTable()->find($id);
-
-        $imgs = $this->getImgTable()->fetchByCond('parent_id', $id, 'order asc');
-        $members = $this->getMemberTable()->fetchByCond('parent_id', $id, 'order asc');
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::PROJECTS, $id );
-        $relatedSeriesIds = $this->getProdToProjTable()->fetchByCond('developer_id', $id, 'order asc');
-        $relatedSeries = array();
-
-        $seriesTable = $sl->get('Catalog/Model/SeriesTable');
-        $productsTable = $sl->get('Catalog/Model/ProductTable');
+        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::DEVELOPERS, $id );
         $fileTable = $this->getServiceLocator()->get('FilesTable');
-        foreach($relatedSeriesIds as $ptp){
-            if ($ptp->product_type == AdminController::SERIES_TABLE) {
-                $series = $seriesTable->find($ptp->product_id);
-                if ($series->preview) {
-                    $file = $fileTable->find($series->preview);
-                    if ($file) {
-                        $series->previewName = $file->name;
-                    }
-                }
-                $relatedSeries[] = $series;
-            } elseif ($ptp->product_type == AdminController::PRODUCT_TABLE) {
-                $prod = $productsTable->find($ptp->product_id);
-                if ($prod) {
-                    $series = $seriesTable->find($prod->series_id);
-                    if ($series) {
-                        if ($series->preview) {
-                            $file = $fileTable->find($series->preview);
-                            if ($file) {
-                                $series->previewName = $file->name;
-                            }
-                            $prod->previewName = $series->previewName;
-                        } else {
-                            $prod->img = $series->img;
-                        }
-                        $prod->isProduct = true;
-                        $relatedSeries[] = $prod;
-                    }
-                }
 
+        if ($developer->preview) {
+            $file = $fileTable->find($developer->preview);
+            if ($file) {
+                $developer->previewName = $file->name;
             }
-
         }
-
-        $arrayIds = array();
-        $developers = $this->getServiceLocator()->get('DevelopersTable')->fetchAll('order asc');
-        $fileTable = $this->getServiceLocator()->get('FilesTable');
-        foreach ($developers as &$one) {
-            if ($one->preview) {
-                $file = $fileTable->find($one->preview);
-                if ($file) {
-                    $one->previewName = $file->name;
-                }
+        if ($developer->img) {
+            $file = $fileTable->find($developer->img);
+            if ($file) {
+                $developer->imgName = $file->name;
             }
-            $arrayIds[] = $one->id;
         }
 
-        $nextId = CatalogService::getNextId($id, $arrayIds);
-        $prevId = CatalogService::getPrevId($id, $arrayIds);
-
-        $nextProd = $this->getDeveloperTable()->find($nextId);
-        $prevProd = $this->getDeveloperTable()->find($prevId);
-
-        $relatedProjIds = $sl->get('ProjToProjTable')->find($id);
-        $relatedDevelopers = array();
-
-        foreach($relatedProjIds as $sid){
-            $relatedDevelopers[] = $this->getDeveloperTable()->find($sid);
-        }
         $this->layout()->pageTitle = $developer->title;
         $this->layout()->breadCrumbs  = array(
             array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
-            array('link'=> $this->url()->fromRoute('developers'), 'text'=>ucfirst('Проекты'))
+            array('link'=> $this->url()->fromRoute('developers'), 'text'=>ucfirst('Производители'))
         );
         $htmlViewPart = new ViewModel();
         $htmlViewPart->setVariables(array(
                 'developer'   => $developer,
-                'imgs'      => $imgs,
-                'members'   => $members,
-                'relatedSeries'   => $relatedSeries,
                 'pageTitle' => $developer->title,
                 'breadCrumbs'  => array(
                     array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
-                    array('link'=> $this->url()->fromRoute('developers'), 'text'=>ucfirst('Проекты')),
+                    array('link'=> $this->url()->fromRoute('developers'), 'text'=>ucfirst('Производители')),
                 ),
-                'nextProd' => $nextProd,
-                'prevProd' => $prevProd,
-                'relatedDevelopers' => $relatedDevelopers,
                 'seoData' => $seoData,
                 'sl'        => $sl,
-                'links' => LinkToLinkMapper::getInstance($sl)->fetchAll($id, \Catalog\Controller\AdminController::PROJECT_TABLE)
             ));
         return $htmlViewPart;
     }
@@ -128,22 +64,15 @@ class DevelopersController extends AbstractActionController
 
     public function indexAction()
     {
-        $groupId = intval($this->params()->fromRoute('id', 1));
-
-        $rubric = $this->getServiceLocator()->get('DeveloperRubricTable')->find($groupId);
-
-        if ($rubric) {
-            $developers = $this->getServiceLocator()->get('DevelopersTable')->fetchByCond('rubric_id', $groupId, 'order asc');
+        /** @var Developer[] $developers */
+        $developers = $this->getServiceLocator()->get('DevelopersTable')->fetchAll('order asc');
 
 
-        } else {
-            return $this->redirect()->toRoute('home');
-        }
-
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::PROJECTS, 1 );
+        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::DEVELOPERS, 1 );
 
         $arrayIds = array();
         $fileTable = $this->getServiceLocator()->get('FilesTable');
+        $sortedDevelopers = array();
         foreach ($developers as &$one) {
             if ($one->preview) {
                 $file = $fileTable->find($one->preview);
@@ -151,23 +80,28 @@ class DevelopersController extends AbstractActionController
                     $one->previewName = $file->name;
                 }
             }
+            if ($one->img) {
+                $file = $fileTable->find($one->img);
+                if ($file) {
+                    $one->imgName = $file->name;
+                }
+            }
             $arrayIds[] = $one->id;
+            $sortedDevelopers[$one->rubric_id][] = $one;
         }
 
 
-        $this->layout()->pageTitle = 'Проекты';
+        $this->layout()->pageTitle = 'Производители';
         $this->layout()->seoData = $seoData;
 
         return array(
             'seoData' => $seoData,
-            'pageTitle' => 'Проекты',
+            'pageTitle' => 'Производители',
             'breadCrumbs'  => array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
             ),
-            'developers' => $developers,
-            'rubric' => $rubric,
-            'parentUrl'     => '/developers/',
-            'bid'           =>  $groupId,
+            'developers' => $sortedDevelopers,
+            'parentUrl'     => '/brands/',
         );
     }
 
@@ -193,29 +127,5 @@ class DevelopersController extends AbstractActionController
             $this->imgTable = $sm->get('DevelopersImgTable');
         }
         return $this->imgTable;
-    }
-
-    /**
-     * @return DeveloperMemberTable array|object
-     */
-    public function getMemberTable()
-    {
-        if (!$this->memberTable) {
-            $sm = $this->getServiceLocator();
-            $this->memberTable = $sm->get('DevelopersMemberTable');
-        }
-        return $this->memberTable;
-    }
-
-    /**
-     * @return ProdToProjTable array|object
-     */
-    public function getProdToProjTable()
-    {
-        if (!$this->prodtoprojTable) {
-            $sm = $this->getServiceLocator();
-            $this->prodtoprojTable = $sm->get('ProdToProjTable');
-        }
-        return $this->prodtoprojTable;
     }
 }

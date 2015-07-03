@@ -46,7 +46,7 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
     $(document).ready(function(){
         catalog.baseUrl = '<?= $this->url('zfcadmin/developers') ?>';
         catalog.editUrl = '<?= $this->url('zfcadmin/developers', array('action'=> 'view')) ?>';
-        catalog.page_info_type = '<?= \Info\Service\SeoService::PROJECTS ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::DEVELOPERS ?>';
         catalog.init();
     });
 </script>

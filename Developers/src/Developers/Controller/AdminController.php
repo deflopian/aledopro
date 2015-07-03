@@ -25,7 +25,8 @@ class AdminController extends SampleAdminController
     public function indexAction()
     {
         $return = parent::indexAction();
-        $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::PROJECTS, 1 );
+        $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::DEVELOPERS, 1 );
+
         return $return;
     }
 
@@ -46,6 +47,13 @@ class AdminController extends SampleAdminController
                     $return['entity']->previewName = $file->name;
                 }
             }
+            if ($return['entity']->img) {
+                $fileTable = $sl->get('FilesTable');
+                $file = $fileTable->find($return['entity']->img);
+                if ($file) {
+                    $return['entity']->imgName = $file->name;
+                }
+            }
 
             $id = (int) $this->params()->fromRoute('id', 0);
             $allRubrics = $sl->get('DeveloperRubricTable')->fetchAll('order asc');
@@ -55,19 +63,19 @@ class AdminController extends SampleAdminController
             }
             $return['rubrics'] = $rubrics;
             $return['imgs'] = $sl->get($this->tableImg)->fetchByCond('parent_id', $id, 'order asc');
-            $return['members'] = $sl->get($this->memberTable)->fetchByCond('parent_id', $id, 'order asc');
-            $prodTable = $sl->get('Catalog\Model\ProductTable');
-            /** @var \Catalog\Model\SeriesTable $serTable */
-            $serTable = $sl->get('Catalog\Model\SeriesTable');
-            $allSeries = $serTable->fetchAll();
+//            $return['members'] = $sl->get($this->memberTable)->fetchByCond('parent_id', $id, 'order asc');
+//            $prodTable = $sl->get('Catalog\Model\ProductTable');
+//            /** @var \Catalog\Model\SeriesTable $serTable */
+//            $serTable = $sl->get('Catalog\Model\SeriesTable');
+//            $allSeries = $serTable->fetchAll();
 //            $allProds = ApplicationService::makeIdArrayFromObjectArray($prodTable->fetchAll());
 //            $allSeries = ApplicationService::makeIdArrayFromObjectArray($prodTable->fetchAll());
 //            $data = CatalogService::getSeriesAndTags($allProds); // там просто сортировка, переименовывать лень
-            $data = CatalogService::getSeriesAndTags($allSeries, 0);
-            $allProds = ApplicationService::makeIdArrayFromObjectArray($sl->get('Catalog\Model\ProductTable')->fetchAll());
-            $data = array_merge_recursive($data, CatalogService::getSeriesAndTags($allProds));
+//            $data = CatalogService::getSeriesAndTags($allSeries, 0);
+//            $allProds = ApplicationService::makeIdArrayFromObjectArray($sl->get('Catalog\Model\ProductTable')->fetchAll());
+//            $data = array_merge_recursive($data, CatalogService::getSeriesAndTags($allProds));
 
-            $return['tags'] = \Zend\Json\Json::encode($data['tags']);
+//            $return['tags'] = \Zend\Json\Json::encode($data['tags']);
 
             $projTags = $sl->get($this->table)->fetchAll();
             foreach($projTags as $i=>$pr){
@@ -84,40 +92,40 @@ class AdminController extends SampleAdminController
 
 
 
-            $relatedSeriesIds = $sl->get($this->pToPTable)->fetchByCond('developer_id', $id, 'order ASC');
-            $relatedSeries = array();
-            $relatedProds = array();
-            foreach($relatedSeriesIds as $sid){
-
-                if ($sid->product_type ==  \Catalog\Controller\AdminController::SERIES_TABLE) {
-                    $prod = $serTable->find($sid->product_id);
-                    $prod->product_type = \Catalog\Controller\AdminController::SERIES_TABLE;
-//                    $relatedSeries[] = $serTable->find($sid->product_id);
-                } elseif ($sid->product_type ==  \Catalog\Controller\AdminController::PRODUCT_TABLE) {
-                    $prod = $prodTable->find($sid->product_id);
-                    $prod->product_type = \Catalog\Controller\AdminController::PRODUCT_TABLE;
-                }
-                if ($prod) {
-                    $prod->meta_id = $sid->id;
-                    $relatedProds[] = $prod;
-                }
-
-            }
-//            if (!empty($relatedSeriesIdsArray)) {
-//                $relatedSeries = $serTable->fetchByCond('id', $relatedSeriesIdsArray);
-//            } else {
-//                $relatedSeries = array();
+//            $relatedSeriesIds = $sl->get($this->pToPTable)->fetchByCond('developer_id', $id, 'order ASC');
+//            $relatedSeries = array();
+//            $relatedProds = array();
+//            foreach($relatedSeriesIds as $sid){
+//
+//                if ($sid->product_type ==  \Catalog\Controller\AdminController::SERIES_TABLE) {
+//                    $prod = $serTable->find($sid->product_id);
+//                    $prod->product_type = \Catalog\Controller\AdminController::SERIES_TABLE;
+////                    $relatedSeries[] = $serTable->find($sid->product_id);
+//                } elseif ($sid->product_type ==  \Catalog\Controller\AdminController::PRODUCT_TABLE) {
+//                    $prod = $prodTable->find($sid->product_id);
+//                    $prod->product_type = \Catalog\Controller\AdminController::PRODUCT_TABLE;
+//                }
+//                if ($prod) {
+//                    $prod->meta_id = $sid->id;
+//                    $relatedProds[] = $prod;
+//                }
+//
 //            }
-            $return['relatedSeries'] = $relatedSeries;
-            $return['relatedProds'] = $relatedProds;
-
-            $relatedProjIds = $sl->get($this->projToProjTable)->find($id);
-            $relatedDevelopers = array();
-            foreach($relatedProjIds as $sid){
-                $relatedDevelopers[] = $sl->get($this->table)->find($sid);
-            }
-            $return['relatedDevelopers'] = $relatedDevelopers;
-            $seoData = $sl->get('SeoDataTable')->find( SeoService::PROJECTS, $id );
+////            if (!empty($relatedSeriesIdsArray)) {
+////                $relatedSeries = $serTable->fetchByCond('id', $relatedSeriesIdsArray);
+////            } else {
+////                $relatedSeries = array();
+////            }
+//            $return['relatedSeries'] = $relatedSeries;
+//            $return['relatedProds'] = $relatedProds;
+//
+//            $relatedProjIds = $sl->get($this->projToProjTable)->find($id);
+//            $relatedDevelopers = array();
+//            foreach($relatedProjIds as $sid){
+//                $relatedDevelopers[] = $sl->get($this->table)->find($sid);
+//            }
+//            $return['relatedDevelopers'] = $relatedDevelopers;
+            $seoData = $sl->get('SeoDataTable')->find( SeoService::DEVELOPERS, $id );
             $return['seoData'] = $seoData;
         }
 
