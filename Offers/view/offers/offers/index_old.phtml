@@ -1,0 +1,13 @@
+<div class="section">
+    <? if (count($offers)) { ?>
+        <? foreach($offers as $i=>$offer){ ?>
+            <div class="row <?= $i==0? : 'row-second'?>">
+                <div class="col-md-12" data-id="<?= $offer->id ?>">
+                    <img src="<?= $this->basePath() . '/images/offers/' . $offer->img ?>" alt="<?= $offer->title ?>"/>
+                </div>
+            </div>
+        <? } ?>
+    <? } else { ?>
+        <div class="col-md-6 col-md-offset-4"><h2 style="margin-left: -5px">Здесь пока нет записей</h2></div>
+    <? } ?>
+</div>
