@@ -41,9 +41,9 @@ class CatalogController extends BaseController
                 ->prependStylesheet('/Content/css/main1.css');
 
             $viewHelper->get('headscript')
-                ->prependFile('/js/libs/jquery.nouislider.js')
-                ->prependFile('/js/libs/ZeroClipboard.js')
-                ->prependFile('/js/catalog.js');
+                ->prependFile('/Scripts/libs/jquery.nouislider.js')
+                ->prependFile('/Scripts/libs/ZeroClipboard.js')
+                ->prependFile('/Scripts/catalog.js');
         }, 100); // execute before executing action logic
     }
 

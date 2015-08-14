@@ -18,8 +18,8 @@ class SearchController extends AbstractActionController
                 ->prependStylesheet('/Content/css/catalog.css');
 
             $viewHelper->get('headscript')
-                ->prependFile('/js/libs/ZeroClipboard.min.js')
-                ->prependFile('/js/catalog.js');
+                ->prependFile('/Scripts/libs/ZeroClipboard.min.js')
+                ->prependFile('/Scripts/libs/catalog.js');
         }, 100); // execute before executing action logic
     }
 
