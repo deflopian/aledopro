@@ -365,6 +365,7 @@ class CatalogController extends BaseController
                 array('link'=> $this->url()->fromRoute('cabinet'), 'text'=>ucfirst('Личный кабинет')),
                 array('link'=> '/cabinet/?c=' . UserService::$commercialId . '#offers_1', 'text'=>ucfirst($commercial->title)),
                 array('link'=> '/cabinet/?c=' . UserService::$commercialId . '&r=' . UserService::$roomId . '#offers_1', 'text'=>ucfirst($room->title)),
+                array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог'))
             );
         } else {
             $breadcrumbs =  array(
@@ -385,103 +386,7 @@ class CatalogController extends BaseController
         );
         $view->setVariables($return);
         return $view;
-        ////////////////////////////////////////////////////////////////////////////
-/*
-        if ($section === false || $subsections === false || $section->deleted == 1) {
-            return $this->redirect()->toRoute('catalog');
-        }
 
-        foreach ($subsections as $subKey => $subsection) {
-            if ($subsection->deleted == 1) {
-                unset($subsections[$subKey]);
-            }
-        }
-
-        $subsections = ApplicationService::makeIdArrayFromObjectArray($subsections);
-
-        if($subsections){
-            $subSecIds = $seriesIds = array();
-            foreach($subsections as $subsec){
-                $subSecIds[] = $subsec->id;
-            }
-            $series = $this->getSeriesTable()->fetchByCond('subsection_id', $subSecIds, 'order asc');
-
-
-            foreach($series as $bitchKey => $ser){
-                $prods = $this->getProductTable()->fetchByCond('series_id', $ser->id);
-                if ($prods) {
-                    $seriesIds[] = $ser->id;
-
-                    $subsections[$ser->subsection_id]->series[] = $ser;
-                } else {
-                    unset($series[$bitchKey]);
-                }
-
-            }
-        }
-
-        $filterData = $this->getFilterData( $section->id );
-        $seoData = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SECTION, $section->id);
-
-        $this->layout()->setVariables(array(
-
-            'seoData' => $seoData,
-            'pageTitle' => $section->title,
-            'breadCrumbs'  => array(
-                array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог'))
-            ),
-        ));
-
-        $view = new ViewModel();
-        $return = array(
-            'seoData' => $seoData,
-            'section' => $section,
-            'subsections' => $subsections,
-            'filterData' => $filterData['filter'],
-            'slidersData' => \Zend\Json\Json::encode($filterData['sliders']),
-            'postVals' => \Zend\Json\Json::encode($filterData['postVals']),
-            'qtexts' => \Zend\Json\Json::encode($filterData['qtexts']),
-        );
-
-
-        $hierarchies = array();
-        $identity = false;
-        if(isset($series) && isset($seriesIds) && $section->display_style){
-            list($return['allSeries'], $tmpl, $hierarchies) = $this->getDisplaySortedSeries($section->display_style, $series, $seriesIds);
-            $return['offeredIds'] = $sl->get('OfferContentTable')->fetchAll('', true);
-            $view->setTemplate($tmpl);
-
-            if($section->display_style == 2) {
-                $return['params'] = $sl->get('Catalog\Model\ProductParamsTable')->fetchAll();
-            }
-
-            if ($this->zfcUserAuthentication()->hasIdentity()) {
-                $identity = $this->zfcUserAuthentication()->getIdentity();
-                foreach ($return['allSeries'] as $oneSer) {
-                    if ($oneSer->products) {
-
-                        foreach ($oneSer->products as $product) {
-                            $hierarchies[$product->id][\Catalog\Controller\AdminController::PRODUCT_TABLE] = $product->id;
-                            $hierarchies[$product->id][\Catalog\Controller\AdminController::SERIES_TABLE] = $oneSer->id;
-                            $hierarchies[$product->id][\Catalog\Controller\AdminController::SUBSECTION_TABLE] = $oneSer->subsectionId;
-                            $hierarchies[$product->id][\Catalog\Controller\AdminController::SECTION_TABLE] = $section->id;
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if ($identity && $identity->getisPartner()) {
-            $discounts = $sl->get('DiscountTable')->fetchByUserId($identity->getId());
-            $view->setVariable('user', $identity);
-            $view->setVariable('discounts', $discounts);
-            $view->setVariable('hierarchies', $hierarchies);
-
-        }
-
-        $view->setVariables($return);
-        return $view;*/
     }
 
     public function renderSubsectionProfilesAction() {
@@ -612,6 +517,8 @@ class CatalogController extends BaseController
                 array('link'=> $this->url()->fromRoute('cabinet'), 'text'=>ucfirst('Личный кабинет')),
                 array('link'=> '/cabinet/?c=' . UserService::$commercialId . '#offers_1', 'text'=>ucfirst($commercial->title)),
                 array('link'=> '/cabinet/?c=' . UserService::$commercialId . '&r=' . UserService::$roomId . '#offers_1', 'text'=>ucfirst($room->title)),
+                array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
+                $breadCrumbsSection
             );
         } else {
             $breadcrumbs =  array(
@@ -634,292 +541,7 @@ class CatalogController extends BaseController
         );
         $view->setVariables($return);
         return $view;
-        /*
-        $id = $this->params()->fromRoute('id', 0);
 
-        if (!$id) {
-            return $this->redirect()->toRoute('catalog');
-        }
-
-        if (is_numeric($id)) {
-            $subsection = $this->getSubSectionTable()->find($id);
-        } else {
-            $subsections = $this->getSubSectionTable()->fetchByCond('display_name', $id);
-
-            if ($subsections !== false && count($subsections) > 0) {
-                /** @var \Catalog\Model\SubSection $subsection */
-                /*$subsection = $subsections[0];
-            } else {
-                return $this->redirect()->toRoute('catalog');
-            }
-        }
-
-        if ($subsection === false) {
-            return $this->redirect()->toRoute('catalog');
-        }
-
-        if ($subsection->deleted == 1) {
-            return $this->redirect()->toRoute('catalog');
-        }
-        /** @var \Catalog\Model\Section $section */
-        /*$section = $this->getSectionTable()->find($subsection->section_id);
-        if ($section->deleted == 1) {
-            return $this->redirect()->toRoute('catalog');
-        }
-        if($section->display_style && $section->display_style != 3){
-            if (empty($section->display_name)) {
-                $url = $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->id));
-            } else {
-                $url = $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->display_name));
-            }
-
-            if($section->display_style == 2){
-                $url .= '?subsec='.$subsection->id;
-            }
-
-            if($section->display_style == 1){
-                $url .= '?series='.$this->params()->fromQuery('series', 0) . '&prod='.$this->params()->fromQuery('prod', 0);
-            }
-            return $this->redirect()->toUrl($url)->setStatusCode(301);
-        }
-
-        $popupContent = false;
-
-        $series = $this->getSeriesTable()->fetchByCond('subsection_id', $subsection->id, 'order asc');
-
-        $seriesIds = array();
-        foreach ($series as $bitchKey => $one) {
-            $prods = $this->getProductTable()->fetchByCond('series_id', $one->id);
-            if ($prods) {
-                $seriesIds[] = $one->id;
-            } else {
-                unset($series[$bitchKey]);
-            }
-
-        }
-
-        $view = $this->getRequest()->getPost('view', false);
-        $sl = $this->getServiceLocator();
-
-        //$series = $this->getSeriesTable()->find($id);
-        $hierarchies = array();
-        $mainHierarchies = array();
-        $identity = null;
-        $discounts = array();
-
-        if ($this->zfcUserAuthentication()->hasIdentity()) {
-            $identity = $this->zfcUserAuthentication()->getIdentity();
-
-            if ($identity->getIsPartner()) {
-                $discounts = $sl->get('DiscountTable')->fetchByUserId($identity->getId());
-
-
-                if ($subsection && $subsection->section_id) {
-                    $section = $this->getSectionTable()->find($subsection->section_id);
-                    if ($section) {
-                        $mainHierarchies[AdminController::SECTION_TABLE] = $section->id;
-                    }
-
-                } else {
-                    return false;
-                }
-                $mainHierarchies[AdminController::SUBSECTION_TABLE] = $subsection->id;
-
-                $mainHierarchies[AdminController::SERIES_TABLE] = $series->id;
-            }
-        }*/
-        /*$products = $this->getProductTable()->fetchByConds(array('series_id' => $id), array('type' => 0), 'order asc');
-        $products = CatalogService::changeIntParamsWithStringVals($products, $this->getFilterParamTable());
-        if (count($products) == 0) {
-            $response = $this->getResponse();
-            $response->setContent(\Zend\Json\Json::encode(array(
-                'success' => 0,
-                'content' => 'empty series',
-            )));
-            return $response;
-        }
-
-        foreach ($products as $oneProd) {
-            $hierarchies[$oneProd->id]=$mainHierarchies;
-            $hierarchies[$oneProd->id][AdminController::PRODUCT_TABLE] = $oneProd->id;
-        }
-
-        $imgs = $sl->get('Catalog\Model\SeriesImgTable')->fetchByCond('parent_id', $id, 'order asc');
-        $docs = $sl->get('Catalog\Model\SeriesDocTable')->fetchByCond('parent_id', $id, 'order asc');
-        $relatedSeriesIds = $sl->get('Catalog\Model\StoSTable')->find($id, AdminController::SERIES_TABLE);
-        $relatedSeries = array();
-        $relatedProds = array();
-        foreach($relatedSeriesIds as $rsid){
-            if ($rsid[1] == AdminController::SERIES_TABLE) {
-                $relatedSeries[] = $this->getSeriesTable()->find($rsid[0]);
-            } elseif ($rsid[1] == AdminController::PRODUCT_TABLE) {
-                $relatedProds[] =  $this->getProductTable()->find($rsid[0]);
-            }
-        }
-
-        $nextId = CatalogService::getNextId($id, $seriesIds);
-        $prevId = CatalogService::getPrevId($id, $seriesIds);
-        $nextSer = $this->getSeriesTable()->find($nextId);
-        $prevSer = $this->getSeriesTable()->find($prevId);
-
-        $dopProducts = $this->getDopProdsSorted($id);
-
-
-
-        foreach ($dopProducts as $oneDopProductKey => &$oneDopProductGroup) {
-
-            foreach ($oneDopProductGroup['products'] as &$dopProd) {
-
-
-                $hierarchies[$dopProd->id][AdminController::PRODUCT_TABLE] = $dopProd->id;
-
-                $dopseries = $this->getSeriesTable()->find($dopProd->series_id);
-                if (!$dopseries || !$dopseries->subsection_id) {
-
-                    unset($hierarchies[$dopProd->id]);
-                    unset($dopProd);
-                    continue;
-                }
-
-                $hierarchies[$dopProd->id][AdminController::SERIES_TABLE] = $dopseries->id;
-                $dopsubsec = $this->getSubSectionTable()->find($dopseries->subsection_id);
-                if (!$dopsubsec || !$dopsubsec->section_id || $dopsubsec->deleted == 1) {
-                    unset($hierarchies[$dopProd->id]);
-                    unset($dopProd);
-                    continue;
-                }
-
-                $hierarchies[$dopProd->id][AdminController::SUBSECTION_TABLE] = $dopsubsec->id;
-                $dopsec = $this->getSectionTable()->find($dopsubsec->section_id);
-
-                if (!$dopsec || $dopsec->deleted == 1) {
-                    unset($hierarchies[$dopProd->id]);
-                    unset($dopProd);
-                    continue;
-                }
-                $hierarchies[$dopProd->id][AdminController::SECTION_TABLE] = $dopsec->id;
-
-
-                $type = $dopsec->display_style;
-                $dopProducts[$oneDopProductKey]['view'] = $type;
-
-                foreach ($products as $key => $oneProduct) {
-                    if (isset($oneProduct->id) && ($dopProd->id == $oneProduct->id)) {
-                        unset($products[$key]);
-                        continue;
-                    }
-                }
-            }
-
-        }
-
-        $oldProducts = $products;
-        $products = array();
-        foreach ($oldProducts as $oldProduct) {
-            if (isset($oldProduct)) {
-                $products[] = $oldProduct;
-            }
-        }
-
-        $articles = $this->getArticles($id);
-
-        if (count($products) > 0) {
-            $equalParameters = CatalogService::findEqualParams($products);
-        } else {
-            $equalParameters = array();
-        }
-
-        $params = $sl->get('Catalog\Model\ProductParamsTable')->fetchAll();
-        $shownEqualParams = $sl->get('Catalog\Model\EqualParamsTable')->find($id);
-
-        $offeredIds = $sl->get('OfferContentTable')->fetchAll('', true);
-
-        $seoData = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SERIES, $id );
-
-
-        $htmlViewPart = new ViewModel();
-        $htmlViewPart
-            ->setVariables(array(
-                'series'   => $series,
-                'products' => $products,
-                'imgs'     => $imgs,
-                'docs'     => $docs,
-                'relatedSeries' => $relatedSeries,
-                'relatedProds' => $relatedProds,
-                'nextSer'  => $nextSer,
-                'prevSer'  => $prevSer,
-                'selectedProdId' => false, //todome: fix this shit
-                'dopProducts' => $dopProducts,
-                'articles' => $articles,
-
-                'params'             => $params,
-                'equalParameters'    => $equalParameters,
-                'shownEqualParams'   => $shownEqualParams ? $shownEqualParams : array(),
-                'offeredIds'   => $offeredIds,
-                'seoData'   => $seoData,
-
-                'view' => $view,
-
-                'sl'       => $sl
-            ));
-
-        if ($identity && $identity->getisPartner()) {
-            $htmlViewPart->setVariable('user', $identity);
-            $htmlViewPart->setVariable('discounts', $discounts);
-            $htmlViewPart->setVariable('hierarchies', $hierarchies);
-            $htmlViewPart->setVariable('discountProducts', array_keys($hierarchies));
-        }
-
-
-
-        $filterData = $this->getFilterData( $section->id, $subsection->id );
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::CATALOG_SUBSECTION, $subsection->id );
-
-        if (empty($section->display_name)) {
-            $breadCrumbsSection = array(
-                'link'=> $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->id)),
-                'text'=>$section->title
-            );
-        } else {
-            $breadCrumbsSection = array(
-                'link'=> $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->display_name)),
-                'text'=>$section->title
-            );
-        }
-
-
-        $this->layout()->setVariables(array(
-            'seoData' => $seoData,
-            'pageTitle' => $subsection->title,
-            'breadCrumbs'  => array(
-                array(
-                    'link'=> $this->url()->fromRoute('catalog'),
-                    'text'=>ucfirst('Каталог')
-                ),
-                $breadCrumbsSection
-            ),
-        ));
-
-        $return = array(
-            'seoData' => $seoData,
-            'subsection' => $subsection,
-            'series' => $series,
-            'section' => $section,
-            'btype' => 'catalog',
-            'parentUrl' => '/catalog/subsection/' . (!empty($subsection->display_name) ? $subsection->display_name : $id),
-            'filterData' => $filterData['filter'],
-            'slidersData' => \Zend\Json\Json::encode($filterData['sliders']),
-            'postVals' => \Zend\Json\Json::encode($filterData['postVals']),
-            'qtexts' => \Zend\Json\Json::encode($filterData['qtexts']),
-        );
-
-        $view = new ViewModel();
-        if($section->display_style && $section->display_style == 3 ){
-            $view->setTemplate('catalog/catalog/subection_profili');
-        }
-
-        $view->setVariables($return);
-        return $view;*/
     }
 
     public function renderSeriesDefaultAction() {
@@ -1167,7 +789,10 @@ class CatalogController extends BaseController
                 array('link'=> $this->url()->fromRoute('cabinet'), 'text'=>ucfirst('Личный кабинет')),
                 array('link'=> '/cabinet/?c=' . UserService::$commercialId . '#offers_1', 'text'=>ucfirst($commercial->title)),
                 array('link'=> '/cabinet/?c=' . UserService::$commercialId . '&r=' . UserService::$roomId . '#offers_1', 'text'=>ucfirst($room->title)),
-            );
+                array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
+                $breadCrumbsSection,
+                $breadCrumbsSubsection
+                );
         } else {
             $breadcrumbs =  array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
