@@ -1,6 +1,7 @@
 <?php
 namespace Catalog\Service;
 
+use Application\Model\FooterBlock;
 use Application\Model\MainPageBlock;
 use Application\Model\MainPageBlockImage;
 use Application\Model\PageInfo;
@@ -50,7 +51,8 @@ class CatalogService {
         AdminController::COMMERCIAL_ROOMS_TABLE => 'CommercialRoomsTable',
         AdminController::COMMERCIAL_PRODS_TABLE => 'CommercialProdsTable',
         AdminController::MAINPAGE_BLOCK_TABLE => 'MainPageBlocksTable',
-        AdminController::MAINPAGE_BLOCK_IMAGE_TABLE => 'MainPageBlockImagesTable'
+        AdminController::MAINPAGE_BLOCK_IMAGE_TABLE => 'MainPageBlockImagesTable',
+        AdminController::FOOTER_BLOCKS_TABLE => 'FooterBlocksTable'
     );
 
     const DISPLAY_STYLE_DEFAULT = 0;
@@ -168,7 +170,7 @@ class CatalogService {
                     }
 
                 } else {
-                    if (is_numeric($product->$field)) {
+                    if (is_integer($product->$field)) {
                         $jsonString .= '"' . $field . '":' . $product->$field . ',';
                     } else {
                         $jsonString .= '"' . $field . '":"' . $product->$field . '",';
@@ -614,6 +616,9 @@ RewriteRule ^.*$ index.php [NC,L]
             case AdminController::MAINPAGE_BLOCK_TABLE:
                 $entity = new MainPageBlock();
                 break;
+            case AdminController::FOOTER_BLOCKS_TABLE:
+                $entity = new FooterBlock();
+                break;
             case AdminController::MAINPAGE_BLOCK_IMAGE_TABLE:
                 $entity = new MainPageBlockImage();
                 break;
@@ -874,10 +879,10 @@ RewriteRule ^.*$ index.php [NC,L]
         if (isset($post['instock']) && $post['instock'] == 1) {
             $queryParams['free_balance != ?'] = 0;
         }
-
+/*
         if (isset($post['offers']) && $post['offers'] == 1) {
             $queryParams['is_offer'] = 1;
-        }
+        }*/
 
 //        if (isset($post['offers']) && $post['offers'] == 1) {
 //            if (!$offerIds) {
@@ -892,6 +897,9 @@ RewriteRule ^.*$ index.php [NC,L]
                     if ($diapasonName == 'luminous_flux') {
                         $queryParams['lumfx_abs >= ?'] = $validatedData['luminous_flux']['min'];
                         $queryParams['lumfx_abs <= ?'] = $validatedData['luminous_flux']['max'];
+                    } elseif ($diapasonName == 'viewing_angle') {
+                        $queryParams['vangl_abs >= ?'] = $validatedData['viewing_angle']['min'];
+                        $queryParams['vangl_abs <= ?'] = $validatedData['viewing_angle']['max'];
                     } else {
                         $queryParams[$diapasonName . ' >= ?'] = $validatedData[$diapasonName]['min'];
                         $queryParams[$diapasonName . ' <= ?'] = $validatedData[$diapasonName]['max'];

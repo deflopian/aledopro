@@ -11,6 +11,8 @@ use Catalog\Service\Hierarchy;
 use Catalog\Service\ProductsAggregator;
 use Catalog\Service\SeriesAggregator;
 use Catalog\Service\SubsectionsAggregator;
+use Commercials\Mapper\CommercialMapper;
+use Commercials\Mapper\CommercialRoomMapper;
 use Discount\Model\DiscountTable;
 use Info\Service\SeoService;
 use Catalog\Controller\AdminController;
@@ -41,9 +43,9 @@ class CatalogController extends BaseController
                 ->prependStylesheet('/Content/css/main1.css');
 
             $viewHelper->get('headscript')
-                ->prependFile('/Scripts/libs/jquery.nouislider.js')
-                ->prependFile('/Scripts/libs/ZeroClipboard.js')
-                ->prependFile('/Scripts/catalog.js');
+                ->prependFile('/js/libs/jquery.nouislider.js')
+                ->prependFile('/js/libs/ZeroClipboard.js')
+                ->prependFile('/js/catalog.js');
         }, 100); // execute before executing action logic
     }
 
@@ -76,6 +78,7 @@ class CatalogController extends BaseController
                     }
                 }
             }
+
 
         }
         parent::onDispatch($e);
@@ -132,6 +135,22 @@ class CatalogController extends BaseController
 
         $this->layout()->pageTitle = 'Каталог';
 
+        if (UserService::$commercialMode) {
+            $identity = $this->zfcUserAuthentication()->getIdentity();
+            $commercial = CommercialMapper::getInstance($this->getServiceLocator())->getByUID($identity->getId(), UserService::$commercialId, false);
+            $room =  CommercialRoomMapper::getInstance($this->getServiceLocator())->get(UserService::$roomId);
+            $breadcrumbs =  array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+                array('link'=> $this->url()->fromRoute('cabinet'), 'text'=>ucfirst('Личный кабинет')),
+                array('link'=> '/cabinet/?c=' . UserService::$commercialId . '#offers_1', 'text'=>ucfirst($commercial->title)),
+                array('link'=> '/cabinet/?c=' . UserService::$commercialId . '&r=' . UserService::$roomId . '#offers_1', 'text'=>ucfirst($room->title)),
+            );
+        } else {
+            $breadcrumbs =  array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+            );
+        }
+
         return array(
             'seoData' => $seoData,
             'sections' => $sections,
@@ -139,9 +158,7 @@ class CatalogController extends BaseController
             'series' => $wantedSeries,
 
             'pageTitle' => 'Каталог',
-            'breadCrumbs'  => array(
-                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
-            ),
+            'breadCrumbs'  => $breadcrumbs,
         );
     }
 
@@ -173,7 +190,6 @@ class CatalogController extends BaseController
         }
 
         $contacts = $sl->get('ContactsTable')->find(1);
-
         return array(
             'series' => $series,
             'product' => $product,
@@ -340,15 +356,29 @@ class CatalogController extends BaseController
             ),
         ));
 
+        if (UserService::$commercialMode) {
+            $identity = $this->zfcUserAuthentication()->getIdentity();
+            $commercial = CommercialMapper::getInstance($sl)->getByUID($identity->getId(), UserService::$commercialId, false);
+            $room =  CommercialRoomMapper::getInstance($sl)->get(UserService::$roomId);
+            $breadcrumbs =  array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+                array('link'=> $this->url()->fromRoute('cabinet'), 'text'=>ucfirst('Личный кабинет')),
+                array('link'=> '/cabinet/?c=' . UserService::$commercialId . '#offers_1', 'text'=>ucfirst($commercial->title)),
+                array('link'=> '/cabinet/?c=' . UserService::$commercialId . '&r=' . UserService::$roomId . '#offers_1', 'text'=>ucfirst($room->title)),
+            );
+        } else {
+            $breadcrumbs =  array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+                array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог'))
+            );
+        }
+
         $return = array(
             'seoData' => $seoData,
             'filterData' => $filterData['filter'],
             'pageTitle' => $section->title,
             'section' => $section,
-            'breadCrumbs'  => array(
-                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
-                array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
-            ),
+            'breadCrumbs'  => $breadcrumbs,
             'slidersData' => \Zend\Json\Json::encode($filterData['sliders']),
             'postVals' => \Zend\Json\Json::encode($filterData['postVals']),
             'qtexts' => \Zend\Json\Json::encode($filterData['qtexts']),
@@ -573,15 +603,28 @@ class CatalogController extends BaseController
             ),
         ));
 
+        if (UserService::$commercialMode) {
+            $identity = $this->zfcUserAuthentication()->getIdentity();
+            $commercial = CommercialMapper::getInstance($sl)->getByUID($identity->getId(), UserService::$commercialId, false);
+            $room =  CommercialRoomMapper::getInstance($sl)->get(UserService::$roomId);
+            $breadcrumbs =  array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+                array('link'=> $this->url()->fromRoute('cabinet'), 'text'=>ucfirst('Личный кабинет')),
+                array('link'=> '/cabinet/?c=' . UserService::$commercialId . '#offers_1', 'text'=>ucfirst($commercial->title)),
+                array('link'=> '/cabinet/?c=' . UserService::$commercialId . '&r=' . UserService::$roomId . '#offers_1', 'text'=>ucfirst($room->title)),
+            );
+        } else {
+            $breadcrumbs =  array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+                array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
+                $breadCrumbsSection
+            );
+        }
 
         $return = array(
             'seoData' => $seoData,
             'pageTitle' => $subsection->title,
-            'breadCrumbs'  => array(
-                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
-                array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
-                $breadCrumbsSection
-            ),
+            'breadCrumbs'  => $breadcrumbs,
             'filterData' => $filterData['filter'],
             'section' => $section,
             'subsection' => $subsection,
@@ -930,26 +973,40 @@ class CatalogController extends BaseController
         $offeredIds = $sl->get('OfferContentTable')->fetchAll('', true);
 
         $dopProducts = $series->dopProducts;
-//        foreach ($dopProducts as $gr) {
-//            if (strpos($gr['title'], 'источник') !== false || strpos($gr['title'], 'ИСТОЧНИК') !== false || strpos($gr['title'], 'Источник') !== false) {
-//                $series->show_scroll_btn = true;
-//                break;
-//            }
-//        }
+        $firstTabGroups = array();
+        $fourthTabGroups = array();
+        foreach ($dopProducts as $gr) {
+            if ($gr['placement'] == 4 || $gr['placement'] == 0) {
+                $fourthTabGroups[] = $gr;
+            } elseif ($gr['placement'] == 1) {
+                $firstTabGroups[] = $gr;
+            }
+        }
+
+        $products = ProductsAggregator::getInstance()->getProducts($id);
+
+        $countOnBoard = 0;
+        foreach ($products as $product) {
+            if ($product->free_balance > 0) $countOnBoard++;
+        }
 
         $view = new ViewModel();
+
         $view
             ->setVariables(array(
                 'series' => $series,
                 'imgs' => $series->imgs,
                 'docs' => $series->docs,
                 'dims' => $series->dims,
+                'countOnBoard' => $countOnBoard,
                 'offeredIds' => $offeredIds,
                 'sectionId' => $metasubsection->section_id,
                 'dopProducts' => $series->dopProducts,
+                'fourthTabGroups' => $fourthTabGroups,
+                'firstTabGroups' => $firstTabGroups,
                 'equalParameters' => $series->equalParams,
                 'shownEqualParams' => $series->shownEqualParams,
-                'products' => ProductsAggregator::getInstance()->getProducts($id),
+                'products' => $products,
                 'relatedSeries' => $relatedSeries,
                 'relatedProds' => $relatedProds,
                 'selectedProdId' => false, //todome: fix this shit
@@ -1101,17 +1158,31 @@ class CatalogController extends BaseController
             );
         }
 
-        $this->layout()->setVariables(array(
-            'seoData' => $seoData,
-            'pageTitle' => $series->visible_title ? $series->visible_title : $series->title,
-            'breadCrumbs'  => array(
+        if (UserService::$commercialMode) {
+            $identity = $this->zfcUserAuthentication()->getIdentity();
+            $commercial = CommercialMapper::getInstance($sl)->getByUID($identity->getId(), UserService::$commercialId, false);
+            $room =  CommercialRoomMapper::getInstance($sl)->get(UserService::$roomId);
+            $breadcrumbs =  array(
+                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+                array('link'=> $this->url()->fromRoute('cabinet'), 'text'=>ucfirst('Личный кабинет')),
+                array('link'=> '/cabinet/?c=' . UserService::$commercialId . '#offers_1', 'text'=>ucfirst($commercial->title)),
+                array('link'=> '/cabinet/?c=' . UserService::$commercialId . '&r=' . UserService::$roomId . '#offers_1', 'text'=>ucfirst($room->title)),
+            );
+        } else {
+            $breadcrumbs =  array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
                 array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
                 $breadCrumbsSection,
                 $breadCrumbsSubsection
-            ),
-        ));
+            );
+        }
 
+
+        $this->layout()->setVariables(array(
+            'seoData' => $seoData,
+            'pageTitle' => $series->visible_title ? $series->visible_title : $series->title,
+            'breadCrumbs'  => $breadcrumbs,
+        ));
 
         $return = array(
             'seoData' => $seoData,
@@ -1119,12 +1190,7 @@ class CatalogController extends BaseController
             'nextProd' => $nextProd,
             'prevProd' => $prevProd,
             'pageTitle' => $series->visible_title ? $series->visible_title : $series->title,
-            'breadCrumbs'  => array(
-                array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
-                array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
-                $breadCrumbsSection,
-                $breadCrumbsSubsection
-            ),
+            'breadCrumbs'  => $breadcrumbs,
         );
         $view->setVariables($return);
         return $view;
@@ -1143,7 +1209,13 @@ class CatalogController extends BaseController
         $product = $cm->getProduct($id);
         if (!$product) return $this->redirect()->toRoute('catalog');
 
-        $series = $cm->getSeriesOne($product->series_id);
+        $ser = $this->params()->fromQuery('ser', 0);
+        if ($ser) {
+            $series = $cm->getSeriesOne($ser);
+        } else {
+            $series = $cm->getSeriesOne($product->series_id);
+        }
+
         if (!$series) return $this->redirect()->toRoute('catalog');
 
         $subsection = $cm->getSubsection($series->subsection_id);
@@ -1493,6 +1565,7 @@ class CatalogController extends BaseController
 
                 if($seriesIds){
                     $query = CatalogService::getFilterQuery($post, $seriesParams, $seriesIds, $offerProdsIds);
+
                     if ($query === false) {
                         $response = array(
                             'success' => 1,
@@ -1519,9 +1592,30 @@ class CatalogController extends BaseController
                             'count_series' => 0,
                             'count_products' => count($results)
                         );
+
+                        $specialSeries = array();
+                        if ($post['offers'] && $post['offers'] == 1) {
+                            $seriesTable = $this->getSeriesTable();
+                            $select = $seriesTable->getSql()->select()->where(array('is_offer' => 1));
+                            $sers = $seriesTable->selectWith($select);
+                            $resultSet = new ResultSet();
+                            $resultSet->initialize($sers);
+                            foreach ($sers as $ser) {
+                                $specialSeries[] = $ser->id;
+                            }
+
+                        }
+
                         /** @var \Catalog\Model\Product $oneResult */
-                        foreach ($results as $oneResult) {
+                        foreach ($results as $oneResKey => $oneResult) {
                             if ($oneResult->series_id != 0) {
+                                if ($post['offers'] && $post['offers'] == 1) {
+                                    if ($oneResult->is_offer != 1) {
+                                        if (!in_array($oneResult->series_id, $specialSeries)) {
+                                            continue;
+                                        }
+                                    }
+                                }
 
                                 if (!isset($response['series_ids'][$oneResult->series_id])) {
                                     $response['count_series']++;
@@ -1793,6 +1887,10 @@ class CatalogController extends BaseController
                 $params = $this->getFilterParams(($subsection_id == 0) ? $section_id : $subsection_id, ($subsection_id == 0) ? true : false, $term->field);
             }
             if ($params[0] !== false) {
+                if (!$isSlider) {
+                    arsort($params[0]);
+                }
+
                 uasort($params[0], function($a, $b) {
                     $a = preg_replace("/[^0-9]/", '', $a);
                     $b = preg_replace("/[^0-9]/", '', $b);

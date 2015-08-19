@@ -28,6 +28,10 @@ class CartController extends AbstractActionController
         $hierarchies = array();
         $productsObj = isset($_COOKIE['products_in_cart']) ? \Zend\Json\Json::decode($_COOKIE['products_in_cart']) : null;
         $products = (array)$productsObj;
+
+
+        $fileTable = $sl->get('FilesTable');
+
         if ($products) {
             $productTable = $sl->get('Catalog\Model\ProductTable');
             $seriesTable = $sl->get('Catalog\Model\SeriesTable');
@@ -47,7 +51,12 @@ class CartController extends AbstractActionController
                 $subsection = $subsectionTable->find($series->subsection_id);
                 $section = $sectionTable->find($subsection->section_id);
 
-
+                if ($series && $series->preview) {
+                    $file = $fileTable->find($series->preview);
+                    if ($file) {
+                        $series->previewName = $file->name;
+                    }
+                }
 
                 if ($this->zfcUserAuthentication()->hasIdentity()) {
                     $identity = $this->zfcUserAuthentication()->getIdentity();

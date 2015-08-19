@@ -53,6 +53,7 @@ class AdminController extends SampleAdminController
     const COMMERCIAL_ROOMS_TABLE = 34;
     const COMMERCIAL_PRODS_TABLE = 35;
     const ARTICLE_BLOCKS_TABLE = 36;
+    const FOOTER_BLOCKS_TABLE = 37;
 
     protected $tableImg = 'SeriesImgTable';
     protected $entityImgName = 'Catalog\Model\SeriesImg';
@@ -1356,6 +1357,11 @@ class AdminController extends SampleAdminController
             CatalogService::DISPLAY_STYLE_POWER => 'Источник питания',
             CatalogService::DISPLAY_STYLE_PROFILES => 'Профиль',
         );
+        $tabsList = array(
+            '-1' => '',
+            '1' => 'Первая вкладка',
+            '4' => 'Четвёртая вкладка'
+        );
 
         return array(
             'dopProdGroup' => $dopProdGroup,
@@ -1365,6 +1371,7 @@ class AdminController extends SampleAdminController
             'tags' => $tags,
             'dopProducts' => $dopProducts,
             'displayStyles' => $displayStyles,
+            'tabsList' => $tabsList,
         );
     }
 

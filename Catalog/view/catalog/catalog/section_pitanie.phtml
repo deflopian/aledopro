@@ -87,7 +87,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER;
                                 <?  $serNum++; ?>
                                 <?  if(isset($pAgg)){
                                     $products = $pAgg->getProducts($series->id);
-
+                                    $this->commercialMode = \User\Service\UserService::$commercialMode;
                                     ?>
                                     <div class="row row-second-small">
                                         <div class="col-xs-12" id="testApp_<?= $series->id ?>">
@@ -127,9 +127,9 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER;
     $(function() {
         popup.initCopyLinkBtns();
     });
-    var screenWidth = $("html").width();
+    /**var screenWidth = $("html").width();
     $('.series-pics').css('width', screenWidth);
-    $('.series-pics').css('margin-left', -(screenWidth-$('.catalog :first').width())/2-15);
+    $('.series-pics').css('margin-left', -(screenWidth-$('.catalog :first').width())/2-15);*/
     $(function(){
 //        popup.initSeriesPopup();
         popup.renderCartedLines();

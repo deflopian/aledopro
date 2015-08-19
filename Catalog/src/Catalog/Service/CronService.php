@@ -84,6 +84,7 @@ class CronService {
         $product = new Product();
         $cells = str_getcsv($row, ";");
         $lumfx_abs = 0; //костыль для того, чтобы $luminous_flux хранился в базе в виде строки,
+        $vangl_abs = 0; //костыль для того, чтобы $viewing_angle хранился в базе в виде строки,
                         //но мы могли ещё и фильтровать по нему
         //порядок свойств в Product важен!
         $vars = get_object_vars($product);
@@ -114,6 +115,19 @@ class CronService {
                 if ($key_vars[$num-$shit] == 'luminous_flux') {
                     $lumfx_abs = floatval($value);
                 }
+                if ($key_vars[$num-$shit] == 'viewing_angle') {
+                    $is_diap = strpos($value, '-');
+                    if ($is_diap) {
+                        $diaps = explode('-',$value);
+                        if (count($diaps)==2) {
+                            $vangl_abs = (floatval($diaps[0]) + floatval($diaps[1]))/2;
+                        } else {
+                            $vangl_abs = floatval($value);
+                        }
+                    } else {
+                        $vangl_abs = floatval($value);
+                    }
+                }
 
                 $vars[$key_vars[$num-$shit]] = trim($value, "^~");
 
@@ -121,6 +135,7 @@ class CronService {
 
             $product->exchangeArray($vars);
             $product->lumfx_abs = $lumfx_abs;
+            $product->vangl_abs = $vangl_abs;
         } else {
             echo 'error';
             return false;

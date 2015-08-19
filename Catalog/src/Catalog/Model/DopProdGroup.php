@@ -11,4 +11,5 @@ class DopProdGroup extends SampleModel
     public $order;
     public $sorted_by_user = 0;
     public $display_style = 0;
+    public $placement = 0;
 }

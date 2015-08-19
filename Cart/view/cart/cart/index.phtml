@@ -26,6 +26,7 @@
                 $prod = $data['product'];
                 $count = floor($data['count']);
             ?>
+
             <tr class="cart-line" ng-init="prodsInfo[<?= $prod->id ?>] = {count: <?= $count ?>, price: 0}" data-id="<?= $prod->id ?>">
                 <td class="b-cart-product-cell  b-cart-product-cell_image">
                     <a href="<?= $this->url('catalog', array('action' => 'product', 'id' => $prod->id)) ?>" class="b-cart-product-cell_image__inner">
@@ -190,7 +191,7 @@
                         <hr class="dotted-separator" />
                         <br class="b-mb1" />
                         <div>
-                            <p>При заказе на сумму свыше 30 000 рублей доставка по Санкт-Петербургу бесплатная.</p>
+                            <p>При заказе на сумму свыше 35 000 рублей доставка по Санкт-Петербургу бесплатная.</p>
                             <p>
                                 Доставка по России предоставляется юридическим лицам и индивидуальным предпринимателям. Отгрузка товара производится только после получения 100% предоплаты по безналичному расчёту.
                             </p>

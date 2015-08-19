@@ -189,7 +189,7 @@ class CronController extends BaseController
         $seriesTable = $this->getServiceLocator()->get('Catalog\Model\SeriesTable');
         $allSeries = $seriesTable->fetchAll();
         foreach ($allSeries as $oneser) {
-            if (in_array($oneser->subsection_id, array(30,31,32))) {
+            if (in_array($oneser->subsection_id, array(30,31,32,28,29))) {
                 CatalogService::makesort('power', $oneser->id, 2, $this->getServiceLocator());
             } else {
                 CatalogService::makesort('free_balance', $oneser->id, 2, $this->getServiceLocator());

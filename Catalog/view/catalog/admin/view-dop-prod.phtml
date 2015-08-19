@@ -33,6 +33,16 @@
             </td>
         </tr>
         <tr>
+            <td>Вкладка</td>
+            <td>
+                <a href="#" data-type="select" data-name="placement"
+                   data-source='<?= \Zend\Json\Json::encode($tabsList); ?>'
+                   data-value="<?= $dopProdGroup->placement; ?>" class="editable-param">
+                    <?= $tabsList[$dopProdGroup->placement];?>
+                </a>
+            </td>
+        </tr>
+        <tr>
 
         </tr>
         </tbody>

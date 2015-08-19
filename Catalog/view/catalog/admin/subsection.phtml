@@ -169,7 +169,7 @@
             <th>Название</th>
             <th>Управление</th>
         </tr>
-        <tbody id="sortable">
+        <tbody id="sortable3">
 
         <? /** @var $links array */
         foreach($links as $link){ ?>
@@ -239,12 +239,12 @@
                                     class="glyphicon kp-icon"
                                     ng-show="item.cart_param == 0"
                                     style="color: #BBBBBB"
-                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'cart_param', 1, {sectionId:<?= $section->id?>, sectionType: 2}, 'filterCallback')">КП</span>
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'cart_param', 1, {sectionId:<?= $subsection->id?>, sectionType: 2}, 'filterCallback')">КП</span>
                                 <span
                                     class="glyphicon kp-icon"
                                     style="color: #c09853"
                                     ng-show="item.cart_param == 1"
-                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'cart_param', 0, {sectionId:<?= $section->id?>, sectionType: 2}, 'filterCallback')">КП</span>
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::FILTER_FIELD_TABLE ?>', item.id, 'cart_param', 0, {sectionId:<?= $subsection->id?>, sectionType: 2}, 'filterCallback')">КП</span>
                             </div>
                         </div>
                     </li>

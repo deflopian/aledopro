@@ -39,7 +39,7 @@ function mb_ucfirst($text) {
 
         <? } ?>
     </div>
-    <div class="b-goods-gallery">
+    <div style="display: none" id="imagesLoadedGallery">
         <? $i = 0; ?>
         <? foreach($imgs as $img) { ?>
             <? if (!$series->preview && $series->img_gallery == $img->url) continue; ?>
@@ -54,6 +54,9 @@ function mb_ucfirst($text) {
                 </a>
             </div>
         <? } ?>
+    </div>
+    <div class="b-goods-gallery">
+
     </div>
 
     <div class="b-section__content">
@@ -94,18 +97,10 @@ function mb_ucfirst($text) {
                     <li class="b-tabs__tab">
                         <a class="b-tabs__link " role="tab" href="#goods_3" data-toggle="tab" aria-controls="goods_3">Материалы для скачивания</a>
                     </li>
-                    <? $dopgtitle = false; ?>
-                    <? $dpGroups = array(); ?>
-
-                    <? $ppna = reset($dopProducts);
-                    if (count($dopProducts) && strpos($dptitle = mb_strtolower($ppna['title']), "рефлектор") === false && strpos($dptitle = mb_strtolower($ppna['title']), "источник питания") === false && strpos($dptitle = mb_strtolower($ppna['title']), "источники питания") === false) {
-                        $dpGroups = $ppna;
-                        $dopgtitle = isset($dpGroups['title']) ? mb_ucfirst(trim($dpGroups['title'])) : false;
-                        //array_shift($dopProducts);
-                    } ?>
-                    <? if ($dopgtitle && $dpGroups) { ?>
+                    <? if (count($fourthTabGroups)) { ?>
+                        <? $fourthTabFirst = reset($fourthTabGroups); ?>
                     <li class="b-tabs__tab">
-                        <a class="b-tabs__link " role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4"><?= mb_ucfirst($dopgtitle) ?></a>
+                        <a class="b-tabs__link " role="tab" href="#goods_4" data-toggle="tab" aria-controls="goods_4"><?= mb_ucfirst($series->fourthTabName ? $series->fourthTabName : $fourthTabFirst['title']) ?></a>
                     </li>
                     <? } ?>
 
@@ -154,10 +149,12 @@ function mb_ucfirst($text) {
 
                                 $displayStyle = $view;
                                 $serNum = 1;
+
                                 echo $this->partial(
                                     'catalog/catalog/part/part/'. $tpl .'.phtml',
                                     array(
                                         'products' => $this->products,
+                                        'commercialMode' =>  \User\Service\UserService::$commercialMode,
                                         'offeredIds'   => $this->offeredIds,
                                         'selectedProdId'   => $this->selectedProdId,
                                         'admin'   => $admin,
@@ -175,20 +172,21 @@ function mb_ucfirst($text) {
                             </div>
 
                         </div>
-                        <? if (count($this->products) > 5) { ?>
+                        <? if (count($this->products) > max($this->countOnBoard, 5)) { ?>
                         <div class="row ">
                             <div class="col-xs-12">
                                 <div class="product-table_allmods-block">
-                                    <div class="product-table_allmods-block__label arrow-show" onclick="seriesTableShowBlock($('#testApp_<?= $series->id ?>'))">Все модификации<span class="allmods-block__open-arrow"></span></div>
-                                    <div class="product-table_allmods-block__label arrow-hidden" style="display: none" onclick="seriesTableHideBlock($('#testApp_<?= $series->id ?>'))">Все модификации<span class="allmods-block__close-arrow"></span></div>
+                                    <div class="product-table_allmods-block__label arrow-show" onclick="seriesTableShowBlock($('#testApp_<?= $series->id ?>'))">Смотреть все модификации<span class="allmods-block__open-arrow"></span></div>
+                                    <div class="product-table_allmods-block__label arrow-hidden" style="display: none" onclick="seriesTableHideBlock($('#testApp_<?= $series->id ?>'))">Смотреть все модификации<span class="allmods-block__close-arrow"></span></div>
                                 </div>
                             </div>
                         </div>
                         <? } ?>
                     </div>
-                    <? if (!$dopgtitle) { ?>
+
                     <div id="dopprods" name="dopprods">
-                    <? foreach ($dopProducts as $oneGroup) { ?>
+
+                    <? foreach ($firstTabGroups as $oneGroup) { ?>
 
                         <div style="position: relative">
                             <div class="row">
@@ -198,7 +196,7 @@ function mb_ucfirst($text) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="row row-second-xs">
+                            <div class="row row-second-xs catalog">
                                 <div class="col-xs-12" id="testApp_<?= $oneGroup['id'] ?>">
                                     <?
                                     $view = ($oneGroup['display_style'] > 0 ? $oneGroup['display_style'] : $oneGroup['view'] );
@@ -222,12 +220,14 @@ function mb_ucfirst($text) {
                                         array(
                                             'products' => $oneGroup['products'],
                                             'offeredIds'   => $this->offeredIds,
+                                            'commercialMode' =>  \User\Service\UserService::$commercialMode,
                                             'selectedProdId'   => $this->selectedProdId,
                                             'user' => $this->user,
                                             'serNum' => $oneGroup['id'],
                                             'hierarchies' => $this->hierarchies,
                                             'discounts' => $this->discounts,
                                             'nonFilter' => true,
+                                            'parentSerNum' => $series->id,
                                         )
                                     );
                                     ?>
@@ -237,7 +237,6 @@ function mb_ucfirst($text) {
 
                     <? } ?>
                     </div>
-                    <? } ?>
                     <?=
                     $this->partial(
                         "catalog/catalog/part/links-block.phtml",
@@ -359,8 +358,9 @@ function mb_ucfirst($text) {
                         </div>
                     <? } ?>
                 </div>
+                <? if (count($fourthTabGroups)) { ?>
                 <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_4">
-                    <? foreach ($dopProducts as $num => $dpGroup) { ?>
+                    <? foreach ($fourthTabGroups as $num => $dpGroup) { ?>
 
                     <div style="position: relative">
                         <div class="row">
@@ -370,7 +370,7 @@ function mb_ucfirst($text) {
                                 </div>
                             </div>
                         </div>
-                        <div class="row row-second-xs">
+                        <div class="row row-second-xs catalog">
                             <div class="col-xs-12" id="testApp_<?= $dpGroup['id'] ?>">
                                 <?
                                 $view = ($dpGroup['display_style'] > 0 ? $dpGroup['display_style'] : $dpGroup['view'] );
@@ -395,11 +395,14 @@ function mb_ucfirst($text) {
                                         'products' => $dpGroup['products'],
                                         'offeredIds'   => $this->offeredIds,
                                         'selectedProdId'   => $this->selectedProdId,
+                                        'commercialMode' =>  \User\Service\UserService::$commercialMode,
                                         'user' => $this->user,
                                         'serNum' => $dpGroup['id'],
                                         'hierarchies' => $this->hierarchies,
                                         'discounts' => $this->discounts,
                                         'nonFilter' => true,
+                                        'parentSerNum' => $series->id,
+                                        'partialTab' => '#goods_4',
                                     )
                                 );
                                 ?>
@@ -408,10 +411,11 @@ function mb_ucfirst($text) {
                     </div>
                     <? } ?>
                 </div>
+                <? } ?>
             </div>
         </div>
         <script type="text/javascript">
-            <? if (count($this->products) > 5) { ?>
+            <? if ((count($this->products) > max($this->countOnBoard, 5)) && !$scrollToProduct) { ?>
             $(function() {seriesTableHideBlock($('#testApp_<?= $series->id ?>'), true)});
             <? } ?>
             function seriesTableShowBlock(elem) {
@@ -433,7 +437,7 @@ function mb_ucfirst($text) {
                 var i = 0;
 
                 soloTable.find('tr').each(function() {
-                    if (i++ <= 5) {
+                    if (i++ <= <?= max($this->countOnBoard, 5) ?>) {
                         h += $(this).height();
                         if (i>1) {
                             h += 15;
@@ -486,9 +490,14 @@ function mb_ucfirst($text) {
 <script type="text/javascript">
     $(function() {
         $('a.b-tabs__link').click(function (e) {
-//            e.preventDefault();
+            e.preventDefault();
             var h = $(this).attr('href');
-            location.hash=h;
+            if(history.pushState) {
+                history.pushState(null, null, h);
+            }
+            else {
+                location.hash = h;
+            }
             $(this).tab('show');
         });
         $('a.attention-block_btn').click(function (e) {
@@ -511,11 +520,235 @@ function mb_ucfirst($text) {
 
     function Goods() {
         var _options = {
+                isAnimating: false,
+                direction: "next",
+                fancyIsOpen: false,
+                animatingSpeed: browser.mobile ? 300 : 500,
+                $slider: jQuery('.b-goods-gallery'),
+                sliderName: 'b-goods-gallery',
+                fancySwipingClass: "fancybox-swiping",
+                loop: true,
+                slidesToShow: <?= count($imgs) >= 2 ? '2' : '1' ?>,
+                imagesContainer: "#imagesLoadedGallery",
+                noSliderClass: "b-slider_no-slider"
+            },
+            $document = jQuery(document),
+            $html = jQuery("html"),
+            _ = _options,
+            _init = function () {
+                _initSlider();
+
+            },
+            _initSlider = function () {
+                _.$slider.slick({
+                    accessibility: false,
+                    dots: false,
+                    infinite: true,
+                    speed: _.animatingSpeed,
+                    slidesToShow: _.slidesToShow,
+                    touchThreshold: browser.mobile ? 5 : 50,
+                    centerMode: false,
+                    centerPadding: "0px",
+                    variableWidth: true,
+                    appendArrows: jQuery(".b-slider-arrows_project"),
+                    arrows: browser.mobile ? false : true,
+                    prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows_project__arrow b-slider-arrows__arrow_prev\" ></a>",
+                    nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows_project__arrow b-slider-arrows__arrow_next\" ></a>"
+                });
+
+                var imgLoad = imagesLoaded(_.imagesContainer);
+                imgLoad.on("always", function (instance) {
+                    var loadedImages = jQuery.grep(imgLoad.images, function (a) {
+                        return a.isLoaded == true;
+                    });
+                    _slideAdd(loadedImages);
+
+                });
+
+            },
+
+            _slideAdd = function (images) {
+                if (!images.length) return;
+                var slideElements = "";
+                for (var i = 0; i < images.length; ++i) {
+                    slideElements += jQuery(images[i].img).parentsUntil(_.imagesContainer).last()[0].outerHTML;
+                }
+
+
+                _.$slider.slick("slickAdd", slideElements);
+                if (images.length <= _.slidesToShow) {
+                    _.$slider.slick("unslick");
+                    _.$slider.addClass(_.noSliderClass);
+                }
+
+                _initFancy();
+                _bindEvents();
+                _initGallery();
+            },
+            _initFancy = function () {
+                _.$imagesLinks = _.$slider.find(".b-goods-gallery-item > a");
+//                        _.$imagesLinks = _.$slider.find(".b-slider__item:not(.slick-cloned) > a");
+                _.$fancy = _.$imagesLinks.fancybox({
+                    opacity: true,
+                    padding: 20,
+                    overlayShow: true,
+                    loop: true,
+                    parent: ".swipe-layout",
+                    transitionIn: 'elastic',
+                    transitionOut: 'elastic',
+                    helpers: {
+                        overlay: {
+                            closeClick: true
+                        }
+                    },
+                    prevSpeed: _.animatingSpeed,
+                    nextSpeed: _.animatingSpeed,
+                    beforeLoad: function () {
+                        if (_.isAnimating) return false;
+                        _.isAnimating = true;
+                        if (!_.firstCalling && !_.checked) {
+                            _.firstCalling = true;
+                            _.checked = true;
+                        }
+                        _.$fancy.triggerHandler("fancyBox.beforeLoad");
+                    },
+                    keys: {
+                        next: {
+                            39: 'left'
+                        },
+                        prev: {
+                            37: 'right'
+                        }
+                    },
+                    afterClose: function () {
+                        _.fancyIsOpen = false;
+                        $html.removeClass(_.fancySwipingClass);
+                        jQuery(".fancybox-overlay").off("mousedown.preventDrag");
+                        $document.off("ng.swipe.right.project").off("ng.swipe.left.project");
+                        _.firstCalling = false;
+                        _.checked = false;
+                    },
+                    beforeShow: function () {
+                        $document.on("ng.swipe.right.project", function () {
+                            if (_.isAnimating) return;
+                            _.direction = "prev";
+                            $.fancybox.prev();
+                        }).on("ng.swipe.left.project", function () {
+                            if (_.isAnimating) return;
+                            _.direction = "next";
+                            $.fancybox.next();
+                        });
+                    },
+                    afterShow: function () {
+                        _.fancyIsOpen = true;
+                        _.isAnimating = false;
+                        $html.addClass(_.fancySwipingClass);
+                        //�������� �������������� ��� ������
+                        jQuery(".fancybox-overlay").on("mousedown.preventDrag", function (e) {
+                            e.preventDefault();
+                        });
+                        document.addEventListener("keyup", function (e) {
+                            if (_.isAnimating && _.fancyIsOpen) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                return;
+                            }
+                            if (e.keyCode == 39) {
+                                _.direction = "next";
+                            } else if (e.keyCode == 37) {
+                                _.direction = "prev";
+                            }
+                        }, true);
+                    },
+                });
+            },
+            _bindEvents = function () {
+                _.$slider.on("mousedown", function () {
+                    return false;
+                });
+                _.$slider.on("click", function (e) {
+                    var $this = jQuery(e.target),
+                        id = $this.closest("[data-slick-index]").data("slick-index");
+                    _.$slider.slick("slickGoTo", id, false);
+                    $this.siblings("a").click();
+                }).on("afterChange", function () {
+                    _.isAnimating = false;
+                });
+
+
+                _.$fancy.on("fancyBox.beforeLoad", function () {
+                    if (_.firstCalling) {
+                        _.firstCalling = false;
+                        return;
+                    }
+                    _.$slider.slick(_.direction == "next" ? "slickNext" : "slickPrev");
+                });
+
+
+                document.addEventListener("click", function (e) {
+                    var $nextButton, $prevButton;
+                    if (_.fancyIsOpen) {
+                        $nextButton = jQuery(e.target).closest(".fancybox-next");
+                        $prevButton = jQuery(e.target).closest(".fancybox-prev");
+                    } else {
+                        return;
+                    }
+                    if (!$nextButton.length && !$prevButton.length) {
+                        return;
+                    }
+                    if (_.isAnimating) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return;
+                    }
+
+                    _.direction = $nextButton.length ? "next" : "prev";
+                }, true);
+
+
+            },
+            _watchOnImageUploading = function () {
+                _.$slider.imagesLoaded()
+                    .progress(function () {
+                        _.$scroller.data("dragscroll").reInit();
+                    });
+            },
+            _initGallery = function () {
+                if (browser.mobile) return;
+
+                _.$scroller = _.$slider.dragscroll({
+                    autoFadeBars: false,
+                    scrollBars: true,
+                    smoothness: 15,
+                    mouseWheelVelocity: 0,
+                    mouseWheelEnabled: false,
+                    onRebuild: function (dragscroll) {
+//                        var noScrollClass = _.sliderName + "_no-scroll";
+//                        if (dragscroll.barIndex.X[0] == 1) {
+//                            this.addClass(noScrollClass);
+//                        } else {
+//                            this.removeClass(noScrollClass);
+//                        }
+                    }
+                });
+
+                console.log(_.$scroller);
+                _watchOnImageUploading();
+            };
+        return {init: _init};
+    }
+
+
+
+        /*
+
+        var _options = {
                 gallery: "b-goods-gallery",
                 imagesLinks: jQuery(".b-goods-gallery-item__link"),
                 $imagesLayout: jQuery(".b-goods-gallery-item__layout"),
                 animatingSpeed: browser.mobile ? 300 : 500,
                 fancyIsOpen: false,
+                isAnimating: false,
                 imagesOffsets: [],
                 fancySwipingClass: "fancybox-swiping"
             },
@@ -538,9 +771,25 @@ function mb_ucfirst($text) {
                 }).on("ng.swipe.left", function () {
                     $.fancybox.next();
                 });
-
-            },
-            _initFancy = function () {
+                _.$imagesLinks.on("mouseup", function () {
+                    return false;
+                });*/
+//                _.$gallery.on("click", function (e) {
+//                    var $this = jQuery(e.target);
+//                    $this.siblings("a").click();
+//                }).on("afterChange", function () {
+//                    _.isAnimating = false;
+//                });
+//
+//
+//                _.$gallery.on("fancyBox.beforeLoad", function () {
+//                    if (_.firstCalling) {
+//                        _.firstCalling = false;
+//                        return;
+//                    }
+//                });
+            //},
+            /*_initFancy = function () {
                 _.$imagesLinks.fancybox({
                     opacity: true,
                     loop: false,
@@ -557,7 +806,13 @@ function mb_ucfirst($text) {
                     prevSpeed: _.animatingSpeed,
                     nextSpeed: _.animatingSpeed,
                     beforeLoad: function () {
-
+//                        if (_.isAnimating) return false;
+//                        _.isAnimating = true;
+//                        if (!_.firstCalling && !_.checked) {
+//                            _.firstCalling = true;
+//                            _.checked = true;
+//                        }
+//                        _.$fancy.triggerHandler("fancyBox.beforeLoad");
                     },
                     keys: {
                         next: {
@@ -612,7 +867,7 @@ function mb_ucfirst($text) {
                 _watchOnImageUploading();
             };
         return { init: _init };
-    }
+    }*/
 
     var goods = Goods();
     goods.init();
@@ -623,6 +878,7 @@ function mb_ucfirst($text) {
 <script>
     popup.renderCartedLines();
     catalogClient.scrollToProduct = <?= $scrollToProduct ? $scrollToProduct : 'false'  ?>;
+
     $(function() {
         catalogClient.initUrl();
     });

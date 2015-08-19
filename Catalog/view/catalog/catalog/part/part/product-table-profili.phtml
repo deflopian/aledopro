@@ -10,12 +10,12 @@ if ($user && $user->getIsPartner()) {
 $posVals = \Catalog\Service\CatalogService::getValsJSON($products, $filteredFields, $prevProdCount, $params);
 
 $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS, $hierarchies, $discounts, $filteredFields, true, false);
-
+$partialTab = $this->partialTab ? $this->partialTab : false;
 ?>
 
 
 
-<solo-table make-sortable="3" ng-cloak>
+<solo-table ng-cloak>
     <div solo-table-data style="display: none;">
         [<?= $products ?>]
     </div>
@@ -53,7 +53,7 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
     <div solo-table-pos-vals style="display: none;">
         <?= $posVals ?>
     </div>
-    <div class="row" style="margin-bottom: 10px">
+    <div class="row">
         <div class="col-xs-12">
             <span style="font-weight: bold">Цены на предлагаемую продукцию зависят от курса у.е.</span>
         </div>
@@ -75,7 +75,7 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
             itemscope
             itemtype="http://schema.org/Product"
             ng-repeat="item in filtered = (original | possibleVals:possibleVals:this | instock:instock:this | offers:offers:this)"
-            ng-class="{selectedProd: item.id == selectedProdId, productIncart: elCarto[item.id]==1 }"
+            ng-class="{selectedProd: item.id == selectedProdId<?= !$this->commercialMode ? ', productIncart: elCarto[item.id]==1' : '' ?>}"
 
             class="item product-line"
             data-id="{{item.id}}"
@@ -132,7 +132,18 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
                     </td>
                 <? } ?>
             </span>
+            <? if ($this->commercialMode) { ?>
+                <td class="comm-item" style="cursor: pointer" ng-controller="CommercialsController">
 
+                    <a class="comm-btn"  title="добавить в КП" ng-show="!checkProdInRoom(item.id)" ng-click="prodAPI.add(item.id)">
+                        <span class="buy-arrow"></span>
+                    <span class="buy-body">
+                        <span class="buy-on">в КП</span>
+                    </span>
+                    </a>
+                    <a href="/cabinet/?c=<?=  \User\Service\UserService::$commercialId  ?>&r=<?=  \User\Service\UserService::$roomId ?>#offers_1" style="font-size: 10px;font-weight: bold;text-decoration: underline;text-transform: uppercase;" ng-show="checkProdInRoom(item.id)" title="модель помещена в КП">в КП</a>
+                </td>
+            <? } else { ?>
             <td class="but-item">
                 <a class="buy-btn" title="купить модель" ng-click="addItemToCart(item.id)">
                     <span class="buy-arrow"></span>
@@ -142,7 +153,8 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
                 </a>
                 <a href="<?= $this->url('cart') ?>" class="buy-to-cart" title="модель помещена в корзину">в корзине</a>
             </td>
-            <td class="copy-link">
+            <? } ?>
+            <td class="copy-link" style="padding-left: 5px;">
                 <span ng-if="false">
                     <div class="icon-discount"></div>
                 </span>
@@ -150,20 +162,20 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
                 <a class="getlink-btn">
                     <div class="icon-getlink zeroclipboard"
                          title="Скопировать ссылку в буфер обмена"
-                         data-clipboard-text="<?= \Application\Service\MailService::CURRENT_DOMEN ?>/catalog/product/{{item.id}}/"></div>
+                         data-clipboard-text="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?>/catalog/product/{{item.id}}/<?= $nonFilter ? '?ser=' . $parentSerNum . ($partialTab ? $partialTab : '') : '' ?>"></div>
                 </a>
 <!--                <a class="buy-back-btn" ng-click="removeItemFromCart(item.id)" title="убрать из корзины"><div class="icon-whitecross"></div></a>-->
 <!--                <span ng-show="item.is_offer > 0">-->
 <!--                    <div class="icon-offer"></div>-->
 <!--                </span>-->
             </td>
-            <td style="padding: 0">
+            <td style="padding: 0; padding-left: 5px;">
                 <span ng-show="item.is_offer">
-                    <div class="icon-offer"></div>
+                    <div class="icon-offer" title="Распродажа"></div>
                 </span>
             </td>
 
-            <td style="padding: 0">
+            <td style="padding: 0; padding-left: 5px;">
                 <a class="buy-back-btn" ng-click="removeItemFromCart(item.id)" title="убрать из корзины"><div class="icon-whitecross"></div></a>
             </td>
         </tr>

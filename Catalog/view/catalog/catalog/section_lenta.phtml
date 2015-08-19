@@ -30,11 +30,6 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
         height: 0px;
         width: 0px;
     }
-
-    .solo-table-column-cursor
-    {
-        cursor: pointer;
-    }
 </style>
 <div class="b-section__content breadcumbs_ontop">
 
@@ -92,7 +87,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
                                 <img class="drivers_pic" style="width: 100%" src="<?= $this->basePath() . '/images/series/' . $image->url ?>" alt="<?= $image->title?>">
 
                                 <div class="absolute-banner-text-block absolute-banner-text-block-alt">
-                                    <div class="container">
+                                    <div class="container" style="padding: 0;">
                                         <div class="banner-backgrounded-wrapper banner-backgrounded-wrapper-alt" style="max-width: 45%">
                                             <? if ($series->visible_title) { ?>
                                                 <span class="banner-title backgrounded-alt" <?= !$series->visible_title ? 'style="padding-bottom: 16px;"' : '' ?>><?= $series->visible_title ?>&nbsp;&nbsp;</span><br />
@@ -141,6 +136,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
                     <? if(isset($pAgg)){
                         $products = $pAgg->getProducts($series->id);
                         $count = count($products);
+                        $this->commercialMode = \User\Service\UserService::$commercialMode;
                         ?>
                         <div class="row row-second">
                             <div class="col-xs-12" id="testApp_<?= $series->id ?>">
@@ -189,9 +185,9 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
     $(function() {
         popup.initCopyLinkBtns();
     });
-    var screenWidth = $("html").width();
+    /*var screenWidth = $("html").width();
     $('.series-pics').css('width', screenWidth);
-    $('.series-pics').css('margin-left', -(screenWidth-$('.catalog').width())/2-15);
+    $('.series-pics').css('margin-left', -(screenWidth-$('.catalog').width())/2-15);*/
 
     $(function(){
 //        popup.initSeriesPopup();

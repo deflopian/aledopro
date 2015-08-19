@@ -70,5 +70,6 @@ class Product extends SampleModel
     public $add_by_user = 0;
     public $checked = 0;
     public $lumfx_abs = 0;
+    public $vangl_abs = 0;
     public $is_offer = 0;
 }

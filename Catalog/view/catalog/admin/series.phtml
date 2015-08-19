@@ -37,6 +37,14 @@
             </td>
         </tr>
         <tr>
+            <td>Название четвёртой вкладки</td>
+            <td>
+                <a href="#" data-type="text" data-name="fourthTabName" class="editable-param">
+                    <?= $series->fourthTabName; ?>
+                </a>
+            </td>
+        </tr>
+        <tr>
             <td>Кнопка «Перейти к блокам питания»</td>
             <td>
                 <a href="#" data-type="text" data-name="show_scroll_btn" class="editable-param">
@@ -132,7 +140,7 @@
 
     <div id="userTable" >
 
-        <solo-table make-sortable="3" items-on-page="20">
+        <solo-table make-sortable="1" items-on-page="20">
             <div class="section">
                 <div>
                     <h3>Загрузить изображение для отфильтрованных продуктов</h3>
@@ -161,18 +169,48 @@
                 </div>
             </div>
 
-            <table class="table admin-table table-striped">
+            <table class="table admin-table table-striped" sort-flag='order'>
                 <thead>
+
                 <tr>
                     <th sort-by='id'>Id</th>
                     <th sort-by='title'>Имя</th>
+                    <? if ($section->display_style==0) { ?>
+                        <th sort-by='case_color'>Цвет корпуса</th>
+                        <th sort-by='color_of_light'>Цвет свечения</th>
+                        <th sort-by='luminous_flux'>Световой поток</th>
+                        <th sort-by='viewing_angle'>Угол пучка</th>
+                    <? } elseif ($section->display_style==1) { ?>
+                        <th sort-by='electro_power'>Питание</th>
+                        <th sort-by='color_of_light'>Цвет свечения</th>
+                        <th sort-by='luminous_flux'>Световой поток</th>
+                        <th sort-by='power'>Мощность</th>
+                    <? } elseif ($section->display_style==2) { ?>
+                        <th sort-by='controller_type'>Габариты</th>
+                        <th sort-by='power'>Мощность</th>
+                        <th sort-by='i_out'>Выходной ток/напряжение</th>
+                        <th sort-by='warranty'>Гарантия</th>
+                    <? } elseif ($section->display_style==3) {?>
+
+                    <? } ?>
+                    <th sort-by='free_balance'>Наличие</th>
+                    <th sort-by='price_with_nds'>Цена</th>
                     <th>Управление</th>
                 </tr>
 
+
                 <tr class="filter-input-row">
                     <th><input type="text" class="form-control" ng-model="filterModelId" name="id" placeholder="Id продукта" /></th>
-                    <th><input type="text" class="form-control" ng-model="filterModelTitle" name="title" placeholder="Название" /></th>
 
+                    <th><input type="text" class="form-control" ng-model="filterModelTitle" name="title" placeholder="Название" /></th>
+                    <? if ($section->display_style==0 || $section->display_style==1 || $section->display_style==2) { ?>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    <? } ?>
+                    <th></th>
+                    <th></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -183,6 +221,26 @@
                 <tr class="entity" ng-repeat="item in filtered = (original | filterByFields:filterModelId:['id'] | filterByFields:filterModelTitle:['title'])">
                     <td>{{item.id}}</td>
                     <td>{{item.title}}</td>
+                    <? if ($section->display_style==0) { ?>
+                        <td>{{item.case_color}}</td>
+                        <td>{{item.color_of_light}}</td>
+                        <td>{{item.luminous_flux}}</td>
+                        <td>{{item.viewing_angle}}</td>
+                    <? } elseif ($section->display_style==1) { ?>
+                        <td>{{item.electro_power}}</td>
+                        <td>{{item.color_of_light}}</td>
+                        <td>{{item.luminous_flux}}</td>
+                        <td>{{item.power}}</td>
+                    <? } elseif ($section->display_style==2) { ?>
+                        <td>{{item.controller_type}}</td>
+                        <td>{{item.power}}</td>
+                        <td>{{item.i_out}}</td>
+                        <td>{{item.warranty}}</td>
+                    <? } elseif ($section->display_style==3) {?>
+
+                    <? } ?>
+                    <td>{{item.free_balance}}</td>
+                    <td>{{item.price_without_nds}}</td>
                     <td>
                         <a ng-href="/admin/catalog/product/{{item.id}}/" class="editBtn">Редактировать</a>
                     </td>
@@ -525,7 +583,6 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
         catalog.sendSortparamAjax();
 
         catalogDocs.init();
-        catalogDims.init();
 
         wysiwyg.init({
             getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',

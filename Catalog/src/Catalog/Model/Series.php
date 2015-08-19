@@ -22,4 +22,5 @@ class Series extends SampleModel
     public $deleted;
     public $show_scroll_btn;
     public $is_offer = 0;
+    public $fourthTabName;
 }

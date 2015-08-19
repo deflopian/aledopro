@@ -288,6 +288,7 @@ class CatalogMapper {
                 $res[] = array(
                     'id' => $dpgroup->id,
                     'title' => $dpgroup->title,
+                    'placement' => $dpgroup->placement,
                     'series_id' => $dpgroup->series_id,
                     'products' => $dopProducts,
                     'display_style' => $dpgroup->display_style,
