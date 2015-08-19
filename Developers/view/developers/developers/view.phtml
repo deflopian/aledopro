@@ -35,97 +35,33 @@
         </div>
 
 
-
+        <? if (count($this->catalogs)) { ?>
         <div class="b-brand-catalogs">
             <h2 class="b-brand-catalogs__heading text-center">Каталоги <?= $developer->title ?></h2>
             <div class="b-slider b-slider_brand-catalogs">
-
-
+                <? foreach ($this->catalogs as $catalog) { ?>
                 <div class="b-slider__item b-slider_brand-catalogs__item">
                     <div class="b-slider_brand-catalogs__item-inner">
-                        <a href="javascript:void(0)"
+                        <a href="/images/documents/<?= $catalog->file_name ?>"
                            class="b-slider_brand-catalogs__link"
+                           target="_blank"
                             >
                             <div class="b-slider_brand-catalogs__item-title">
                                 <div class="b-slider_brand-catalogs__item-title-inner">
-                                    каталог 2014
+                                    <?= $catalog->title ?>
                                 </div>
 
                             </div>
                         </a>
-                        <img class="b-slider_brand-catalogs__image" src="/Content/images/developers/icon-preview-1.png"/>
-
-                        <div class="b-slider_brand-catalogs__item-title">
-                            <div class="b-slider_brand-catalogs__item-title-inner">
-                                каталог 2014
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="b-slider__item b-slider_brand-catalogs__item">
-                    <div class="b-slider_brand-catalogs__item-inner">
-                        <a href="javascript:void(0)"
-                           class="b-slider_brand-catalogs__link"
-                            >
-                            <div class="b-slider_brand-catalogs__item-title">
-                                <div class="b-slider_brand-catalogs__item-title-inner">
-                                    каталог 2014
-                                </div>
-
-                            </div>
-                        </a>
-                        <img class="b-slider_brand-catalogs__image" src="/Content/images/developers/icon-preview-2.png"/>
-
-                        <div class="b-slider_brand-catalogs__item-title">
-                            <div class="b-slider_brand-catalogs__item-title-inner">
-                                каталог 2014
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="b-slider__item b-slider_brand-catalogs__item">
-                    <div class="b-slider_brand-catalogs__item-inner">
-                        <a href="javascript:void(0)"
-                           class="b-slider_brand-catalogs__link"
-                            >
-                            <div class="b-slider_brand-catalogs__item-title">
-                                <div class="b-slider_brand-catalogs__item-title-inner">
-                                    каталог 2014
-                                </div>
-
-                            </div>
-                        </a>
-                        <img class="b-slider_brand-catalogs__image" src="/Content/images/developers/icon-preview-3.png"/>
-
-                        <div class="b-slider_brand-catalogs__item-title">
-                            <div class="b-slider_brand-catalogs__item-title-inner">
-                                каталог 2014
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="b-slider__item b-slider_brand-catalogs__item">
-                    <div class="b-slider_brand-catalogs__item-inner">
-                        <a href="javascript:void(0)"
-                           class="b-slider_brand-catalogs__link"
-                            >
-                            <div class="b-slider_brand-catalogs__item-title">
-                                <div class="b-slider_brand-catalogs__item-title-inner">
-                                    каталог 2014
-                                </div>
-
-                            </div>
-
-                        </a>
-                        <img class="b-slider_brand-catalogs__image" src="/Content/images/developers/icon-preview-2.png"/>
+                        <img class="b-slider_brand-catalogs__image" src="/images/documents/<?= $catalog->img_name ?>"/>
 
                     </div>
                 </div>
+                <? } ?>
+
             </div>
         </div>
+        <? } ?>
 
     </div>  </div>
 <script type="text/javascript">

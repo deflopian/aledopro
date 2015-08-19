@@ -26,20 +26,7 @@ class IndexController extends AbstractActionController
         }
 
         $sl = $this->getServiceLocator();
-
-        $btype = $this->params()->fromRoute('btype', false);
-        $bid = $this->params()->fromRoute('bid', 0);
-        $baction = $this->params()->fromRoute('baction', 'view');
-
-        $robot = $this->params()->fromQuery('_escaped_fragment_', false);
-        $isRobot = ($robot !== false);
-        if ($isRobot) {
-            $popupController = $this->params()->fromRoute('btype', 'solutions');
-            $popupId = $this->params()->fromRoute('bid', 0);
-        }
-        $popupContent = false;
-        $solutions = $sl->get('SolutionsTable')->fetchAll('order asc');
-        $projects = $sl->get('ProjectsTable')->fetchByCond('rubric_id', 1, 'order asc');
+        $projects = $sl->get('ProjectsTable')->fetchByCond('rubric_id', 1, 'id desc');
         $rubrics = $sl->get('ProjectRubricTable')->fetchAll();
 
         $projectsByRubric = array();
@@ -49,37 +36,7 @@ class IndexController extends AbstractActionController
         }
         $arrayIds = array();
 
-        if ($btype == 'solutions') {
-            foreach ($solutions as $one) {
-                $arrayIds = array();
-                $arrayIds[] = $one->id;
-            }
-        } elseif ($btype == 'projects') {
-            $arrayIds = array();
-            foreach ($projects as $one) {
-                $arrayIds[] = $one->id;
-            }
-        }
-
-
-
-        if (isset($popupController) && isset($popupId)) {
-
-            $popupContent = $this->forward()->dispatch($popupController, array(
-                'action' => 'getPopupContent',
-                'robot' => true,
-                'id' => $popupId,
-                'nextId' => CatalogService::getNextId($popupId, $arrayIds),
-                'prevId' => CatalogService::getPrevId($popupId, $arrayIds))
-            );
-        }
-
         $bannerImages = $sl->get('BannerTable')->fetchAll('order asc');
-        $aboutText = $sl->get('InfoTable')->find(\Info\Controller\AdminController::ABOUT);
-        $teamMembers = $sl->get('TeamTable')->fetchAll('order asc');
-        $teamPopups = $this->renderTeamPopups($teamMembers);
-        $aboutPopup = $this->renderAboutCompanyPopup();
-
         $services = $sl->get('ServicesTable')->fetchAll('order asc');
         $servicesPopups = $this->renderServicePopups($services);
         $serviceFormsPopups = $this->renderServiceFormsPopups();
@@ -114,29 +71,13 @@ class IndexController extends AbstractActionController
         $clients = $sl->get('ClientsTable')->fetchAll('order ASC');
 
         $this->layout()->noBottomLine = true;
-        if ($isRobot && isset($popupId)) {
-            $seoId = $popupId;
-            if ($btype == 'projects') {
-                $seoType = SeoService::PROJECTS;
-            } elseif ($btype == 'solutions') {
-                $seoType = SeoService::SOLUTIONS;
-            } else {
-                $seoType = SeoService::INFO;
-                $seoId = 1;
-            }
 
-
-
-        } else {
-            $seoType = SeoService::INFO;
-            $seoId = 1;
-        }
+        $seoType = SeoService::INFO;
+        $seoId = 1;
         $seoData = $this->getServiceLocator()->get('SeoDataTable')->find($seoType, $seoId);
         $this->layout()->seoData = $seoData;
         $this->layout()->hasBanner = true;
         $this->layout()->bannerImages = $bannerImages;
-        $this->layout()->robot = $isRobot;
-        $this->layout()->popupContent = $popupContent;
 
         $isAdmin = false;
         if ($this->zfcUserAuthentication()->hasIdentity()) {
@@ -169,24 +110,13 @@ class IndexController extends AbstractActionController
         return array(
             'bannerImages'  => $bannerImages,
             'blocks'  => $blocks,
-            'aboutText'     => $aboutText,
-            'teamMembers'   => $teamMembers,
-            'teamPopups'    => \Zend\Json\Json::encode($teamPopups),
-            'solutions'     => $solutions,
-            'aboutPopup'    => ($isRobot !== false) ?  $aboutPopup[1]['text']  : \Zend\Json\Json::encode($aboutPopup),
             'projects'      => $projects,
             'projectsByRubric'      => $projectsByRubric,
             'rubrics'      => $rubrics,
             'isAdmin' => $isAdmin,
-            'btype'         => $btype,
-            'baction'       => $baction,
             'parentUrl'     => '/',
-            'bid'           =>  $bid,
             'conacts'       => $conacts,
             'clients'       => $clients,
-            'robot'         => $isRobot,
-            'aledoServices'      => $aledoServices,
-            'kaledoscopServices' => $kaledoscopServices,
             'servicesPopups' => \Zend\Json\Json::encode($servicesPopups),
             'serviceFormsPopups' => \Zend\Json\Json::encode($serviceFormsPopups),
         );

@@ -42,18 +42,20 @@ class CommercialProdMapper {
 
     /**
      * @param CommercialProd $item
-     * @return int
+     * @return CommercialProd
      */
     public function add($item) {
-        return $this->table->save($item);
+        $id = $this->table->save($item);
+        $item->id = $id;
+        return $item;
     }
 
     /**
-     * @param int $reportId
+     * @param int $roomId
      * @param CommercialProd[]|array $items
      * @return boolean;
      */
-    public function addList($commercialId, $items) {
+    public function addList($roomId, $items) {
         if (!is_array($items)) {
             return false;
         }
@@ -64,10 +66,43 @@ class CommercialProdMapper {
                 $obj->exchangeArray($item);
                 $item = $obj;
             }
-            $item->commercial_id = $commercialId;
+            $item->room_id = $roomId;
             $this->table->save($item);
         }
         return true;
+    }
+
+    /**
+     * @param int $roomId
+     * @param CommercialProd[]|array $items
+     * @return boolean;
+     */
+    public function updatePrice($commId, $price) {
+        $item = $this->table->find($commId);
+        if (!$item) {
+            return false;
+        }
+        $item->old_price = $price;
+        $this->table->save($item);
+        return true;
+    }
+
+    /**
+     * @param integer $id
+     * @param array $data
+     * @return CommercialProd|null
+     */
+    public function update($id, $data) {
+        $item = $this->table->find($id);
+
+        foreach ($data as $field => $val) {
+            if (isset($item->$field)) {
+                $item->$field = $val;
+            }
+        }
+        $this->table->save($item);
+
+        return $item;
     }
 
     /**
@@ -140,13 +175,10 @@ class CommercialProdMapper {
                                 $product->$fName = isset($sortedParams[$product->$fName]) ? $sortedParams[$product->$fName]->value : $product->$fName;
 
                             }
-                            $mainParams[$f->field] = $f->title;
-                            $product->$fName = $f->pre_value . $product->$fName . $f->post_value;
-//                            if (in_array($f->field, CatalogService::$intFields)) {
-//                                $fName = $f->field;
-//                                $product->$fName = isset($sortedParams[$fName]) ? $sortedParams[$fName]->value : $product->$fName;
-//                            }
-//                            $mainParams[$f->field] = $f->title;
+                            if ($product->$fName) {
+                                $mainParams[$f->field] = $f->title;
+                                $product->$fName = $f->pre_value . $product->$fName . $f->post_value;
+                            }
                         }
                     }
                     $item->mainParams = $mainParams;
@@ -164,6 +196,14 @@ class CommercialProdMapper {
      */
     public function get($id) {
         return $this->table->find($id);
+    }
+
+    /**
+     * @param int $id
+     * @return CommercialProd | false
+     */
+    public function delete($id) {
+        return $this->table->del($id);
     }
 
 }

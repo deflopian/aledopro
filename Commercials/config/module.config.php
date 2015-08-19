@@ -37,4 +37,18 @@ return array(
             'ViewJsonStrategy',
         ),
     ),
+
+    'bjyauthorize' => array(
+        'guards'                => array(
+            'BjyAuthorize\Guard\Route' => array(
+                array('route' => 'commercials', 'roles' => array('user')),
+            ),
+            'BjyAuthorize\Guard\Controller' => array(
+                array(
+                    'controller' => 'CommercialController',
+                    'roles' => array('user')
+                ),
+            ),
+        ),
+    ),
 );

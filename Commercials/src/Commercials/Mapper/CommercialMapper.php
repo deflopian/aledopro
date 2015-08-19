@@ -7,7 +7,10 @@
  */
 namespace Commercials\Mapper;
 
+use Catalog\Mapper\CatalogMapper;
+use Catalog\Service\CatalogService;
 use Commercials\Model\Commercial;
+use Commercials\Model\CommercialProd;
 use Commercials\Model\CommercialRoom;
 use Commercials\Model\CommercialsTable;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -46,13 +49,18 @@ class CommercialMapper {
 
     /**
      * @param string $name
-     * @param integer $type
-     * @param string $text
+     * @param integer $userId
      * @return int
      */
-    public function add($name) {
+    public function add($name, $userId = 0) {
         $data = array();
-        $data['name'] = $name;
+        $data['title'] = $name;
+        $data['user_id'] = $userId;
+
+        if ($userId) {
+            $maxUID = $this->getMaxUID($userId);
+            $data['uid'] = $maxUID + 1;
+        }
         $data['datetime'] = time();
 
 //
@@ -64,6 +72,25 @@ class CommercialMapper {
         $report->exchangeArray($data);
         $report->id = $id;
         return $report;
+    }
+
+    /**
+     * @param $commercial Commercial
+     */
+    public function actualize($commercial, $user, $discounts) {
+        $cm = CatalogMapper::getInstance($this->sl);
+        $cpm = CommercialProdMapper::getInstance($this->sl);
+        foreach ($commercial->rooms as $room) {
+            /** @var CommercialProd $commProd */
+            foreach ($room->prods as &$commProd) {
+                list($tree, $type) = $cm->getParentTree($commProd->product_id);
+//                $price = CatalogService::getTruePrice($commProd->product->price_without_nds, $user, $tree, $discounts, $commProd->product->opt2);
+                $price = CatalogService::getTruePrice($commProd->product->price_without_nds);
+                $cpm->updatePrice($commProd->id, $price);
+            }
+        }
+
+        $this->updateSumm($commercial);
     }
 
     /**
@@ -87,6 +114,109 @@ class CommercialMapper {
     }
 
     /**
+     * @param $userId
+     * @param $uid
+     * @param bool|true $fill
+     * @param bool|false $recursive
+     * @param bool|false $withMainParams
+     * @return array|Commercial
+     */
+    public function getByUID($userId, $uid, $fill = true, $recursive = false, $withMainParams = false) {
+        $commercial = $this->table->fetchByConds(array('user_id' => $userId, 'uid' => $uid));
+        if ($commercial) {
+            $commercial = reset($commercial);
+            $commercial->summ = $this->updateSumm($commercial);
+        }
+        if ($commercial && $fill) {
+            $itemsMapper = CommercialRoomMapper::getInstance($this->sl);
+
+            $items = $itemsMapper->getList($commercial->id, $recursive, $withMainParams);
+
+            $commercial->rooms = $items;
+
+        }
+
+        return $commercial;
+    }
+
+    /**
+     * @param integer $id
+     * @param bool $recursive
+     * @return Commercial|null
+     */
+    public function delete($id, $recursive = false) {
+        $this->table->del($id);
+
+        if ($recursive) {
+            $itemsMapper = CommercialRoomMapper::getInstance($this->sl);
+
+            $itemsMapper->deleteList($id);
+
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $commercial Commercial
+     * @return int
+     */
+    public function updateSumm($commercial) {
+        $crm = CommercialRoomMapper::getInstance($this->sl);
+        $rooms = $crm->getList($commercial->id);
+        $summ = 0;
+        foreach ($rooms as $room) {
+            $summ += $crm->updateSumm($room);
+        }
+        $commercial->summ = $summ;
+        if (isset($commercial->rooms)) {
+            unset($commercial->rooms);
+        }
+        $this->table->save($commercial);
+        return $summ;
+    }
+
+    /**
+     * @param integer $id
+     * @param array $data
+     * @return Commercial|null
+     */
+    public function update($id, $data) {
+        $item = $this->table->find($id);
+
+        foreach ($data as $field => $val) {
+            if (isset($item->$field)) {
+                $item->$field = $val;
+            }
+        }
+        $this->table->save($item);
+
+        return $item;
+    }
+
+    /**
+     * @param integer $userId
+     * @param integer $uid
+     * @param array $data
+     * @return Commercial|null
+     */
+    public function updateByUID($userId, $uid, $data) {
+        $item = $this->table->fetchByConds(array('user_id' => $userId, 'uid' => $uid));
+        $item = reset($item);
+        if (!$item) return false;
+        foreach ($data as $field => $val) {
+
+            if (isset($item->$field)) {
+                $item->$field = $val;
+            }
+        }
+        $this->table->save($item);
+
+        return $item;
+    }
+
+
+    /**
      * последний из отчётов данного типа
      * (например, чтобы крон дописывал инфу в отчёт, а не создавал каждый раз новый)
      *
@@ -107,17 +237,24 @@ class CommercialMapper {
         return $report;
     }
 
+    private function getMaxUID($userId) {
+
+        /** @var \Zend\Db\Adapter\Adapter $adapter */
+        $adapter = $this->table->getAdapter();
+        $resultSet = $adapter->query('SELECT MAX(`uid`) FROM `' . $this->table->table . '` WHERE `user_id`=' . $userId, $adapter::QUERY_MODE_EXECUTE);
+        $res = $resultSet->toArray();
+        if (count($res)) {
+            $res = reset($res[0]);
+        }
+        return $res ? $res : 0;
+    }
+
     /**
-     * @param integer $type
+     * @param integer $userId
      * @return Commercial[]
      */
-    public function getList($type = self::REPORT_TYPE_ALL) {
-        $reports = array();
-        if ($type == self::REPORT_TYPE_ALL) {
-            $reports = $this->table->fetchAll("id DESC", false, 40);
-        } else {
-            $reports = $this->table->fetchByCond("type", $type);
-        }
+    public function getList($userId) {
+        $reports = $this->table->fetchByCond("user_id", $userId);
         return $reports;
     }
 
@@ -127,7 +264,7 @@ class CommercialMapper {
      * @return Commercial
      */
     public function addItems($report, $items) {
-        $itemsMapper = CommercialItemMapper::getInstance($this->sl);
+        $itemsMapper = CommercialRoomMapper::getInstance($this->sl);
         $res = $itemsMapper->addList($report->id, $items);
         if ($res === true) {
             $items = $itemsMapper->getList($report->id);

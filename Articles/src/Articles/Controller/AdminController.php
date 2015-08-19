@@ -3,10 +3,13 @@ namespace Articles\Controller;
 
 use Application\Controller\SampleAdminController;
 use Articles\Model\ArticleBlock;
+use Articles\Model\ArticleTag;
+use Articles\Model\TagToArticle;
 use Catalog\Service\CatalogService;
 use Articles\Model\Article;
 use Articles\Model\StoA;
 use Info\Service\SeoService;
+use Zend\Json\Json;
 
 class AdminController extends SampleAdminController
 {
@@ -111,8 +114,30 @@ class AdminController extends SampleAdminController
     public function viewAction()
     {
         $this->imgFields=array('img', 'preview');
-        $return = parent::viewAction();
-        $id = (int) $this->params()->fromRoute('id', 0);
+        //$return = parent::viewAction();
+        $return = array();
+        $id = $this->params()->fromRoute('id', 0);
+        if ($id && is_numeric($id)) {
+            $return['entity'] = $this->getServiceLocator()->get('ArticlesTable')->find($id);
+        } else {
+            $article = $this->getServiceLocator()->get('ArticlesTable')->fetchByCond('alias', $id);
+            $return['entity'] = reset($article);
+            $id = $return['entity']->id;
+        }
+
+        if ($this->imgFields) {
+            $fileTable = $this->getServiceLocator()->get('FilesTable');
+            foreach ($this->imgFields as $imgField) {
+                if ($return['entity']->$imgField) {
+                    $file = $fileTable->find($return['entity']->$imgField);
+                    if ($file) {
+                        $imgFieldAndName = $imgField . "_name";
+                        $return['entity']->$imgFieldAndName = $file->name;
+                    }
+                }
+            }
+        }
+
         if(is_array($return)){
             if (!$id) {
                 return $this->redirect()->toRoute('zfcadmin/'.$this->url);
@@ -184,18 +209,81 @@ class AdminController extends SampleAdminController
     }
 
     public function addTagAction() {
-        $post = $this->getRequest()->getPost()->toArray();
-        var_dump($post);
+        $request = $this->getRequest();
+
+        $success = 0;
+        $sl = $this->getServiceLocator();
+        $data = Json::decode($request->getContent(), Json::TYPE_ARRAY);
+
+
+        if ($request->isPost()) {
+            $tagToArticleTable = $sl->get('TagToArticlesTable');
+            $curr = $tagToArticleTable->fetchByConds(array('article_id' => $data['article_id'], 'tag_id' => $data['tag_id']));
+            if (!$curr || count($curr) == 0) {
+                $tagToArticle = new TagToArticle();
+                $tagToArticle->article_id = $data['article_id'];
+                $tagToArticle->tag_id = $data['tag_id'];
+                $tagToArticleTable->save($tagToArticle);
+
+                $success = 1;
+
+            }
+            $this->response->setContent(Json::encode(array('success' => $success)))->setStatusCode(200);
+            return $this->response;
+        } else {
+            return $this->redirect()->toRoute('admin/blog');
+        }
     }
 
     public function addNewTagAction() {
-        $post = $this->getRequest()->getPost()->toArray();
-        var_dump($post);
+        $request = $this->getRequest();
+
+        $success = 0;
+        $sl = $this->getServiceLocator();
+        $data = Json::decode($request->getContent(), Json::TYPE_ARRAY);
+
+        if ($request->isPost()) {
+            $tagTable = $sl->get('ArticleTagsTable');
+            $tagToArticleTable = $sl->get('TagToArticlesTable');
+            $tag = new ArticleTag();
+            $tag->name = $data['tag'];
+            $tagId = $tagTable->save($tag);
+
+            $tagToArticle = new TagToArticle();
+            $tagToArticle->article_id = $data['article_id'];
+            $tagToArticle->tag_id = $tagId;
+            $tagToArticleTable->save($tagToArticle);
+
+            $success = 1;
+
+            $this->response->setContent(Json::encode(array('success' => $success)))->setStatusCode(200);
+            return $this->response;
+        } else {
+            return $this->redirect()->toRoute('admin/blog');
+        }
     }
 
     public function removeTagAction() {
-        $post = $this->getRequest()->getPost()->toArray();
-        var_dump($post);
+        $request = $this->getRequest();
+
+        $success = 0;
+        $sl = $this->getServiceLocator();
+        $data = Json::decode($request->getContent(), Json::TYPE_ARRAY);
+
+        if ($request->isPost()) {
+            $tagToArticleTable = $sl->get('TagToArticlesTable');
+            $curr = $tagToArticleTable->fetchByConds(array('article_id' => $data['article_id'], 'tag_id' => $data['tag_id']));
+            if (count($curr) > 0) {
+                $curr = reset($curr);
+                $tagToArticleTable->del($curr->id);
+                $success = 1;
+            }
+
+            $this->response->setContent(Json::encode(array('success' => $success)))->setStatusCode(200);
+            return $this->response;
+        } else {
+            return $this->redirect()->toRoute('admin/blog');
+        }
     }
 
     public function saveTagitAction()

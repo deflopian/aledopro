@@ -5,6 +5,7 @@ use Application\Controller\SampleAdminController;
 use Application\Service\ApplicationService;
 use Catalog\Mapper\CatalogMapper;
 use Catalog\Service\CatalogService;
+use Documents\Model\DocumentTable;
 use Info\Service\SeoService;
 use Developers\Model\ProdToProd;
 use Developers\Model\ProdToProj;
@@ -63,19 +64,11 @@ class AdminController extends SampleAdminController
             }
             $return['rubrics'] = $rubrics;
             $return['imgs'] = $sl->get($this->tableImg)->fetchByCond('parent_id', $id, 'order asc');
-//            $return['members'] = $sl->get($this->memberTable)->fetchByCond('parent_id', $id, 'order asc');
-//            $prodTable = $sl->get('Catalog\Model\ProductTable');
-//            /** @var \Catalog\Model\SeriesTable $serTable */
-//            $serTable = $sl->get('Catalog\Model\SeriesTable');
-//            $allSeries = $serTable->fetchAll();
-//            $allProds = ApplicationService::makeIdArrayFromObjectArray($prodTable->fetchAll());
-//            $allSeries = ApplicationService::makeIdArrayFromObjectArray($prodTable->fetchAll());
-//            $data = CatalogService::getSeriesAndTags($allProds); // там просто сортировка, переименовывать лень
-//            $data = CatalogService::getSeriesAndTags($allSeries, 0);
-//            $allProds = ApplicationService::makeIdArrayFromObjectArray($sl->get('Catalog\Model\ProductTable')->fetchAll());
-//            $data = array_merge_recursive($data, CatalogService::getSeriesAndTags($allProds));
 
-//            $return['tags'] = \Zend\Json\Json::encode($data['tags']);
+            $documentsTable = $this->getServiceLocator()->get('DocumentsTable');
+            $catalogs = $documentsTable->fetchByCond('type', DocumentTable::TYPE_DEVELOPERS_CATALOG . $id);
+
+            $catalogsJson = \Zend\Json\Json::encode($catalogs);
 
             $projTags = $sl->get($this->table)->fetchAll();
             foreach($projTags as $i=>$pr){
@@ -89,42 +82,9 @@ class AdminController extends SampleAdminController
 
 
             $return['projTags'] = \Zend\Json\Json::encode($data['tags']);
+            $return['catalogsJson'] = $catalogsJson;
 
 
-
-//            $relatedSeriesIds = $sl->get($this->pToPTable)->fetchByCond('developer_id', $id, 'order ASC');
-//            $relatedSeries = array();
-//            $relatedProds = array();
-//            foreach($relatedSeriesIds as $sid){
-//
-//                if ($sid->product_type ==  \Catalog\Controller\AdminController::SERIES_TABLE) {
-//                    $prod = $serTable->find($sid->product_id);
-//                    $prod->product_type = \Catalog\Controller\AdminController::SERIES_TABLE;
-////                    $relatedSeries[] = $serTable->find($sid->product_id);
-//                } elseif ($sid->product_type ==  \Catalog\Controller\AdminController::PRODUCT_TABLE) {
-//                    $prod = $prodTable->find($sid->product_id);
-//                    $prod->product_type = \Catalog\Controller\AdminController::PRODUCT_TABLE;
-//                }
-//                if ($prod) {
-//                    $prod->meta_id = $sid->id;
-//                    $relatedProds[] = $prod;
-//                }
-//
-//            }
-////            if (!empty($relatedSeriesIdsArray)) {
-////                $relatedSeries = $serTable->fetchByCond('id', $relatedSeriesIdsArray);
-////            } else {
-////                $relatedSeries = array();
-////            }
-//            $return['relatedSeries'] = $relatedSeries;
-//            $return['relatedProds'] = $relatedProds;
-//
-//            $relatedProjIds = $sl->get($this->projToProjTable)->find($id);
-//            $relatedDevelopers = array();
-//            foreach($relatedProjIds as $sid){
-//                $relatedDevelopers[] = $sl->get($this->table)->find($sid);
-//            }
-//            $return['relatedDevelopers'] = $relatedDevelopers;
             $seoData = $sl->get('SeoDataTable')->find( SeoService::DEVELOPERS, $id );
             $return['seoData'] = $seoData;
         }

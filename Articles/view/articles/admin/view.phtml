@@ -16,6 +16,12 @@
                 <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
             </td>
         </tr>
+        <tr>
+            <td>Псевдоним в URL</td>
+            <td>
+                <a href="#" data-type="text" data-name="alias" class="editable-param"><?= $entity->alias; ?></a>
+            </td>
+        </tr>
         <tr id="imageMapper">
             <td>Превью</td>
             <td>
@@ -130,6 +136,8 @@
                     ng-init='tags=<?= $currentTags?>'
                     replace-spaces-with-dashes="false"
                     on-tag-added="addTag(<?= $entity->id ?>, $tag)"
+                    template="tag-template"
+                    on-tag-removed="removeTag(<?= $entity->id ?>, $tag)"
                     display-property="label"
             >
             <auto-complete
@@ -145,35 +153,19 @@
                 <span class="tagit-label" ng-bind-html="$highlight($getDisplayText())"></span>
             </div>
         </script>
+        <script type="text/ng-template" id="tag-template">
+            <div class="btn btn-default">
+                <span>{{$getDisplayText()}}</span>
+                <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+            </div>
+        </script>
     </div>
     <script type="application/javascript">
-        AppFactory("ng-tagit", "tagit", ["ngTagsInput", "fuckit"]);
+        AppFactory("ng-tagit", "tagit", ["ngTagsInput", "tags"]);
 
     </script>
 </div>
 
-<div class="section">
-    <h3>Теги</h3>
-    <div class="addPanel">
-        <button type="button" class="btn btn-default" id="tagit-add">Добавить тег</button>
-
-        <div id="tagit-form" style="display: none">
-            <ul id="tagit-series">
-                <? foreach ($currentTags as $tag) { ?>
-                <li>
-                    <span class="tagit-label"><?= $tag->name ?></span>
-                    <a class="tagit-close"><span class="text-icon">×</span><span class="ui-icon ui-icon-close"></span></a>
-                    <input type="hidden" value="<?= $tag->id ?>" name="tags" class="tagit-hidden-field">
-                </li>
-                <? } ?>
-            </ul>
-            <input type="hidden" id="tagit-series-res" name="seriesIds"/>
-
-            <button type="button" class="btn btn-default" id="tagit-save">Добавить</button>
-            <button type="button" class="btn btn-default" id="tagit-cancel">Отмена</button>
-        </div>
-    </div>
-</div>
 <?
 $sl = $this->getHelperPluginManager()->getServiceLocator();
 echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);

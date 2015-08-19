@@ -15,13 +15,24 @@ class ArticlesController extends AbstractActionController
 
     public function viewAction() {
         $sl = $this->getServiceLocator();
-
-        $id = intval($this->params()->fromRoute('id', 0));
-
         /** @var Article $article */
-        $article = $this->getArticleTable()->find($id);
+        $id = $this->params()->fromRoute('id', 0);
+        if (is_numeric($id)) {
+            $article = $this->getArticleTable()->find($id);
+        } else {
+            $article = $this->getArticleTable()->fetchByCond('alias', $id);
+            $article = reset($article);
+        }
 
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::ARTICLES, $id );
+
+        if (!$article) return $this->redirect()->toRoute('blog');
+
+        if (is_numeric($id) && !empty($article->alias)) {
+            return $this->redirect()->toUrl('/articles/view/' . $article->alias)->setStatusCode(301);
+        }
+
+        $id = $article->id;
+        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::ARTICLES, $article->id );
 
         $arrayIds = array();
         $articles = $this->getArticleTable()->fetchAll('order asc');
@@ -59,7 +70,7 @@ class ArticlesController extends AbstractActionController
         }
         $article->blocks = $blocks;
 
-
+        $this->layout()->seoData = $seoData;
         $this->layout()->pageTitle = $article->title;
         $this->layout()->breadCrumbs  = array(
             array('link'=> $this->url()->fromRoute('blog'), 'text'=>ucfirst('Блог'))

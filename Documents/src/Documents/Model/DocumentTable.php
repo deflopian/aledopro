@@ -13,6 +13,7 @@ class DocumentTable extends SampleTable
     const TYPE_COMMENT = 2;
     const TYPE_CERTIFICATE = 3;
     const TYPE_INSTRUCTION = 4;
+    const TYPE_DEVELOPERS_CATALOG = 5;
 
     public function __construct(Adapter $adapter)
     {

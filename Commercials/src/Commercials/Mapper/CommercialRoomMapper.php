@@ -45,8 +45,43 @@ class CommercialRoomMapper {
         return $this->table->save($item);
     }
 
+
     /**
-     * @param int $reportId
+     * @param $room CommercialRoom
+     * @return int
+     */
+    public function updateSumm($room) {
+        $cpm = CommercialProdMapper::getInstance($this->sl);
+        $summ = 0;
+        $prods = $cpm->getList($room->id);
+        foreach ($prods as $prod) {
+            $summ += $prod->old_price * $prod->count;
+        }
+        $room->summ = $summ;
+        $this->table->save($room);
+        return $summ;
+    }
+
+    /**
+     * @param integer $id
+     * @param array $data
+     * @return CommercialRoom|null
+     */
+    public function update($id, $data) {
+        $item = $this->table->find($id);
+
+        foreach ($data as $field => $val) {
+            if (isset($item->$field)) {
+                $item->$field = $val;
+            }
+        }
+        $this->table->save($item);
+
+        return $item;
+    }
+
+    /**
+     * @param int $commercialId
      * @param CommercialRoom[]|array $items
      * @return boolean;
      */
@@ -69,11 +104,33 @@ class CommercialRoomMapper {
 
     /**
      * @param int $commercialId
+     * @return boolean;
+     */
+    public function deleteList($commercialId) {
+        $items = $this->getList($commercialId, false, false);
+
+        foreach ($items as $item) {
+            $this->table->del($item->id);
+        }
+        return true;
+    }
+
+    /**
+     * @param int $roomId
+     * @return boolean;
+     */
+    public function delete($roomId) {
+        $this->table->del($roomId);
+        return true;
+    }
+
+    /**
+     * @param int $commercialId
      * @param bool $recursive
      * @return CommercialRoom[] | array;
      */
     public function getList($commercialId, $recursive = false, $withMainParams = false) {
-        $items = $this->table->fetchByCond('commercial_id', $commercialId);
+        $items = $this->table->fetchByCond('commercial_id', $commercialId, 'order ASC');
         if ($recursive) {
             $cpm = CommercialProdMapper::getInstance($this->sl);
             foreach ($items as &$item) {

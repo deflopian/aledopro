@@ -15,6 +15,8 @@ class CommercialRoom extends SampleModel
     /** @var $products Product */
     public $id;
     public $commercial_id; // id КП
+    public $summ;
     public $title;      // название помещения
+    public $order;
     // $products
 }

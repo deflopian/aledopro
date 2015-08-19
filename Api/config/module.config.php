@@ -7,6 +7,9 @@ return array(
             'TreeApiController' => 'Api\Controller\TreeController',
             'EntityApiController' => 'Api\Controller\EntityController',
             'FieldApiController' => 'Api\Controller\FieldController',
+            'CommercialApiController' => 'Api\Controller\CommercialController',
+            'RoomApiController' => 'Api\Controller\RoomController',
+            'CommercialProdApiController' => 'Api\Controller\CommercialProdController',
         ),
     ),
 
@@ -60,6 +63,42 @@ return array(
                     ),
                 ),
             ),
+            'api/commercials' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/api/commercials[/:id][/]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'CommercialApiController',
+                    ),
+                ),
+            ),
+            'api/rooms' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/api/rooms[/:id][/]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'RoomApiController',
+                    ),
+                ),
+            ),
+            'api/comprod' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/api/comprod[/:id][/]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'CommercialProdApiController',
+                    ),
+                ),
+            ),
             'field' => array(
                 'type'    => 'segment',
                 'options' => array(
@@ -92,6 +131,9 @@ return array(
                 array('route' => 'tree', 'roles' => array('guest', 'user')),
                 array('route' => 'entity', 'roles' => array('guest', 'user')),
                 array('route' => 'field', 'roles' => array('guest', 'user')),
+                array('route' => 'api/commercials', 'roles' => array('guest', 'user')),
+                array('route' => 'api/rooms', 'roles' => array('guest', 'user')),
+                array('route' => 'api/comprod', 'roles' => array('guest', 'user')),
             ),
             'BjyAuthorize\Guard\Controller' => array(
                 array('controller' => 'ApiController', 'roles' => array('guest','user')),
@@ -99,6 +141,9 @@ return array(
                 array('controller' => 'TreeApiController', 'roles' => array('guest','user')),
                 array('controller' => 'EntityApiController', 'roles' => array('guest','user')),
                 array('controller' => 'FieldApiController', 'roles' => array('guest','user')),
+                array('controller' => 'CommercialApiController', 'roles' => array('guest','user')),
+                array('controller' => 'RoomApiController', 'roles' => array('guest','user')),
+                array('controller' => 'CommercialProdApiController', 'roles' => array('guest','user')),
                 array(
                     'controller' => array(
                         'ApiController',

@@ -9,7 +9,7 @@
             <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
         </div>
     </div>
-    <div class="b-section b-section_catalogs" id="/catalogs"
+    <div class="b-section b-section_catalogs" id="catalogs"
          image-responsive="{
                              default : {
              src: '/images/files/<?= $entity->img_1_1000_name ?>',
@@ -63,7 +63,7 @@
             </div>
         </div>
     </div>
-    <div class="b-section b-section_instructions" id="/instructions">
+    <div class="b-section b-section_instructions" id="instructions">
         <div class="b-section__content">
             <div class="b-instructions">
                 <? $firstInstruction = $this->instructions[0]; ?>
@@ -106,7 +106,7 @@
             </div>
         </div>
     </div>
-    <div class="b-section b-section_certificates" id="/certificates"
+    <div class="b-section b-section_certificates" id="certificates"
          image-responsive="{
                              default : {
              src: '/images/files/<?= $entity->img_2_1000_name ?>',
@@ -131,7 +131,7 @@
                         <div class="b-downloads-slider">
                             <? foreach ($this->certificates as $certificate) { ?>
                             <div class="b-downloads-slider__item">
-                                <a class="b-downloads-slider__link b-downloads-slider__link_certificate" href="/images/documents/<?= $certificate->file_name ?>">
+                                <a class="b-downloads-slider__link b-downloads-slider__link_certificate" href="/images/documents/<?= $certificate->file_name ?>" target="_blank">
                                     <img class="b-downloads-slider__image" src="/images/documents/<?= $certificate->img_name ?>" />
                                     <div class="b-slider__document-title">
                                         <div class="b-slider__document-title-name">

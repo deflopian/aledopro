@@ -11,6 +11,9 @@ class UserService
     public static $godModeName = false;
     public static $godModePartnerGroupId = false;
     public static $isPartner = false;
+    public static $commercialMode = false;
+    public static $commercialId = 0;
+    public static $roomId = 0;
 
     const USER_ACTION_OTHER = -1;
     const USER_ACTION_LOGIN = 1;

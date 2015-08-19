@@ -13,12 +13,18 @@
     <div class="b-section__content">
         <div class="b-tabs-wrapper b-tabs-wrapper_cabinet">
             <ul class="b-tabs list-unstyled">
-                <li class="b-tabs__tab active">
+                <li class="b-tabs__tab<?= ($user && $user->user_id == 2) ? ' three-tabs' : '' ?> active">
                     <a class="b-tabs__link  text-left" href="#orders_history" data-toggle="tab">История заказов</a>
                 </li>
-                <li class="b-tabs__tab">
+                <li class="b-tabs__tab<?= ($user && $user->user_id == 2) ? ' three-tabs' : '' ?>">
                     <a class="b-tabs__link  text-left" href="#personal_data" data-toggle="tab">Персональные данные</a>
                 </li>
+
+                <? if ($user && $user->user_id == 2) { ?>
+                <li class="b-tabs__tab three-tabs">
+                    <a class="b-tabs__link  text-left" href="#offers_1" data-toggle="tab">Коммерческие предложения</a>
+                </li>
+                <? } ?>
             </ul>
             <div class="b-tabs-content">
                 <div class="b-tabs-content__item fade in active" id="orders_history">
@@ -316,12 +322,281 @@
                     </div>
 
                 </div>
+                <? if ($user && $user->user_id==2) { ?>
+                <div class="b-tabs-content__item  b-tabs-content__item_offer fade active in" id="offers_1">
+                    <aledo-commercials>
+                        <aledo-commercials-data><?= $commercialsJson ?></aledo-commercials-data>
+                        <span  ng-init="closeCommercialMode()"></span>
+                        <table cellpadding="0" cellspacing="0" border="0" class="b-offers-table" ng-show="viewMode == MODE_VIEW_ALL_COMMERCIALS">
+                            <colgroup>
+                                <col style="width:50px"/>
+                                <col style="width:60%"/>
+
+                            </colgroup>
+                            <tr class="b-offers-table__row">
+                                <td class="b-offers-table__cell b-offers-table__cell_header-cell">
+                                    ID
+                                </td>
+                                <td class="b-offers-table__cell b-offers-table__cell_header-cell">
+                                    Название
+                                </td>
+                                <td class="b-offers-table__cell b-offers-table__cell_header-cell">
+                                    Дата
+                                </td>
+                                <td class="b-offers-table__cell b-offers-table__cell_header-cell">
+                                    Сумма
+                                </td>
+                                <td class="b-offers-table__cell b-offers-table__cell_header-cell">
+                                    Управление
+                                </td>
+                            </tr>
+                            <tr class="b-offers-table__row">
+                                <td colspan="6" class="b-offers-table__cell b-offers-table__cell_add-offer">
+                                    <a href="javascript:void(0)" ng-click="commercialAPI.add()">Добавить коммерческое предложение</a>
+                                </td>
+                            </tr>
+                            <tr class="b-offers-table__row" ng-repeat="comm in commercials">
+                                <td class="b-offers-table__cell">
+                                    {{comm.uid}}
+                                </td>
+                                <td class="b-offers-table__cell ">
+                                    <a href="javascript:void(0)" ng-click="commercialAPI.viewOne(comm.uid)">{{comm.title}}</a>
+                                </td>
+                                <td class="b-offers-table__cell b-offers-table__cell_date">
+                                    {{getDate(comm.datetime)}}
+                                </td>
+                                <td class="b-offers-table__cell b-offers-table__cell_summ">
+                                    {{comm.summ}} <span class="b-rub">Р</span>
+                                </td>
+                                <td class="b-offers-table__cell b-offers-table__cell_buttons">
+                                    <a href="javascript:void(0)" ng-click="commercialAPI.viewOne(comm.uid)" class="b-button b-button_small b-offers-table__button b-offers-table__button_left ">
+                                        <span class="b-button__text">Редактировать</span>
+                                    </a>
+                                    <a href="javascript:void(0)" ng-click="commercialAPI.remove(comm.uid)" class="b-button b-button_small b-offers-table__button ">
+                                        <span class="b-button__text">Удалить</span>
+                                    </a>
+
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="b-offer" ng-if="(viewMode == MODE_VIEW_ONE_COMMERCIAL && commercial.uid == viewCommercialUid) || (viewMode == MODE_VIEW_ONE_ROOM && room.id == viewRoomId)">
+                            <table class="b-offer-header-table">
+                                <colgroup>
+                                    <col style="width: 70%"/>
+                                    <col style="width: 30%"/>
+                                </colgroup>
+                                <tr>
+                                    <td class="b-offer-header-table__cell">
+                                        <div class="b-offer-header-table__name  b-editable-field"
+                                             ng-editable-field>
+                                            <div class="b-editable-field__inner commercial{{commercial.uid}}">
+
+                                                <input class=" b-editable-field__field"
+                                                       ng-value="commercial.title" ng-blur="commercialAPI.update(commercial)">
+                                                <span class="b-editable-field__hidden">{{commercial.title}}</span>
+                                            </div>
+
+                                            <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg"
+                                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 21.2 19.2" enable-background="new 0 0 21.2 19.2"
+                                                 class="b-editable-field__icon" xml:space="preserve">
+                                                <path id="pensil_15_" class="b-editable-field__icon-path" fill="#CED0D1" d="M20.4,3.1l-2-2.2c-0.5-0.6-1.3-0.6-1.9-0.1L15.1,2l3.8,4.2L20.3,5
+                                                    C20.9,4.5,20.9,3.7,20.4,3.1z M3.2,12.7l3.8,4.2l11-9.8l-3.8-4.2L3.2,12.7z M1.4,16.1l-0.9,2.7l2.8-0.6l2.6-0.5l-3.6-4.1L1.4,16.1z"
+                                                    />
+                                            </svg>
+
+                                        </div>
+                                    </td>
+                                    <td class="b-offer-header-table__cell text-right">
+                                        <div class="text-nowrap">
+                                            <span class="b-offer-header-table__id">ID: {{commercial.uid}}</span>
+                                            <span class="b-offer-header-table__date">Дата: {{getDate(commercial.datetime)}}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <h4 class="b-offer__add"  ng-show="commercial.rooms.length == 0"><a ng-click="roomAPI.add(commercial.uid)" href="javascript:void(0)">Добавить помещение в коммерческое
+                                    предложение</a></h4>
+
+                            <div class="b-offer-panel" ng-show="commercial.rooms.length > 0">
+                                <div class="b-offer-panel__cell">
+                                    <a ng-click="roomAPI.add(commercial.uid)" href="javascript:void(0)"> Добавить помещение</a>
+                                </div>
+                                <div class="b-offer-panel__cell">
+                                    <a href="/commercials/actualize/{{commercial.uid}}"> Актуализировать цены</a>
+                                </div>
+                                <div class="b-offer-panel__cell">
+                                    <a href="/commercials/exportFile/{{commercial.uid}}" target="_blank"> Экспортировать в Excel</a>
+                                </div>
+                                <div class="b-offer-panel__cell">
+                                    <a ng-click="commercialAPI.update(commercial)" href="javascript:void(0)"> Сохранить КП</a>
+                                </div>
+                            </div>
+                            <div id="sortableCommContainer">
+                                <div sv-root sv-on-sort="roomAPI.makesort($item, $partFrom, $partTo, $indexFrom, $indexTo)" sv-part="commercial.rooms" style="padding-left: 0">
+                                    <div sv-element="sortableOptions" ng-repeat="room in commercial.rooms track by $index">
+                                        <div class="b-accommodation"  style="background-color: rgba(255,255,255,0.8);">
+                                        <div class="b-accommodation__name " sv-handle style="width: 5%; float:left; cursor: move;">{{$index}}</div>
+                                        <div class="b-accommodation__name  b-editable-field" style="width: 95%"
+                                             ng-editable-field>
+                                            <div class="b-editable-field__inner room{{room.id}}">
+
+                                                <input class=" b-editable-field__field"
+                                                       ng-model="room.title" ng-blur="roomAPI.update(room)">
+                                                <span class="b-editable-field__hidden" ng-bind="room.title">{{room.title}}</span>
+                                            </div>
+
+                                            <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg"
+                                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 viewBox="0 0 21.2 19.2" enable-background="new 0 0 21.2 19.2"
+                                                 class="b-editable-field__icon" xml:space="preserve">
+                                                <path id="pensil_15_" class="b-editable-field__icon-path" fill="#CED0D1" d="M20.4,3.1l-2-2.2c-0.5-0.6-1.3-0.6-1.9-0.1L15.1,2l3.8,4.2L20.3,5
+                                                    C20.9,4.5,20.9,3.7,20.4,3.1z M3.2,12.7l3.8,4.2l11-9.8l-3.8-4.2L3.2,12.7z M1.4,16.1l-0.9,2.7l2.8-0.6l2.6-0.5l-3.6-4.1L1.4,16.1z"
+                                                    />
+                                            </svg>
+                                            <span class="room-summ-header">
+                                                <span class="b-cart-table_accommodation__total text-right" colspan="5">Сумма:</span>
+                                                <span class="b-cart-table_accommodation__total">{{room.summ}}<span class="b-rub">Р</span></span>
+                                            </span>
+
+                                        </div>
+                                        <hr class="dotted-separator"/>
+                                        <table cellpadding="0" cellspacing="0" border="0"
+                                               class="b-cart-table b-cart-table_accommodation" ng-if="viewMode == MODE_VIEW_ONE_ROOM && room.id == viewRoomId">
+                                        <colgroup>
+                                            <col style="width:16rem;">
+                                            <col style="width:10rem;">
+                                            <col style="width:100%">
+                                            <col style="width:7.5rem;">
+                                            <col style="width:10.8rem;">
+                                            <col style="width:10.8rem;">
+                                            <col style="width:1.3rem;">
+                                        </colgroup>
+                                        <tbody>
+
+                                        <tr class="cart-line"ng-repeat="product in room.prods">
+                                            <td class="b-cart-product-cell  b-cart-product-cell_image">
+                                                <a href="/catalog/product/{{product.product.id}}/" class="b-cart-product-cell_image__inner">
+                                                    <img class="b-cart-product-cell__image"
+                                                         src="/images/products/{{product.product.previewName}}"
+                                                         alt="{{product.product.title}}">
+                                                </a>
+                                            </td>
+                                            <td class="b-cart-product-cell  b-cart-product-cell_article">
+                                                <div class="b-cart-product-cell_article__inner">
+                                                    {{product.product.id}}
+                                                </div>
+                                            </td>
+                                            <td class="b-cart-product-cell  b-cart-product-cell_title">
+                                                <h5 class="b-cart-product-cell__title">
+                                                    <a href="/catalog/product/{{product.id}}/">{{product.product.title}}</a>
+                                                </h5>
+
+                                                <p ng-repeat="(mainParam, mainParamName) in product.mainParams">{{mainParamName}} - {{product.product[mainParam]}}</p>
+                                            </td>
+
+
+                                            <td class="b-cart-product-cell  b-cart-product-cell_price">
+                                                <div class="b-cart-product-cell_price__inner">
+                                                <span class="b-cart-product-cell__price">{{product.old_price}}</span>
+                                                    <span class="b-rub">Р</span>
+                                                </div>
+                                            </td>
+                                            <td class="b-cart-product-cell  b-cart-product-cell_count">
+                                                <div class="b-cart-product-cell_count__inner">
+                                                    <div class="b-cart-product-counter">
+                                                        <input
+                                                            class="b-form-control b-cart-product-counter__input ng-pristine ng-untouched ng-valid"
+                                                            name="count" ng-model="product.count"
+                                                            ng-change="prodAPI.update(product)" ng-value="1" value="1">
+                                                    <span
+                                                        class="b-cart-product-counter__button b-cart-product-counter__button_up font-icon-arrow-2" ng-click="prodAPI.upCount(product, room)"></span>
+                                                    <span
+                                                        class="b-cart-product-counter__button b-cart-product-counter__button_down font-icon-arrow" ng-click="prodAPI.downCount(product, room)"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td class="b-cart-product-cell  b-cart-product-cell_result-price">
+                                                <div class="b-cart-product-cell_result-price__inner">
+                                                    <span class="b-cart-product-cell__result-price">{{product.count * product.old_price}}</span>
+                                                    <span class="b-rub">Р</span>
+                                                </div>
+                                            </td>
+                                            <td class="b-cart-product-cell  b-cart-product-cell_delete">
+                                                <div class="b-cart-product-cell_delete__inner">
+                                                    <button type="button" class="b-cart-product_delete close" ng-click="prodAPI.remove(room.id, product.id, room)">
+                                                        ×
+                                                    </button>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <!--
+                                            Пустая строка тут нужна-->
+                                        </tr>
+                                        <tr class="cart-line" ng-show="room.prods.length > 0">
+                                            <td class="b-cart-table_accommodation__total " colspan="4"></td>
+                                            <td class="b-cart-table_accommodation__total text-right" colspan="2">Сумма: {{room.summ}}<span class="b-rub">Р</span></td>
+                                            <td></td>
+                                        </tr>
+                                        </table>
+                                        <hr class="dotted-separator" />
+                                        <div class="b-accommodation-panel">
+                                            <div class="b-accommodation-panel__cell">
+                                                <a ng-show="viewRoomId != room.id" ng-click="roomAPI.viewOne(room.id)">Список оборудования</a>
+                                                <a ng-show="viewRoomId == room.id" ng-click="roomAPI.viewOne(room.id)">Скрыть список</a>
+                                            </div>
+                                            <div class="b-accommodation-panel__cell">
+                                                <a ng-click="setCommercialMode(commercial.uid, room.id, room)">Добавить оборудование</a>
+                                            </div>
+                                            <div class="b-accommodation-panel__cell">
+                                                <a ng-click="roomAPI.remove(room.id)"> Удалить</a>
+                                            </div>
+                                            <div class="b-accommodation-panel__cell">
+                                                <a ng-click="roomAPI.update(room)"> Сохранить помещение</a>
+                                            </div>
+
+                                        </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="b-accommodation__name  b-editable-field" style="width: 100%">
+                                    <span class="room-summ-header">
+                                        <span class="b-cart-table_accommodation__total text-right">Сумма:</span>
+                                        <span class="b-cart-table_accommodation__total">{{commercial.summ}}<span class="b-rub">Р</span></span>
+                                    </span>
+                            </div>
+                        </div>
+
+                    </aledo-commercials>
+                </div>
+            <? } ?>
             </div>
         </div>
         <script type="text/javascript">
             $(function() {
                 $('a.b-tabs__link').click(function (e) {
-                    $(this).tab('show');
+                    //e.preventDefault();
+                    var h = $(this).attr('href');
+                    if (location.hash == '#offers_1' && h == "#offers_1") {
+                        location.href="/cabinet/#offers_1";
+                    } else {
+                        if(history.pushState) {
+                            history.pushState(null, null, h);
+                        }
+                        else {
+                            location.hash = h;
+                        }
+                        $(this).tab('show');
+                    }
+
                 });
 
                 // Javascript to enable link to tab

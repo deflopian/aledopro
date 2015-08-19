@@ -87,12 +87,17 @@ class SampleAdminController extends AbstractActionController
     {
         $this->setData();
 
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('zfcadmin/'.$this->url);
         }
-
-        $entitу = $this->getServiceLocator()->get($this->table)->find($id);
+        if (is_numeric($id)) {
+            $entitу = $this->getServiceLocator()->get($this->table)->find($id);
+        } else {
+            $entitу = $this->getServiceLocator()->get($this->table)->fetchByCond('alias', $id);
+            $entitу = reset($entitу);
+        }
+//        $entitу = $this->getServiceLocator()->get($this->table)->find($id);
 
 
         if ($entitу === false) {

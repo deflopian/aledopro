@@ -1,4 +1,11 @@
 <div class="b-section b-blog">
+    <div class="b-section__content">
+        <div class="b-breadcrumbs">
+            <a class="b-breadcrumbs__item" href="/">Главная</a>&nbsp;/
+
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active">Блог</strong>
+        </div>
+    </div>
     <div class="b-blog-header">
         <div class="b-phrase-outer b-blog__phrase">
             <div class="b-phrase">
@@ -10,8 +17,7 @@
                         </div>
                     </div>
                     <div class="b-phrase-table__right">
-                        Цветопередача, чем раньше, тем больше, тем меньше и уже, ну
-                        как-то
+                        Свет. Технологии. Опыт.
                     </div>
                 </div>
             </div>
@@ -31,16 +37,18 @@
                 </div>
                 <div class="b-blog-article__right">
                     <div class="b-blog-article__preview">
-                        <a href="/articles/view/<?= $article->id ?>"  style="text-decoration: none"><h2 class="b-blog-article__heading"><?= $article->title ?></h2></a>
-                            <? if (false) { ?>
+                        <a href="/articles/view/<?= $article->alias ? $article->alias : $article->id ?>"  style="text-decoration: none"><h2 class="b-blog-article__heading"><?= $article->title ?></h2></a>
+                            <? if (count($article->tags) > 0) { ?>
                             <div class="b-blog-article-rubrics">
-                                Рубрики: <a href="javascript:void(0)" class="b-blog-article-rubrics__item">технологии</a>,
-                                    <a href="javascript:void(0)" class="b-blog-article-rubrics__item">качество</a>
+                                Рубрики:
+                                <? foreach ($article->tags as $tag) { ?>
+                                    <a href="/blog/tag/<?= $tag->name ?>" class="b-blog-article-rubrics__item"><?= $tag->name; ?></a>,
+                                <? } ?>
                             </div>
                             <? } ?>
                             <div class="b-blog-article__text" text-cut="{'lines':3, 'text' : '.b-blog-article__cutted-text'}">
                                 <span class="b-blog-article__cutted-text">
-                                <?= strip_tags($article->text_short) ?></span><a href="/articles/view/<?= $article->id ?>" class="b-blog-article__link-more">читать далее</a>
+                                <?= strip_tags($article->text_short) ?></span><a href="/articles/view/<?= $article->alias ? $article->alias : $article->id ?>" class="b-blog-article__link-more">читать далее</a>
                             </div>
                     </div>
                 </div>

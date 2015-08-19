@@ -496,6 +496,59 @@
 
 </script>
 
+<? if (false) { ?>
+<div class="b-section">
+    <div class="b-section__content">
+<h4 class="b-about-project__heading b-about-project__heading_products">Оборудование в проекте</h4>
+<div class="b-project-products" style="width: 100%">
+
+    <h4 class="b-project-products__product-name"></h4>
+
+    <div class="b-project-products-slider other-projects-slider">
+        <? foreach ($otherProjects as $op) { ?>
+            <div class="b-project-products-slider__item>
+                <i class="b-slider-item-layout"></i>
+                <? if ($op->previewName) { ?>
+                    <a href="/images/projects/<?= $op->previewName ?>"
+                       rel="other_projects_gallery">
+                        <img class="b-project-products-slider__image"
+                             src="/images/projects/<?= $op->previewName ?>"/>
+                    </a>
+                <? } ?>
+            </div>
+        <? } ?>
+
+    </div>
+
+</div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+
+    var $this = jQuery('.other-projects-slider');
+    $this.slick({
+        dots: false,
+        infinite: true,
+        draggable: browser.mobile ? true : false,
+        speed: browser.mobile ? 300 : 500,
+        touchThreshold: browser.mobile ? 5 : 50,
+        slidesToShow: 4,
+        centerMode: true,
+        variableWidth: true,
+        arrows: browser.mobile ? false : true,
+        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-project-products-slider__arrow b-project-products-slider__arrow_prev\"></a>",
+        nextArrow: "<a href=\"javascript:void(0)\" class=\"b-project-products-slider__arrow b-project-products-slider__arrow_next\"></a>"
+    });
+
+    });
+
+</script>
+<? } ?>
+
+
+
 <script type="application/javascript">
     $(window).keyup(function(event) {
         if(event.ctrlKey){

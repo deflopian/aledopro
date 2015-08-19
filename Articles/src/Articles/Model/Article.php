@@ -8,6 +8,7 @@ class Article extends SampleModel
     public $id;
     public $title;
     public $text_short;
+    public $alias;
     public $text;
     public $img;
     public $date;

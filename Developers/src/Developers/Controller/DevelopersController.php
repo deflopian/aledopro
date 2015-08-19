@@ -5,6 +5,7 @@ use Catalog\Controller\AdminController;
 use Catalog\Mapper\LinkToLinkMapper;
 use Catalog\Service\CatalogService;
 use Developers\Model\Developer;
+use Documents\Model\DocumentTable;
 use Info\Service\SeoService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Developers\Model\DeveloperTable;
@@ -20,12 +21,25 @@ class DevelopersController extends AbstractActionController
     protected $pageInfoType = SeoService::DEVELOPERS;
 
     public function viewAction() {
+        //$ip = $_SERVER['REMOTE_ADDR']; // узнаем IP посетителя
+        //$data = geoip_record_by_name($ip);
+//var_dump($data);
         $sl = $this->getServiceLocator();
 
-        $id = intval($this->params()->fromRoute('id', 0));
+        $id = $this->params()->fromRoute('id', 0);
+
         /** @var Developer $developer */
-        $developer = $this->getDeveloperTable()->find($id);
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::DEVELOPERS, $id );
+        if (is_numeric($id)) {
+            $developer = $this->getDeveloperTable()->find($id);
+        } else {
+            $developer = $this->getDeveloperTable()->fetchByCond('alias', $id);
+            $developer = reset($developer);
+
+        }
+
+        if (!$developer) return $this->redirect()->toRoute('brands');
+
+        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::DEVELOPERS, $developer->id );
         $fileTable = $this->getServiceLocator()->get('FilesTable');
 
         if ($developer->preview) {
@@ -41,6 +55,24 @@ class DevelopersController extends AbstractActionController
             }
         }
 
+        $documentsTable = $this->getServiceLocator()->get('DocumentsTable');
+        $catalogs = $documentsTable->fetchByCond('type', DocumentTable::TYPE_DEVELOPERS_CATALOG . $developer->id);
+
+        foreach ($catalogs as &$catalog) {
+            if ($catalog->img) {
+                $file = $fileTable->find($catalog->img);
+                if ($file) {
+                    $catalog->img_name = $file->name;
+                }
+            }
+            if ($catalog->file) {
+                $file = $fileTable->find($catalog->file);
+                if ($file) {
+                    $catalog->file_name = $file->name;
+                }
+            }
+        }
+
         $this->layout()->pageTitle = $developer->title;
         $this->layout()->breadCrumbs  = array(
             array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
@@ -50,6 +82,7 @@ class DevelopersController extends AbstractActionController
         $htmlViewPart->setVariables(array(
                 'developer'   => $developer,
                 'pageTitle' => $developer->title,
+                'catalogs' => $catalogs,
                 'breadCrumbs'  => array(
                     array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
                     array('link'=> $this->url()->fromRoute('developers'), 'text'=>ucfirst('Производители')),

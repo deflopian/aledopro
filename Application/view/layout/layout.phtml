@@ -6,6 +6,9 @@ $sl = $this->getHelperPluginManager()->getServiceLocator();
 $contacts_ = \Contacts\Controller\ContactsController::getContacts($sl);
 $sections = \Catalog\Controller\CatalogController::getSections($sl);
 
+
+
+
 $uri = substr($_SERVER["REQUEST_URI"], 1);
 $uriArr = explode('/', $uri);
 $url = $uriArr[0]
@@ -17,9 +20,6 @@ $url = $uriArr[0]
 <head>
     <meta charset="utf-8">
     <meta name='yandex-verification' content='45f1d1c6724f6951'/>
-    <? if ($this->hasBanner) { //костыль для главной страницы ?>
-        <meta name="fragment" content="!">
-    <? } ?>
     <?
     $meta = $this->headMeta();
     if ($this->seoData) {
@@ -52,6 +52,8 @@ $url = $uriArr[0]
     <?= $this->headLink()
         ->prependStylesheet($this->basePath() . '/js/libs/jquery.bxslider/jquery.bxslider.css')
         ->prependStylesheet($this->basePath() . '/fonts/rub_arial/stylesheet.css')
+        ->prependStylesheet($this->basePath() . '/Content/css/libs/jquery-ui.min.css')
+        //->prependStylesheet($this->basePath() . '/Content/ng-sortable.min.css')
 //        ->prependStylesheet($this->basePath() . '/css/catalog.css')
 //        ->prependStylesheet($this->basePath() . '/css/main1.css')
     ?>
@@ -64,6 +66,7 @@ $url = $uriArr[0]
     <script src="/Scripts/modernizr/modernizr.js"></script>
     <script src="/Scripts/modernizr/modernizr_mq.js"></script>
     <script src="/Scripts/Common.js"></script>
+    <script src="/Scripts/libs/jquery-ui.min.js"></script>
     <script src="/Scripts/jquery-ui.effects.js"></script>
     <script src="/Scripts/jquery.fancybox.js"></script>
     <script src="/Scripts/jquery.placeholder.js"></script>
@@ -107,13 +110,15 @@ $url = $uriArr[0]
     <script src="/Scripts/aledo.app/aledo.controllers/login.controller.js"></script>
     <script src="/Scripts/aledo.app/aledo.controllers/registration.controller.js"></script>
     <script src="/Scripts/aledo.app/aledo.controllers/swipe.controller.js"></script>
+    <script src="/Scripts/aledo.app/aledo.controllers/commercials.controller.js"></script>
     <script src="/Scripts/aledo.app/aledo.directives/input.mask.directive.js"></script>
     <script src="/Scripts/aledo.app/aledo.directives/custom.onchange.directive.js"></script>
     <script src="/Scripts/aledo.app/aledo.directives/responsive.image.directive.js"></script>
     <script src="/Scripts/aledo.app/aledo.directives/textcut.directive.js"></script>
     <script src="/Scripts/aledo.app/aledo.directives/ng.enter.directive.js"></script>
-  
+    <script src="/Scripts/aledo.app/aledo.directives/aledo.commercials.directive.js"></script>
     <script src="/Scripts/aledo.app/aledo.directives/editable.field.directive.js"></script>
+    <script src="/Scripts/aledo.app/aledo.directives/angular-sortable-view.min.js"></script>
     <script src="/Scripts/aledo.app/aledo.services/aledo.cart.service.js"></script>
     <script src="/Scripts/imagesloaded.pkgd.js"></script>
     <script src="http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU"

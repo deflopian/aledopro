@@ -5,6 +5,7 @@ use Application\Service\ApplicationService;
 use Application\Service\MailService;
 use Cart\Model\ProdToOrder;
 use Catalog\Service\CatalogService;
+use Commercials\Mapper\CommercialMapper;
 use User\Model\RoleLinker;
 use User\Model\UserHistoryTable;
 use User\Service\UserService;
@@ -276,11 +277,18 @@ class UserController extends AbstractActionController
                 $orders[$inProd->order_id]->products[] = clone($prods[$inProd->product_id]);
             }
         }
+        $commercialsJson = '';
+        $cm = CommercialMapper::getInstance($sl);
+        if ($user && $user->user_id == 2) {
+            $commercials = $cm->getList($user->user_id);
+            $commercialsJson = \Zend\Json\Json::encode($commercials);
+        }
+
 
         return array(
             'user' => $user,
             'orders' => $orders,
-
+            'commercialsJson' => $commercialsJson,
             'pageTitle' => 'Личный кабинет',
             'breadCrumbs'  => array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
@@ -543,19 +551,10 @@ class UserController extends AbstractActionController
         $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
-        $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
-        $cache = $this->params()->fromPost('redirect', $this->params()->fromQuery('cache', false));
+        $redirect = $this->params()->fromQuery('redirect', false);
 
 
         if ($redirect) {
-            if ($cache) {
-                if (strpos($redirect, '?') === false) {
-                    $redirect .= '?cache=' . time();
-                } else {
-                    $redirect .= '&cache=' . time();
-                }
-
-            }
             return $this->redirect()->toUrl($redirect)->getHeaders()->addHeaders(
                 array(
                     'Cache-Control' => 'no-cache',
@@ -853,7 +852,7 @@ class UserController extends AbstractActionController
                 $redirect = 'home';
             }
             //добро пожаловать на сайт, логин, пароль
-            list($email, $mailView) = MailService::prepareRegisterUserMailData($this->serviceLocator, $user, $data['password']);
+            list($email, $mailView) = MailService::prepareRegisterUserMailData($this->serviceLocator, $user, $data['user_cur_password']);
             MailService::sendMail($email, $mailView, "Добро пожаловать на Aledo!");
 
             if ($user->getIsSpamed()) {

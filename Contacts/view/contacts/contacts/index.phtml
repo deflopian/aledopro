@@ -6,7 +6,7 @@
         <div class="b-contacts-table text-center">
             <div class="b-contacts-table__cell b-contacts-cell dotted-right">
 <!--            <div class="b-contacts-table__cell b-contacts-cell">-->
-                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">
+                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully" style="font-weight: 600">
                     ОФИС В САНКТ-ПЕТЕРБУРГЕ
                 </h4>
 
@@ -30,7 +30,7 @@
 
 
             <div class="b-contacts-table__cell b-contacts-cell b-contacts-cell_right">
-                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully">
+                <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully" style="font-weight: 600">
                     ПРЕДСТАВИТЕЛЬСТВО В МОСКВЕ
                 </h4>
 
@@ -99,7 +99,7 @@
             console.log(placemark, placemark.balloon);
             _.map.geoObjects.add(placemark);
             _.placemarks.push(placemark);
-            placemark.balloon.open();
+//            placemark.balloon.open();
             return placemark;
         };
         return {
@@ -110,17 +110,17 @@
     ymaps.ready(function () {
         var mapInstance = Map();
         mapInstance.init();
-        mapInstance.addPlacemark([59.909567, 30.306876])
+        mapInstance.addPlacemark([59.909316, 30.307032])
     });
     ymaps.ready(function () {
         var mapInstance = Map();
         mapInstance.init({
             mapOptions: {
-                center: [55.724632, 37.645761]
+                center: [55.724756, 37.644533]
             },
             container: "map_msc"
         });
-        mapInstance.addPlacemark([55.724632, 37.645761]);
+        mapInstance.addPlacemark([55.724756,  37.644533]);
 //        mapInstance.addPlacemark([55.725564, 37.645519])
     });
 

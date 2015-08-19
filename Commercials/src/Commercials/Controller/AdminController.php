@@ -178,6 +178,8 @@ class AdminController extends SampleAdminController {
         );
     }
 
+
+
     public function indexAction()
     {
         $sl = $this->getServiceLocator();

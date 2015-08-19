@@ -1,5 +1,5 @@
 <h1>
-    <a href="<?= $this->url('zfcadmin/developers') ?>">Проекты</a>
+    <a href="<?= $this->url('zfcadmin/developers') ?>">Производители</a>
     >
     <? /** @var $entity \Developers\Model\Developer */ ?>
     <span id="title"><?= $entity->title; ?></span>
@@ -13,6 +13,12 @@
             <td>Название</td>
             <td>
                 <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Псевдоним в URL</td>
+            <td>
+                <a href="#" data-type="text" data-name="alias" class="editable-param"><?= $entity->alias; ?></a>
             </td>
         </tr>
         <tr>
@@ -83,6 +89,42 @@
 
         <script type="application/javascript">
             AppFactory("imageMapper2", "images2", ["imageMapper", "ur.file"]);
+        </script>
+    </div>
+</div>
+
+
+<h2>Каталоги</h2>
+<div id="entityMapper_certificate">
+    <div ng-controller="EntitiesCtrl">
+        <div nd-entities-list-data>
+            <?= $catalogsJson ?>
+        </div>
+        <div nd-entities-list-pattern>
+            {
+            "title" : {
+            "type" : "text",
+            "default" : "",
+            "label" : "Название"
+            },
+            "type" : {
+            "type" : "hidden",
+            "default" : "<?= \Documents\Model\DocumentTable::TYPE_DEVELOPERS_CATALOG . $entity->id ?>",
+            "label" : "Тип"
+            }
+            }
+        </div>
+        <div
+            ng-entities-list
+            parent-type="0"
+            parent-id="0"
+            controller="documents"
+            type="<?= \Catalog\Controller\AdminController::DOCUMENT_TABLE?>"
+            rights="00111"
+            ></div>
+
+        <script type="application/javascript">
+            AppFactory("entityMapper_certificate", "entityMapper2", ["entitiesMapper"]);
         </script>
     </div>
 </div>

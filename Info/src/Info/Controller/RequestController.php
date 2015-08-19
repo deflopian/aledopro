@@ -198,7 +198,7 @@ class RequestController extends AbstractActionController {
             $requestId = $prTable->save($partner);
 
             //добро пожаловать на сайт, логин, пароль
-            list($email, $mailView) = MailService::prepareRegisterUserMailData($this->serviceLocator, $user, $data['password']);
+            list($email, $mailView) = MailService::prepareRegisterUserMailData($this->serviceLocator, $user, $data['user_cur_password']);
             MailService::sendMail($email, $mailView, "Добро пожаловать на Aledo!");
 
             if ($user->getIsSpamed()) {

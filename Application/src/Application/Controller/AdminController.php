@@ -17,11 +17,15 @@ class AdminController extends SampleAdminController
         $blocks = $sl->get('MainPageBlocksTable')->fetchAll();
         $blocksJson = Json::encode($blocks);
 
+        $footerBlocks = $sl->get('FooterBlocksTable')->fetchAll();
+        $footerBlocksJson = Json::encode($footerBlocks);
         return array(
             'entities' => $blocks,
-            'entitiesJson' => $blocksJson
+            'entitiesJson' => $blocksJson,
+            'footerBlocksJson' => $footerBlocksJson
         );
     }
+
     public function blockAction()
     {
         $sl = $this->getServiceLocator();
@@ -34,6 +38,15 @@ class AdminController extends SampleAdminController
         $images = $sl->get('MainPageBlockImagesTable')->fetchByCond('parentId', (int) $this->params()->fromRoute('id', 0));
         $imagesJson = Json::encode($images);
         $return['entitiesJson'] = $imagesJson;
+        return $return;
+    }
+    public function footerBlockAction()
+    {
+        $this->table = "FooterBlocksTable";
+        $return = parent::viewAction();
+        $entity = $return['entity'];
+        $entityJson = \Zend\Json\Json::encode($entity);
+        $return['entityJson'] = $entityJson;
         return $return;
     }
     public function blockimageAction()

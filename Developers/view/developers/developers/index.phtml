@@ -89,7 +89,13 @@
         $('a.b-tabs__link').click(function (e) {
             e.preventDefault();
             var h = $(this).attr('href');
-            location.hash=h;
+            if(history.pushState) {
+                history.pushState(null, null, h);
+            }
+            else {
+                location.hash = h;
+            }
+            //location.hash=h;
             $(this).tab('show');
         });
 

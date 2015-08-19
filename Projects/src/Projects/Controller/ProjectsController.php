@@ -76,14 +76,17 @@ class ProjectsController extends AbstractActionController
         $arrayIds = array();
         $projects = $this->getServiceLocator()->get('ProjectsTable')->fetchAll('order asc');
         $fileTable = $this->getServiceLocator()->get('FilesTable');
-        foreach ($projects as &$one) {
+        foreach ($projects as $pkey => &$one) {
+            if ($one->id == $project->id) {
+                unset($projects[$pkey]);
+                continue;
+            }
             if ($one->preview) {
                 $file = $fileTable->find($one->preview);
                 if ($file) {
                     $one->previewName = $file->name;
                 }
             }
-            $arrayIds[] = $one->id;
         }
 
         $nextId = CatalogService::getNextId($id, $arrayIds);
@@ -117,6 +120,7 @@ class ProjectsController extends AbstractActionController
                 'nextProd' => $nextProd,
                 'prevProd' => $prevProd,
                 'relatedProjects' => $relatedProjects,
+                'otherProjects' => $projects,
                 'seoData' => $seoData,
                 'sl'        => $sl,
                 'links' => LinkToLinkMapper::getInstance($sl)->fetchAll($id, \Catalog\Controller\AdminController::PROJECT_TABLE)

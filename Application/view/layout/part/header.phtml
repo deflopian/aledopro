@@ -52,7 +52,7 @@
     <div class="b-section__content">
         <div class="b-header-top-section">
             <div class="b-header-top-section__left">
-                <a href="/" class="b-header-top-section__logo-link">
+                <a href="/" class="b-header-top-section__logo-link" style="margin-left: -3px;">
 
                     <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                          viewBox="0 136 960 289" enable-background="new 0 136 960 289" xml:space="preserve" class="b-logo-icon">
@@ -233,7 +233,7 @@
                         <? } ?>
                     </li>
 
-                        <li class="b-header-top-section__list-item">
+                        <li class="b-header-top-section__list-item" style="border-right: none">
                             <? if ($user = $this->zfcUserIdentity()){ ?>
                                 <a href="/cabinet/" class="b-highlighted-link b-header-top-section__link">Личный кабинет</a><br />
                             <? } else { ?>
@@ -265,6 +265,10 @@
             </div>
         </div>
     </div>
+
+    <? if (\User\Service\UserService::$commercialMode) { ?>
+        <aledo-commercial-prods-data style="display: none"><?= $_COOKIE['prodscommercial'] ?></aledo-commercial-prods-data>
+    <? } ?>
     <div class="b-header-bottom-section">
         <div class="b-section__content">
             <ul class="b-main-navigation list-unstyled">
@@ -281,6 +285,10 @@
 
                 <li class="b-main-navigation__list-item">
                     <a class="b-main-navigation__link b-main-navigation__link_payment b-left <?= ($active=='info' && $action=='delivery') ? 'b-main-navigation__link-active' : ''?>" href="/info/delivery">Доставка и оплата</a>
+                </li>
+
+                <li class="b-main-navigation__list-item">
+                    <a class="b-main-navigation__link b-main-blog <?= ($active=='blog' || $active=='article') ? 'b-main-navigation__link-active' : ''?>" href="/blog/">Блог</a>
                 </li>
                 <li class="b-main-navigation__list-item b-main-navigation__list-item_contacts">
                     <a class="b-main-navigation__link b-right <?= $active=='contacts' ? 'b-main-navigation__link-active' : ''?>" href="/contacts/">Контакты</a>

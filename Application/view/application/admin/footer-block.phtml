@@ -1,0 +1,85 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/index') ?>">Главная</a>
+    >
+    <span id="title"><?= $entity->title; ?></span>
+</h1>
+
+<div class="section">
+    <h3>Основная информация</h3>
+    <div id="entityMapper">
+        <div ng-controller="EntityCtrl">
+
+            <div
+                ng-entity
+                entity-id="<?= $entity->id ?>"
+                entity-type="<?= \Catalog\Controller\AdminController::FOOTER_BLOCKS_TABLE?>"
+                >
+
+                <div ng-entity-data>
+                    <?= $entityJson ?>
+                </div>
+                <div ng-entity-schema>
+                    [
+                        {
+                            "title" : "link",
+                            "type" : "text",
+                            "default" : "#",
+                            "label" : "Ссылка"
+                        },
+                        {
+                            "title" : "title",
+                            "type" : "text",
+                            "default" : "Название",
+                            "label" : "Название"
+                        },
+                        {
+                            "title" : "column",
+                            "type" : "text",
+                            "default" : "1",
+                            "label" : "Номер колонки"
+                        }
+                    ]
+                </div>
+
+                <table class="table admin-table table-striped">
+                    <tbody>
+                    <tr ng-repeat="description in schema">
+                        <td>{{description.label}}</td>
+                        <td>
+                            <div ng-if="description.type == 'text'">
+                                <div ng-text-field></div>
+                            </div>
+                            <div ng-if="description.type == 'image'">
+                                <div ng-controller="ImageCtrl">
+                                    <div
+                                        ng-single-image-upload
+                                        parent-type="block"
+                                        folder="blocks"
+                                        field="img"
+                                        ></div>
+                                </div>
+                            </div>
+                            <div ng-if="description.type == 'file'">
+                                <div>
+                                    <div
+                                        ng-single-file-upload
+                                        parent-type="block"
+                                        folder="blocks"
+                                        field="file"
+                                        ></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+
+            <script type="application/javascript">
+                AppFactory("entityMapper", "entityMapper2", ["entityMapper", "imageMapper", "fileMapper"]);
+            </script>
+        </div>
+    </div>
+</div>

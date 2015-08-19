@@ -15,7 +15,7 @@ return array(
                     'route'    => '/articles[/:action][/:id][/][:hash]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
+                        'id'     => '[a-zA-Z0-9_-]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Articles\Controller\Articles',

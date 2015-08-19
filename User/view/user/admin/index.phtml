@@ -80,7 +80,7 @@
                     <td>{{item.manager_name}}</td>
                     <td><span ng-if="item.last_visit"><a ng-href="/admin/user/history/{{item.user_id}}/">{{getDate(item.last_visit)}}</a></span><span ng-if="!item.last_visit">нет данных</span></td>
                     <td>
-                        <span ng-if="item.is_partner">
+                        <span ng-if="item.is_partner > 0">
                             <a ng-href="/admin/discounts/partners/{{item.user_id}}/">скидки</a>
                         </span>
                     </td>

@@ -2,6 +2,7 @@
 namespace Application;
 
 use Application\Model\BannerImgTable;
+use Application\Model\FooterBlockTable;
 use Application\Model\MainPageBlockImageTable;
 use Application\Model\MainPageBlockTable;
 use Application\Model\PageInfoTable;
@@ -55,6 +56,11 @@ class Module implements BootstrapListenerInterface
                 'ShowRoomsTable' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table     = new ShowRoomTable($dbAdapter);
+                    return $table;
+                },
+                'FooterBlocksTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new FooterBlockTable($dbAdapter);
                     return $table;
                 },
                 'BannersTable' =>  function($sm) {

@@ -1,0 +1,421 @@
+﻿<? use Application\Service\LessCache; ?>
+<?= $this->doctype(); ?>
+
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+$contacts = \Contacts\Controller\ContactsController::getContacts($sl);
+$sections = \Catalog\Controller\CatalogController::getSections($sl);
+
+$uri = substr($_SERVER["REQUEST_URI"], 1);
+$uriArr = explode('/', $uri);
+$url = $uriArr[0]
+    ? ($uriArr[0] == 'info' ? $uriArr[1] : $uriArr[0])
+    : 'app';
+?>
+
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name='yandex-verification' content='45f1d1c6724f6951'/>
+    <? if ($this->hasBanner) { //костыль для главной страницы ?>
+        <meta name="fragment" content="!">
+    <? } ?>
+    <?
+    $meta = $this->headMeta();
+    if ($this->seoData) {
+        if (!is_null($this->seoData->title)) {
+            echo $this->headTitle($this->seoData->title);
+        } else if (isset($pageTitle)) {
+            echo $this->headTitle($pageTitle);
+        } else {
+            echo $this->headTitle('Aledo');
+        }
+        if (!is_null($this->seoData->keywords)) {
+            $meta->appendName('keywords', $this->seoData->keywords);
+        }
+        if (!is_null($this->seoData->description)) {
+            $meta->appendName('description', $this->seoData->description);
+        }
+
+    } else if (isset($pageTitle)) {
+        echo $this->headTitle($pageTitle);
+    } else {
+        echo $this->headTitle('Aledo');
+    }
+    ?>
+
+    <?= $meta->appendName('viewport', 'width=device-width'); ?>
+
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/favicon.ico" rel="icon" type="image/x-icon">
+    <!-- Le styles -->
+    <?= $this->headLink()
+        ->prependStylesheet($this->basePath() . '/js/libs/jquery.bxslider/jquery.bxslider.css')
+        ->prependStylesheet($this->basePath() . '/fonts/rub_arial/stylesheet.css')
+//        ->prependStylesheet($this->basePath() . '/css/catalog.css')
+//        ->prependStylesheet($this->basePath() . '/css/main1.css')
+    ?>
+    <!--    <link href="--><?php //echo $this->basePath($this->less('less/Config.less')) ?><!--" media="screen" rel="stylesheet" type="text/css">-->
+    <link rel="stylesheet/less" type="text/css" href="/Content/Config.less"/>
+
+
+    <script src="/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="/Scripts/jquery.browser.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/modernizr/modernizr.js"></script>
+    <script src="/Scripts/modernizr/modernizr_mq.js"></script>
+    <script src="/Scripts/Common.js"></script>
+    <script src="/Scripts/jquery-ui.effects.js"></script>
+    <script src="/Scripts/jquery.fancybox.js"></script>
+    <script src="/Scripts/jquery.placeholder.js"></script>
+    <script src="/Scripts/angular.js"></script>
+    <script src="/Scripts/angular-touch.js"></script>
+    <script src="/Scripts/slick.js"></script>
+    <script src="/Scripts/jquery.mousewheel.js"></script>
+
+    <script src="/Scripts/jquery.dragscroll.js"></script>
+
+    <? $this->headScript()
+        ->appendFile($this->basePath() . '/js/main.js')
+        ->appendFile($this->basePath() . '/js/solo.table.js')
+        ->appendFile($this->basePath() . '/js/app.factory.js')
+        ->appendFile($this->basePath() . '/js/popups.js')
+        ->appendFile($this->basePath() . '/js/libs/url.min.js')
+        ->appendFile($this->basePath() . '/js/libs/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+        ->appendFile($this->basePath() . '/js/libs/history.min.js')
+        ->appendFile($this->basePath() . '/js/libs/jquery.cookie.js')
+        ->appendFile($this->basePath() . '/js/libs/jquery.form.js')
+        ->appendFile($this->basePath() . '/js/libs/purl.js')
+//        ->appendFile($this->basePath() . '/js/libs/bootstrap-tooltip.js')
+        ->appendFile($this->basePath() . '/js/libs/jquery.bxslider/jquery.bxslider.min.js')
+    //    ?>
+    <?
+    $this->isAllowed('controller/CatalogAdmin') ? $this->headScript()->appendFile($this->basePath() . '/js/admin.js') : ''
+    ?>
+    <?= $this->headScript() ?>
+
+
+
+    <script src="/Scripts/aledo.app/aledo.app.js"></script>
+    <script src="/Scripts/aledo.app/aledo.controllers/service.controller.js"></script>
+    <script src="/Scripts/aledo.app/aledo.controllers/cabinet.controllers.js"></script>
+    <script src="/Scripts/aledo.app/aledo.controllers/feedback.controller.js"></script>
+    <script src="/Scripts/aledo.app/aledo.controllers/order.controller.js"></script>
+    <script src="/Scripts/aledo.app/aledo.controllers/partner.controller.js"></script>
+    <script src="/Scripts/aledo.app/aledo.controllers/popup.controller.js"></script>
+    <script src="/Scripts/aledo.app/aledo.controllers/login.controller.js"></script>
+    <script src="/Scripts/aledo.app/aledo.controllers/registration.controller.js"></script>
+    <script src="/Scripts/aledo.app/aledo.controllers/swipe.controller.js"></script>
+    <script src="/Scripts/aledo.app/aledo.directives/input.mask.directive.js"></script>
+    <script src="/Scripts/aledo.app/aledo.directives/custom.onchange.directive.js"></script>
+    <script src="/Scripts/aledo.app/aledo.directives/responsive.image.directive.js"></script>
+    <script src="/Scripts/imagesloaded.pkgd.js"></script>
+    <script src="http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+        if (!window._ua) {
+            var _ua = navigator.userAgent.toLowerCase();
+        }
+
+        var browser = {
+            version: (_ua.match(/.+(?:me|ox|on|rv|it|era|opr|ie)[\/: ]([\d.]+)/) || [0, '0'])[1],
+            opera_presto: /opera/i.test(_ua),
+            opera_webkit: /opr/i.test(_ua),
+            msie: (/msie/i.test(_ua) && !/opera/i.test(_ua)),
+            msie6: (/msie 6/i.test(_ua) && !/opera/i.test(_ua)),
+            msie7: (/msie 7/i.test(_ua) && !/opera/i.test(_ua)),
+            msie8: (/msie 8/i.test(_ua) && !/opera/i.test(_ua)),
+            msie9: (/msie 9/i.test(_ua) && !/opera/i.test(_ua)),
+            msie11: (/rv:11/i.test(_ua)),
+            mozilla: /firefox/i.test(_ua),
+            chrome: /chrome/i.test(_ua),
+            safari: (!(/chrome/i.test(_ua)) && /webkit|safari|khtml/i.test(_ua)),
+            iphone: /iphone/i.test(_ua),
+            ipod: /ipod/i.test(_ua),
+            iphone4: /iphone.*OS 4/i.test(_ua),
+            ipod4: /ipod.*OS 4/i.test(_ua),
+            ipad: /ipad/i.test(_ua),
+            android: /android/i.test(_ua),
+            bada: /bada/i.test(_ua),
+            mobile: /iphone|ipod|ipad|opera mini|opera mobi|iemobile|android/i.test(_ua),
+            msie_mobile: /iemobile/i.test(_ua),
+            safari_mobile: /iphone|ipod|ipad/i.test(_ua),
+            opera_mobile: /opera mini|opera mobi/i.test(_ua),
+            opera_mini: /opera mini/i.test(_ua),
+            mac: /mac/i.test(_ua),
+            air: /AdobeAIR/i.test(_ua)
+        };
+
+        if (browser.opera_presto) {
+            document.documentElement.className += " b-html_uncorrect-bg-svg";
+            document.documentElement.className += " b-html_opera";
+        }
+        if (browser.msie || browser.msie11) {
+            document.documentElement.className += " b-html_msie";
+        }
+
+    </script>
+
+    <link rel="stylesheet" type="text/css"
+          href="/Content/less_cache/lessphp_22685ca2838c80c9b5f914ff224ab156998adbe3.css">
+    <link rel="stylesheet" type="text/css" href="/Content/css/custom_css_over_less.css">
+
+
+    <!-- Google Analytics -->
+    <script>
+        $(function () {
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-49236551-1', 'auto');  // Replace with your property ID.
+            ga('send', 'pageview');
+        });
+
+    </script>
+    <!-- End Google Analytics -->
+
+    <meta name="google-site-verification" content="hnYu3TTQXDBq48tAo_h9-oJDMlDGaBHStueCH1pImbU"/>
+
+
+    <!--  AdRiver code START. Type:JS-counter Site: aledo-pro PZ: 0 BN: 0 -->
+    <script type="text/javascript">
+        $(function () {
+            (function (h) {
+                function k() {
+                    var a = function (d, b) {
+                        if (this instanceof AdriverCounter)d = a.items.length || 1, a.items[d] = this, b.ph = d, b.custom && (b.custom = a.toQueryString(b.custom, ";")), a.request(a.toQueryString(b)); else return a.items[d]
+                    };
+                    a.httplize = function (a) {
+                        return (/^\/\//.test(a) ? location.protocol : "") + a
+                    };
+                    a.loadScript = function (a) {
+                        try {
+                            var b = g.getElementsByTagName("head")[0], c = g.createElement("script");
+                            c.setAttribute("type", "text/javascript");
+                            c.setAttribute("charset", "windows-1251");
+                            c.setAttribute("src", a.split("![rnd]").join(Math.round(1E6 * Math.random())));
+                            c.onreadystatechange = function () {
+                                /loaded|complete/.test(this.readyState) && (c.onload = null, b.removeChild(c))
+                            };
+                            c.onload = function () {
+                                b.removeChild(c)
+                            };
+                            b.insertBefore(c, b.firstChild)
+                        } catch (f) {
+                        }
+                    };
+                    a.toQueryString = function (a, b, c) {
+                        b = b || "&";
+                        c = c || "=";
+                        var f = [], e;
+                        for (e in a)a.hasOwnProperty(e) && f.push(e + c + escape(a[e]));
+                        return f.join(b)
+                    };
+                    a.request = function (d) {
+                        var b = a.toQueryString(a.defaults);
+                        a.loadScript(a.redirectHost + "/cgi-bin/erle.cgi?" + d + "&rnd=![rnd]" + (b ? "&" + b : ""))
+                    };
+                    a.items = [];
+                    a.defaults = {tail256: document.referrer || "unknown"};
+                    a.redirectHost = a.httplize("//ad.adriver.ru");
+                    return a
+                }
+
+                var g = document;
+                "undefined" === typeof AdriverCounter && (AdriverCounter = k());
+                new AdriverCounter(0, h)
+            })
+            ({sid: 198138, bt: 62, custom: {153: 'user_id'}});
+        });
+    </script>
+
+    <!--  AdRiver code END  -->
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        $(function () {
+            (function (d, w, c) {
+                (w[c] = w[c] || []).push(function () {
+                    try {
+                        w.yaCounter24376390 = new Ya.Metrika({
+                            id: 24376390,
+                            webvisor: true,
+                            clickmap: true,
+                            trackLinks: true,
+                            accurateTrackBounce: true
+                        });
+                    } catch (e) {
+                    }
+                });
+
+                var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function () {
+                        n.parentNode.insertBefore(s, n);
+                    };
+                s.type = "text/javascript";
+                s.async = true;
+                s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+                if (w.opera == "[object Opera]") {
+                    d.addEventListener("DOMContentLoaded", f, false);
+                } else {
+                    f();
+                }
+            })(document, window, "yandex_metrika_callbacks");
+        });
+    </script>
+
+    <!--<style type="text/css">-->
+    <!--.catalog-ledionopto:hover {-->
+    <!--background-color: transparent !important;-->
+    <!--}-->
+    <!--</style>-->
+
+    <noscript>
+        <div><img src="//mc.yandex.ru/watch/24376390" style="position:absolute; left:-9999px;" alt=""/></div>
+    </noscript>
+    <noscript>
+        <!-- Yandex.Metrika informer -->
+        <a href="https://metrika.yandex.ru/stat/?id=24376390&amp;from=informer"
+           target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/24376390/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+                                               style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика"
+                                               title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)"
+                                               onclick="try{Ya.Metrika.informer({i:this,id:24376390,lang:'ru'});return false}catch(e){}"/></a>
+        <!-- /Yandex.Metrika informer -->
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
+
+</head>
+
+<body ng-app="Aledo">
+<div class="b-layout">
+    <noscript><img src="http://b.kavanga.ru/exp?sid=10281&bt=3&bn=1&ct=8" border=0 width=1 height=1></noscript>
+    <!-- Kavanga.AdEngine END -->
+
+    <!--<a href="#content" class="sr-only">Skip to content</a>-->
+
+    <!-- Kavanga.AdEngine START -->
+    <!-- kaledoscop -->
+    <!-- ZeroPixel -->
+    <script language="JavaScript">
+
+        <!--
+        $(function () {
+            var kref = '';
+            try {
+                kref = escape(document.referrer);
+            } catch (e) {
+            }
+            ;
+            var d = document, b = document.body;
+            var img = d.createElement('IMG');
+            with (img.style) {
+                position = 'absolute';
+                width = '0px';
+                height = '0px';
+            }
+            img.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'b.kavanga.ru/exp?sid=10281&bt=3&bn=1&ct=8&prr=' + kref + '&rnd=' + Math.round(Math.random() * 1000000);
+            b.insertBefore(img, b.firstChild);
+        });
+        //-->
+    </script>
+
+    <script src="/Scripts/jquery.maskedinput.js"></script>
+    <div class="modal fade " id="fooBarPopup" tabindex="-1">
+        <div class="modal-dialog b-partner-registration-dialog">
+            <div class="modal-content" ng-controller="PopupController">
+            </div>
+        </div>
+    </div>
+
+    <
+    <? include 'part/header.phtml' ?>
+
+    <div class="b-layout-content"><?= ltrim($this->content); ?></div>
+    <? include 'part/footer.phtml' ?>
+
+
+    <?= $this->inlineScript() ?>
+
+    <script type="text/javascript">
+        $(function () {
+            $.urlParams = function () {
+                var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+                return results || [];
+            };
+            $.urlParam = function (name) {
+                var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+                return results[0] || [];
+            };
+        });
+
+
+        $(function () {
+            $('#main-menu').find('a[data-url="<?= $url ?>"]').parent().addClass('active');
+            $('img [id ^= onicon]').css('width', 'auto');
+
+        });
+    </script>
+
+    <script
+        type="text/javascript">document.write('<script type="text/javascript" charset="utf-8" async="true" id="onicon_loader" src="http://cp.onicon.ru/js/simple_loader.js?site_id=53eda8d372d22c8b3400000e&srv=2&' + (new Date).getTime() + '"></scr' + 'ipt>');</script>
+
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var google_conversion_id = 966821971;
+        var google_custom_params = window.google_tag_params;
+        var google_remarketing_only = true;
+        /* ]]> */
+    </script>
+    <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+    </script>
+    <noscript>
+        <div style="display:inline;">
+            <img height="1" width="1" style="border-style:none;" alt=""
+                 src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/966821971/?value=0&amp;guid=ON&amp;script=0"/>
+        </div>
+    </noscript>
+
+    <script type="text/javascript">
+        jQuery(".b-search-button").on("click",
+            function () {
+                jQuery(this).toggleClass("b-search-button_active");
+                jQuery(".b-search").toggleClass("b-search_active").find("input").focus();
+            });
+        jQuery(".b-placeholdered-input").emulatePlaceholder();
+
+        +function () {
+            var _recalculateLayoutDim = function () {
+                $layout.css({"padding-bottom": ($footer.outerHeight() - 24)});
+
+            };
+            var $footer = jQuery(".b-layout-footer"),
+                $layout = jQuery(".b-layout");
+            _recalculateLayoutDim();
+            jQuery(window).on("resize.calcDim", function () {
+                _recalculateLayoutDim();
+            });
+
+        }();
+
+
+    </script>
+
+    <script type="text/javascript">
+        domReady();
+    </script>
+    <div class="swipe-layout" ng-controller="SwipeController" ng-swipe-left="swipe('left')"
+         ng-swipe-right="swipe('right')"></div>
+</div>
+</body>
+</html>

@@ -61,7 +61,7 @@ class CatalogService {
     const DISPLAY_STYLE_PROFILES = 3;   //раздел профили
 
     public static $intFields = array(
-        'ip_rating','color_of_light','electro_power','construction','case_color','socle','bulb','color_temperature','cri'
+        'ip_rating','color_of_light','electro_power','equipment_IP','construction','case_color','socle','bulb','color_temperature','cri'
     );
 
     private static $unEditableParams = array(

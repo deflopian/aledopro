@@ -31,6 +31,46 @@
     </div>
 </div>
 
+<div id="entityMapper_footer">
+    <div ng-controller="EntitiesCtrl">
+        <div nd-entities-list-data>
+            <?= $footerBlocksJson ?>
+        </div>
+        <div nd-entities-list-pattern>
+        {
+            "title" : {
+                "type" : "text",
+                "default" : "",
+                "label" : "Название"
+            },
+            "link" : {
+                "type" : "text",
+                "default" : "",
+                "label" : "Ссылка"
+            },
+            "column" : {
+                "type" : "text",
+                "default" : "",
+                "label" : "Колонка"
+            }
+        }
+        </div>
+        <div
+            ng-entities-list
+            parent-type="0"
+            parent-id="0"
+            action="footerBlock"
+            controller="index"
+            type="<?= \Catalog\Controller\AdminController::FOOTER_BLOCKS_TABLE?>"
+            rights="00111"
+            ></div>
+
+        <script type="application/javascript">
+            AppFactory("entityMapper_footer", "entityMapper3", ["entitiesMapper"]);
+        </script>
+    </div>
+</div>
+
 
 <script type="text/javascript">
     $(document).ready(function(){

@@ -1,0 +1,60 @@
+<div class="b-section b-blog">
+    <div class="b-section__content">
+        <div class="b-breadcrumbs">
+            <a class="b-breadcrumbs__item" href="/">Главная</a>&nbsp;/
+            <a class="b-breadcrumbs__item" href="/blog/">Блог</a>&nbsp;/
+
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active">Категория: <?= $tag->name ?></strong>
+        </div>
+    </div>
+    <div class="b-blog-header">
+        <div class="b-phrase-outer b-blog__phrase">
+            <div class="b-phrase">
+                <div class="b-phrase-table">
+                    <div class="b-phrase-table__left">
+                        <div>
+                            <img class="b-phrase__icon" src="/Content/images/aledo-logo-small_2_white.svg"/>
+
+                        </div>
+                    </div>
+                    <div class="b-phrase-table__right">
+                        Свет. Технологии. Опыт.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="b-blog-srticles">
+        <?
+        /** @var $articles \Articles\Model\Article[] */
+        ?>
+        <? foreach ($articles as $article) { ?>
+        <div class="b-blog-article">
+            <div class="b-section__content b-blog-article__inner">
+                <div class="b-blog-article__left">
+                    <a href="/articles/view/<?= $article->id ?>" style="text-decoration: none">
+                    <img class="b-blog-article__image" src="/images/articles/<?= $article->preview_name ?>"/>
+                    </a>
+                </div>
+                <div class="b-blog-article__right">
+                    <div class="b-blog-article__preview">
+                        <a href="/articles/view/<?= $article->alias ? $article->alias : $article->id ?>"  style="text-decoration: none"><h2 class="b-blog-article__heading"><?= $article->title ?></h2></a>
+                            <? if (count($article->tags) > 0) { ?>
+                            <div class="b-blog-article-rubrics">
+                                Рубрики:
+                                <? foreach ($article->tags as $tag) { ?>
+                                    <a href="/blog/tag/<?= $tag->name ?>" class="b-blog-article-rubrics__item"><?= $tag->name; ?></a>,
+                                <? } ?>
+                            </div>
+                            <? } ?>
+                            <div class="b-blog-article__text" text-cut="{'lines':3, 'text' : '.b-blog-article__cutted-text'}">
+                                <span class="b-blog-article__cutted-text">
+                                <?= strip_tags($article->text_short) ?></span><a href="/articles/view/<?= $article->alias ? $article->alias : $article->id ?>" class="b-blog-article__link-more">читать далее</a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <? } ?>
+    </div>
+</div>

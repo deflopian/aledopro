@@ -22,20 +22,41 @@ class BlogController extends AbstractActionController
 
     }
 
-    public function indexAction()
+    public function tagAction()
     {
+        $id = $this->params()->fromRoute('id', false);
+        if (empty($id)) return $this->redirect()->toRoute('blog');
+
         $sl = $this->getServiceLocator();
-
-
-        $news = $sl->get('NewsTable')->fetchAll('order ASC');
-        $articles = $sl->get('ArticlesTable')->fetchAll('order ASC');
-        $terms = $sl->get('TermsTable')->fetchAll('letter asc');
-        $letters = ApplicationService::getLettersArr();
-        $sortedTerms = array();
-        foreach($terms as $term){
-            $sortedTerms[$term->letter-1][] = $term;
+        $tagsTable = $sl->get('ArticleTagsTable');
+        $tagLinksTable = $sl->get('TagToArticlesTable');
+        if (is_numeric($id)) {
+            $tag = $tagsTable->find($id);
+        } else {
+            $tag = $tagsTable->fetchByCond('name', $id);
+            $tag = reset($tag);
         }
+
+        if (!$tag) {
+            return $this->redirect()->toRoute('blog');
+        }
+        $tagLinks = $tagLinksTable->fetchByCond('tag_id', $tag->id);
+        $articleIds = array();
+        foreach ($tagLinks as $taglink) {
+            if (!in_array($taglink->article_id, $articleIds)) {
+                $articleIds[] = $taglink->article_id;
+            }
+        }
+        $articleTable = $sl->get('ArticlesTable');
+        if ($articleIds) {
+            $articles = $articleTable->fetchByCond('id', $articleIds);
+        } else {
+            $articles = array();
+        }
+
+
         $fileTable = $this->getServiceLocator()->get('FilesTable');
+
         foreach ($articles as &$article) {
 
             foreach (array('preview') as $imgField) {
@@ -47,6 +68,64 @@ class BlogController extends AbstractActionController
                     }
                 }
             }
+
+
+            $tagIds = array();
+
+            $tagLinks = $tagLinksTable->fetchByCond('article_id', $article->id);
+            foreach ($tagLinks as $link) {
+                $tagIds[] = $link->tag_id;
+            }
+            if ($tagIds) {
+                $tags = $tagsTable->fetchByCond('id', $tagIds);
+                $article->tags = $tags;
+            } else {
+                $article->tags = array();
+            }
+        }
+        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::BLOG, 1 );
+        $this->layout()->pageTitle = 'Блог';
+
+        return array(
+            'tag' => $tag,
+            'seoData' => $seoData,
+            'articles' => $articles
+        );
+    }
+
+    public function indexAction()
+    {
+        $sl = $this->getServiceLocator();
+        $articles = $sl->get('ArticlesTable')->fetchAll('order ASC');
+        $fileTable = $this->getServiceLocator()->get('FilesTable');
+        $tagToArticleTable = $this->getServiceLocator()->get('TagToArticlesTable');
+        $tagsTable = $this->getServiceLocator()->get('ArticleTagsTable');
+
+        foreach ($articles as &$article) {
+
+            foreach (array('preview') as $imgField) {
+                if ($article->$imgField) {
+                    $file = $fileTable->find($article->$imgField);
+                    if ($file) {
+                        $imgFieldAndName = $imgField . "_name";
+                        $article->$imgFieldAndName = $file->name;
+                    }
+                }
+            }
+
+
+            $tagIds = array();
+
+            $tagLinks = $tagToArticleTable->fetchByCond('article_id', $article->id);
+            foreach ($tagLinks as $link) {
+                $tagIds[] = $link->tag_id;
+            }
+            if ($tagIds) {
+                $tags = $tagsTable->fetchByCond('id', $tagIds);
+                $article->tags = $tags;
+            } else {
+                $article->tags = array();
+            }
         }
         $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::BLOG, 1 );
         $this->layout()->pageTitle = 'Блог';
@@ -57,12 +136,8 @@ class BlogController extends AbstractActionController
         );
         return array(
             'seoData' => $seoData,
-            'news' => $news,
             'articles' => $articles,
             'parentUrl'     => '/blog/',
-            'IdTerms' => \Zend\Json\Json::encode(ApplicationService::makeIdArrayFromObjectArray($terms)),
-            'sortedTerms' => $sortedTerms,
-            'letters' => $letters,
         );
     }
 }
