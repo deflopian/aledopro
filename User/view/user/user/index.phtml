@@ -13,14 +13,14 @@
     <div class="b-section__content">
         <div class="b-tabs-wrapper b-tabs-wrapper_cabinet">
             <ul class="b-tabs list-unstyled">
-                <li class="b-tabs__tab<?= ($user && $user->user_id == 2) ? ' three-tabs' : '' ?> active">
+                <li class="b-tabs__tab<?= ($role == 'admin' || $role == 'manager') ? ' three-tabs' : '' ?> active">
                     <a class="b-tabs__link  text-left" href="#orders_history" data-toggle="tab">История заказов</a>
                 </li>
-                <li class="b-tabs__tab<?= ($user && $user->user_id == 2) ? ' three-tabs' : '' ?>">
+                <li class="b-tabs__tab<?= ($role == 'admin' || $role == 'manager') ? ' three-tabs' : '' ?>">
                     <a class="b-tabs__link  text-left" href="#personal_data" data-toggle="tab">Персональные данные</a>
                 </li>
 
-                <? if ($user && $user->user_id == 2) { ?>
+                <? if ($role == 'admin' || $role == 'manager') { ?>
                 <li class="b-tabs__tab three-tabs">
                     <a class="b-tabs__link  text-left" href="#offers_1" data-toggle="tab">Коммерческие предложения</a>
                 </li>
@@ -322,8 +322,8 @@
                     </div>
 
                 </div>
-                <? if ($user && $user->user_id==2) { ?>
-                <div class="b-tabs-content__item  b-tabs-content__item_offer fade active in" id="offers_1">
+                <? if ($role == 'admin' || $role == 'manager') { ?>
+                <div class="b-tabs-content__item  b-tabs-content__item_offer fade" id="offers_1">
                     <aledo-commercials>
                         <aledo-commercials-data><?= $commercialsJson ?></aledo-commercials-data>
                         <span  ng-init="closeCommercialMode()"></span>
@@ -554,7 +554,7 @@
                                                 <a ng-click="setCommercialMode(commercial.uid, room.id, room)">Добавить оборудование</a>
                                             </div>
                                             <div class="b-accommodation-panel__cell">
-                                                <a ng-click="roomAPI.remove(room.id)"> Удалить</a>
+                                                <a ng-click="roomAPI.remove(room.id, commercial.rooms)"> Удалить</a>
                                             </div>
                                             <div class="b-accommodation-panel__cell">
                                                 <a ng-click="roomAPI.update(room)"> Сохранить помещение</a>

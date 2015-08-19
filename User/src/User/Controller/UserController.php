@@ -279,7 +279,10 @@ class UserController extends AbstractActionController
         }
         $commercialsJson = '';
         $cm = CommercialMapper::getInstance($sl);
-        if ($user && $user->user_id == 2) {
+        $roleLinker = $this->getServiceLocator()->get('RoleLinkerTable')->find($user->user_id, 'user_id');
+        $role = $roleLinker->role_id;
+
+        if ($role == 'admin' || $role == 'manager') {
             $commercials = $cm->getList($user->user_id);
             $commercialsJson = \Zend\Json\Json::encode($commercials);
         }
@@ -287,6 +290,7 @@ class UserController extends AbstractActionController
 
         return array(
             'user' => $user,
+            'role' => $role,
             'orders' => $orders,
             'commercialsJson' => $commercialsJson,
             'pageTitle' => 'Личный кабинет',

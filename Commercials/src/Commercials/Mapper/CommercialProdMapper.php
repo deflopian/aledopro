@@ -170,7 +170,7 @@ class CommercialProdMapper {
                         if ($filter->cart_param == 1) {
                             $f = $allParams[$filter->field_id];
                             $fName = $f->field;
-                            if (in_array($f->field, CatalogService::$intFields)) {
+                            if ($product->$fName && in_array($f->field, CatalogService::$intFields)) {
 
                                 $product->$fName = isset($sortedParams[$product->$fName]) ? $sortedParams[$product->$fName]->value : $product->$fName;
 
