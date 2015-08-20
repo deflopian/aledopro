@@ -57,16 +57,15 @@
                             </div>
                         </div>
                         <div class="b-work-form__file text-center">
-                            <div class="b-work-form__file-zone" style="width: 100%;height: auto;padding: 1rem;" ng-class="{'b-order-place__file-zone_file-uploaded' : fileName.length }">
+                            <div class="b-work-form__file-zone" style="width: 100%;height: auto;" ng-class="{'b-order-place__file-zone_file-uploaded' : fileName.length }">
                                 <div><input type="file" name="file" file-model="formData.file" id="jobDetails" onchange="angular.element(this).scope().showFileName(this)" /></div>
 
                                 <div class="b-work-form__file-zone-label" ng-hide="fileName.length">
                                     <script type="text/javascript">
                                         if (browser.msie9) {
-                                            document.write("<u>Загрузите</u> файл резюме<br/>(TXT, DOC, PDF)");
+                                            document.write("<small><u>Загрузить</u> файл резюме (TXT, DOC, PDF)</small>");
                                         } else {
-                                            document.write("Перетащите файл резюме (TXT, DOC, PDF)<br/>" +
-                                            "сюда или <u>загрузите</u>");
+                                            document.write("<small>Перетащите файл резюме (TXT, DOC, PDF) сюда или <u>загрузить</u></small>");
                                         }
 
                                     </script>
@@ -75,18 +74,18 @@
                                     <span ng-bind="fileName"></span>
 
                                     <div>
-                                        <button type="button" class="b-work-form__file-reset close" ng-click="resetFile(angular.element(this))">
-                                            &times;
-                                        </button>
+                                        <button type="button" class="b-work-form__file-reset close" ng-click="resetFile(angular.element(this))">&times;</button>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
-                        <button class="b-button b-button_white b-button_small b-right" id="work_submit" ng-click="submit()">
-
-
-                            <span class="b-button__text">отправить запрос</span>
+						<div class="b-work-form__table">
+							<label for="work_letter">Сопроводительное письмо</label>
+							<textarea id="work_letter" name="work_letter" ng-model="formData.letter" rows="5" class="b-form-control b-form-control_small"></textarea>
+						</div>
+                        <button class="b-button b-button_white-bordered b-button_small b-right" id="work_submit" ng-click="submit()">
+                            <span class="b-button__text">отправить</span>
                         </button>
                     </div>
 

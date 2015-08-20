@@ -78,16 +78,13 @@ class VacanciesController extends AbstractActionController
                         $entityId = $this->getServiceLocator()->get('VacancyRequestTable')->adapter->getDriver()->getLastGeneratedValue();
                         $success = 1;
 
-                        //сообщаем менеджеру о новом ответа на вакансию
+                        //сообщаем менеджеру о новом ответе на вакансию
                         list($email, $mailView) = MailService::prepareVacancyMailData($this->serviceLocator, $entityId, $entity, $vacancy);
                         MailService::sendMail($email, $mailView, "Новое резюме номер " . $entityId . " на Aledo!");
-
-
                 }
 
             } else {
                 $messages = $form->getMessages();
-                var_dump($messages);
             }
 
             $response = $this->getResponse();

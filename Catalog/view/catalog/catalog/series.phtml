@@ -118,7 +118,7 @@ function mb_ucfirst($text) {
                         <div class="attention-block">
                             <span class="attention-block_important">Важно!</span>
                             <span class="attention-block_message">Источник питания приобретается отдельно.</span>
-                            <a href="javascript:void(0)" onclick="mainpage.scrollTo($('#dopprods'), 40, true, true)" class="attention-block_btn">Перейти к источникам</a>
+                            <a href="#dopprods" onclick="mainpage.scrollTo($('#dopprods'), 40, true, true)" class="attention-block_btn">Перейти к источникам</a>
                         </div>
                     <? } elseif ($series->show_scroll_btn == 2) { ?>
                         <div class="attention-block">
@@ -528,7 +528,7 @@ function mb_ucfirst($text) {
                 sliderName: 'b-goods-gallery',
                 fancySwipingClass: "fancybox-swiping",
                 loop: true,
-                slidesToShow: <?= count($imgs) >= 2 ? '2' : '1' ?>,
+                slidesToShow: <?= count($imgs) > 2 ? '2' : '1' ?>,
                 imagesContainer: "#imagesLoadedGallery",
                 noSliderClass: "b-slider_no-slider"
             },
