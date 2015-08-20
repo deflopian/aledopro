@@ -28,7 +28,7 @@ class VacancyForm extends Form
 
         $textFields = $this->getTextFields();
 
-        foreach($textFields as $name){
+        foreach ($textFields as $name) {
             $text = new Element\Text($name);
             $this->add($text);
         }
@@ -60,17 +60,16 @@ class VacancyForm extends Form
         $file->getValidatorChain()
             ->attach(new Validator\File\UploadFile())
             ->attach(new Validator\File\Extension(array('doc', 'txt', 'pdf')))
-
             //todome: подумать над форматами и безопасностью!!!!
 
-            ->attachByName('filesize',      array('max' => 2000000));
+            ->attachByName('filesize', array('max' => 2000000));
         $inputFilter->add($file);
 
         $textFields = $this->getTextFields();
-        foreach($textFields as $name => $required){
+        foreach ($textFields as $name) {
             $inputFilter->add(array(
                 'name' => $name,
-                'required' => $required,
+                'required' => true,
                 'validators' => $messages['text'],
                 'filters' => array(
                     array('name' => 'stringtrim'),
@@ -78,7 +77,7 @@ class VacancyForm extends Form
                 )
             ));
         }
-/*
+
         $vacancy = new InputFilter\Input('vacancy');
         $vacancy->setRequired(false);
         $inputFilter->add($vacancy);
@@ -86,22 +85,18 @@ class VacancyForm extends Form
         $vacancy = new InputFilter\Input('custom_vacancy');
         $vacancy->setRequired(false);
         $inputFilter->add($vacancy);
-		
-		$letter = new InputFilter\Input('letter');
+
+        $letter = new InputFilter\Input('letter');
         $letter->setRequired(false);
         $inputFilter->add($letter);
-*/
+
         return $inputFilter;
     }
 
     private function getTextFields()
     {
         return array(
-            'name' => true,
-            'mail' => true,
-            'vacancy' => false,
-            'custom_vacancy' => false,
-            'letter' => false,
+            'name', 'mail'
         );
     }
 }

@@ -66,25 +66,25 @@ class VacanciesController extends AbstractActionController
                     $data = $form->getData();
                     $data['file'] = $adapter->getFileName(null, false);
                     $vacancy = $this->getServiceLocator()->get('VacanciesTable')->find($data['vacancy']);
-
+                    if (!$vacancy) {
+                        $vacancy = new Vacancy();
+                    }
                     //соискатель сам описал желаемую должность
                     if (!$data['vacancy'] && is_string($data['custom_vacancy']) && !empty($data['custom_vacancy'])) {
                         $vacancy->title = $data['custom_vacancy'];
                     }
 
-                    if (!$vacancy) {
-                        $vacancy = new Vacancy();
-                    }
-                        $entity = new VacancyRequest();
-                        $entity->exchangeArray($data);
 
-                        $this->getServiceLocator()->get('VacancyRequestTable')->save($entity);
-                        $entityId = $this->getServiceLocator()->get('VacancyRequestTable')->adapter->getDriver()->getLastGeneratedValue();
-                        $success = 1;
+                    $entity = new VacancyRequest();
+                    $entity->exchangeArray($data);
 
-                        //сообщаем менеджеру о новом ответе на вакансию
-                        list($email, $mailView) = MailService::prepareVacancyMailData($this->serviceLocator, $entityId, $entity, $vacancy);
-                        MailService::sendMail($email, $mailView, "Новое резюме номер " . $entityId . " на Aledo!");
+                    $this->getServiceLocator()->get('VacancyRequestTable')->save($entity);
+                    $entityId = $this->getServiceLocator()->get('VacancyRequestTable')->adapter->getDriver()->getLastGeneratedValue();
+                    $success = 1;
+
+                    //сообщаем менеджеру о новом ответе на вакансию
+                    list($email, $mailView) = MailService::prepareVacancyMailData($this->serviceLocator, $entityId, $entity, $vacancy);
+                    MailService::sendMail($email, $mailView, "Новое резюме номер " . $entityId . " на Aledo!");
 //                        MailService::sendMail("deflopian@gmail.com", $mailView, "Новое резюме номер " . $entityId . " на Aledo!");
                 }
 
