@@ -82,6 +82,10 @@ class VacancyForm extends Form
         $vacancy = new InputFilter\Input('vacancy');
         $vacancy->setRequired(false);
         $inputFilter->add($vacancy);
+		
+		$letter = new InputFilter\Input('letter');
+        $letter->setRequired(false);
+        $inputFilter->add($letter);
 
         return $inputFilter;
     }

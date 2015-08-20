@@ -10,5 +10,6 @@ class VacancyRequest extends SampleModel
     public $name;
     public $mail;
     public $file;
+    public $letter;
     public $date;
 }
