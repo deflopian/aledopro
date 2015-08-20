@@ -205,6 +205,7 @@ class CronController extends BaseController
     }
 
 
+
     /**
      * Разбирает csv-каталог на отдельные продукты, для каждого продукта определяет айди серии,
      * мин-макс параметры внутри каждой серии и возможные значения для каждого параметра
@@ -256,13 +257,16 @@ class CronController extends BaseController
             $zeroPriceReport = $reportMapper->getLast(ReportMapper::REPORT_TYPE_PRODUCT_ZERO_PRICE);
             $orphanSeriesReport = $reportMapper->getLast(ReportMapper::REPORT_TYPE_ORPHAN_SERIES);
             $newProdsReport = $reportMapper->getLast(ReportMapper::REPORT_TYPE_NEW_PRODUCTS);
+            $withoutPreviewReport = $reportMapper->getLast(ReportMapper::REPORT_TYPE_WITHOUT_PREVIEW);
         } else {
             $osConfig = ReportConfig::$infoByTypes[ReportMapper::REPORT_TYPE_ORPHAN_SERIES];
             $zpConfig = ReportConfig::$infoByTypes[ReportMapper::REPORT_TYPE_PRODUCT_ZERO_PRICE];
             $npConfig = ReportConfig::$infoByTypes[ReportMapper::REPORT_TYPE_NEW_PRODUCTS];
+            $wpConfig = ReportConfig::$infoByTypes[ReportMapper::REPORT_TYPE_WITHOUT_PREVIEW];
             $zeroPriceReport = $reportMapper->add($zpConfig["name"], ReportMapper::REPORT_TYPE_PRODUCT_ZERO_PRICE, $zpConfig["text"]);
             $orphanSeriesReport = $reportMapper->add($osConfig["name"], ReportMapper::REPORT_TYPE_ORPHAN_SERIES, $osConfig["text"]);
             $newProdsReport = $reportMapper->add($npConfig["name"], ReportMapper::REPORT_TYPE_NEW_PRODUCTS, $npConfig["text"]);
+            $withoutPreviewReport = $reportMapper->add($wpConfig["name"], ReportMapper::REPORT_TYPE_WITHOUT_PREVIEW, $wpConfig["text"]);
         }
 
 
@@ -325,17 +329,37 @@ class CronController extends BaseController
 
             }
 
-//            if ($product->series_id > 0 && ($product->price_without_nds == 0 || is_null($product->price_without_nds))) {
-//
-//                $item = new ReportItem();
-//                $item->linked_id = $product->id;
-//                $item->linked_type = AdminController::PRODUCT_TABLE;
-//                $item->report_id = $zeroPriceReport->id;
-//                $item->title = $product->title;
-//                $item->url = "/admin/catalog/product/" . $item->linked_id . "/";
-//
-//                $zeroPriceReport = $reportMapper->addItems($zeroPriceReport, array($item));
-//            }
+            if ($product->series_id > 0) {
+
+                /** @var Series $ser */
+                $ser = $this->getServiceLocator()->get('Catalog\Model\SeriesTable')->find($product->series_id);
+
+                if ($ser && $ser->subsection_id > 0 && !$ser->deleted) {
+                    $preview = $this->getServiceLocator()->get('FilesTable')->fetchByCond('uid', $product->id);
+
+                    if (!$preview || count($preview) == 0) {
+                        $item = new ReportItem();
+                        $item->linked_id = $product->id;
+                        $item->linked_type = AdminController::PRODUCT_TABLE;
+                        $item->report_id = $withoutPreviewReport->id;
+                        $item->title = $product->title;
+                        $item->url = "/admin/catalog/product/" . $item->linked_id . "/";
+                        $withoutPreviewReport = $reportMapper->addItems($withoutPreviewReport, array($item));
+                    }
+
+                    if ($product->price_without_nds == 0 || is_null($product->price_without_nds)) {
+                            $item = new ReportItem();
+                            $item->linked_id = $product->id;
+                            $item->linked_type = AdminController::PRODUCT_TABLE;
+                            $item->report_id = $zeroPriceReport->id;
+                            $item->title = $product->title;
+                            $item->url = "/admin/catalog/product/" . $item->linked_id . "/";
+                            $zeroPriceReport = $reportMapper->addItems($zeroPriceReport, array($item));
+
+                    }
+                }
+
+            }
 
             $products[$pKey] = $product;
 
@@ -377,20 +401,36 @@ class CronController extends BaseController
         }
 
         if (!file_exists($scvPath)) {
-//            if (isset($orphanSeriesReport->items) && count($orphanSeriesReport->items) > 0) {
-//                list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $orphanSeriesReport);
-//                MailService::sendMail($email, $mailView, "Новый отчёт номер " . $orphanSeriesReport->id . " по добавленным сериям");
-//            }
-//            if (isset($zeroPriceReport->items) && count($zeroPriceReport->items) > 0) {
-//                list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $zeroPriceReport);
-//                MailService::sendMail($email, $mailView, "Новый отчёт номер " . $zeroPriceReport->id . " по продуктам без цены");
-//            }
+            if (isset($orphanSeriesReport->items) && count($orphanSeriesReport->items) > 0) {
+                list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $orphanSeriesReport);
+                MailService::sendMail($email, $mailView, "Отчёт по добавленным сериям номер " . $orphanSeriesReport->id . " по добавленным сериям");
+                MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт по добавленным сериям номер " . $orphanSeriesReport->id );
+            } elseif (count($orphanSeriesReport->items) == 0) {
+                $reportMapper->delete($orphanSeriesReport->id);
+            }
+
+            if (isset($zeroPriceReport->items) && count($zeroPriceReport->items) > 0) {
+                list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $zeroPriceReport);
+                MailService::sendMail($email, $mailView, "Отчёт по продуктам без цены номер " . $zeroPriceReport->id);
+                MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт по продуктам без цены номер " . $zeroPriceReport->id);
+            } elseif (count($zeroPriceReport->items) == 0) {
+                $reportMapper->delete($zeroPriceReport->id);
+            }
+
             if (isset($newProdsReport->items) && count($newProdsReport->items) > 0) {
                 list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $newProdsReport);
                 MailService::sendMail($email, $mailView, "Отчёт по новым продуктам номер " . $newProdsReport->id);
                 MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт по новым продуктам номер " . $newProdsReport->id);
             } elseif (count($newProdsReport->items) == 0) {
                 $reportMapper->delete($newProdsReport->id);
+            }
+
+            if (isset($withoutPreviewReport->items) && count($withoutPreviewReport->items) > 0) {
+                list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $withoutPreviewReport);
+                MailService::sendMail($email, $mailView, "Отчёт по продуктам без превью номер " . $withoutPreviewReport->id);
+                MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт по продуктам без превью номер " . $withoutPreviewReport->id);
+            } elseif (count($withoutPreviewReport->items) == 0) {
+                $reportMapper->delete($withoutPreviewReport->id);
             }
         }
 

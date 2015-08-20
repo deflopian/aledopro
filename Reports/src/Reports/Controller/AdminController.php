@@ -92,6 +92,11 @@ class AdminController extends SampleAdminController {
             $сonfig = ReportConfig::$infoByTypes[ReportMapper::REPORT_TYPE_PRODUCT_ZERO_PRICE];
             $entities[] = array($сonfig['name'], $reportsZP);
         }
+        $reportsWP = $reportMapper->getList(ReportMapper::REPORT_TYPE_WITHOUT_PREVIEW);
+        if (count($reportsWP)) {
+            $сonfig = ReportConfig::$infoByTypes[ReportMapper::REPORT_TYPE_WITHOUT_PREVIEW];
+            $entities[] = array($сonfig['name'], $reportsWP);
+        }
         $reportsSM = $reportMapper->getList(ReportMapper::REPORT_TYPE_SEND_MAIL);
         if (count($reportsSM)) {
             $сonfig = ReportConfig::$infoByTypes[ReportMapper::REPORT_TYPE_SEND_MAIL];

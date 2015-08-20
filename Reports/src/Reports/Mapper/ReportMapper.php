@@ -25,6 +25,7 @@ class ReportMapper {
     const REPORT_TYPE_SEND_MAIL = 3;
     const REPORT_TYPE_ORPHAN_PRODUCTS = 4;
     const REPORT_TYPE_NEW_PRODUCTS = 5;
+    const REPORT_TYPE_WITHOUT_PREVIEW = 6;
 
     /**
      * @param $sl ServiceLocatorInterface

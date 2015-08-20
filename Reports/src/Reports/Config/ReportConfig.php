@@ -23,6 +23,10 @@ class ReportConfig
             "name" => "Отчёт о новых продуктах в базе",
             "text" => "Список недавно добавленных продуктов",
         ),
+        ReportMapper::REPORT_TYPE_WITHOUT_PREVIEW => array(
+            "name" => "Отчёт о продуктах без превью",
+            "text" => "Список недавно добавленных продуктов без превью",
+        ),
         ReportMapper::REPORT_TYPE_SEND_MAIL => array(
             "name" => "Отчёт об отправленных письмах",
             "text" => "Список отправленных уведомлений",

@@ -32,7 +32,6 @@ class FileController extends ApiController
 
         $result = "test";
 
-
         $parentType = $data['parentType'];
         $parentId = $data['parentId'];
         if (!is_numeric($parentId)) {
@@ -51,7 +50,6 @@ class FileController extends ApiController
             }
         }
 
-
         $tableName = $this->getTableName($type);
         $table = $sl->get($tableName);
         if ($field != "id") {
@@ -68,9 +66,9 @@ class FileController extends ApiController
                 if ($filename) {
                     $this->unlinkFile('/images/'. $folder .'/' . $filename);
                 }
-
             }
         }
+
 
 
         $data = $data['file'];
@@ -138,7 +136,6 @@ class FileController extends ApiController
                 $parentObject->$field = $resultId;
                 $parentObjectTable->save($parentObject);
             }
-
         }
 
         $result = array('name' => $adapter->getFileName(null, false), 'realName' => $filename, 'id' => $resultId);
