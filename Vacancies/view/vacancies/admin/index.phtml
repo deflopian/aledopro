@@ -47,16 +47,18 @@
             <th>Отправитель</th>
             <th>Почта</th>
             <th>Резюме</th>
+            <th>Сопроводительное письмо</th>
             <th>Дата</th>
         </tr>
         <tbody id="sortable">
         <? foreach($requests as $req){ ?>
             <tr class="entity">
                 <td><?= $req->id; ?></td>
-                <td><?= $vacancies[$req->vacancy]->title; ?></td>
+                <td><?= $req->vacancy ? $vacancies[$req->vacancy]->title : $req->custom_vacancy; ?></td>
                 <td><?= $req->name; ?></td>
                 <td><?= $req->mail; ?></td>
                 <td><a href="<?= $this->basePath() . '/images/vacancies/' .$req->file; ?>" target="_blank"><?= $req->file; ?></a></td>
+                <td><?= $req->letter; ?></td>
                 <td><?= $req->date; ?></td>
             </tr>
         <? } ?>

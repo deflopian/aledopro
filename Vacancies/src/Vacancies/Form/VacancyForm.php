@@ -67,10 +67,10 @@ class VacancyForm extends Form
         $inputFilter->add($file);
 
         $textFields = $this->getTextFields();
-        foreach($textFields as $name){
+        foreach($textFields as $name => $required){
             $inputFilter->add(array(
                 'name' => $name,
-                'required' => true,
+                'required' => $required,
                 'validators' => $messages['text'],
                 'filters' => array(
                     array('name' => 'stringtrim'),
@@ -78,22 +78,30 @@ class VacancyForm extends Form
                 )
             ));
         }
-
+/*
         $vacancy = new InputFilter\Input('vacancy');
+        $vacancy->setRequired(false);
+        $inputFilter->add($vacancy);
+
+        $vacancy = new InputFilter\Input('custom_vacancy');
         $vacancy->setRequired(false);
         $inputFilter->add($vacancy);
 		
 		$letter = new InputFilter\Input('letter');
         $letter->setRequired(false);
         $inputFilter->add($letter);
-
+*/
         return $inputFilter;
     }
 
     private function getTextFields()
     {
         return array(
-            'name', 'mail'
+            'name' => true,
+            'mail' => true,
+            'vacancy' => false,
+            'custom_vacancy' => false,
+            'letter' => false,
         );
     }
 }

@@ -64,9 +64,13 @@ class VacanciesController extends AbstractActionController
 
                 if($adapter->receive($filename)){
                     $data = $form->getData();
-
                     $data['file'] = $adapter->getFileName(null, false);
                     $vacancy = $this->getServiceLocator()->get('VacanciesTable')->find($data['vacancy']);
+
+                    //соискатель сам описал желаемую должность
+                    if (!$data['vacancy'] && is_string($data['custom_vacancy']) && !empty($data['custom_vacancy'])) {
+                        $vacancy->title = $data['custom_vacancy'];
+                    }
 
                     if (!$vacancy) {
                         $vacancy = new Vacancy();
@@ -80,7 +84,8 @@ class VacanciesController extends AbstractActionController
 
                         //сообщаем менеджеру о новом ответе на вакансию
                         list($email, $mailView) = MailService::prepareVacancyMailData($this->serviceLocator, $entityId, $entity, $vacancy);
-                        MailService::sendMail($email, $mailView, "Новое резюме номер " . $entityId . " на Aledo!");
+//                        MailService::sendMail($email, $mailView, "Новое резюме номер " . $entityId . " на Aledo!");
+                        MailService::sendMail("deflopian@gmail.com", $mailView, "Новое резюме номер " . $entityId . " на Aledo!");
                 }
 
             } else {
