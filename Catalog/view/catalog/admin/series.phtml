@@ -331,6 +331,8 @@
                 </p>
             </form>
         </div>
+		
+		<button type="button" class="btn btn-default" id="del-img-all" style="display: none;">Удалить выбранные</button>
     </div>
 
     <div id="images-container">
@@ -338,6 +340,9 @@
             <div class="admin-img" data-id="<?= $img->id ?>" >
                 <div class="admin-img-del">
                     <button class="btn btn-xs btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+                </div>
+				<div class="admin-img-select">
+                    <input type="checkbox" class="admin-img-check" value="<?= $img->id ?>">
                 </div>
 
                 <? if($img->type == \Application\Service\ApplicationService::MEDIA_TYPE_IMG){ ?>
@@ -350,6 +355,9 @@
     <div class="sample admin-img" data-id="" style="display: none">
         <div class="admin-img-del">
             <button class="btn btn-xs btn-default"><i class="glyphicon glyphicon-remove"></i></button>
+        </div>
+		<div class="admin-img-select">
+            <input type="checkbox" class="admin-img-check" value="">
         </div>
         <img style="height: 100%" src="" alt=""/>
     </div>
