@@ -90,6 +90,14 @@
                                         <a href="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?>/images/vacancies_request/<?= $requestDetails->file ?>"><?= $requestDetails->file ?></a>
                                     </td>
                                 </tr>
+								<tr height="30">
+                                    <td width="180" style="color: #666666">
+                                        Сопроводительное письмо:
+                                    </td>
+                                    <td>
+                                        <?= $requestDetails->letter ?>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     <td>&nbsp;</td>
