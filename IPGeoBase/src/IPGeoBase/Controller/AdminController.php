@@ -8,6 +8,7 @@ use Catalog\Service\CatalogService;
 use Documents\Model\DocumentTable;
 use Info\Service\SeoService;
 use IPGeoBase\Mapper\GeoBannerMapper;
+use IPGeoBase\Model\GeoBanner;
 use IPGeoBase\Model\ProdToProd;
 use IPGeoBase\Model\ProdToProj;
 use IPGeoBase\Model\Developer;
@@ -43,4 +44,65 @@ class AdminController extends SampleAdminController
 
         return $return;
     }
+
+
+
+    public function addEntityAction()
+    {
+        $this->setData();
+
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $title = $request->getPost('title', false);
+
+            $success = 0;
+            $newId = 0;
+            if ($title) {
+                $data = array('title' => $title);
+
+                $table = $this->getServiceLocator()->get('GeoBannersTable');
+
+                $entity = new GeoBanner();
+                $entity->exchangeArray($data);
+                $newId = $table->save($entity);
+                if($newId){
+                    $success = 1;
+                }
+            }
+
+            $returnArr = array('success' => $success);
+            if($success){
+                $returnArr['newId'] = $newId;
+            }
+
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode($returnArr));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+    }
+
+    public function delEntityAction()
+    {
+        $this->setData();
+
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $id = $request->getPost('id', false);
+            $success = 0;
+
+            if ($id) {
+                $table = $this->getServiceLocator()->get('GeoBannersTable');
+
+                $table->del($id);
+                $success = 1;
+            }
+
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode(array('success' => $success)));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+    }
+
 }

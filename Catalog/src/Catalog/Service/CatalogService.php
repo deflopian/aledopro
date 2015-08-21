@@ -18,6 +18,7 @@ use Commercials\Model\Commercial;
 use Commercials\Model\CommercialProd;
 use Commercials\Model\CommercialRoom;
 use Documents\Model\Document;
+use IPGeoBase\Model\GeoBanner;
 use Zend\Di\ServiceLocatorInterface;
 use Zend\Validator\File\ExcludeMimeType;
 use Zend\View\Model\ViewModel;
@@ -52,7 +53,8 @@ class CatalogService {
         AdminController::COMMERCIAL_PRODS_TABLE => 'CommercialProdsTable',
         AdminController::MAINPAGE_BLOCK_TABLE => 'MainPageBlocksTable',
         AdminController::MAINPAGE_BLOCK_IMAGE_TABLE => 'MainPageBlockImagesTable',
-        AdminController::FOOTER_BLOCKS_TABLE => 'FooterBlocksTable'
+        AdminController::FOOTER_BLOCKS_TABLE => 'FooterBlocksTable',
+        AdminController::GEOBANNERS_TABLE => 'GeoBannersTable',
     );
 
     const DISPLAY_STYLE_DEFAULT = 0;
@@ -618,6 +620,9 @@ RewriteRule ^.*$ index.php [NC,L]
                 break;
             case AdminController::FOOTER_BLOCKS_TABLE:
                 $entity = new FooterBlock();
+                break;
+            case AdminController::GEOBANNERS_TABLE:
+                $entity = new GeoBanner();
                 break;
             case AdminController::MAINPAGE_BLOCK_IMAGE_TABLE:
                 $entity = new MainPageBlockImage();
