@@ -15,7 +15,7 @@ class VacanciesController extends AbstractActionController
     
     public function indexAction()
     {
-        $vacancies = $this->getVacancyTable()->fetchAll('order ASC');
+        /*$vacancies = $this->getVacancyTable()->fetchAll('order ASC');
         $form = new VacancyForm('vacancy');
 
         $formVacancies = array();
@@ -33,9 +33,34 @@ class VacanciesController extends AbstractActionController
             'seoData' => $seoData,
             'vacancies' => $vacancies,
             'form' => $form
-        );
+        );*/
+		
+		return $this->redirect()->toRoute('job');
     }
-
+	
+	public function viewAction()
+    {
+		$id = (int) $this->params()->fromRoute('id', 0);
+		
+		$entity = $this->getServiceLocator()->get('VacanciesTable')->find($id);
+		if (!$entity) return $this->redirect()->toRoute('job');
+		
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::VACANCIES, 1 );
+		
+		$this->layout()->noBottomLine = true;
+        $this->layout()->seoData = $seoData;
+        $this->layout()->pageTitle = $entity->title;
+		
+		return array(
+            'seoData' => $seoData,
+			'entity' => $entity,
+			'pageTitle' => $entity->title,
+            'breadCrumbs'  => array(
+				array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
+				array('link'=> $this->url()->fromRoute('job'), 'text'=>ucfirst('Работа у нас')),
+			)
+        );
+	}
 
     public function saveFormAjaxAction()
     {
