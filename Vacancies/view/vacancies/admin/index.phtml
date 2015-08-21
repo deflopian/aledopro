@@ -57,7 +57,7 @@
                 <td><?= $req->vacancy ? $vacancies[$req->vacancy]->title : $req->custom_vacancy; ?></td>
                 <td><?= $req->name; ?></td>
                 <td><?= $req->mail; ?></td>
-                <td><a href="<?= $this->basePath() . '/images/vacancies/' .$req->file; ?>" target="_blank"><?= $req->file; ?></a></td>
+                <td><a href="<?= $this->basePath() . '/images/vacancies_request/' .$req->file; ?>" target="_blank" download><?= $req->file; ?></a></td>
                 <td><?= $req->letter; ?></td>
                 <td><?= $req->date; ?></td>
             </tr>
