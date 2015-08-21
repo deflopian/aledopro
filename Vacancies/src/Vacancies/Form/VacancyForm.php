@@ -80,14 +80,23 @@ class VacancyForm extends Form
 
         $vacancy = new InputFilter\Input('vacancy');
         $vacancy->setRequired(false);
+        $vacancy->getFilterChain()
+            ->attachByName('stringtrim')
+            ->attachByName('striptags');
         $inputFilter->add($vacancy);
 
         $vacancy = new InputFilter\Input('custom_vacancy');
         $vacancy->setRequired(false);
+        $vacancy->getFilterChain()
+            ->attachByName('stringtrim')
+            ->attachByName('striptags');
         $inputFilter->add($vacancy);
 
         $letter = new InputFilter\Input('letter');
         $letter->setRequired(false);
+        $letter->getFilterChain()
+            ->attachByName('stringtrim')
+            ->attachByName('striptags');
         $inputFilter->add($letter);
 
         return $inputFilter;

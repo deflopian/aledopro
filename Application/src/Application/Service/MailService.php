@@ -239,9 +239,11 @@ class MailService
 
     /**
      * @param $sl
-     * @param $requestId int
-	 * @param $requestDetails \Vacancies\Model\VacancyRequest
-	 * @param $vacancy \Vacancies\Model\Vacancy
+     * @param $user \ZfcUser\Entity\User | \Cart\Model\OrderUser
+     * @param $orderId int
+     * @param $order \Cart\Model\Order
+     * @param $productsInfo \Catalog\Model\Product[]
+     * @param $ptos \Cart\Model\ProdToOrder[]
      * @return array
      */
     public static function prepareVacancyMailData($sl, $requestId, $requestDetails, $vacancy)
@@ -255,24 +257,6 @@ class MailService
         $view->setTemplate('application/index/email/email-vacancy-manager');
         $formView = $sl->get('viewrenderer')->render($view);
         return array(self::$currentManagerMail, $formView);
-    }
-	
-	 /**
-     * @param $sl
-	 * @param $requestDetails \Vacancies\Model\VacancyRequest
-	 * @param $vacancy \Vacancies\Model\Vacancy
-     * @return array
-     */
-    public static function prepareVacancyAcceptedMailData($sl, $requestDetails, $vacancy)
-    {
-        $view = new ViewModel(array(
-            'requestDetails'     => $requestDetails,
-            'vacancy'   => $vacancy
-        ));
-        $view->setTerminal(true);
-        $view->setTemplate('application/index/email/email-vacancy-employee');
-        $formView = $sl->get('viewrenderer')->render($view);
-        return array($requestDetails->mail, $formView);
     }
 
     /**
