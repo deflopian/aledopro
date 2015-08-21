@@ -1,0 +1,44 @@
+<div class="b-section__content">
+    <div class="b-breadcrumbs">
+        <? foreach ($breadCrumbs as $bc) { ?>
+            <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+        <? } ?>
+        <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+    </div>
+</div>
+<div class="b-section b-article b-article_job">
+
+    <div class="b-section__content">
+	<h2 class="b-article__heading"><?= $entity->title ?></h2>
+	<hr class="dotted-separator b-article__separator b-article_job__separator">
+	<img src="<?= $entity->img ? $this->basePath() . '/images/vacancies/' . $entity->img : ''?>" />
+		<hr class="dotted-separator b-article__separator  b-article_job__separator">
+	<p>Уровень зарплаты: <?= $entity->salary ?></p>
+    <p>Город: <?= $entity->city ?></p>
+    <p>Требуемый опыт работы: <?= $entity->skill ?></p>
+
+<p class="b-article_job__section-heading">Обязанности:</p>
+<?= $entity->duties ?>
+
+<p class="b-article_job__section-heading">Требования:</p>
+<?= $entity->requirements ?>
+
+<p class="b-article_job__section-heading">Условия:</p>
+<?= $entity->conditions ?>
+
+<p class="b-article_job__section-heading">Адрес:</p>
+<?= $entity->address ?>
+
+<p class="b-article_job__section-heading">Тип занятости:</p>
+<?= $entity->hours ?>
+
+	<a  href="javascript:void(0)" class="b-button b-button_underlined b-button_gray-bordered b-article_job__button">
+        <span class="b-button__text">Откликнуться на вакансию</span>
+    </a>
+	
+	</div>
+	
+	
+
+	
+	</div>

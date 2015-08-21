@@ -5,7 +5,7 @@
 </h1>
 
 <h3>Основная информация</h3>
-<table class="table admin-table  table-striped">
+<table class="table admin-table table-striped">
     <tbody>
     <tr>
         <td>Название</td>
@@ -37,10 +37,52 @@
             </div>
         </td>
     </tr>
-    <tr>
-        <td>Описание</td>
+	<tr>
+        <td>Уровень зарплаты</td>
         <td>
-            <div class="editor-get-btn" data-name="text"><?= $entity->text; ?></div>
+            <a href="#" data-type="text" data-name="salary" class="editable-param"><?= $entity->salary; ?></a>
+        </td>
+    </tr>
+	<tr>
+        <td>Город</td>
+        <td>
+            <a href="#" data-type="text" data-name="city" class="editable-param"><?= $entity->city; ?></a>
+        </td>
+    </tr>
+	<tr>
+        <td>Требуемый опыт работы</td>
+        <td>
+            <a href="#" data-type="text" data-name="skill" class="editable-param"><?= $entity->skill; ?></a>
+        </td>
+    </tr>
+	<tr>
+        <td>Обязанности</td>
+        <td>
+            <div class="editor-get-btn" data-name="duties"><?= $entity->duties; ?></div>
+        </td>
+    </tr>
+	<tr>
+        <td>Требования</td>
+        <td>
+            <div class="editor-get-btn" data-name="requirements"><?= $entity->requirements; ?></div>
+        </td>
+    </tr>
+	<tr>
+        <td>Условия</td>
+        <td>
+            <div class="editor-get-btn" data-name="conditions"><?= $entity->conditions; ?></div>
+        </td>
+    </tr>
+	<tr>
+        <td>Адрес</td>
+        <td>
+            <div class="editor-get-btn" data-name="address"><?= $entity->address; ?></div>
+        </td>
+    </tr>
+    <tr>
+        <td>Тип занятости</td>
+        <td>
+            <div class="editor-get-btn" data-name="hours"><?= $entity->hours; ?></div>
         </td>
     </tr>
     </tbody>

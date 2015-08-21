@@ -16,10 +16,14 @@
         </div>
     </div>
 
-    <table class="table admin-table  table-striped">
+    <table class="table admin-table table-striped">
         <tr>
             <th>Id</th>
             <th>Название</th>
+			<th>Уровень зарплаты</th>
+			<th>Город</th>
+			<th>Требуемый опыт работы</th>
+			<th>Тип занятости</th>
             <th>Управление</th>
         </tr>
         <tbody id="sortable">
@@ -27,6 +31,10 @@
             <tr class="entity">
                 <td><?= $entity->id; ?></td>
                 <td><?= $entity->title; ?></td>
+				<td><?= $entity->salary; ?></td>
+				<td><?= $entity->city; ?></td>
+				<td><?= $entity->skill; ?></td>
+				<td><?= $entity->hours; ?></td>
                 <td>
                     <a href="#" class="editBtn">Редактировать</a>
                     <a href="#" class="deleteBtn">Удалить</a>
