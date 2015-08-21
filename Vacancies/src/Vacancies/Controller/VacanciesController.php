@@ -84,8 +84,13 @@ class VacanciesController extends AbstractActionController
 
                     //сообщаем менеджеру о новом ответе на вакансию
                     list($email, $mailView) = MailService::prepareVacancyMailData($this->serviceLocator, $entityId, $entity, $vacancy);
-                    MailService::sendMail($email, $mailView, "Новое резюме номер " . $entityId . " на Aledo!");
-//                        MailService::sendMail("deflopian@gmail.com", $mailView, "Новое резюме номер " . $entityId . " на Aledo!");
+                    //MailService::sendMail($email, $mailView, "Новое резюме номер " . $entityId . " на Aledo!");
+					MailService::sendMail("koziakov@ya.ru", $mailView, "Новое резюме номер " . $entityId . " на Aledo!");
+                    
+					//сообщаем соискателю, что его резюме принято
+					list($email, $mailView) = MailService::prepareVacancyAcceptedMailData($this->serviceLocator, $entity, $vacancy);
+					MailService::sendMail($email, $mailView, "Ваше резюме получено!");
+					
                 }
 
             } else {
