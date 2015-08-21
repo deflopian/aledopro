@@ -38,6 +38,7 @@ class SampleAdminController extends AbstractActionController
     public function indexAction()
     {
         $this->setData();
+
         $entities = $this->getServiceLocator()->get($this->table)->fetchAll('order asc');
 
         return array(

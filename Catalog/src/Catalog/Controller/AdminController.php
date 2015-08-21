@@ -54,6 +54,7 @@ class AdminController extends SampleAdminController
     const COMMERCIAL_PRODS_TABLE = 35;
     const ARTICLE_BLOCKS_TABLE = 36;
     const FOOTER_BLOCKS_TABLE = 37;
+    const GEOBANNERS_TABLE = 38;
 
     protected $tableImg = 'SeriesImgTable';
     protected $entityImgName = 'Catalog\Model\SeriesImg';
@@ -61,6 +62,7 @@ class AdminController extends SampleAdminController
 
     public function indexAction()
     {
+
         $sections = $this->getServiceLocator()->get('Catalog\Model\SectionTable')->fetchAll('order asc');
         $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::CATALOG_INDEX, 1 );
 
