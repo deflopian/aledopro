@@ -46,9 +46,10 @@
         foreach($product->toArray() as $key=>$val){
             if(in_array($key, $uneditableParams)){continue;}
             $type = 'text';
-            if($key == 'text'){ $type = 'textarea'; }
+			if($key == 'text'){ $type = 'textarea'; }
             if($key == 'in_market'){ $type = 'checkbox'; }
             $name = isset($paramsDescr[$key]) ? $paramsDescr[$key]->title : $key;
+			if($key != 'id') {
             ?>
             <tr>
                 <td><?= $name ?></td>
@@ -58,7 +59,20 @@
                     </a>
                 </td>
             </tr>
-        <?}?>
+			<?
+			}
+			else
+			{
+			?>
+            <tr>
+                <td><?= $name ?></td>
+                <td>
+                    <?= $val ?>
+                </td>
+            </tr>
+			<?
+			}
+		}?>
 
         </tbody>
     </table>

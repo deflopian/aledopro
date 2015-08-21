@@ -67,7 +67,7 @@ class CatalogService {
     );
 
     private static $unEditableParams = array(
-        'id', 'section_id', 'subsection_id', 'series_id', 'order', 'file'
+        /*'id', */'section_id', 'subsection_id', 'series_id', 'order', 'file'
     );
 
     /**
