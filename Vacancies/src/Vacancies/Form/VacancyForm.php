@@ -70,7 +70,7 @@ class VacancyForm extends Form
             $inputFilter->add(array(
                 'name' => $name,
                 'required' => true,
-                'validators' => $messages['text'],
+                'validators' => ($name == 'mail') ? array(array('name' => 'EmailAddress')) : $messages['text'],
                 'filters' => array(
                     array('name' => 'stringtrim'),
                     array('name' => 'striptags')
