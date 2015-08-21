@@ -17,4 +17,5 @@ class Vacancy extends SampleModel
     public $hours;
     public $img;
     public $order;
+    public $active;
 }
