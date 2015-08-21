@@ -28,7 +28,11 @@
             </div>
             <div>
                 <div class="row">
-                    <div class="col-xs-3 filter-before-<?= $serNum ?>"> </div>
+                    <div class="col-xs-3 filter-before-<?= $serNum ?>">
+                        <button class="b-button b-button_white-bordered b-button_small" style="padding: 0.3rem 1rem; margin-top: 0.5rem; text-transform: lowercase; border-style: dotted" ng-show="showTags && !isClear()">
+                            <span ng-click="clearFilters()" class="b-button__text">Сбросить фильтры</span>
+                        </button>
+                    </div>
                     <div class="filter-column-header_tag filter-param-<?= $serNum ?>" data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
 
                             <div ng-repeat="tag in getTags(name)" ng-show="showTags">
@@ -57,6 +61,9 @@
                                 <label for="f-<?= $serNum ?>-offers" ng-class="{disabledFilterParam: !checkVal('is_offer', 1)}">спецпредложения</label>
                             </div>
 
+                            <button class="b-button b-button_white-bordered b-button_small" style="padding: 0.3rem 1rem; margin-top: 0.5rem; text-transform: lowercase; border-style: dotted" ng-show="!showTags && !isClear()">
+                                <span ng-click="clearFilters()" class="b-button__text">Сбросить фильтры</span>
+                            </button>
                     </div>
                     <div class="series-filter__column filter-column filter-param-<?= $serNum ?>"  data-name="{{name}}" ng-repeat="name in paramsOrder[<?= $displayStyle ?>]">
 
