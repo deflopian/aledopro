@@ -267,7 +267,26 @@ function mb_ucfirst($text) {
                             </div>
                         </div>
                     </div>
-
+					
+                    <? if($series->text_charact = trim($series->text_charact)){ ?>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <h2 class="series-description-block__title">Характеристики</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-second-xs">
+                                    <div class="col-xs-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_charact)) < 5 && $num !== false) ?
+                                            substr($series->text_charact, $num+13) : $series->text_charact ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <? } ?>
 
                     <? if($series->text_exploit = trim($series->text_exploit)){ ?>
                         <div class="row">
@@ -283,6 +302,26 @@ function mb_ucfirst($text) {
                                     <div class="col-xs-12 series-description">
                                         <?= (($num = strpos('<p>&nbsp;</p>', $series->text_exploit)) < 5 && $num !== false) ?
                                             substr($series->text_exploit, $num+13) : $series->text_exploit ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <? } ?>
+					
+                <? if($series->text_sphere = trim($series->text_sphere)){ ?>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <h2 class="series-description-block__title">Область применения</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-second-xs">
+                                    <div class="col-xs-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_sphere)) < 5 && $num !== false) ?
+                                            substr($series->text_sphere, $num+13) : $series->text_sphere ?>
                                     </div>
                                 </div>
                             </div>

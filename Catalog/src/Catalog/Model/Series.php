@@ -9,7 +9,9 @@ class Series extends SampleModel
     public $subsection_id;
     public $title;
     public $text;
+    public $text_charact;
     public $text_exploit;
+    public $text_sphere;
     public $text_dimming;
     public $text_after_dimming;
     public $img;

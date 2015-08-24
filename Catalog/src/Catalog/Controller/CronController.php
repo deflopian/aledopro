@@ -334,7 +334,7 @@ class CronController extends BaseController
                 /** @var Series $ser */
                 $ser = $this->getServiceLocator()->get('Catalog\Model\SeriesTable')->find($product->series_id);
 
-                if ($ser && $ser->subsection_id > 0 && !$ser->deleted) {
+                if ($ser && $ser->subsection_id > 0 && !$ser->deleted && $product->id != 162461) {
                     $preview = $this->getServiceLocator()->get('FilesTable')->fetchByCond('uid', $product->id);
 
                     if (!$preview || count($preview) == 0) {

@@ -46,9 +46,9 @@ class CommercialService {
                 $sheet->setCellValue('B' . $currentRow, "Наименование");
                 $sheet->setCellValue('C' . $currentRow, "Фото");
                 $sheet->setCellValue('D' . $currentRow, "Описание");
-                $sheet->setCellValue('E' . $currentRow, "Цена");
-                $sheet->setCellValue('F' . $currentRow, "Количество");
-                $sheet->setCellValue('G' . $currentRow, "Сумма");
+                $sheet->setCellValue('E' . $currentRow, "Цена, руб.");
+                $sheet->setCellValue('F' . $currentRow, "Количество, шт.");
+                $sheet->setCellValue('G' . $currentRow, "Сумма, руб.");
             }
 
             foreach ($room->prods as $pkey => $prod) {
@@ -119,14 +119,11 @@ class CommercialService {
                     }
 
                 }
-
-
-                $sheet->setCellValue('D' . $currentRow, self::getMainParams($prod));
-                $sheet->setCellValue('E' . $currentRow, number_format($price, 2) . " руб.");
-                $sheet->setCellValue('F' . $currentRow, $count . " шт.");
-                $sheet->setCellValue('G' . $currentRow, number_format(($price * $count), 2) . " руб.");
-
-
+				
+				$sheet->setCellValue('D' . $currentRow, self::getMainParams($prod));
+                $sheet->setCellValue('E' . $currentRow, $price); //number_format($price, 2)
+                $sheet->setCellValue('F' . $currentRow, $count);
+                $sheet->setCellValue('G' . $currentRow, $price * $count);
 
                 $currentRow++; //компенсируем смерженную строку
             }

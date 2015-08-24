@@ -366,13 +366,14 @@ $url = $uriArr[0]
 
         $(function () {
             $('#main-menu').find('a[data-url="<?= $url ?>"]').parent().addClass('active');
-            $('img [id ^= onicon]').css('width', 'auto');
-
         });
     </script>
-
-    <script
-        type="text/javascript">document.write('<script type="text/javascript" charset="utf-8" async="true" id="onicon_loader" src="http://cp.onicon.ru/js/simple_loader.js?site_id=53eda8d372d22c8b3400000e&srv=2&' + (new Date).getTime() + '"></scr' + 'ipt>');</script>
+		
+    <!-- BEGIN JIVOSITE CODE {literal} -->
+    <script type='text/javascript'>
+        (function(){ var widget_id = '8lXAgkwLir';
+        var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);})();</script>
+    <!-- {/literal} END JIVOSITE CODE -->
 
     <script type="text/javascript">
         /* <![CDATA[ */
