@@ -109,10 +109,10 @@ class CommercialService {
                         }
 
                         $objDrawing->setMimeType($mimeType);
-                        $objDrawing->setWidth(200);
+                        $objDrawing->setWidth(150);//200
                         $objDrawing->setCoordinates('C' . $currentRow);
                         $objDrawing->setWorksheet($sheet);
-                        $maxWidth = 240;
+                        $maxWidth = 190;//240
                         $offsetX = ($maxWidth - $objDrawing->getWidth())/2;
                         $objDrawing->setOffsetX($offsetX);
                         $objDrawing->setOffsetY(20);
@@ -164,13 +164,13 @@ class CommercialService {
      */
     public static function setColumnWidths($sheet) {
 
-        $sheet->getColumnDimension('A')->setWidth(80/8);
-        $sheet->getColumnDimension('B')->setWidth(350/8);
-        $sheet->getColumnDimension('C')->setWidth(260/8);
-        $sheet->getColumnDimension('D')->setWidth(270/8);
-        $sheet->getColumnDimension('E')->setWidth(120/8);
-        $sheet->getColumnDimension('F')->setWidth(120/8);
-        $sheet->getColumnDimension('G')->setWidth(120/8);
+        $sheet->getColumnDimension('A')->setWidth(61/7);
+        $sheet->getColumnDimension('B')->setWidth(187/7);
+        $sheet->getColumnDimension('C')->setWidth(187/7);
+        $sheet->getColumnDimension('D')->setWidth(236/7);
+        $sheet->getColumnDimension('E')->setWidth(82/7);
+        $sheet->getColumnDimension('F')->setWidth(89/7);
+        $sheet->getColumnDimension('G')->setWidth(93/7);
 
         return $sheet;
 
