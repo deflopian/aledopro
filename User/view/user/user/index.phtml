@@ -432,7 +432,107 @@
                                 <!--div class="b-offer-panel__cell">
                                     <a ng-click="commercialAPI.update(commercial)" href="javascript:void(0)"> Сохранить КП</a>
                                 </div-->
+								<div class="b-offer-panel__cell">
+                                    <a ng-click="commercial.priceMode=MODE_PRICE_ADD_DISCOUNTS" href="javascript:void(0)"> Установить цены партнёра</a>
+                                </div>
+								<div class="b-offer-panel__cell">
+                                    <a ng-click="commercialAPI.removeDiscounts(commercial)" href="javascript:void(0)"> Отменить цены партнёра</a>
+                                </div>
                             </div>
+							<div class="b-offer-panel" ng-show="commercial.rooms.length > 0 && commercial.priceMode == MODE_PRICE_ADD_DISCOUNTS">
+														
+                                <div id="userTable">
+                                    <solo-table make-sortable="3" items-on-page="20">
+									
+                                        <div solo-table-data ng-cloak>
+                                            <?= $usersJson ?>
+                                        </div>
+										
+                                        <span ng-show="false" ng-init="getSelectFor(['city', 'group_name', 'manager_name'])"></span>
+										
+										<div ng-show="pageNums.length > 1" class="b-offer-panel">
+										    <div class="b-offer-panel__cell" ng-model="pageNums" ng-repeat="i in pageNums track by $index"><a href="#" ng-class="{'b-header-top-section__link link_tel': $index == pager.currentPage - 1}" ng-click="gotoPage($index+1)">{{$index+1}}</a></div>
+										</div>
+								
+										<table cellpadding="0" cellspacing="0" border="0" class="b-order-history">
+										    <colgroup>
+										        <col style="width:5%" />
+										        <col style="width:15%" />
+										        <col style="width:17%" />
+										        <col style="width:15%" />
+										        <col style="width:12%" />
+										        <col style="width:15%" />
+										        <col style="width:10%" />
+										        <col style="width:auto" />
+										    </colgroup>
+											
+										    <thead>
+										        <tr class="b-order-table__cell">
+										            <th sort-by='user_id' class="b-order-history__cell b-order-history__cell_header-cell">Id</th>
+										            <th sort-by='username' class="b-order-history__cell b-order-history__cell_header-cell">Имя</th>
+										            <th sort-by='email' class="b-order-history__cell b-order-history__cell_header-cell">Почта</th>
+										            <th sort-by='alias' class="b-order-history__cell b-order-history__cell_header-cell">Псевдоним</th>
+										            <th sort-by='group_name' class="b-order-history__cell b-order-history__cell_header-cell">Группа</th>
+										            <th sort-by='city' class="b-order-history__cell b-order-history__cell_header-cell">Город</th>
+										            <th sort-by='manager_name' class="b-order-history__cell b-order-history__cell_header-cell">Менеджер</th>
+										            <th class="b-order-history__cell b-order-history__cell_header-cell"></th>
+										        </tr>
+										        <tr class="b-order-history__row">
+										            <th class="b-order-history__cell b-order-history__cell_header-cell"></th>
+										            <th class="b-order-history__cell b-order-history__cell_header-cell"><input type="text" class="b-form-control" ng-model="filterModelUsername" name="username" placeholder="Имя пользователя" /></th>
+										            <th class="b-order-history__cell b-order-history__cell_header-cell"><input type="text" class="b-form-control" ng-model="filterModelEmail" name="email" placeholder="Почта" /></th>
+										            <th class="b-order-history__cell b-order-history__cell_header-cell"><input type="text" class="b-form-control" ng-model="filterModelAlias" name="alias" placeholder="Псевдоним" /></th>
+										            <th class="b-order-history__cell b-order-history__cell_header-cell">
+										                <select ng-model="filterModelGroup" class="b-form-control">
+										                    <option value="">Все</option>
+										                    <option ng-repeat="group in selects.group_name" ng-value="group">{{group}}</option>
+										                </select>
+										            </th>
+										            <th class="b-order-history__cell b-order-history__cell_header-cell">
+										                <select ng-model="filterModelCity" class="b-form-control">
+										                    <option value="">Все города</option>
+										                    <option ng-repeat="town in selects.city" ng-value="town">{{town}}</option>
+										                </select>
+										            </th>
+										            <th class="b-order-history__cell b-order-history__cell_header-cell">
+										                <select ng-model="filterModelManager" class="b-form-control">
+										                    <option value="">Все</option>
+										                    <option ng-repeat="manager in selects.manager_name" ng-value="manager">{{manager}}</option>
+										                </select>
+										            </th>
+										            <th class="b-order-history__cell b-order-history__cell_header-cell"></th>
+										        </tr>
+										    </thead>
+											
+										    <tbody>            
+										        <tr class="b-order-history__row" ng-repeat="item in filtered = (original | filterByFields:filterModelUsername:['username'] | filterByFields:filterModelEmail:['email'] | filterByFields:filterModelAlias:['alias'] | filterByFields:filterModelCity:['city'] | filterByFields:filterModelManager:['manager_name'] | filterByFields:filterModelGroup:['group_name'])">
+										            <td class="b-order-history__cell">{{item.user_id}}</td>
+										            <td class="b-order-history__cell">{{item.username}}</td>
+										            <td class="b-order-history__cell">{{item.email}}</td>
+										            <td class="b-order-history__cell">{{item.alias}}</td>
+										            <td class="b-order-history__cell">
+										                <span ng-if="item.partner_group > 0">
+										                    {{item.group_name}}
+										                </span>
+										                <span ng-if="item.partner_group == 0">
+										                    {{item.group_name}}
+										                </span>
+										            </td>
+										            <td class="b-order-history__cell">{{item.city}}</td>
+										            <td class="b-order-history__cell">{{item.manager_name}}</td>
+										            <td class="b-order-history__cell text-right">
+										                <a href="javascript:void(0)" ng-click="commercialAPI.addDiscounts(commercial.uid, item.user_id)" class="b-button b-button_small b-order-history__button">
+   										                    <span class="b-button__text">Выбрать</span>
+										                </a>
+										            </td>
+										        </tr>
+										    </tbody>
+
+										</table>
+                                    </solo-table>
+                                </div>
+
+							</div>
                             <div id="sortableCommContainer">
                                 <div sv-root sv-on-sort="roomAPI.makesort($item, $partFrom, $partTo, $indexFrom, $indexTo)" sv-part="commercial.rooms" style="padding-left: 0">
                                     <div sv-element="sortableOptions" ng-repeat="room in commercial.rooms track by $index">

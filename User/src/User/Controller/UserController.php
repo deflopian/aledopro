@@ -286,9 +286,50 @@ class UserController extends AbstractActionController
             $commercials = $cm->getList($user->user_id);
             $commercialsJson = \Zend\Json\Json::encode($commercials);
         }
+		
+		$allUsers =  $sl->get('UserTable')->fetchAll();
+        $partners = array();
+        $nonPartners = array();
+        foreach ($allUsers as $user) {
+            if ($user->is_partner == 1) {
+                $partners[] = $user;
+            } else {
+                $nonPartners[] = $user;
+            }
+        }
 
+        $allGroups =  $sl->get('PartnerGroupTable')->fetchAll();
+        $groupsNamesById = array(0 => '-');
+        foreach( $allGroups as $group) {
+            $groupsNamesById[$group->id] = $group->name;
+        }
 
+        $managers = array(0 => '-');
+        $managersIds = array();
+        foreach ($allUsers as $entity) {
+            $managersIds[] = $entity->manager_id;
+        }
+        if (count($managersIds)) {
+            $allManagers = $this->getServiceLocator()->get('UserTable')->fetchByCond('user_id', $managersIds);
+            foreach ($allManagers as $currentManager) {
+                $managers[$currentManager->user_id] = $currentManager->username;
+            }
+        }
+
+        foreach ($partners as &$entity1) {
+            $entity1->user_id = (int)$entity1->user_id;
+            if (isset($groupsNamesById[$entity1->partner_group])) {
+                $entity1->group_name = $groupsNamesById[$entity1->partner_group];
+            }
+            if (isset($managers[$entity1->manager_id])) {
+                $entity1->manager_name = $managers[$entity1->manager_id];
+            }
+        }
+
+        $entitiesJson = \Zend\Json\Json::encode($partners);
+		
         return array(
+			'usersJson' => $entitiesJson,
             'user' => $user,
             'role' => $role,
             'orders' => $orders,
