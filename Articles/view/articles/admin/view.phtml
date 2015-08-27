@@ -16,6 +16,18 @@
                 <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
             </td>
         </tr>
+		<tr>
+            <td>Заголовок 1</td>
+            <td>
+                <a href="#" data-type="text" data-name="header1" class="editable-param"><?= $entity->header1; ?></a>
+            </td>
+        </tr>
+		<tr>
+            <td>Заголовок 2</td>
+            <td>
+                <a href="#" data-type="text" data-name="header2" class="editable-param"><?= $entity->header2; ?></a>
+            </td>
+        </tr>
         <tr>
             <td>Псевдоним в URL</td>
             <td>
@@ -98,7 +110,7 @@
                 </td>
             </tr>
             <tr id="imageMapper<?= $i?>">
-                <td>Изображение</td>
+                <td>Изображение 1</td>
                 <td>
                     <div
                         ng-single-image-upload
@@ -115,6 +127,24 @@
                     </script>
                 </td>
             </tr>
+			<tr id="image2Mapper<?= $i?>">
+                <td>Изображение 2</td>
+                <td>
+                    <div
+                        ng-single-image-upload
+                        parent-type="articleBlock"
+                        parent-id="<?= $block->id ?>"
+                        folder="articles"
+                        field="img2"
+                        img="<?= $block->img2_name ? $block->img2_name : "" ?>"
+                        img-id ="<?= $block->img2 ? $block->img2 : "" ?>"
+                        ></div>
+
+                    <script type="application/javascript">
+                        AppFactory("image2Mapper<?= $i?>", "images", ["imageMapper", "ur.file"]);
+                    </script>
+                </td>
+            </tr>
 
             <tr>
                 <td>Текст после картинки</td>
@@ -125,6 +155,21 @@
                 </td>
             </tr>
         <? } ?>
+	    <tr>
+        <td>Выводить статью на сайте?</td>
+        <td>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="yes">Да</label>
+                    <input type="radio" id="yes" name="active" class="radio" value="1" <?= $entity->active ? 'checked' : ''?>/>
+                </div>
+                <div class="col-md-3">
+                    <label for="no">Нет</label>
+                    <input type="radio" id="no" name="active" class="radio" value="0" <?= $entity->active ? : 'checked'?>/>
+                </div>
+            </div>
+        </td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -192,6 +237,21 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
             inputField: $("#tagit-series"),
             outputField: $('#tagit-series-res'),
             placeholder: 'Название тега'
+        });
+		
+		var val;
+        $('.radio').on('change', function(){
+            val = $('.radio:checked').val();
+			
+            $.ajax({
+                url:  catalog.baseUrl + 'changeActivityStatus/',
+                dataType : "json",
+                type: "post",
+                data: {id: catalog.parentId, val: val},
+                success: function (data, textStatus) {
+                    console.log('changed active status');
+                }
+            });
         });
     });
 </script>

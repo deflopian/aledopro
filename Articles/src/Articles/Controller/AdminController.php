@@ -113,7 +113,7 @@ class AdminController extends SampleAdminController
 
     public function viewAction()
     {
-        $this->imgFields=array('img', 'preview');
+        $this->imgFields=array('img', 'img2', 'preview');
         //$return = parent::viewAction();
         $return = array();
         $id = $this->params()->fromRoute('id', 0);
@@ -336,5 +336,31 @@ class AdminController extends SampleAdminController
             return $response;
         }
         return $this->redirect()->toRoute('zfcadmin/catalog');
+    }
+	
+	public function changeActivityStatusAction()
+    {
+        $this->setData();
+
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $val = $request->getPost('val', false);
+            $id = $request->getPost('id', false);
+            $success = 0;
+
+            if ($id && $val !== false) {
+                $table = $this->getServiceLocator()->get($this->table);
+                $vacancy = $table->find($id);
+                $vacancy->active = $val;
+                $table->save($vacancy);
+
+                $success = 1;
+            }
+
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode(array('success' => $success)));
+            return $response;
+        }
+        return $this->redirect()->toRoute('admin/blog');
     }
 }

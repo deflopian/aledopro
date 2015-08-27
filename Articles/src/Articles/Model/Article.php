@@ -7,6 +7,8 @@ class Article extends SampleModel
 {
     public $id;
     public $title;
+	public $header1;
+	public $header2;
     public $text_short;
     public $alias;
     public $text;
@@ -14,4 +16,5 @@ class Article extends SampleModel
     public $date;
     public $order;
     public $preview;
+	public $active;
 }

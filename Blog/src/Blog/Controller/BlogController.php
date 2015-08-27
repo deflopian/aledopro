@@ -96,13 +96,13 @@ class BlogController extends AbstractActionController
     public function indexAction()
     {
         $sl = $this->getServiceLocator();
-        $articles = $sl->get('ArticlesTable')->fetchAll('order ASC');
+        $articles = $sl->get('ArticlesTable')->fetchByCond('active', 1, 'order ASC');
         $fileTable = $this->getServiceLocator()->get('FilesTable');
         $tagToArticleTable = $this->getServiceLocator()->get('TagToArticlesTable');
         $tagsTable = $this->getServiceLocator()->get('ArticleTagsTable');
 
         foreach ($articles as &$article) {
-
+			
             foreach (array('preview') as $imgField) {
                 if ($article->$imgField) {
                     $file = $fileTable->find($article->$imgField);

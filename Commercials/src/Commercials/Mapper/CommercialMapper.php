@@ -77,15 +77,15 @@ class CommercialMapper {
     /**
      * @param $commercial Commercial
      */
-    public function actualize($commercial, $user, $discounts) {
+    public function actualize($commercial, $user, $discounts, $priceUser) {
         $cm = CatalogMapper::getInstance($this->sl);
         $cpm = CommercialProdMapper::getInstance($this->sl);
         foreach ($commercial->rooms as $room) {
             /** @var CommercialProd $commProd */
             foreach ($room->prods as &$commProd) {
                 list($tree, $type) = $cm->getParentTree($commProd->product_id);
-//                $price = CatalogService::getTruePrice($commProd->product->price_without_nds, $user, $tree, $discounts, $commProd->product->opt2);
-                $price = CatalogService::getTruePrice($commProd->product->price_without_nds);
+                $price = CatalogService::getTruePrice($commProd->product->price_without_nds, $priceUser, $tree, $discounts, $commProd->product->opt2);
+                //$price = CatalogService::getTruePrice($commProd->product->price_without_nds);
                 $cpm->updatePrice($commProd->id, $price);
             }
         }

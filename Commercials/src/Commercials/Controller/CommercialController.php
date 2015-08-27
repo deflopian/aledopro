@@ -82,23 +82,48 @@ class CommercialController extends AbstractActionController {
 
     public function actualizeAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $async = $this->params()->fromQuery('async', false);
+		
+		$id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('cabinet');
+			if ($async) {
+				$response = $this->getResponse();
+				$response->setContent(\Zend\Json\Json::encode(array('success' => 0)));
+				return $response;
+			}
+			return $this->redirect()->toRoute('cabinet');
         }
 
         $user = $this->zfcUserAuthentication()->getIdentity();
+		$priceUserId = $this->params()->fromQuery('price_user_id', 0);
 
         if (!$user) {
-            $this->getResponse()->setStatusCode(403);
+			if ($async) {
+				$response = $this->getResponse();
+				$response->setContent(\Zend\Json\Json::encode(array('success' => 0)));
+				return $response;
+			}
+			else $this->getResponse()->setStatusCode(403);
         }
 
-        $discounts = $this->getServiceLocator()->get('DiscountTable')->fetchByUserId($user->getId(), $user->getPartnerGroup(), false, 0,  $this->getServiceLocator());
+        $priceUser = $this->getServiceLocator()->get('UserTable')->find($priceUserId);
+		//$discounts = $this->getServiceLocator()->get('DiscountTable')->fetchByUserId($user->getId(), $user->getPartnerGroup(), false, 0,  $this->getServiceLocator());
+		if ($priceUser) {
+			$discounts = $this->getServiceLocator()->get('DiscountTable')->fetchByUserId($priceUserId, $priceUser->partner_group, false, 0,  $this->getServiceLocator());
+		}
+		else $discounts = null;
+		
         $commercialMapper = CommercialMapper::getInstance($this->getServiceLocator());
 
         $commercial = $commercialMapper->getByUID($user->getId(), $id, true, true, true);
-        $commercialMapper->actualize($commercial, $user, $discounts);
-
+		$commercial = $commercialMapper->updateByUID($user->getId(), $id, array('price_user_id' => $priceUserId));
+        $commercialMapper->actualize($commercial, $user, $discounts, $priceUser);
+		
+		if ($async) {
+			$response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode(array('success' => 1)));
+            return $response;
+		}
         return $this->redirect()->toRoute('cabinet');
     }
 } 

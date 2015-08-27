@@ -18,7 +18,10 @@
 <div class="b-section b-article">
 
     <div class="b-section__content">
-        <? if ($article->title) { ?>
+	    <? if ($article->header1 || $article->header2) { ?>
+            <h2 class="b-article__heading"><?= $article->header1 ? $article->header1 : '' ?><?= $article->header2 ? '<br>'.$article->header2 : '' ?></h2>
+        <? } ?>
+        <? if ($article->title && !$article->header1 && !$article->header2) { ?>
             <h2 class="b-article__heading"><?= $article->title ?></h2>
         <? } ?>
             <hr class="dotted-separator b-article__separator"/>
@@ -40,6 +43,9 @@
             <? } ?>
             <? if ($block->img_name) { ?>
                 <img src="/images/articles/<?= $block->img_name ?>"/>
+            <? } ?>
+			<? if ($block->img2_name) { ?>
+                <img src="/images/articles/<?= $block->img2_name ?>"/>
             <? } ?>
             <? if ($block->textafter) { ?>
                 <?= $block->textafter ?>

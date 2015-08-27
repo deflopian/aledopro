@@ -58,7 +58,7 @@ class ArticlesController extends AbstractActionController
         $fileTable = $this->getServiceLocator()->get('FilesTable');
         foreach ($blocks as &$block) {
 
-            foreach (array('img') as $imgField) {
+            foreach (array('img','img2') as $imgField) {
                 if ($block->$imgField) {
                     $file = $fileTable->find($block->$imgField);
                     if ($file) {

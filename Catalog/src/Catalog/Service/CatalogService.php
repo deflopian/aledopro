@@ -993,12 +993,13 @@ RewriteRule ^.*$ index.php [NC,L]
 
     public static function getTruePrice($price, $user = null, $hierarchy = array(), $discounts = null, $minPrice = 0)
     {
-        if ($user && $user->getId() == 1) {
+        /*if ($user && $user->getId() == 1) {
             var_dump($discounts);
-        }
+        }*/
         //$discounts =
         //todome: удостовериться в верности
         if ($user && $user->getIsPartner()) {
+		//if ($user && $user->is_partner) {
             return round(self::getPartnerPrice($price * 1.18, $hierarchy, $discounts, $minPrice));
         }
 
