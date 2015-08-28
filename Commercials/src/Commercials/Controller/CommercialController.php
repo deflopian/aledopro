@@ -82,7 +82,8 @@ class CommercialController extends AbstractActionController {
 
     public function actualizeAction()
     {
-        $async = $this->params()->fromQuery('async', false);
+        $async = $this->params()->fromQuery('async', 0);
+		$priceUserId = $this->params()->fromQuery('price_user_id', 0);
 		
 		$id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -95,7 +96,6 @@ class CommercialController extends AbstractActionController {
         }
 
         $user = $this->zfcUserAuthentication()->getIdentity();
-		$priceUserId = $this->params()->fromQuery('price_user_id', 0);
 
         if (!$user) {
 			if ($async) {
@@ -116,7 +116,9 @@ class CommercialController extends AbstractActionController {
         $commercialMapper = CommercialMapper::getInstance($this->getServiceLocator());
 
         $commercial = $commercialMapper->getByUID($user->getId(), $id, true, true, true);
-		$commercial = $commercialMapper->updateByUID($user->getId(), $id, array('price_user_id' => $priceUserId));
+		$commercialMapper->updateByUID($user->getId(), $id, array('price_user_id' => $priceUserId));
+		$commercial->price_user_id = $priceUserId;
+		
         $commercialMapper->actualize($commercial, $user, $discounts, $priceUser);
 		
 		if ($async) {

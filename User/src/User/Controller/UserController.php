@@ -285,7 +285,7 @@ class UserController extends AbstractActionController
         if ($role == 'admin' || $role == 'manager') {
             $commercials = $cm->getList($user->user_id);
             $commercialsJson = \Zend\Json\Json::encode($commercials);
-        }
+		}
 		
 		$allUsers =  $sl->get('UserTable')->fetchAll();
         $partners = array();

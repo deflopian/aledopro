@@ -433,10 +433,13 @@
                                     <a ng-click="commercialAPI.update(commercial)" href="javascript:void(0)"> Сохранить КП</a>
                                 </div-->
 								<div class="b-offer-panel__cell">
-                                    <a ng-click="commercial.priceMode=MODE_PRICE_ADD_DISCOUNTS" href="javascript:void(0)"> Установить цены партнёра</a>
+                                    <a ng-click="commercial.priceMode=MODE_PRICE_ADD_DISCOUNTS" href="javascript:void(0)"> Выбрать цены партнёра</a>
                                 </div>
                             </div>
-							<div class="b-offer-panel" ng-show="commercial.rooms.length > 0 && (commercial.priceMode == MODE_PRICE_ADD_DISCOUNTS || commercial.price_user_id > 0)">
+							<div ng-show="commercial.price_user_id > 0">Выбраны цены партнёра: <strong>{{commercial.price_user_id}} {{priceUser.username}} ({{priceUser.email}})</strong>.
+                                <a href="javascript:void(0)" ng-click="commercialAPI.actualize(commercial.uid, 0, true)"> Сбросить цены к розничным</a>
+                            </div>
+							<div class="b-offer-panel" ng-show="commercial.rooms.length > 0 && commercial.priceMode == MODE_PRICE_ADD_DISCOUNTS">
 														
                                 <div id="userTable">
                                     <solo-table make-sortable="3" items-on-page="20">
@@ -448,11 +451,8 @@
                                         <span ng-show="false" ng-init="getSelectFor(['city', 'group_name', 'manager_name'])"></span>
 										
 										<div>
-										    <div ng-show="commercial.priceMode == MODE_PRICE_ADD_DISCOUNTS && commercial.price_user_id == 0">
+										    <div ng-show="commercial.priceMode == MODE_PRICE_ADD_DISCOUNTS || commercial.price_user_id > 0">
                                                 <a ng-click="commercial.priceMode=MODE_PRICE_NO_DISCOUNTS" href="javascript:void(0)"> Скрыть выбор цен партнёра</a>
-                                            </div>
-											<div ng-show="commercial.price_user_id > 0">Выбраны цены партнёра: <strong>{{commercial.price_user_id}}</strong>.
-                                                <a href="javascript:void(0)" ng-click="commercialAPI.actualize(commercial.uid, 0, true)"> Сбросить цены к розничным</a>
                                             </div>
 										</div>
 										

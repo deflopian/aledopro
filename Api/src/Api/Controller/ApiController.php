@@ -11,6 +11,9 @@ class ApiController extends AbstractRestfulController
     protected $table = "Table";
 
     protected function getTableName($name) {
+		if ($name == "user") {
+			return ucfirst("User") . $this->table;
+		}
         if (substr($name, -1, 1) != "s") {
             $name .= "s";
         }
@@ -52,6 +55,10 @@ class ApiController extends AbstractRestfulController
         $table = $sl->get($tableName);
 
         $result = $table->find($id);
+		if ($type == "user") {
+			unset($result->password);
+			unset($result->token);
+		}
         $this->response->setContent(Json::encode($result))->setStatusCode(200);
         return $this->response;
     }
