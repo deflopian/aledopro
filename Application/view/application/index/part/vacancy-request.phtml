@@ -1,102 +1,76 @@
-<!-- NEW -->
-
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">×</span></button>
-    <h4 class="modal-title text-center"><strong>ОТПРАВИТЬ РЕЗЮМЕ</strong></h4>
-</div>
-<div class="modal-body">
-    <div class="popup-modal">
-        <hr class="dotted-separator" />
-        <div class="text-center b-mt1 b-mb1">КОНТАКТНАЯ ИНФОРМАЦИЯ</div>
-        <div class="b-partner-registration">
-                    <form novalidate
-                          name="work"
-                          ng-controller="JobController">
-                        <div>
-                            <div class="b-registration__cell b-registration__cell_left">
-                                <label for="work_name">ФИО*</label>
+    <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span data-dismiss="modal">×</span></button>
+                                <h4 class="modal-title text-center"><strong>ОТПРАВИТЬ РЕЗЮМЕ</strong></h4>
                             </div>
-                            <div class="b-registration__cell b-registration__cell_right">
-                                <input type="text"
-                                       class="b-form-control b-form-control_small"
-                                       data-required="yes"
-                                       name="work_name"
-                                       id="work_name"
-                                       ng-model="formData.name"
-                                       ng-init="formData.name=''"
-                                       autocomplete="off"
-                                       ng-change="validityOnChange('name')"
-                                       required />
-							    <div class="ng-hide" ng-show="nameError"><small class="b-form-error">Введите имя (минимум 3 символа)</small></div>
-                                <div class=""
-                                     ng-show="registration.name.$dirty && registration.name.$invalid">
-                                    <small class="b-form-error"
-                                           ng-show="registration.name.$error.stringLengthTooShort">
-                                        Длина поля должна быть по меньшей мере 3 символа
-                                    </small>
+                            <div class="modal-body">
+                                <div class="popup-modal">
+                                    <hr class="dotted-separator b-mb2" />
+                                    <p class="text-center">КОНТАКТНАЯ ИНФОРМАЦИЯ</p>
+                                    <form name="vacancy" enctype="multipart/form-data" ng-controller="JobController">
+                                        <div class="b-work-form b-work-form_vacancy b-clearfix">
+                                            <div class="b-work-form__table">
+                                                <div>
+                                                    <div class="b-work-form__cell b-work-form__cell_left text-nowrap">
+                                                        <label for="vacancy_name">ФИО*</label>
+                                                    </div>
+                                                    <div class="b-work-form__cell ">
+                                                        <input  ng-model="formData.name" ng-init="formData.name=''" name="vacancy_name" id="vacancy_name"
+                                                                class="b-form-control b-form-control_small" required=""/>
+                                                        <div class="ng-hide" ng-show="nameError">
+                                                            <small class="b-form-error">Введите имя (минимум 3 символа)</small></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="b-work-form__cell b-work-form__cell_left text-nowrap">
+                                                        <label for="vacancy_tel">Номер телефона *</label>
+                                                    </div>
+                                                    <div class="b-work-form__cell">
+                                                        <input  ng-model="formData.telephone" id="vacancy_tel" ng-init="formData.telephone=''"
+                                                                class="b-form-control b-form-control_small" id="vacancy_tel" required="" />
+                                                        <div class="ng-hide" ng-show="telephoneError"><small class="b-form-error">Введите корректный телефон</small></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="b-work-form__cell b-work-form__cell_left text-nowrap">
+                                                        <label for="vacancy_mail">E-mail*</label>
+                                                    </div>
+                                                    <div class="b-work-form__cell">
+                                                        <input  id="vacancy_mail"
+                                                                required=""
+                                                                ng-model="formData.mail" ng-init="formData.mail=''" name="vacancy_mail" class="b-form-control b-form-control_small" />
+                                                        <div class="ng-hide" ng-show="mailError"><small class="b-form-error">Введите корректный e-mail</small></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="b-work-form__file  b-work-form_vacancy__file text-center">
+                                                <div class="b-work-form__file-zone b-work-form_vacancy__file-zone" style="width: 100%;height: auto;" ng-class="{'b-work-form_vacancy__file-zone_file-uploaded' : fileName.length }">
+
+                                                    <div><input type="file" name="file" file-model="formData.file" ng-init="formData.file=''" id="jobDetails" onchange="angular.element(this).scope().showFileName(this)" /></div>
+
+                                                    <div class="b-work-form__file-zone-label b-work-form_vacancy__file-zone-label" ng-hide="fileName.length">
+                                                        
+														Перетащите файл резюме (TXT, DOC, PDF) сюда или <u>загрузить файл</u>
+                                                    </div>
+                                                    <div ng-show="fileName.length">
+                                                        <span ng-bind="fileName"></span>
+                                                        <button type="button" class="b-work-form__file-reset close" ng-click="resetFile(angular.element(this))">&times;</button>
+                                                    </div>
+                                                </div>
+ <div class="ng-hide" ng-show="fileError"><small class="b-form-error">Загрузите файл с резюме</small></div>
+                                            </div>
+                                           
+                                            <div class="b-work-form__table">
+                                                <label for="vacancy_letter">Сопроводительное письмо</label>
+                                                <textarea id="vacancy_letter" name="vacancy_letter" ng-model="formData.letter" ng-init="formData.letter=''" rows="5" class="b-form-control b-form-control_small"></textarea>
+                                            </div>
+                                            <hr class="dotted-separator b-mt2"/>
+                                            <div class="text-center">
+                                            <button class="b-button b-button_gray" id="vacancy_submit" ng-disabled="vacancy.$invalid" ng-click="submit()">
+                                                <span class="b-button__text">отправить запрос</span>
+                                            </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
                                 </div>
                             </div>
-
-                        </div>
-                        <div>
-                            <div class="b-registration__cell b-registration__cell_left">
-                                <label for="work_tel">Номер телефона*</label>
-                            </div>
-                            <div class="b-registration__cell b-registration__cell_right">
-                                <input type="text"
-                                       class="b-form-control b-form-control_small"
-                                       id="work_tel"
-                                       name="work_tel"
-                                       data-required="yes"
-                                       ng-model="formData.tel"
-                                       ng-init="formData.tel=''"
-                                       autocomplete="off"
-                                       ng-change="validityOnChange('tel')"
-                                       required />
-                            </div>
-                        </div>
-                        <div>
-                            <div class="b-registration__cell b-registration__cell_left">
-                                <label for="work_mail">E-mail*</label>
-                            </div>
-                            <div class="b-registration__cell b-registration__cell_right">
-                                <input type="text"
-                                       class="b-form-control b-form-control_small"
-                                       id="work_mail"
-                                       data-required="yes"
-                                       name="work_mail"
-                                       ng-model="formData.mail"
-                                       ng-init="formData.mail=''"
-                                       ng-change="validityOnChange('mail')"
-                                       autocomplete="off"
-                                       required />
-                                <div class=""
-                                     ng-show="registration.mail.$dirty && registration.mail.$invalid">
-                                    <small class="b-form-error"
-                                           ng-show="registration.mail.$error.recordFound">
-                                        Пользователь с таким Email уже зарегистрирован
-                                    </small>
-                                    <small class="b-form-error"
-                                           ng-show="registration.mail.$error.stringLengthTooShort">
-                                        Длина поля должна быть по меньшей мере 3 символа
-                                    </small>
-                                    <small class="b-form-error"
-                                           ng-show="registration.mail.$error.wrong_format">
-                                        Неправильный формат почты
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr class="dotted-separator b-mt1 b-mb1" />
-                        <div class="text-center">
-                            <div class="b-button b-button_gray" ng-click="submit()" id="registration_button" ng-disabled="registration.$invalid">
-                                <span class="b-button__text">
-                                    ОТПРАВИТЬ ЗАПРОС
-                                </span>
-                            </div>
-                        </div>
-                    </form>
-        </div>
-    </div>
-</div>

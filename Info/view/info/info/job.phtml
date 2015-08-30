@@ -22,7 +22,7 @@
                  }}">
 
     <div class="b-section__content">
-        <div class="b-work text-white">
+        <div class="b-work text-white <?php if($_GET['show'] == 'vacancies') { ?>  b-work_has-vacancies <?php } ?>">
             <div class="b-work-cell b-work-cell_left">
                 <img class="b-work__image" src="/Content/images/work/image_2.svg" />
             </div>
@@ -90,6 +90,26 @@
 
                 </form>
             </div>
+<?php if($_GET['show'] == 'vacancies') { ?>
+            <div class="b-opened-vacancies">
+                <h3 class="b-opened-vacancies__heading">ОТКРЫТЫЕ ВАКАНСИИ</h3>
+                <div class="b-opened-vacancies-list">
+                    <a href="javascript:void(0)" class="b-opened-vacancies-list__item">Руководитель отдела продаж</a>
+                    <i class="b-opened-vacancies-list__separator"></i>
+                    <a href="javascript:void(0)" class="b-opened-vacancies-list__item">Менеджер по продажам</a>
+                    <i class="b-opened-vacancies-list__separator"></i>
+                    <a href="javascript:void(0)" class="b-opened-vacancies-list__item">Руководитель отдела отделов</a>
+                    <i class="b-opened-vacancies-list__separator"></i>
+                    <a href="javascript:void(0)" class="b-opened-vacancies-list__item">Руководитель отдела разработки</a>
+                    <i class="b-opened-vacancies-list__separator"></i>
+                    <a href="javascript:void(0)" class="b-opened-vacancies-list__item">Руководитель отдела</a>
+                </div>
+
+            </div>
+<?php } ?>
+
         </div>
     </div>
 </div>
+
+
