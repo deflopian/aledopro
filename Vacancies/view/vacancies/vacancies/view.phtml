@@ -32,7 +32,7 @@
 <p class="b-article_job__section-heading">Тип занятости:</p>
 <?= $entity->hours ?>
 
-	<a  href="javascript:void(0)" ng-controller="PopupController" ng-click="getPopup(ALEDO_POPUP_VACANCY_REQUEST)" class="b-button b-button_underlined b-button_gray-bordered b-article_job__button">
+	<a  href="javascript:void(0)" ng-controller="PopupController" ng-click="getPopup(ALEDO_POPUP_VACANCY_REQUEST, '<?= $entity->id ?>')" class="b-button b-button_underlined b-button_gray-bordered b-article_job__button">
         <span class="b-button__text">Откликнуться на вакансию</span>
     </a>
 	

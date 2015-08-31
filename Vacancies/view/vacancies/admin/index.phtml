@@ -53,6 +53,7 @@
             <th>Id</th>
             <th>Вакансия</th>
             <th>Отправитель</th>
+			<th>Телефон</th>
             <th>Почта</th>
             <th>Резюме</th>
             <th>Сопроводительное письмо</th>
@@ -64,6 +65,7 @@
                 <td><?= $req->id; ?></td>
                 <td><?= $req->vacancy ? $vacancies[$req->vacancy]->title : $req->custom_vacancy; ?></td>
                 <td><?= $req->name; ?></td>
+				<td><?= $req->phone; ?></td>
                 <td><?= $req->mail; ?></td>
                 <td><a href="<?= $this->basePath() . '/images/vacancies_request/' .$req->file; ?>" target="_blank" download><?= $req->file; ?></a></td>
                 <td><?= $req->letter; ?></td>

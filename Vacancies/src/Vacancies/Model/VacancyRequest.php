@@ -9,6 +9,7 @@ class VacancyRequest extends SampleModel
     public $vacancy;
     public $custom_vacancy;
     public $name;
+	public $phone;
     public $mail;
     public $file;
     public $letter;

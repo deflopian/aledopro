@@ -4,7 +4,7 @@
             <a class="b-breadcrumbs__item" href="/">Главная</a>&nbsp;/
             <a class="b-breadcrumbs__item" href="/blog/">Блог</a>&nbsp;/
 
-            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active">Категория: <?= $tag->name ?></strong>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active">Рубрика: <?= $tag->name ?></strong>
         </div>
     </div>
     <div class="b-blog-header">
@@ -42,14 +42,14 @@
                             <? if (count($article->tags) > 0) { ?>
                             <div class="b-blog-article-rubrics">
                                 Рубрики:
-                                <? foreach ($article->tags as $tag) { ?>
-                                    <a href="/blog/tag/<?= $tag->name ?>" class="b-blog-article-rubrics__item"><?= $tag->name; ?></a>,
-                                <? } ?>
+                                <? $i = 0; foreach ($article->tags as $tag) { ?>
+                                    <a href="/blog/tag/<?= $tag->name ?>" class="b-blog-article-rubrics__item"><?= $tag->name; ?></a><? if ($i < count($article->tags)-1) { ?>, <? } ?>
+                                <? $i++;} ?>
                             </div>
                             <? } ?>
                             <div class="b-blog-article__text" text-cut="{'lines':3, 'text' : '.b-blog-article__cutted-text'}">
                                 <span class="b-blog-article__cutted-text">
-                                <?= strip_tags($article->text_short) ?></span><a href="/articles/view/<?= $article->alias ? $article->alias : $article->id ?>" class="b-blog-article__link-more">читать далее</a>
+                                <?= strip_tags($article->text_short) ?></span>&nbsp;<a href="/articles/view/<?= $article->alias ? $article->alias : $article->id ?>" class="b-blog-article__link-more">читать далее</a>
                             </div>
                     </div>
                 </div>

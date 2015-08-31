@@ -220,6 +220,9 @@ class InfoController extends AbstractActionController
 
         $jobsTable = $this->getServiceLocator()->get('JobsTable');
         $entity = $jobsTable->find(1);
+		
+		$vacanciesTable = $this->getServiceLocator()->get('VacanciesTable');
+        $vacancies = $vacanciesTable->fetchByCond('active', 1, 'order ASC');
 
         $imgFields = array('img', 'img_1000');
         if ($imgFields) {
@@ -236,7 +239,7 @@ class InfoController extends AbstractActionController
         }
         return array(
             'entity' => $entity,
-
+			'vacancies' => $vacancies,
             'pageTitle' => 'Работа у нас',
             'breadCrumbs'  => array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),

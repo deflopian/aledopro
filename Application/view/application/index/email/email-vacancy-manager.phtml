@@ -74,6 +74,16 @@
                                         <?= $requestDetails->name ?>
                                     </td>
                                 </tr>
+								<? if ($requestDetails->phone) { ?>
+								<tr height="30">
+                                    <td width="180" style="color: #666666">
+                                        Телефон:
+                                    </td>
+                                    <td>
+                                        <?= $requestDetails->phone ?>
+                                    </td>
+                                </tr>
+								<? } ?>
                                 <tr height="30">
                                     <td width="180" style="color: #666666">
                                         Почта:

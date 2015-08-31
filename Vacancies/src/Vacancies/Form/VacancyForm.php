@@ -26,7 +26,7 @@ class VacancyForm extends Form
             ));
         $this->add($file);
 
-        $textFields = $this->getTextFields();
+        $textFields = array_keys($this->getTextFields());
 
         foreach ($textFields as $name) {
             $text = new Element\Text($name);
@@ -51,26 +51,20 @@ class VacancyForm extends Form
     {
         $inputFilter = new InputFilter\InputFilter();
 
-        $messages = ApplicationService::getValidationFormMessages();
-
-        // todome: Не знаю, как приделать сообщения об ошибках к файлу. в Factory нотации не знаю, как создать валидаторы для файла
-
         $file = new InputFilter\FileInput('file');
         $file->setRequired(true);
         $file->getValidatorChain()
             ->attach(new Validator\File\UploadFile())
             ->attach(new Validator\File\Extension(array('doc', 'txt', 'pdf')))
-            //todome: подумать над форматами и безопасностью!!!!
-
             ->attachByName('filesize', array('max' => 2000000));
         $inputFilter->add($file);
 
         $textFields = $this->getTextFields();
-        foreach ($textFields as $name) {
+        foreach ($textFields as $name=>$required) {
             $inputFilter->add(array(
                 'name' => $name,
-                'required' => true,
-                'validators' => ($name == 'mail') ? array(array('name' => 'EmailAddress')) : $messages['text'],
+                'required' => $required,
+                'validators' => ($name == 'mail') ? array(array('name' => 'EmailAddress')) : array(),
                 'filters' => array(
                     array('name' => 'stringtrim'),
                     array('name' => 'striptags')
@@ -78,34 +72,18 @@ class VacancyForm extends Form
             ));
         }
 
-        $vacancy = new InputFilter\Input('vacancy');
-        $vacancy->setRequired(false);
-        $vacancy->getFilterChain()
-            ->attachByName('stringtrim')
-            ->attachByName('striptags');
-        $inputFilter->add($vacancy);
-
-        $vacancy = new InputFilter\Input('custom_vacancy');
-        $vacancy->setRequired(false);
-        $vacancy->getFilterChain()
-            ->attachByName('stringtrim')
-            ->attachByName('striptags');
-        $inputFilter->add($vacancy);
-
-        $letter = new InputFilter\Input('letter');
-        $letter->setRequired(false);
-        $letter->getFilterChain()
-            ->attachByName('stringtrim')
-            ->attachByName('striptags');
-        $inputFilter->add($letter);
-
         return $inputFilter;
     }
 
     private function getTextFields()
     {
         return array(
-            'name', 'mail'
+            'name' => true,
+			'phone' => false,
+			'mail' => true,
+			'vacancy' => false,
+			'custom_vacancy' => false,
+			'letter' => false
         );
     }
 }

@@ -6,7 +6,8 @@
                                 <div class="popup-modal">
                                     <hr class="dotted-separator b-mb2" />
                                     <p class="text-center">КОНТАКТНАЯ ИНФОРМАЦИЯ</p>
-                                    <form name="vacancy" enctype="multipart/form-data" ng-controller="JobController">
+                                    <form name="vacancy_form" enctype="multipart/form-data" ng-controller="JobController">
+									<input type="hidden" id="vacancy_id" ng-model="formData.vacancy" ng-init="formData.vacancy='<?= $params ?>'" name="vacancy_id" value="<?= $params ?>" />
                                         <div class="b-work-form b-work-form_vacancy b-clearfix">
                                             <div class="b-work-form__table">
                                                 <div>
@@ -22,12 +23,12 @@
                                                 </div>
                                                 <div>
                                                     <div class="b-work-form__cell b-work-form__cell_left text-nowrap">
-                                                        <label for="vacancy_tel">Номер телефона *</label>
+                                                        <label for="vacancy_phone">Номер телефона *</label>
                                                     </div>
                                                     <div class="b-work-form__cell">
-                                                        <input  ng-model="formData.telephone" id="vacancy_tel" ng-init="formData.telephone=''"
-                                                                class="b-form-control b-form-control_small" id="vacancy_tel" required="" />
-                                                        <div class="ng-hide" ng-show="telephoneError"><small class="b-form-error">Введите корректный телефон</small></div>
+                                                        <input  ng-model="formData.phone" id="vacancy_phone" ng-init="formData.phone=''"
+                                                                class="b-form-control b-form-control_small" id="vacancy_phone" required="" />
+                                                        <div class="ng-hide" ng-show="phoneError"><small class="b-form-error">Введите корректный номер телефона</small></div>
                                                     </div>
                                                 </div>
                                                 <div>
@@ -65,7 +66,7 @@
                                             </div>
                                             <hr class="dotted-separator b-mt2"/>
                                             <div class="text-center">
-                                            <button class="b-button b-button_gray" id="vacancy_submit" ng-disabled="vacancy.$invalid" ng-click="submit()">
+                                            <button class="b-button b-button_gray" id="vacancy_submit" ng-disabled="vacancy_form.$invalid" ng-click="submit()">
                                                 <span class="b-button__text">отправить запрос</span>
                                             </button>
                                             </div>
