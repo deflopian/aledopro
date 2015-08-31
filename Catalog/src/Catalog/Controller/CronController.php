@@ -402,9 +402,9 @@ class CronController extends BaseController
 
         if (!file_exists($scvPath)) {
             if (isset($orphanSeriesReport->items) && count($orphanSeriesReport->items) > 0) {
-                list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $orphanSeriesReport);
-                MailService::sendMail($email, $mailView, "Отчёт по добавленным сериям номер " . $orphanSeriesReport->id . " по добавленным сериям");
-                MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт по добавленным сериям номер " . $orphanSeriesReport->id );
+                //list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $orphanSeriesReport);
+                //MailService::sendMail($email, $mailView, "Отчёт по добавленным сериям номер " . $orphanSeriesReport->id);
+                //MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт по добавленным сериям номер " . $orphanSeriesReport->id );
             } elseif (count($orphanSeriesReport->items) == 0) {
                 $reportMapper->delete($orphanSeriesReport->id);
             }

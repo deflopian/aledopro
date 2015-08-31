@@ -11,6 +11,7 @@ namespace Reports\Controller;
 
 
 use Application\Controller\SampleAdminController;
+use Application\Service\MailService;
 use Reports\Config\ReportConfig;
 use Reports\Mapper\ReportItemMapper;
 use Reports\Mapper\ReportMapper;
@@ -85,7 +86,7 @@ class AdminController extends SampleAdminController {
         $reportsOS = $reportMapper->getList(ReportMapper::REPORT_TYPE_ORPHAN_SERIES);
         if (count($reportsOS)) {
             $сonfig = ReportConfig::$infoByTypes[ReportMapper::REPORT_TYPE_ORPHAN_SERIES];
-            $entities[] = array($сonfig['name'], $reportsOS);
+            $entities[] = array($сonfig['name'], $reportsOS, '/admin/reports/sendOrphanSeriesReport');
         }
         $reportsZP = $reportMapper->getList(ReportMapper::REPORT_TYPE_PRODUCT_ZERO_PRICE);
         if (count($reportsZP)) {
@@ -108,4 +109,32 @@ class AdminController extends SampleAdminController {
             'entities' => $entities
         );
     }
+	
+	public function sendOrphanSeriesReportAction()
+	{
+		$this->setData();
+		
+		$request = $this->getRequest();
+		$success = 0;
+		
+        $sl = $this->getServiceLocator();
+		$reportMapper = ReportMapper::getInstance($sl);
+			
+		$orphanSeriesReport = $reportMapper->getLast(ReportMapper::REPORT_TYPE_ORPHAN_SERIES);
+		
+		if (isset($orphanSeriesReport->items) && count($orphanSeriesReport->items) > 0) {
+            list($email, $mailView) = MailService::prepareReportData($sl, $orphanSeriesReport);
+            MailService::sendMail($email, $mailView, "Отчёт по добавленным сериям номер " . $orphanSeriesReport->id);
+			
+			$success = 1;
+        }
+		
+		if ($request->isXmlHttpRequest()) {
+			$response = $this->getResponse();
+			$response->setContent(\Zend\Json\Json::encode(array('success' => $success)));
+		
+			return $response;
+		}
+		else return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+	}
 } 

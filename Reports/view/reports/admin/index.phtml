@@ -5,6 +5,11 @@
 
     <? foreach($entities as $entityTable){ ?>
         <h4><?= $entityTable[0] ?></h4>
+		
+	<? if (isset($entityTable[2]) && $entityTable[2]) { ?>
+		<a href="<?= $entityTable[2] ?>"><div class="btn btn-default">Отправить отчёт на почту</div></a><br /><br />
+	<? } ?>
+	
         <table class="table admin-table table-striped">
             <tr>
                 <th>Id</th>
