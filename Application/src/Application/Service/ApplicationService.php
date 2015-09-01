@@ -32,6 +32,7 @@ class ApplicationService
     const ALEDO_POPUP_CALLBACK = 14;
 	const ALEDO_POPUP_VACANCY_REQUEST = 15;
 	const ALEDO_POPUP_VACANCY_REQUEST_SUCCESS = 16;
+	const ALEDO_POPUP_PARTNER_CARD_SUCCESS = 17;
 
     private static $aledoPopups = array(
         self::ALEDO_POPUP_ERROR => 'error',
@@ -51,6 +52,7 @@ class ApplicationService
         self::ALEDO_POPUP_CALLBACK => 'callback',
 		self::ALEDO_POPUP_VACANCY_REQUEST => 'vacancy-request',
 		self::ALEDO_POPUP_VACANCY_REQUEST_SUCCESS => 'vacancy-request-success',
+		self::ALEDO_POPUP_PARTNER_CARD_SUCCESS => 'partner-success',
     );
     
     private static $bannerPositionNames = array(
