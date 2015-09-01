@@ -2,6 +2,7 @@
 namespace Vacancies\Controller;
 
 use Application\Service\MailService;
+use Application\Service\ApplicationService;
 use Vacancies\Form\VacancyForm;
 use Vacancies\Model\Vacancy;
 use Vacancies\Model\VacancyRequest;
@@ -83,19 +84,24 @@ class VacanciesController extends AbstractActionController
             $form->setData($post);
 
             if ($form->isValid()) {
-                $filename = $post['file']['name'];
+                $file = explode('.', $post['file']['name']);
+				$filetype = $file[count($file)-1];
+				unset ($file[count($file)-1]);
+				$filename = implode('.', $file);
+				
                 $adapter = new \Zend\File\Transfer\Adapter\Http();
                 $adapter->setDestination($_SERVER['DOCUMENT_ROOT'] . '/images/vacancies_request');
+				$adapter->addFilter('File\Rename', array('target' => $_SERVER['DOCUMENT_ROOT'] . '/images/vacancies_request/' . ApplicationService::transliterate($filename) . '_' . md5(time()) . '.' . $filetype, 'overwrite' => true));
 
-                if($adapter->receive($filename)){
+                if ($adapter->receive()){
                     $data = $form->getData();
                     $data['file'] = $adapter->getFileName(null, false);
                     $vacancy = $this->getServiceLocator()->get('VacanciesTable')->find($data['vacancy']);
                     if (!$vacancy) {
                         $vacancy = new Vacancy();
                     }
-                    //соискатель сам описал желаемую должность
-                    if (!$data['vacancy'] && is_string($data['custom_vacancy']) && !empty($data['custom_vacancy'])) {
+                    
+					if (!$data['vacancy'] && is_string($data['custom_vacancy']) && !empty($data['custom_vacancy'])) {
                         $vacancy->title = $data['custom_vacancy'];
                     }
 

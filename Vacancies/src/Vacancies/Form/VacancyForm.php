@@ -55,7 +55,7 @@ class VacancyForm extends Form
         $file->setRequired(true);
         $file->getValidatorChain()
             ->attach(new Validator\File\UploadFile())
-            ->attach(new Validator\File\Extension(array('doc', 'txt', 'pdf')))
+            ->attach(new Validator\File\Extension(array('doc', 'docx', 'txt', 'pdf')))
             ->attachByName('filesize', array('max' => 2000000));
         $inputFilter->add($file);
 
