@@ -17,9 +17,11 @@ class InfoController extends AbstractActionController
 {
     private $infoTable;
     protected $pageInfoType = SeoService::INFO;
+	
     public function indexAction(){
         $sl = $this->getServiceLocator();
         $team = $sl->get("TeamTable")->fetchAll("order ASC");
+		$seoData = $sl->get('SeoDataTable')->find( \Info\Service\SeoService::ABOUT, 1);
 
         $fileTable = $sl->get("FilesTable");
         foreach ($team as &$worker) {
@@ -90,11 +92,14 @@ class InfoController extends AbstractActionController
                 }
             }
         }
-
+		
+		$this->layout()->pageTitle = 'О компании';
+		$this->layout()->seoData = $seoData;
 
         return array(
             'comments' => $comments,
             'team' => $team,
+			'seoData' => $seoData,
             'pageTitle' => 'О компании',
             'breadCrumbs'  => array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
@@ -104,6 +109,7 @@ class InfoController extends AbstractActionController
             'linkedProjects' => $linkedProjects
         );
     }
+	
     public function filesAction(){
         $sl = $this->getServiceLocator();
         $return = array();
@@ -112,6 +118,7 @@ class InfoController extends AbstractActionController
         $comments = $documentsTable->fetchByCond('type', DocumentTable::TYPE_COMMENT);
         $certificates = $documentsTable->fetchByCond('type', DocumentTable::TYPE_CERTIFICATE);
         $instructions = $documentsTable->fetchByCond('type', DocumentTable::TYPE_INSTRUCTION);
+		$seoData = $sl->get('SeoDataTable')->find( \Info\Service\SeoService::FILES, 1);
 
         $filesTable = $this->getServiceLocator()->get('InfoFilesTable');
         $entity = $filesTable->find(1);
@@ -190,32 +197,41 @@ class InfoController extends AbstractActionController
                 }
             }
         }
+		
+		$this->layout()->pageTitle = 'Скачать';
+		$this->layout()->seoData = $seoData;
 
         $return['catalogs'] = $catalogs;
         $return['comments'] = $comments;
         $return['certificates'] = $certificates;
         $return['instructions'] = $instructions;
         $return['entity'] = $entity;
-
+		$return['seoData'] = $seoData;
         $return['pageTitle'] = 'Скачать';
         $return['breadCrumbs']  = array(
             array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
         );
         return $return;
     }
+	
     public function guaranteeAction(){
         $guaranteeTable = $this->getServiceLocator()->get('GuaranteeTable');
         $entity = $guaranteeTable->find(1);
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::GUARANTEE, 1);
+		
+		$this->layout()->pageTitle = 'Сервис и гарантия';
+		$this->layout()->seoData = $seoData;
 
         return array(
             'entity' => $entity,
-
+			'seoData' => $seoData,
             'pageTitle' => 'Сервис и гарантия',
             'breadCrumbs'  => array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
             ),
         );
     }
+	
     public function jobAction(){
 
         $jobsTable = $this->getServiceLocator()->get('JobsTable');
@@ -223,6 +239,8 @@ class InfoController extends AbstractActionController
 		
 		$vacanciesTable = $this->getServiceLocator()->get('VacanciesTable');
         $vacancies = $vacanciesTable->fetchByCond('active', 1, 'order ASC');
+		
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::JOB, 1);
 
         $imgFields = array('img', 'img_1000');
         if ($imgFields) {
@@ -237,9 +255,14 @@ class InfoController extends AbstractActionController
                 }
             }
         }
+		
+		$this->layout()->pageTitle = 'Работа у нас';
+		$this->layout()->seoData = $seoData;
+		
         return array(
             'entity' => $entity,
 			'vacancies' => $vacancies,
+			'seoData' => $seoData,
             'pageTitle' => 'Работа у нас',
             'breadCrumbs'  => array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
@@ -251,6 +274,8 @@ class InfoController extends AbstractActionController
 
         $plusesTable = $this->getServiceLocator()->get('PlusesTable');
         $entity = $plusesTable->find(1);
+		
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::PLUSES, 1);
 
         $imgFields = array('img');
         if ($imgFields) {
@@ -265,9 +290,13 @@ class InfoController extends AbstractActionController
                 }
             }
         }
+		
+		$this->layout()->pageTitle = 'Преимущества';
+		$this->layout()->seoData = $seoData;
+		
         return array(
             'entity' => $entity,
-
+			'seoData' => $seoData,
             'pageTitle' => 'Преимущества',
             'breadCrumbs'  => array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
@@ -278,6 +307,7 @@ class InfoController extends AbstractActionController
     public function partnersAction(){
         $partnersTable = $this->getServiceLocator()->get('PartnersTable');
         $entity = $partnersTable->find(1);
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::PARTNERS, 1);
 
         $imgFields = array('img1', 'img2', 'img1_min', 'img2_min');
         if ($imgFields) {
@@ -292,9 +322,13 @@ class InfoController extends AbstractActionController
                 }
             }
         }
+		
+		$this->layout()->pageTitle = 'Партнёрам';
+		$this->layout()->seoData = $seoData;
+		
         return array(
             'entity' => $entity,
-
+			'seoData' => $seoData,
             'pageTitle' => 'Партнёрам',
             'breadCrumbs'  => array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
@@ -305,6 +339,7 @@ class InfoController extends AbstractActionController
     public function serviceAction(){
         $servicesTable = $this->getServiceLocator()->get('InfoServicesTable');
         $entity = $servicesTable->find(1);
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::SERVICES, 1);
 
         $imgFields = array('img', 'img1', 'img2', 'img3', 'img4', 'img_min', 'img1_min', 'img2_min', 'img3_min', 'img4_min');
         if ($imgFields) {
@@ -319,9 +354,13 @@ class InfoController extends AbstractActionController
                 }
             }
         }
+		
+		$this->layout()->pageTitle = 'Сервис aledo-pro';
+		$this->layout()->seoData = $seoData;
+		
         return array(
             'entity' => $entity,
-
+			'seoData' => $seoData,
             'pageTitle' => 'Сервис aledo-pro',
             'breadCrumbs'  => array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
@@ -329,14 +368,17 @@ class InfoController extends AbstractActionController
         );
     }
 
-
     public function deliveryAction() {
         $deliveryTable = $this->getServiceLocator()->get('DeliveryTable');
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::DELIVERY, 1);
         $entity = $deliveryTable->find(1);
+		
+		$this->layout()->pageTitle = 'Доставка и оплата';
+		$this->layout()->seoData = $seoData;
 
         return array(
             'entity' => $entity,
-
+			'seoData' => $seoData,
             'pageTitle' => 'Доставка и оплата',
             'breadCrumbs'  => array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),

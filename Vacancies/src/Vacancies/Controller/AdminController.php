@@ -17,10 +17,51 @@ class AdminController extends SampleAdminController
         if(is_array($return)){
             $vacancyRequests = $this->getServiceLocator()->get($this->requestTable)->fetchAll();
             $return['requests'] = $vacancyRequests;
-            $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::VACANCIES, 1 );
+            $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::JOB, 1 );
         }
 
         return $return;
+    }
+	
+	public function viewAction()
+    {
+        $this->setData();
+
+        $id = $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+        }
+        if (is_numeric($id)) {
+            $entitу = $this->getServiceLocator()->get($this->table)->find($id);
+        } else {
+            $entitу = $this->getServiceLocator()->get($this->table)->fetchByCond('alias', $id);
+            $entitу = reset($entitу);
+        }
+
+        if ($entitу === false) {
+            return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+        }
+		
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::VACANCIES, $id );
+
+        if ($this->imgFields) {
+            $fileTable = $this->getServiceLocator()->get('FilesTable');
+            foreach ($this->imgFields as $imgField) {
+                if ($entitу->$imgField) {
+                    $file = $fileTable->find($entitу->$imgField);
+                    if ($file) {
+                        $imgFieldAndName = $imgField . "_name";
+                        $entitу->$imgFieldAndName = $file->name;
+                    }
+                }
+            }
+        }
+
+
+        return array(
+            'entity' => $entitу,
+			'seoData' => $seoData,
+        );
     }
 	
 	public function changeActivityStatusAction()

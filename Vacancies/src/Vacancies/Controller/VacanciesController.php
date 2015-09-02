@@ -24,7 +24,7 @@ class VacanciesController extends AbstractActionController
             $formVacancies[$vac->id] = $vac->title;
         }
         $form->addVacancyElement($formVacancies);
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::VACANCIES, 1 );
+        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::JOB, 1 );
 
         $this->layout()->noBottomLine = true;
         $this->layout()->seoData = $seoData;
@@ -46,11 +46,10 @@ class VacanciesController extends AbstractActionController
 		$entity = $this->getServiceLocator()->get('VacanciesTable')->find($id);
 		if (!$entity) return $this->redirect()->toRoute('job');
 		
-		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::VACANCIES, 1 );
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::VACANCIES, $id );
 		
-		$this->layout()->noBottomLine = true;
-        $this->layout()->seoData = $seoData;
-        $this->layout()->pageTitle = $entity->title;
+		$this->layout()->pageTitle = $entity->title;
+		$this->layout()->seoData = $seoData;
 		
 		return array(
             'seoData' => $seoData,

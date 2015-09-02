@@ -12,7 +12,7 @@ class SeoService {
     const NEWS = 5;
     const INFO = 6;
     const PROJECTS = 7;
-    const SERVICES = 8; //нет подходящих экшенов
+    const SERVICES = 8;
     const OFFERS = 9;
     const VACANCIES = 10;
     const TEAM = 11;
