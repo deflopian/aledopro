@@ -100,7 +100,7 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
             ng-repeat="item in filtered = (original | possibleVals:possibleVals:this | instock:instock:this | offers:offers:this)"
             ng-class="{selectedProd: item.id == selectedProdId<?= !$this->commercialMode ? ', productIncart: elCarto[item.id]==1' : '' ?>}"
             class="item product-line product-line"
-            data-id="{{item.id}}"
+            data-id="{{item.id}}" ng-hide="item.id==163657"
             >
 <!--        <tr itemscope itemtype="http://schema.org/Product"-->
 <!--            class="item product-line --><?//= $this->selectedProdId == $prod->id ? 'selectedProd' : ''?><!--"-->
