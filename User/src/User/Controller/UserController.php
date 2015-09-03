@@ -290,11 +290,11 @@ class UserController extends AbstractActionController
 		$allUsers =  $sl->get('UserTable')->fetchAll();
         $partners = array();
         $nonPartners = array();
-        foreach ($allUsers as $user) {
-            if ($user->is_partner == 1) {
-                $partners[] = $user;
+        foreach ($allUsers as $usr) {
+            if ($usr->is_partner == 1) {
+                $partners[] = $usr;
             } else {
-                $nonPartners[] = $user;
+                $nonPartners[] = $usr;
             }
         }
 
