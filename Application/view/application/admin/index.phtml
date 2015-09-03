@@ -71,6 +71,11 @@
     </div>
 </div>
 
+<?
+$sl = $this->getHelperPluginManager()->getServiceLocator();
+echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
+?>
+
 
 <script type="text/javascript">
     $(document).ready(function(){

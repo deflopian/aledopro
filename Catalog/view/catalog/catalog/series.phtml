@@ -932,7 +932,7 @@ function mb_ucfirst($text) {
     var pageTitle = "<?= !empty($series->visible_title) ? 'Купить ' . $series->visible_title . ' — цена, описание': 'Купить ' . $series->title . ' — цена, описание' ?>";
 
     popup.pageTitle = pageTitle;
-    document.title = pageTitle;
+    //document.title = pageTitle;
     <? if ($admin && $series->sorted_field) : ?>
     $('[data-param = <?= $series->sorted_field ?>]').addClass('active-<?= $series->sorted_order ?>');
 

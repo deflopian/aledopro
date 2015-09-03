@@ -719,13 +719,17 @@ class CatalogController extends BaseController
 
         $seoData = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SERIES, $series->id);
         if (!$seoData->keywords || !$seoData->description) {
-            $seoDataNew = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SUBSECTION, $subsection->id);
+            //$seoDataNew = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SUBSECTION, $subsection->id);
+			$seoDataNew = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SERIES, 0);
+			$seoTitle = trim($series->visible_title ? $series->visible_title : $series->title);
 
             if (!$seoData->keywords) {
-                $seoData->keywords = $seoDataNew->keywords;
+                //$seoData->keywords = $seoDataNew->keywords;
+				$seoData->keywords = str_replace('%title%', $seoTitle, $seoDataNew->keywords);
             }
             if (!$seoData->description) {
-                $seoData->description = $seoDataNew->description;
+                //$seoData->description = $seoDataNew->description;
+				$seoData->description = str_replace('%title%', $seoTitle, $seoDataNew->description);
             }
 
         }
@@ -805,7 +809,7 @@ class CatalogController extends BaseController
 
         $this->layout()->setVariables(array(
             'seoData' => $seoData,
-            'pageTitle' => $series->visible_title ? $series->visible_title : $series->title,
+            'pageTitle' => trim($series->visible_title ? $series->visible_title : $series->title),
             'breadCrumbs'  => $breadcrumbs,
         ));
 
@@ -814,7 +818,7 @@ class CatalogController extends BaseController
             'view'  => $section->display_style,
             'nextProd' => $nextProd,
             'prevProd' => $prevProd,
-            'pageTitle' => $series->visible_title ? $series->visible_title : $series->title,
+            'pageTitle' => trim($series->visible_title ? $series->visible_title : $series->title),
             'breadCrumbs'  => $breadcrumbs,
         );
         $view->setVariables($return);

@@ -32,8 +32,8 @@ class SeoService {
     const ARTICLE_BLOCKS = 25;
     const DEVELOPERS = 26;
     const IPGEOBASE = 27;
-
-
+	
+	
     public static function renderSeoForm($sl, $seoData)
     {
         $htmlViewPart = new ViewModel();

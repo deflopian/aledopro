@@ -4,6 +4,7 @@ namespace Application\Controller;
 use Api\Model\File;
 use Api\Model\FileTable;
 use Application\Model\BannerImg;
+use Info\Service\SeoService;
 use Zend\Json\Json;
 
 class AdminController extends SampleAdminController
@@ -19,8 +20,12 @@ class AdminController extends SampleAdminController
 
         $footerBlocks = $sl->get('FooterBlocksTable')->fetchAll();
         $footerBlocksJson = Json::encode($footerBlocks);
+		
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::INFO, 1 );
+		
         return array(
             'entities' => $blocks,
+			'seoData' => $seoData,
             'entitiesJson' => $blocksJson,
             'footerBlocksJson' => $footerBlocksJson
         );
