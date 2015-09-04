@@ -1,3 +1,17 @@
+<? foreach($products as $product) { 
+	$price = \Catalog\Service\CatalogService::getRegularPriceWithNds($product); 
+?>
+	<div itemscope itemtype="http://schema.org/Product" style="display:none;">
+		<meta itemprop="productID" content="<?= $product->id ?>" />
+        <meta itemprop="name" content="<?= $product->title ?>" />
+		<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+			<meta itemprop="availability" content="<?= $product->free_balance > 0 ? 'http://schema.org/InStock' : 'http://schema.org/OutOfStock' ?>" />
+			<meta itemprop="price" content="<?= $price ?>" />
+			<meta itemprop="priceCurrency" content="RUB" />
+		</div>
+	</div>
+<? } ?>
+
 <?
     $hierarchies = $this->hierarchies;
     $discounts = $this->discounts;
@@ -101,20 +115,15 @@ $parentSerNum = $this->parentSerNum ? $this->parentSerNum : 0;
         </tr>
         </thead>
         <tbody>
-        <tr
-            itemscope
-            itemtype="http://schema.org/Product"
-            ng-repeat="item in filtered = (original | possibleVals:possibleVals:this | instock:instock:this | offers:offers:this)"
-
+        <tr ng-repeat="item in filtered = (original | possibleVals:possibleVals:this | instock:instock:this | offers:offers:this)"
             ng-class="{selectedProd: item.id == selectedProdId<?= !$this->commercialMode ? ', productIncart: elCarto[item.id]==1' : '' ?> }"
-
             class="item product-line"
             data-id="{{item.id}}">
-            <!--        <tr itemscope itemtype="http://schema.org/Product"-->
+            <!--        <tr-->
             <!--            class="item product-line --><?//= $this->selectedProdId == $prod->id ? 'selectedProd' : ''?><!--"-->
             <!--            data-id="--><?//= $prod->id; ?><!--">-->
-            <td itemprop="productID" class="item-id">{{item.id}}</td>
-            <td itemprop="name" class="item-title">{{item.title}}</td>
+            <td class="item-id">{{item.id}}</td>
+            <td class="item-title">{{item.title}}</td>
             <td class="file_custom">
                 <div ng-show="item.file_custom">
                     <a href="/images/product_docs/{{item.file_custom}}"
@@ -129,11 +138,10 @@ $parentSerNum = $this->parentSerNum ? $this->parentSerNum : 0;
             <td class="color_of_light">{{item.color_of_light}}</td>
             <td class="td-grey luminous_flux">{{item.luminous_flux}}<span ng-if="!(item.luminous_flux.indexOf('лм') + 1)"> лм</span></td>
             <td class="viewing_angle">{{item.viewing_angle}}°</td>
-            <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                <td class="td-grey free_balance" style="padding: 0">
+            <td class="td-grey free_balance" style="padding: 0">
                     <div ng-if="item.free_balance">
                         <span ng-if="item.free_balance == -1">
-                            <div class="icon-daw"></div><link itemprop="availability" href="http://schema.org/InStock"/>
+                            <div class="icon-daw"></div>
                         </span>
                         <span ng-if="item.free_balance > 0">
                             {{item.free_balance}}
@@ -141,12 +149,12 @@ $parentSerNum = $this->parentSerNum ? $this->parentSerNum : 0;
 
                     </div>
                     <div ng-if="item.free_balance == 0">
-                        <div title="Уточняйте наличие" class="icon-question"></div><link itemprop="availability" href="http://schema.org/OutOfStock"/>
+                        <div title="Уточняйте наличие" class="icon-question"></div>
                     </div>
                 </td>
 
                 <td class="price-with-nds">
-                    <span itemprop="price">
+                    <span>
                         {{item.price_with_nds}}
                     </span><span class="b-rub">Р</span>
 
@@ -154,7 +162,7 @@ $parentSerNum = $this->parentSerNum ? $this->parentSerNum : 0;
 
                 <? if ($user && $user->getIsPartner()) { ?>
                     <td class="td-grey partner-price">
-                    <span itemprop="price">
+                    <span>
                         {{item.partner_price}}
                     </span>
                     <span>
@@ -162,7 +170,6 @@ $parentSerNum = $this->parentSerNum ? $this->parentSerNum : 0;
                     </span>
                     </td>
                 <? } ?>
-            </span>
             <? if ($this->commercialMode) { ?>
             <td class="comm-item" style="cursor: pointer" ng-controller="CommercialsController">
 

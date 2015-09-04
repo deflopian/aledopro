@@ -97,6 +97,15 @@ class CatalogService {
         $pageInfoTable->save($pageInfo);
         return true;
     }
+	
+	public static function getRegularPriceWithNds($product, $isLents = false)
+	{
+		if ($product->length > 0 && $isLents) {
+            return round(self::getTruePrice($product->price_without_nds) / $product->length);
+        } else {
+            return self::getTruePrice($product->price_without_nds);
+        }
+	}
 
     public static function getProductsJSON($products, $fields, $user, $series = 0, $hierarchies=array(), $discounts=null, $hashedFields = array(), $isDriver = true, $isLents = false)
     {
