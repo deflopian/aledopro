@@ -162,7 +162,7 @@ class CatalogController extends BaseController
         );
     }
 
-    public function productsAction()
+    /*public function productsAction()
     {
         $id = $this->params()->fromRoute('id', 0);
 
@@ -171,7 +171,7 @@ class CatalogController extends BaseController
         }
         $sl = $this->getServiceLocator();
 
-        /** @var \Catalog\Model\Section $section */
+        // @var \Catalog\Model\Section $section
         $product = $this->getProductTable()->find($id);
         if (!$product || $product->series_id == 0 || empty($product->type)) $this->redirect()->toRoute('catalog');
         $series = $this->getSeriesTable()->find($product->series_id);
@@ -197,7 +197,7 @@ class CatalogController extends BaseController
             'type' => $section->display_style,
             'contacts' => $contacts,
         );
-    }
+    }*/
 
     public function renderSectionDefaultAction() {
         $id = $this->params()->fromRoute('id', 0);
