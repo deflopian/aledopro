@@ -3,12 +3,14 @@
         <div class="row b-footer-mobile-table">
             <div class="col-xs-6  col-md-3 b-footer-mobile-col b-footer-mobile-col_left">
                 <div class="b-footer-mobile-col__inner">
+					<? foreach($contacts_ as $contact) {?>
                     <p>
-                        <?= $contacts_->adress ?>
+                        <?= $contact->adress ?>
                     </p>
                     <p>
-                        <?= $contacts_->work_time ?>
+                        <?= $contact->work_time ?>
                     </p>
+					<? } ?>
                     <p>
                         Бесплатно по РФ<br />
                         8 (800) 555 56 72

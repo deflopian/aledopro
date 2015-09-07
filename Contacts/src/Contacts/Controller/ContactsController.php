@@ -64,6 +64,6 @@ class ContactsController extends AbstractActionController
 
     public static function getContacts(\Zend\ServiceManager\ServiceManager $sm)
     {
-        return $sm->get('ContactsTable')->find(1);
+        return $sm->get('ContactsTable')->fetchAll();
     }
 }
