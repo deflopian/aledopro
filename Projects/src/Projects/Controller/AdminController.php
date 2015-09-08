@@ -208,6 +208,54 @@ class AdminController extends SampleAdminController
         }
         return $this->redirect()->toRoute('zfcadmin/'.$this->url);
     }
+	
+	public function hideEntityAction() {
+		$this->setData();
+		
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $id = $request->getPost('id', false);
+            $type = $request->getPost('type', false);
+            $success = 0;
+
+            if ($id) {
+				$entity = $this->getServiceLocator()->get($this->table)->find($id);
+                $entity->deleted = 1;
+                $this->getServiceLocator()->get($this->table)->save($entity);
+                $success = 1;
+            }
+
+            $returnArr = array('success' => $success);
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode($returnArr));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/catalog');
+    }
+	
+	public function showEntityAction() {
+		$this->setData();
+		
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $id = $request->getPost('id', false);
+            $type = $request->getPost('type', false);
+            $success = 0;
+
+            if ($id) {
+                $entity = $this->getServiceLocator()->get($this->table)->find($id);
+                $entity->deleted = 0;
+                $this->getServiceLocator()->get($this->table)->save($entity);
+                $success = 1;
+            }
+
+            $returnArr = array('success' => $success);
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode($returnArr));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/catalog');
+    }
 
     public function changeOrderAction()
     {

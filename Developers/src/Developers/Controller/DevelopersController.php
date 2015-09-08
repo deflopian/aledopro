@@ -21,9 +21,6 @@ class DevelopersController extends AbstractActionController
     protected $pageInfoType = SeoService::DEVELOPERS;
 
     public function viewAction() {
-        //$ip = $_SERVER['REMOTE_ADDR']; // узнаем IP посетителя
-        //$data = geoip_record_by_name($ip);
-//var_dump($data);
         $sl = $this->getServiceLocator();
 
         $id = $this->params()->fromRoute('id', 0);
@@ -98,7 +95,7 @@ class DevelopersController extends AbstractActionController
     public function indexAction()
     {
         /** @var Developer[] $developers */
-        $developers = $this->getServiceLocator()->get('DevelopersTable')->fetchAll('order asc');
+        $developers = $this->getServiceLocator()->get('DevelopersTable')->fetchByCond('deleted', 0, 'order asc');
 
 
         $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::DEVELOPERS, 1 );

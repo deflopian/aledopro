@@ -15,4 +15,5 @@ class Developer extends SampleModel
     public $preview;
     public $order;
     public $alias;
+    public $deleted;
 }

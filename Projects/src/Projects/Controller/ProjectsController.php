@@ -74,7 +74,7 @@ class ProjectsController extends AbstractActionController
         }
 
         $arrayIds = array();
-        $projects = $this->getServiceLocator()->get('ProjectsTable')->fetchAll('order asc');
+        $projects = $this->getServiceLocator()->get('ProjectsTable')->fetchByCond('deleted', 0, 'order asc');
         $fileTable = $this->getServiceLocator()->get('FilesTable');
         foreach ($projects as $pkey => &$one) {
             if ($one->id == $project->id) {
@@ -137,7 +137,7 @@ class ProjectsController extends AbstractActionController
         $rubric = $this->getServiceLocator()->get('ProjectRubricTable')->find($groupId);
 
         if ($rubric) {
-            $projects = $this->getServiceLocator()->get('ProjectsTable')->fetchByCond('rubric_id', $groupId, 'order asc');
+            $projects = $this->getServiceLocator()->get('ProjectsTable')->fetchByConds(array('rubric_id' => $groupId, 'deleted' => 0), false, 'order asc');
 
 
         } else {

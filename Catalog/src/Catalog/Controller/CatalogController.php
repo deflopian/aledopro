@@ -281,6 +281,7 @@ class CatalogController extends BaseController
     public function renderSectionLentsAction() {
         $id = $this->params()->fromRoute('id', 0);
         $view = $this->preparePlaneProductList($id);
+		$view->setVariable('seAgg', SeriesAggregator::getInstance());////////////////////////////////////добавлено
         $view->setTemplate('catalog/catalog/section_lenta');
 
         return $view;

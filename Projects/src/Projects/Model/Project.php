@@ -14,4 +14,5 @@ class Project extends SampleModel
     public $rubric_id;
     public $preview;
     public $order;
+    public $deleted;
 }
