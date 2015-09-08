@@ -26,7 +26,7 @@ class IndexController extends AbstractActionController
         }
 
         $sl = $this->getServiceLocator();
-        $projects = $sl->get('ProjectsTable')->fetchByCond('rubric_id', 1, 'id desc');
+        $projects = $sl->get('ProjectsTable')->fetchByConds(array('rubric_id' => 1, 'deleted' => 0), false, 'id desc');
         $rubrics = $sl->get('ProjectRubricTable')->fetchAll();
 
         $projectsByRubric = array();
