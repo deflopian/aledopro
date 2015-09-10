@@ -30,7 +30,7 @@ class CommercialController extends AbstractActionController {
         $commercialMapper = CommercialMapper::getInstance($this->getServiceLocator());
 
         $commercial = $commercialMapper->getByUID($user->getId(), $id, true, true, true);
-        CommercialService::makeCommercialXls($commercial, $user->getUsername());
+        CommercialService::makeCommercialXls($commercial, $user->getUsername(), $this->getServiceLocator());
 
         return $this->getResponse()->setStatusCode(200);
     }

@@ -2,6 +2,7 @@
 namespace Commercials\Service;
 
 use Catalog\Controller\CronController;
+use Catalog\Mapper\CatalogMapper;
 use Catalog\Service\CatalogService;
 use Commercials\Model\Commercial;
 use Zend\Session\Container;
@@ -10,7 +11,7 @@ class CommercialService {
     /**
      * @param $commercial Commercial
      */
-    public static function makeCommercialXls($commercial, $userName = false)
+    public static function makeCommercialXls($commercial, $userName = false, $serviceLocator)
     {
         $objPHPExcel = new \PHPExcel();
         $objPHPExcel->getProperties()
@@ -56,8 +57,18 @@ class CommercialService {
 
                 $sheet->getRowDimension($currentRow)->setRowHeight(200/1.33);
                 $sheet = self::formatDiapason($sheet, 'A' . $currentRow, 'G' . ($currentRow));
-                $price = CatalogService::getTruePrice($prod->product->price_without_nds);
-                $count = $prod->count ? $prod->count : 1    ;
+                //$price = CatalogService::getTruePrice($prod->product->price_without_nds);
+				
+				$priceUser = $serviceLocator->get('UserTable')->find($commercial->price_user_id);
+				if ($priceUser) {
+					$discounts = $serviceLocator->get('DiscountTable')->fetchByUserId($commercial->price_user_id, $priceUser->partner_group, false, 0,  $serviceLocator);
+				}
+				else $discounts = null;		
+				$cm = CatalogMapper::getInstance($serviceLocator);				
+				list($tree, $type_) = $cm->getParentTree($prod->product_id);
+				$price = CatalogService::getTruePriceUser($prod->product->price_without_nds, $priceUser, $tree, $discounts, $prod->product->opt2);
+                
+				$count = $prod->count ? $prod->count : 1;
 
                 //попарно мержим строки
                 for ($i=1; $i<=7; $i++) {
