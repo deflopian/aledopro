@@ -14,7 +14,11 @@
                 <div class="b-partner-registration__row">
                     <div class="b-partner-registration__cell b-partner-registration__cell_left">
                         <div class="b-form-group">
-                            <label for="partner_lastname">Фамилия*</label>
+						<? if (!$user) { ?>
+							<label for="partner_lastname">Фамилия*</label>
+						<? } else { ?>
+							<label for="partner_lastname">Фамилия</label>
+						<? } ?>
                             <input type="text"
                                    class="b-form-control b-form-control_small"
                                    id="partner_lastname"
@@ -74,10 +78,22 @@
                                    name="partner_fathername"
                                    ng-model="formData.partner_fathername"
                                    ng-init="formData.partner_fathername = ''"
-                                   autocomplete="off" />
+                                   autocomplete="off"
+								   ng-change="validityOnChange('partner_fathername')" />
+							<div class=""
+                                 ng-show="partnerRegistration.partner_fathername.$dirty && partnerRegistration.partner_fathername.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_fathername.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
-                            <label for="partner_city">Город*</label>
+						<? if (!$user) { ?>
+							<label for="partner_city">Город*</label>
+						<? } else { ?>
+							<label for="partner_city">Город</label>
+						<? } ?>
                             <input type="text"
                                    class="b-form-control b-form-control_small"
                                    id="partner_city"
@@ -107,7 +123,11 @@
                             </div>
                         </div>
                         <div class="b-form-group">
-                            <label for="partner_tel">Контактный телефон*</label>
+						<? if (!$user) { ?>
+							<label for="partner_tel">Контактный телефон*</label>
+						<? } else { ?>
+							<label for="partner_tel">Контактный телефон</label>
+						<? } ?>
                             <input type="text"
                                    input-mask="+7 (999) 999-99-99"
                                    class="b-form-control b-form-control_small"
@@ -165,13 +185,17 @@
                                     Длина поля должна быть по меньшей мере 3 символа
                                 </small>
                                 <small class="b-form-error"
-                                       ng-show="partnerRegistration.partner_email.$error.wrong_format">
+                                       ng-show="!partnerRegistration.partner_email.$error.recordFound && !partnerRegistration.partner_email.$error.stringLengthTooShort">
                                     Неправильный формат почты
                                 </small>
                             </div>
                         </div>
                         <div class="b-form-group">
-                            <label for="partner_password">Пароль*</label>
+						<? if (!$user) { ?>
+							<label for="partner_password">Пароль*</label>
+						<? } else { ?>
+							<label for="partner_password">Пароль</label>
+						<? } ?>
                             <input type="password"
                                    class="b-form-control b-form-control_small"
                                    id="partner_password"
@@ -197,7 +221,11 @@
                             </div>
                         </div>
                         <div class="b-form-group">
-                            <label for="partner_password_repeat">Повторите пароль*</label>
+						<? if (!$user) { ?>
+							<label for="partner_password_repeat">Повторите пароль*</label>
+						<? } else { ?>
+							<label for="partner_password_repeat">Повторите пароль</label>
+						<? } ?>
                             <input type="password"
                                    class="b-form-control b-form-control_small"
                                    id="partner_password_repeat"
@@ -242,6 +270,13 @@
                                    name="partner_job_title"
                                    ng-change="validityOnChange('partner_job_title')"
                                    autocomplete="off" />
+							<div class=""
+                                 ng-show="partnerRegistration.partner_job_title.$dirty && partnerRegistration.partner_job_title.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_job_title.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
                             <label for="partner_company_name">Полное название компании (с юр. статусом)*</label>
@@ -341,6 +376,13 @@
                                    ng-init="formData.partner_website = ''"
                                    ng-change="validityOnChange('partner_website')"
                                    autocomplete="off" />
+							<div class=""
+                                 ng-show="partnerRegistration.partner_website.$dirty && partnerRegistration.partner_website.$invalid">
+                                <small class="b-form-error"
+                                       ng-show="partnerRegistration.partner_website.$error.stringLengthTooShort">
+                                    Длина поля должна быть по меньшей мере 3 символа
+                                </small>
+                            </div>
                         </div>
                         <div class="b-form-group">
                             <input class="b-form-control b-checkbox"
@@ -359,7 +401,7 @@
                             <p>*поля отмеченные звездочкой(*) обязательны к заполнению</p>
                             <p>Мы гарантируем, что Ваши персональные данные не будут переданы третьим лицам</p>
 
-                            <div class="b-button b-button_gray" ng-click="submit()" id="partner_reistration_button" ng-disabled="partnerRegistration.$invalid">
+                            <div class="b-button b-button_gray" ng-click="submit()" id="partner_reistration_button" ng-disabled="partnerRegistration.$invalid && !reSubmit">
                                             <span class="b-button__text">
                                                 отправить заявку на регистрацию
                                             </span>
