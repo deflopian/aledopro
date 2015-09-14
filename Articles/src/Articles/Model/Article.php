@@ -16,5 +16,5 @@ class Article extends SampleModel
     public $date;
     public $order;
     public $preview;
-	public $active;
+	public $deleted;
 }

@@ -123,7 +123,10 @@ class AdminController extends SampleAdminController
             $success = 0;
 
             if ($title) {
-                $data = array('title' => $title,);
+                $data = array(
+					'title' => $title,
+					'deleted' => 0
+				);
 
                 $table = $this->getTable($type);
                 $eName = $this->getEntityName($type);
@@ -198,7 +201,7 @@ class AdminController extends SampleAdminController
             $response->setContent(\Zend\Json\Json::encode($returnArr));
             return $response;
         }
-        return $this->redirect()->toRoute('zfcadmin/catalog');
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
     }
 	
 	public function showEntityAction() {
@@ -222,7 +225,7 @@ class AdminController extends SampleAdminController
             $response->setContent(\Zend\Json\Json::encode($returnArr));
             return $response;
         }
-        return $this->redirect()->toRoute('zfcadmin/catalog');
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
     }
 
     public function changeOrderAction()

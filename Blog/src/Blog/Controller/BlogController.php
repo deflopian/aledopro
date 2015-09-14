@@ -96,7 +96,7 @@ class BlogController extends AbstractActionController
     public function indexAction()
     {
         $sl = $this->getServiceLocator();
-        $articles = $sl->get('ArticlesTable')->fetchByCond('active', 1, 'order ASC');
+        $articles = $sl->get('ArticlesTable')->fetchByCond('deleted', 0, 'order ASC');
         $fileTable = $this->getServiceLocator()->get('FilesTable');
         $tagToArticleTable = $this->getServiceLocator()->get('TagToArticlesTable');
         $tagsTable = $this->getServiceLocator()->get('ArticleTagsTable');

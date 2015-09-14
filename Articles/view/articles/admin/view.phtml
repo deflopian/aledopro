@@ -155,21 +155,6 @@
                 </td>
             </tr>
         <? } ?>
-	    <tr>
-        <td>Выводить статью на сайте?</td>
-        <td>
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="yes">Да</label>
-                    <input type="radio" id="yes" name="active" class="radio" value="1" <?= $entity->active ? 'checked' : ''?>/>
-                </div>
-                <div class="col-md-3">
-                    <label for="no">Нет</label>
-                    <input type="radio" id="no" name="active" class="radio" value="0" <?= $entity->active ? : 'checked'?>/>
-                </div>
-            </div>
-        </td>
-        </tr>
         </tbody>
     </table>
 </div>
@@ -237,21 +222,6 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
             inputField: $("#tagit-series"),
             outputField: $('#tagit-series-res'),
             placeholder: 'Название тега'
-        });
-		
-		var val;
-        $('.radio').on('change', function(){
-            val = $('.radio:checked').val();
-			
-            $.ajax({
-                url:  catalog.baseUrl + 'changeActivityStatus/',
-                dataType : "json",
-                type: "post",
-                data: {id: catalog.parentId, val: val},
-                success: function (data, textStatus) {
-                    console.log('changed active status');
-                }
-            });
         });
     });
 </script>

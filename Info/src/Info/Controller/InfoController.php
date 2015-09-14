@@ -238,7 +238,7 @@ class InfoController extends AbstractActionController
         $entity = $jobsTable->find(1);
 		
 		$vacanciesTable = $this->getServiceLocator()->get('VacanciesTable');
-        $vacancies = $vacanciesTable->fetchByCond('active', 1, 'order ASC');
+        $vacancies = $vacanciesTable->fetchByCond('deleted', 0, 'order ASC');
 		
 		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::JOB, 1);
 

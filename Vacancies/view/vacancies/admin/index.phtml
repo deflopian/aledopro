@@ -28,7 +28,7 @@
         </tr>
         <tbody id="sortable">
         <? foreach($entities as $entity){ ?>
-            <tr class="entity">
+            <tr class="entity" <?= $entity->deleted ? 'style="color: #BBB"' : '' ?>>
                 <td><?= $entity->id; ?></td>
                 <td><?= $entity->title; ?></td>
 				<td><?= $entity->salary; ?></td>
@@ -38,6 +38,8 @@
                 <td>
                     <a href="#" class="editBtn">Редактировать</a>
                     <a href="#" class="deleteBtn">Удалить</a>
+					<a href="#" class="showBtn" <?= $entity->deleted ? '' : 'style="display: none"' ?>>Показать</a>
+                    <a href="#" class="hideBtn" <?= $entity->deleted ? 'style="display: none"' : '' ?>>Скрыть</a>
                 </td>
             </tr>
         <? } ?>
