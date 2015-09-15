@@ -4,6 +4,20 @@
         <a href="/admin/user/orphans">Пользователи без менеджера</a>
     </div>
 </div>
+<br>
+    <div class="addPanel">
+        <button type="button" class="btn btn-default" id="add-entity">Добавить пользователя</button>
+
+        <div class="form-inline" id="adding-form" style="display: none">
+            <div class="form-group">
+                <label class="sr-only" for="inputName">Имя пользователя</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Введите имя пользователя..."/>
+            </div>
+
+            <button type="button" class="btn btn-default" id="adding-complete">Добавить</button>
+            <button type="button" class="btn btn-default" id="adding-cancel">Отмена</button>
+        </div>
+    </div>
 
 <div class="section" id="userTable">
     <solo-table make-sortable="3" items-on-page="20">

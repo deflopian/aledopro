@@ -9,7 +9,7 @@
     <table class="table admin-table ">
         <tbody>
         <tr>
-            <td>Имя</td>
+            <td><b>Имя</b></td>
             <td>
                 <a href="#" data-type="text" data-name="username" class="editable-param"><?= $entity->username; ?></a>
             </td>
@@ -27,7 +27,7 @@
         </tr>
 
         <tr>
-            <td>Почта</td>
+            <td><b>Почта</b></td>
             <td>
                 <a href="#" data-type="text" data-name="email" class="editable-param"><?= $entity->email; ?></a>
             </td>
@@ -48,6 +48,13 @@
             <td>Город</td>
             <td>
                 <a href="#" data-type="text" data-name="city" class="editable-param"><?= $entity->city ? $entity->city : ""; ?></a>
+            </td>
+        </tr>
+		
+		<tr>
+            <td><b>Новый пароль</b></td>
+            <td>
+                <a href="#" data-type="text" data-name="password" class="editable-param"></a>
             </td>
         </tr>
 

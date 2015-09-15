@@ -10,6 +10,7 @@ class User extends SampleModel
     public $email;
     public $phone;
     public $is_spamed;
+	public $state;
     public $status;
     public $password;
     public $token;

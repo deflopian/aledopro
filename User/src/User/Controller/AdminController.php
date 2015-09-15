@@ -8,6 +8,8 @@ use User\Model\ManagerToUserTable;
 use User\Model\User;
 use User\Model\UserHistoryTable;
 use User\Service\UserService;
+use User\Model\RoleLinker;
+use Zend\Crypt\Password\Bcrypt;
 
 class AdminController extends SampleAdminController
 {
@@ -338,6 +340,7 @@ class AdminController extends SampleAdminController
                     }
 
                 } else {
+					$flag = true;
                     $data[$post['name']] = $post['value'];
                     if ($post['name'] == 'manager_id') {
                         $oldEntity = $this->getServiceLocator()->get('UserTable')->find($post['pk']);
@@ -352,9 +355,24 @@ class AdminController extends SampleAdminController
                     if ($post['name'] == 'is_partner' && $post['value'] == 1) {
                         $data['partner_group'] = 0;
                     }
-                    $entity = new $this->entityName;
-                    $entity->exchangeArray($data);
-                    $this->getServiceLocator()->get('UserTable')->save($entity);
+					if ($post['name'] == 'password') {
+						$bcrypt = new Bcrypt();
+						$bcrypt->setCost(4);
+						$data['password'] = $bcrypt->create($post['value']);
+					}
+					if ($post['name'] == 'email' && $post['value']) {
+						$someUsers = $this->getServiceLocator()->get('UserTable')->fetchByCond('email', $post['value']);
+						foreach($someUsers as $someUser) {
+							if ($someUser->user_id == $data['user_id']) continue;
+							$flag = false;
+						}
+					}
+					
+					if ($flag) {
+						$entity = new $this->entityName;
+						$entity->exchangeArray($data);
+						$this->getServiceLocator()->get('UserTable')->save($entity);
+					}
 
 
                 }
@@ -364,6 +382,57 @@ class AdminController extends SampleAdminController
 
             $response = $this->getResponse();
             $response->setContent(\Zend\Json\Json::encode(array('success' => $success)));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+    }
+	
+	public function addEntityAction()
+    {
+        $this->setData();
+        $type = false;
+        $request = $this->getRequest();
+        if ($request->isXmlHttpRequest()) {
+            $title = $request->getPost('title', false);
+            $type = $request->getPost('page_info_type', false);
+            $success = 0;
+
+            if ($title) {
+                $data = array(
+					'username' => $title,
+					'password' => '',
+					'is_spamed' => 0,
+					'state' => 1,
+					'manager_id' => 0,
+					'is_partner' => 0,
+					'partner_group' => 0,
+					'god_mode_id' => 0
+					);
+
+                $entity = new $this->entityName;
+                $entity->exchangeArray($data);
+
+                $newId = $this->getServiceLocator()->get($this->table)->save($entity);
+				
+				$userRole = new RoleLinker();
+				$userRole->user_id = $newId;
+				$userRole->role_id = 'user';
+				$sm = $this->getServiceLocator();
+				$roleLinker = $sm->get('RoleLinkerTable');
+				$roleLinker->save($userRole, "user_id");
+
+                if($newId){
+                    $success = 1;
+                }
+            }
+
+            $returnArr = array('success' => $success);
+            if($success){
+                $returnArr['newId'] = $newId;
+            }
+
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode($returnArr));
             return $response;
         }
         return $this->redirect()->toRoute('zfcadmin/'.$this->url);
