@@ -1,4 +1,8 @@
-<h1>Контакты</h1>
+<h1>
+    <a href="<?= $this->url('zfcadmin/contacts') ?>">Контакты</a>
+    >
+    <span id="title"><?= $contact->id; ?></span>
+</h1>
 
 <div class="section">
     <table class="table admin-table  table-striped">
@@ -39,7 +43,7 @@
                 <a href="#" data-type="text" data-name="mail" class="editable-param"><?= $contact->mail; ?></a>
             </td>
         </tr>
-        </tbody>
+		</tbody>
     </table>
 </div>
 

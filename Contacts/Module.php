@@ -2,6 +2,7 @@
 namespace Contacts;
 
 use Contacts\Model\ContactTable;
+use Contacts\Model\AledoContactTable;
 
 class Module
 {
@@ -31,6 +32,11 @@ class Module
                 'ContactsTable' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table     = new ContactTable($dbAdapter);
+                    return $table;
+                },
+				'AledoContactsTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new AledoContactTable($dbAdapter);
                     return $table;
                 },
             )

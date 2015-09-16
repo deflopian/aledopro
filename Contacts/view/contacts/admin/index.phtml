@@ -1,58 +1,13 @@
 <h1>Контакты</h1>
-
 <div class="section">
-    <table class="table admin-table  table-striped">
-        <tbody>
-        <tr>
-            <td>Адрес</td>
-            <td>
-                <div class="editor-get-btn" data-name="adress"><?= $contact->adress; ?></div>
-            </td>
-        </tr>
-        <tr>
-            <td>Адрес склада</td>
-            <td>
-                <div class="editor-get-btn" data-name="adress_storage"><?= $contact->adress_storage; ?></div>
-            </td>
-        </tr>
-        <tr>
-            <td>Время работы</td>
-            <td>
-                <div class="editor-get-btn" data-name="work_time"><?= $contact->work_time; ?></div>
-            </td>
-        </tr>
-        <tr>
-            <td>Телефон</td>
-            <td>
-                <a href="#" data-type="text" data-name="phone" class="editable-param"><?= $contact->phone; ?></a>
-            </td>
-        </tr>
-        <tr>
-            <td>Факс</td>
-            <td>
-                <a href="#" data-type="text" data-name="fax" class="editable-param"><?= $contact->fax; ?></a>
-            </td>
-        </tr>
-        <tr>
-            <td>Почта</td>
-            <td>
-                <a href="#" data-type="text" data-name="mail" class="editable-param"><?= $contact->mail; ?></a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-
-<div class="section">
-    <h3>Список отделений</h3>
+    <h3>Список офисов</h3>
     <div class="addPanel">
-        <button type="button" class="btn btn-default" id="add-entity">Добавить представительство</button>
+        <button type="button" class="btn btn-default" id="add-entity">Добавить офис</button>
 
         <div class="form-inline" id="adding-form" style="display: none">
             <div class="form-group">
-                <label class="sr-only" for="inputName">Название представительства</label>
-                <input type="text" class="form-control" id="inputName" placeholder="Введите название..."/>
+                <label class="sr-only" for="inputName">Адрес офиса</label>
+                <input type="text" class="form-control" id="inputName" placeholder="Введите адрес..."/>
             </div>
 
             <button type="button" class="btn btn-default" id="adding-complete">Добавить</button>
@@ -60,7 +15,7 @@
         </div>
     </div>
     <div class="addPanel">
-        <button type="button" class="btn btn-default" id="tagit-add">Добавить существующий подраздел</button>
+        <!--button type="button" class="btn btn-default" id="tagit-add">Добавить существующий подраздел</button-->
 
         <div id="tagit-form" style="display: none">
             <ul id="tagit-subsections" ></ul>
@@ -73,21 +28,58 @@
     <table class="table admin-table  table-striped">
         <tr>
             <th>Id</th>
-            <th>Название</th>
+            <th>Адрес</th>
+			<th>Часы работы</th>
+			<th>Телефон</th>
+			<th>Факс</th>
+			<th>Почта</th>
             <th>Управление</th>
         </tr>
         <tbody id="sortable">
         <? foreach($subsections as $subsec){ ?>
-            <tr class="entity" <?= $subsec->deleted ? 'style="color: #BBB"' : '' ?>>
+            <tr class="entity">
                 <td><?= $subsec->id; ?></td>
-                <td><?= $subsec->title; ?></td>
+                <td><?= $subsec->adress; ?></td>
+				<td><?= $subsec->work_time; ?></td>
+				<td><?= $subsec->phone; ?></td>
+				<td><?= $subsec->fax; ?></td>
+				<td><?= $subsec->mail; ?></td>
                 <td>
                     <a href="#" class="editBtn">Редактировать</a>
-                    <a href="#" class="removeBtn">Открепить</a>
                     <a href="#" class="deleteBtn">Удалить</a>
-                    <a href="#" class="showBtn" <?= $subsec->deleted ? '' : 'style="display: none"' ?>>Показать</a>
-                    <a href="#" class="hideBtn" <?= $subsec->deleted ? 'style="display: none"' : '' ?>>Скрыть</a>
                 </td>
+            </tr>
+        <? } ?>
+        </tbody>
+    </table>
+	
+	<h3>Внутренняя рассылка уведомлений</h3>
+	<table class="table admin-table  table-striped">
+			<tr id="file">
+            <td>CSV-файл Google c контактами сотрудников</td>
+            <td>
+                <div
+                    ng-single-file-upload
+                    parent-type="contacts"
+					parent-id="1"
+                    folder="contacts"
+                    field="file"
+                ></div>
+
+                <script type="application/javascript">
+                    AppFactory("file", "contacts", ["fileMapper", "ur.file"]);
+                </script>
+            </td>
+        </tr><tr><td></td><td></td></tr>
+        <tr>
+            <th>Id</th>
+            <th>E-mail</th>
+        </tr>
+        <tbody id="sortable">
+        <? foreach($our_contacts as $our_contact){ ?>
+            <tr class="entity">
+                <td><?= $our_contact->id; ?></td>
+				<td><?= $our_contact->email; ?></td>
             </tr>
         <? } ?>
         </tbody>
@@ -95,7 +87,7 @@
 </div>
 
 
-<script type="text/javascript">
+<!--script type="text/javascript">
     $(function(){
         catalog.parentId = '<?= $contact->id ?>';
         catalog.baseUrl = '<?= $this->url('zfcadmin/contacts') ?>';
@@ -106,5 +98,14 @@
             getUrl:'<?= $this->url('zfcadmin/info', array('action' => 'getWysiwygBar')) ?>',
             saveFunction: wysiwyg.editablesSave
         });
+    });
+</script-->
+<script type="text/javascript">
+    $(document).ready(function(){
+        catalog.baseUrl = '<?= $this->url('zfcadmin/contacts') ?>';
+        catalog.editUrl = '<?= $this->url('zfcadmin/contacts', array('action'=> 'view')) ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::INDEX ?>';
+
+        catalog.init();
     });
 </script>

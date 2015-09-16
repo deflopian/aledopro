@@ -5,6 +5,7 @@ use Api\Model\File;
 use Api\Model\FileTable;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractRestfulController;
+use Application\Service\GoogleContactsService;
 
 class FileController extends ApiController
 {
@@ -69,11 +70,10 @@ class FileController extends ApiController
             }
         }
 
-
-
         $data = $data['file'];
 
         $filename = $data['name'];
+		$filetype = $data['type'];
 
         $adapter = new \Zend\File\Transfer\Adapter\Http();
         $adapter->setDestination($this->getFolder('/images/' . $folder));
@@ -137,8 +137,13 @@ class FileController extends ApiController
                 $parentObjectTable->save($parentObject);
             }
         }
+		
+		if ($parentType == "contacts") {
+			GoogleContactsService::parseCSV($sl, $_SERVER['DOCUMENT_ROOT'] . '/images/' . $folder . '/' . $adapter->getFileName(null, false), $filetype);
+		}
 
         $result = array('name' => $adapter->getFileName(null, false), 'realName' => $filename, 'id' => $resultId);
+		if ($parentType == "contacts") $result['reload'] = 1;
         $this->response->setContent(Json::encode($result))->setStatusCode(200);
         return $this->response;
     }

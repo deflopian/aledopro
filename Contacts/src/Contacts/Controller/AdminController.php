@@ -12,9 +12,71 @@ class AdminController extends SampleAdminController
     public function indexAction()
     {
         $this->setData();
-        $contact = $this->getServiceLocator()->get($this->table)->find(1);
+		$contacts = $this->getServiceLocator()->get($this->table)->fetchAll('id ASC');
+		$our_contacts = $this->getServiceLocator()->get("AledoContactsTable")->fetchAll('id ASC');
+        return array(
+            'subsections' => $contacts,
+			'our_contacts' => $our_contacts,
+        );
+    }
+	
+	public function viewAction()
+    {
+        $this->setData();
+		$id = $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+        }		
+        $contact = $this->getServiceLocator()->get($this->table)->find($id);
         return array(
             'contact' => $contact,
         );
+    }
+	
+	public function addEntityAction()
+    {
+        $this->setData();
+
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $title = $request->getPost('title', false);
+            $type = $request->getPost('type', false);
+            $parentId = $request->getPost('parentId', false);
+
+            $success = 0;
+
+            if ($title) {
+                $data = array(
+					'adress' => $title,
+					'work_time' => '',
+					'phone' => '',
+					'fax' => '',
+					'mail' => ''
+				);
+
+                if($parentId){
+                    $data['parent_id'] = $parentId;
+                }
+
+                $entity = new $this->entityName;
+                $entity->exchangeArray($data);
+
+                $newId = $this->getServiceLocator()->get($this->table)->save($entity);
+
+                if($newId){
+                    $success = 1;
+                }
+            }
+
+            $returnArr = array('success' => $success);
+            if($success){
+                $returnArr['newId'] = $newId;
+            }
+
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode($returnArr));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
     }
 }
