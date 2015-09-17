@@ -290,22 +290,29 @@ class MailService
      */
     public static function prepareNotificationMailData($sl, $entity, $type)
     {
-        switch ($type) {
+        $title = $entity->title;
+		
+		switch ($type) {
 			case self::NOTIFICATION_SERIES:
 				$category = 'новая серия';
-				$title = $entity->title;
 				$link = '/catalog/series/' . $entity->id . '/';
 				break;
 			case self::NOTIFICATION_PROJECTS:
 				$category = 'новый проект';
-				$title = $entity->title;
 				$link = '/projects/view/' . $entity->id . '/';
+				break;
+			case self::NOTIFICATION_ARTICLES:
+				$category = 'новая статья в блоге';
+				$link = '/articles/view/' . $entity->id . '/';
+				break;
+			case self::NOTIFICATION_DEVELOPERS:
+				$category = 'новый производитель';
+				$link = '/brands/view/' . $entity->id . '/';
 				break;
 			case self::NOTIFICATION_DOCUMENTS:
 				$fileTable = $sl->get('FilesTable');
 				$file = $fileTable->find($entity->file);
 				
-				$title = $entity->title;
 				$link = '/images/documents/' . $file->name;
 				
 				if ($entity->type == DocumentTable::TYPE_CATALOG) {

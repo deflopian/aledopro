@@ -3,6 +3,7 @@ namespace Developers\Controller;
 
 use Application\Controller\SampleAdminController;
 use Application\Service\ApplicationService;
+use Application\Service\MailService;
 use Catalog\Mapper\CatalogMapper;
 use Catalog\Service\CatalogService;
 use Documents\Model\DocumentTable;
@@ -299,6 +300,13 @@ class AdminController extends SampleAdminController
 
                 $this->getServiceLocator()->get($table)->save($entity);
                 $success = 1;
+				
+				if ($post['name'] == "rubric_id") {
+					$developer = $this->getServiceLocator()->get($table)->find($entity->id);
+					
+					list($email, $mailView) = MailService::prepareNotificationMailData($this->getServiceLocator(), $developer, MailService::NOTIFICATION_DEVELOPERS);
+					MailService::sendMail($email, $mailView, "Новый производитель добавлен на сайт!");
+				}
             }
 
             $response = $this->getResponse();

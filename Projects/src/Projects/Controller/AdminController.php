@@ -333,9 +333,9 @@ class AdminController extends SampleAdminController
                 $this->getServiceLocator()->get($table)->save($entity);
                 $success = 1;
 				
-				$project = $this->getServiceLocator()->get($table)->find($entity->id);
-				
 				if ($post['name'] == "rubric_id") {
+					$project = $this->getServiceLocator()->get($table)->find($entity->id);
+					
 					list($email, $mailView) = MailService::prepareNotificationMailData($this->getServiceLocator(), $project, MailService::NOTIFICATION_PROJECTS);
 					MailService::sendMail($email, $mailView, "Новый проект добавлен на сайт!");
 				}
