@@ -7,6 +7,7 @@ use Catalog\Mapper\CatalogMapper;
 use Catalog\Service\CatalogService;
 use Discount\Model\Discount;
 use Discount\Service\DiscountService;
+use Documents\Model\DocumentTable;
 use Info\Model\PartnerRequest;
 use Reports\Model\Report;
 use Services\Controller\ServicesController;
@@ -23,7 +24,13 @@ class MailService
     public static $currentManagerMail = "info@aledo-pro.ru";
     private static $kaledoscopManagerMail = "info@kaledoscop.ru";
     public static $developerMail = "deflopian@gmail.com";
-    const CURRENT_DOMEN = "aledo-pro.ru";
+    
+	const CURRENT_DOMEN = "aledo-pro.ru";	
+	const NOTIFICATION_SERIES = 1;
+	const NOTIFICATION_PROJECTS = 2;
+	const NOTIFICATION_ARTICLES = 3;
+	const NOTIFICATION_DEVELOPERS = 4;
+	const NOTIFICATION_DOCUMENTS = 5;
 
     public static function sendMail($email, $data, $subject = "Новый заказ", $from = false)
     {
@@ -273,6 +280,52 @@ class MailService
         $view->setTemplate('application/index/email/email-vacancy-employee');
         $formView = $sl->get('viewrenderer')->render($view);
         return array($requestDetails->mail, $formView);
+    }
+	
+    /**
+     * @param $sl
+	 * @param $entity Object
+	 * @param $type
+     * @return array
+     */
+    public static function prepareNotificationMailData($sl, $entity, $type)
+    {
+        switch ($type) {
+			case self::NOTIFICATION_SERIES:
+				$category = 'новая серия';
+				$title = $entity->title;
+				$link = '/catalog/series/' . $entity->id . '/';
+				break;
+			case self::NOTIFICATION_DOCUMENTS:
+				$title = $entity->title;
+				
+				if ($entity->type == DocumentTable::TYPE_CATALOG) {
+					$category = 'новый каталог';
+					$link = '/files/#catalogs';
+				}
+				else if ($entity->type == DocumentTable::TYPE_CERTIFICATE) {
+					$category = 'новый сертификат';
+					$link = '/files/#certificates';
+				}
+				else if ($entity->type == DocumentTable::TYPE_INSTRUCTION) {
+					$category = 'новая инструкция';
+					$link = '/files/#instructions';
+				}
+				break;
+		}
+		
+		$view = new ViewModel(array(
+            'category'	 => $category,
+			'title' => $title,
+			'link' => $link
+        ));
+        $view->setTerminal(true);
+		$view->setTemplate('application/index/email/email-notification');
+        $formView = $sl->get('viewrenderer')->render($view);
+		
+		//$to = GoogleContactsService::getMails($sl);
+		$to = 'koziakov@yandex.ru, sek@aledo-pro.ru'; /// для теста, потом заменить строчкой выше!!!
+        return array($to ? $to : self::$currentManagerMail, $formView);
     }
 
     /**

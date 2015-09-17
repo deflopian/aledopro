@@ -43,4 +43,15 @@ class GoogleContactsService {
 			$table->save($contact);
 		}
 	}
+	
+	public static function getMails($sl) {
+		$arr = array();
+		$table = $sl->get('AledoContactsTable');
+		
+		$items = $table->fetchAll('id ASC');
+		foreach ($items as $item) {
+			$arr[] = trim($item->email);
+		}
+		return implode(',', $arr);
+	}
 }

@@ -6,6 +6,7 @@ use Api\Model\FileTable;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Application\Service\GoogleContactsService;
+use Application\Service\MailService;
 
 class FileController extends ApiController
 {
@@ -140,6 +141,11 @@ class FileController extends ApiController
 		
 		if ($parentType == "contacts") {
 			GoogleContactsService::parseCSV($sl, $_SERVER['DOCUMENT_ROOT'] . '/images/' . $folder . '/' . $adapter->getFileName(null, false), $filetype);
+		}
+		
+		if ($parentType == "document") {
+			list($email, $mailView) = MailService::prepareNotificationMailData($sl, $parentObject, MailService::NOTIFICATION_DOCUMENTS);
+			MailService::sendMail($email, $mailView, "Новый документ загружен на сайт!");
 		}
 
         $result = array('name' => $adapter->getFileName(null, false), 'realName' => $filename, 'id' => $resultId);
