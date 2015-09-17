@@ -296,20 +296,29 @@ class MailService
 				$title = $entity->title;
 				$link = '/catalog/series/' . $entity->id . '/';
 				break;
-			case self::NOTIFICATION_DOCUMENTS:
+			case self::NOTIFICATION_PROJECTS:
+				$category = 'новый проект';
 				$title = $entity->title;
+				$link = '/projects/view/' . $entity->id . '/';
+				break;
+			case self::NOTIFICATION_DOCUMENTS:
+				$fileTable = $sl->get('FilesTable');
+				$file = $fileTable->find($entity->file);
+				
+				$title = $entity->title;
+				$link = '/images/documents/' . $file->name;
 				
 				if ($entity->type == DocumentTable::TYPE_CATALOG) {
 					$category = 'новый каталог';
-					$link = '/files/#catalogs';
 				}
 				else if ($entity->type == DocumentTable::TYPE_CERTIFICATE) {
 					$category = 'новый сертификат';
-					$link = '/files/#certificates';
 				}
 				else if ($entity->type == DocumentTable::TYPE_INSTRUCTION) {
 					$category = 'новая инструкция';
-					$link = '/files/#instructions';
+				}
+				else if ($entity->type == DocumentTable::TYPE_COMMENT) {
+					$category = 'новый отзыв';
 				}
 				break;
 		}
