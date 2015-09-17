@@ -294,6 +294,7 @@ class MailService
 		
 		switch ($type) {
 			case self::NOTIFICATION_SERIES:
+				$id = $entity->id;
 				$category = 'новая серия';
 				$link = '/catalog/series/' . $entity->id . '/';
 				break;
@@ -331,7 +332,8 @@ class MailService
 		}
 		
 		$view = new ViewModel(array(
-            'category'	 => $category,
+			'id' => $id,
+            'category' => $category,
 			'title' => $title,
 			'link' => $link
         ));

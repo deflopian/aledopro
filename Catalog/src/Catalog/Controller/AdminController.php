@@ -657,6 +657,11 @@ class AdminController extends SampleAdminController
                         $entity->deleted = 0;
                         $this->getServiceLocator()->get('Catalog\Model\\'. $tableName )->save($entity);
                         $success = 1;
+						
+						if ($type == self::SERIES_TABLE) {
+							list($email, $mailView) = MailService::prepareNotificationMailData($this->getServiceLocator(), $entity, MailService::NOTIFICATION_SERIES);
+							MailService::sendMail($email, $mailView, "Новая серия добавлена на сайт!");
+						}
                     }
                 }
             }

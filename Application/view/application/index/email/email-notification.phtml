@@ -50,7 +50,7 @@
                     <td height="20" colspan="2">
                         <p>
                             На нашем сайте <?= \Application\Service\MailService::CURRENT_DOMEN ?> появилось обновление: <b><?= $category ?></b>.<br><br>
-							<a href="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?><?= $link ?>"><?= $title ?></a><br><br>
+							<?= $id ? $id . '&nbsp;&nbsp;' : '' ?><a href="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?><?= $link ?>"><?= $title ?></a><br><br>
                         </p>
                     </td>
                     <td height="20">&nbsp;</td>
