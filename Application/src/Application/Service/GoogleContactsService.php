@@ -30,11 +30,7 @@ class GoogleContactsService {
 	
 	protected static function fillDB($sl, $arr) {
 		$table = $sl->get('AledoContactsTable');
-		
-		$olds = $table->fetchAll();
-		foreach ($olds as $old) {
-			$table->delete($old);
-		}
+		$table->truncate();
 		
 		foreach ($arr as $item) {
 			$contact = new AledoContact();

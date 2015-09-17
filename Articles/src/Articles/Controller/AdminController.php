@@ -2,6 +2,7 @@
 namespace Articles\Controller;
 
 use Application\Controller\SampleAdminController;
+use Application\Service\MailService;
 use Articles\Model\ArticleBlock;
 use Articles\Model\ArticleTag;
 use Articles\Model\TagToArticle;
@@ -29,7 +30,7 @@ class AdminController extends SampleAdminController
             if ($title) {
                 $data = array(
 					'title' => $title,
-					'deleted' => 0
+					'deleted' => 1
 				);
 
                 $entity = new $this->entityName;
@@ -98,6 +99,9 @@ class AdminController extends SampleAdminController
                 $entity->deleted = 0;
                 $this->getServiceLocator()->get($this->table)->save($entity);
                 $success = 1;
+				
+				list($email, $mailView) = MailService::prepareNotificationMailData($this->getServiceLocator(), $entity, MailService::NOTIFICATION_ARTICLES);
+				MailService::sendMail($email, $mailView, "Новая статья в блоге добавлена на сайт!");
             }
 
             $returnArr = array('success' => $success);
