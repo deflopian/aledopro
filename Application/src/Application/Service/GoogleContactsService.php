@@ -19,7 +19,9 @@ class GoogleContactsService {
 				if ($row == 1) continue;
 				if ($data[0] == null) continue;
 				
-				if ($data[28]) $arr[] = $data[28];
+				if ($data[28]) {
+					$arr[] = str_replace(array("\0", "\r"), array('', ''), $data[28]);
+				}
 			}
 			
 			if ($arr) {
@@ -46,7 +48,7 @@ class GoogleContactsService {
 		
 		$items = $table->fetchAll('id ASC');
 		foreach ($items as $item) {
-			$arr[] = trim($item->email);
+			$arr[] = $item->email;
 		}
 		return implode(',', $arr);
 	}

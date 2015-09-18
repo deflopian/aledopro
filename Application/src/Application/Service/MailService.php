@@ -50,8 +50,8 @@ class MailService
         $message->addFrom($fromMail, 'Aledo')
             ->addTo($email)
             ->setSubject($subject);
-
-        $transport = new SendmailTransport();
+		
+		$transport = new SendmailTransport();
         $transport->send($message);
     }
 
@@ -341,9 +341,8 @@ class MailService
 		$view->setTemplate('application/index/email/email-notification');
         $formView = $sl->get('viewrenderer')->render($view);
 		
-		//$to = GoogleContactsService::getMails($sl);
-		$to = 'koziakov@yandex.ru, sek@aledo-pro.ru'; /// для теста, потом заменить строчкой выше!!!
-        return array($to ? $to : self::$currentManagerMail, $formView);
+		$to = GoogleContactsService::getMails($sl);
+		return array($to ? $to : self::$currentManagerMail, $formView);
     }
 
     /**
