@@ -39,7 +39,7 @@
                     <? $src = $this->basePath() . '/images/projects/' . $img->url ?>
                     <? $minSrc = $this->basePath() . '/images/projects/' . $minUrl ?>
 
-                    <a class="b-goods-gallery-item__link" href="<?= $src ?>" rel="gallery">
+                    <a class="b-goods-gallery-item__link" href0="<?= $src ?>" rel="gallery">
                         <img class="b-slider__image" src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $img->url) ? $minSrc : $src ?>" alt="<?= $series->visible_title; ?> url" />
                     </a>
 <!--                    <a href="/images/projects/--><?//= $img->url ?><!--" rel="gallery">-->
@@ -117,7 +117,7 @@
                             _.$slider.addClass(_.noSliderClass);
                         }
 
-                        _initFancy();
+                        //_initFancy();
                         _bindEvents();
 
                     },
@@ -212,13 +212,13 @@
                         });
 
 
-                        _.$fancy.on("fancyBox.beforeLoad", function () {
+                        /*_.$fancy.on("fancyBox.beforeLoad", function () {
                             if (_.firstCalling) {
                                 _.firstCalling = false;
                                 return;
                             }
                             _.$slider.slick(_.direction == "next" ? "slickNext" : "slickPrev");
-                        });
+                        });*/
 
 
                         document.addEventListener("click", function (e) {
@@ -341,7 +341,7 @@
 
             _init = function () {
                 _initSlider();
-                _initFancy();
+                //_initFancy();
                 _bindEvents();
 
             },
@@ -357,13 +357,13 @@
                     return false;
                 });
 
-                _.$fancy.on("fancyBox.beforeLoad", function () {
+                /*_.$fancy.on("fancyBox.beforeLoad", function () {
                     if (_.firstCalling) {
                         _.firstCalling = false;
                         return;
                     }
                     _.$slider.slick(_.direction == "next" ? "slickNext" : "slickPrev");
-                });
+                });*/
 
 
                 document.addEventListener("click", function (e) {
