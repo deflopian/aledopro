@@ -39,7 +39,7 @@ function mb_ucfirst($text) {
 
         <? } ?>
     </div>
-    <div class="b-goods-gallery">
+    <div style="display: none" id="imagesLoadedGallery">
         <? $i = 0; ?>
         <? foreach($imgs as $img) { ?>
             <? if (!$series->preview && $series->img_gallery == $img->url) continue; ?>
@@ -54,6 +54,9 @@ function mb_ucfirst($text) {
                 </a>
             </div>
         <? } ?>
+    </div>
+    <div class="b-goods-gallery">
+
     </div>
 
     <div class="b-section__content">
@@ -115,7 +118,7 @@ function mb_ucfirst($text) {
                         <div class="attention-block">
                             <span class="attention-block_important">Важно!</span>
                             <span class="attention-block_message">Источник питания приобретается отдельно.</span>
-                            <a href="javascript:void(0)" onclick="mainpage.scrollTo($('#dopprods'), 40, true, true)" class="attention-block_btn">Перейти к источникам</a>
+                            <a href="#dopprods" onclick="mainpage.scrollTo($('#dopprods'), 40, true, true)" class="attention-block_btn">Перейти к источникам</a>
                         </div>
                     <? } elseif ($series->show_scroll_btn == 2) { ?>
                         <div class="attention-block">
@@ -173,8 +176,8 @@ function mb_ucfirst($text) {
                         <div class="row ">
                             <div class="col-xs-12">
                                 <div class="product-table_allmods-block">
-                                    <div class="product-table_allmods-block__label arrow-show" onclick="seriesTableShowBlock($('#testApp_<?= $series->id ?>'))">Все модификации<span class="allmods-block__open-arrow"></span></div>
-                                    <div class="product-table_allmods-block__label arrow-hidden" style="display: none" onclick="seriesTableHideBlock($('#testApp_<?= $series->id ?>'))">Все модификации<span class="allmods-block__close-arrow"></span></div>
+                                    <div class="product-table_allmods-block__label arrow-show" onclick="seriesTableShowBlock($('#testApp_<?= $series->id ?>'))">Смотреть все модификации<span class="allmods-block__open-arrow"></span></div>
+                                    <div class="product-table_allmods-block__label arrow-hidden" style="display: none" onclick="seriesTableHideBlock($('#testApp_<?= $series->id ?>'))">Смотреть все модификации<span class="allmods-block__close-arrow"></span></div>
                                 </div>
                             </div>
                         </div>
@@ -182,6 +185,7 @@ function mb_ucfirst($text) {
                     </div>
 
                     <div id="dopprods" name="dopprods">
+
                     <? foreach ($firstTabGroups as $oneGroup) { ?>
 
                         <div style="position: relative">
@@ -263,7 +267,26 @@ function mb_ucfirst($text) {
                             </div>
                         </div>
                     </div>
-
+					
+                    <? if($series->text_charact = trim($series->text_charact)){ ?>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <h2 class="series-description-block__title">Характеристики</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-second-xs">
+                                    <div class="col-xs-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_charact)) < 5 && $num !== false) ?
+                                            substr($series->text_charact, $num+13) : $series->text_charact ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <? } ?>
 
                     <? if($series->text_exploit = trim($series->text_exploit)){ ?>
                         <div class="row">
@@ -279,6 +302,26 @@ function mb_ucfirst($text) {
                                     <div class="col-xs-12 series-description">
                                         <?= (($num = strpos('<p>&nbsp;</p>', $series->text_exploit)) < 5 && $num !== false) ?
                                             substr($series->text_exploit, $num+13) : $series->text_exploit ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <? } ?>
+					
+                <? if($series->text_sphere = trim($series->text_sphere)){ ?>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <h2 class="series-description-block__title">Область применения</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-second-xs">
+                                    <div class="col-xs-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_sphere)) < 5 && $num !== false) ?
+                                            substr($series->text_sphere, $num+13) : $series->text_sphere ?>
                                     </div>
                                 </div>
                             </div>
@@ -516,6 +559,229 @@ function mb_ucfirst($text) {
 
     function Goods() {
         var _options = {
+                isAnimating: false,
+                direction: "next",
+                fancyIsOpen: false,
+                animatingSpeed: browser.mobile ? 300 : 500,
+                $slider: jQuery('.b-goods-gallery'),
+                sliderName: 'b-goods-gallery',
+                fancySwipingClass: "fancybox-swiping",
+                loop: true,
+                slidesToShow: <?= count($imgs) > 2 ? '2' : '1' ?>,
+                imagesContainer: "#imagesLoadedGallery",
+                noSliderClass: "b-slider_no-slider"
+            },
+            $document = jQuery(document),
+            $html = jQuery("html"),
+            _ = _options,
+            _init = function () {
+                _initSlider();
+
+            },
+            _initSlider = function () {
+                _.$slider.slick({
+                    accessibility: false,
+                    dots: false,
+                    infinite: true,
+                    speed: _.animatingSpeed,
+                    slidesToShow: _.slidesToShow,
+                    touchThreshold: browser.mobile ? 5 : 50,
+                    centerMode: false,
+                    centerPadding: "0px",
+                    variableWidth: true,
+                    appendArrows: jQuery(".b-slider-arrows_project"),
+                    arrows: browser.mobile ? false : true,
+                    prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows_project__arrow b-slider-arrows__arrow_prev\" ></a>",
+                    nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows_project__arrow b-slider-arrows__arrow_next\" ></a>"
+                });
+
+                var imgLoad = imagesLoaded(_.imagesContainer);
+                imgLoad.on("always", function (instance) {
+                    var loadedImages = jQuery.grep(imgLoad.images, function (a) {
+                        return a.isLoaded == true;
+                    });
+                    _slideAdd(loadedImages);
+
+                });
+
+            },
+
+            _slideAdd = function (images) {
+                if (!images.length) return;
+                var slideElements = "";
+                for (var i = 0; i < images.length; ++i) {
+                    slideElements += jQuery(images[i].img).parentsUntil(_.imagesContainer).last()[0].outerHTML;
+                }
+
+
+                _.$slider.slick("slickAdd", slideElements);
+                if (images.length <= _.slidesToShow) {
+                    _.$slider.slick("unslick");
+                    _.$slider.addClass(_.noSliderClass);
+                }
+
+                _initFancy();
+                _bindEvents();
+                _initGallery();
+            },
+            _initFancy = function () {
+                _.$imagesLinks = _.$slider.find(".b-goods-gallery-item > a");
+//                        _.$imagesLinks = _.$slider.find(".b-slider__item:not(.slick-cloned) > a");
+                _.$fancy = _.$imagesLinks.fancybox({
+                    opacity: true,
+                    padding: 20,
+                    overlayShow: true,
+                    loop: true,
+                    parent: ".swipe-layout",
+                    transitionIn: 'elastic',
+                    transitionOut: 'elastic',
+                    helpers: {
+                        overlay: {
+                            closeClick: true
+                        }
+                    },
+                    prevSpeed: _.animatingSpeed,
+                    nextSpeed: _.animatingSpeed,
+                    beforeLoad: function () {
+                        if (_.isAnimating) return false;
+                        _.isAnimating = true;
+                        if (!_.firstCalling && !_.checked) {
+                            _.firstCalling = true;
+                            _.checked = true;
+                        }
+                        _.$fancy.triggerHandler("fancyBox.beforeLoad");
+                    },
+                    keys: {
+                        next: {
+                            39: 'left'
+                        },
+                        prev: {
+                            37: 'right'
+                        }
+                    },
+                    afterClose: function () {
+                        _.fancyIsOpen = false;
+                        $html.removeClass(_.fancySwipingClass);
+                        jQuery(".fancybox-overlay").off("mousedown.preventDrag");
+                        $document.off("ng.swipe.right.project").off("ng.swipe.left.project");
+                        _.firstCalling = false;
+                        _.checked = false;
+                    },
+                    beforeShow: function () {
+                        $document.on("ng.swipe.right.project", function () {
+                            if (_.isAnimating) return;
+                            _.direction = "prev";
+                            $.fancybox.prev();
+                        }).on("ng.swipe.left.project", function () {
+                            if (_.isAnimating) return;
+                            _.direction = "next";
+                            $.fancybox.next();
+                        });
+                    },
+                    afterShow: function () {
+                        _.fancyIsOpen = true;
+                        _.isAnimating = false;
+                        $html.addClass(_.fancySwipingClass);
+                        //�������� �������������� ��� ������
+                        jQuery(".fancybox-overlay").on("mousedown.preventDrag", function (e) {
+                            e.preventDefault();
+                        });
+                        document.addEventListener("keyup", function (e) {
+                            if (_.isAnimating && _.fancyIsOpen) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                return;
+                            }
+                            if (e.keyCode == 39) {
+                                _.direction = "next";
+                            } else if (e.keyCode == 37) {
+                                _.direction = "prev";
+                            }
+                        }, true);
+                    },
+                });
+            },
+            _bindEvents = function () {
+                _.$slider.on("mousedown", function () {
+                    return false;
+                });
+                _.$slider.on("click", function (e) {
+                    var $this = jQuery(e.target),
+                        id = $this.closest("[data-slick-index]").data("slick-index");
+                    _.$slider.slick("slickGoTo", id, false);
+                    $this.siblings("a").click();
+                }).on("afterChange", function () {
+                    _.isAnimating = false;
+                });
+
+
+                _.$fancy.on("fancyBox.beforeLoad", function () {
+                    if (_.firstCalling) {
+                        _.firstCalling = false;
+                        return;
+                    }
+                    _.$slider.slick(_.direction == "next" ? "slickNext" : "slickPrev");
+                });
+
+
+                document.addEventListener("click", function (e) {
+                    var $nextButton, $prevButton;
+                    if (_.fancyIsOpen) {
+                        $nextButton = jQuery(e.target).closest(".fancybox-next");
+                        $prevButton = jQuery(e.target).closest(".fancybox-prev");
+                    } else {
+                        return;
+                    }
+                    if (!$nextButton.length && !$prevButton.length) {
+                        return;
+                    }
+                    if (_.isAnimating) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return;
+                    }
+
+                    _.direction = $nextButton.length ? "next" : "prev";
+                }, true);
+
+
+            },
+            _watchOnImageUploading = function () {
+                _.$slider.imagesLoaded()
+                    .progress(function () {
+                        _.$scroller.data("dragscroll").reInit();
+                    });
+            },
+            _initGallery = function () {
+                if (browser.mobile) return;
+
+                _.$scroller = _.$slider.dragscroll({
+                    autoFadeBars: false,
+                    scrollBars: true,
+                    smoothness: 15,
+                    mouseWheelVelocity: 0,
+                    mouseWheelEnabled: false,
+                    onRebuild: function (dragscroll) {
+//                        var noScrollClass = _.sliderName + "_no-scroll";
+//                        if (dragscroll.barIndex.X[0] == 1) {
+//                            this.addClass(noScrollClass);
+//                        } else {
+//                            this.removeClass(noScrollClass);
+//                        }
+                    }
+                });
+
+                console.log(_.$scroller);
+                _watchOnImageUploading();
+            };
+        return {init: _init};
+    }
+
+
+
+        /*
+
+        var _options = {
                 gallery: "b-goods-gallery",
                 imagesLinks: jQuery(".b-goods-gallery-item__link"),
                 $imagesLayout: jQuery(".b-goods-gallery-item__layout"),
@@ -546,7 +812,7 @@ function mb_ucfirst($text) {
                 });
                 _.$imagesLinks.on("mouseup", function () {
                     return false;
-                });
+                });*/
 //                _.$gallery.on("click", function (e) {
 //                    var $this = jQuery(e.target);
 //                    $this.siblings("a").click();
@@ -561,8 +827,8 @@ function mb_ucfirst($text) {
 //                        return;
 //                    }
 //                });
-            },
-            _initFancy = function () {
+            //},
+            /*_initFancy = function () {
                 _.$imagesLinks.fancybox({
                     opacity: true,
                     loop: false,
@@ -637,11 +903,10 @@ function mb_ucfirst($text) {
                         }
                     }
                 });
-
                 _watchOnImageUploading();
             };
         return { init: _init };
-    }
+    }*/
 
     var goods = Goods();
     goods.init();
@@ -667,7 +932,7 @@ function mb_ucfirst($text) {
     var pageTitle = "<?= !empty($series->visible_title) ? 'Купить ' . $series->visible_title . ' — цена, описание': 'Купить ' . $series->title . ' — цена, описание' ?>";
 
     popup.pageTitle = pageTitle;
-    document.title = pageTitle;
+    //document.title = pageTitle;
     <? if ($admin && $series->sorted_field) : ?>
     $('[data-param = <?= $series->sorted_field ?>]').addClass('active-<?= $series->sorted_order ?>');
 

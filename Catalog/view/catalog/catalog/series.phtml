@@ -39,7 +39,7 @@ function mb_ucfirst($text) {
 
         <? } ?>
     </div>
-    <div style="display: none" id="imagesLoadedGallery">
+    <div class="b-goods-gallery">
         <? $i = 0; ?>
         <? foreach($imgs as $img) { ?>
             <? if (!$series->preview && $series->img_gallery == $img->url) continue; ?>
@@ -49,15 +49,13 @@ function mb_ucfirst($text) {
                 <? $src = $img->url ? $this->basePath() . '/images/series/' . $img->url : $this->basePath() . '/images/empty-series.png' ?>
                 <? $minSrc = $img->url ? $this->basePath() . '/images/series/' . $minUrl : $this->basePath() . '/images/empty-series.png' ?>
 
-                <a class="b-goods-gallery-item__link" href="<?= $src ?>" rel="gallery">
+                <a class="b-goods-gallery-item__link" href0="<?= $src ?>" rel="gallery">
                     <img class="b-goods-gallery-item__image" src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/series/min_' . $img->url) ? $minSrc : $src ?>" alt="<?= $series->visible_title; ?> url" />
                 </a>
             </div>
         <? } ?>
     </div>
-    <div class="b-goods-gallery">
 
-    </div>
 
     <div class="b-section__content">
         <div class="b-goods-flexiable-table">
@@ -185,7 +183,6 @@ function mb_ucfirst($text) {
                     </div>
 
                     <div id="dopprods" name="dopprods">
-
                     <? foreach ($firstTabGroups as $oneGroup) { ?>
 
                         <div style="position: relative">
@@ -267,7 +264,7 @@ function mb_ucfirst($text) {
                             </div>
                         </div>
                     </div>
-					
+
                     <? if($series->text_charact = trim($series->text_charact)){ ?>
                         <div class="row">
                             <div class="col-xs-12">
@@ -307,7 +304,6 @@ function mb_ucfirst($text) {
                             </div>
                         </div>
                     <? } ?>
-					
                 <? if($series->text_sphere = trim($series->text_sphere)){ ?>
                         <div class="row">
                             <div class="col-xs-12">
@@ -559,229 +555,6 @@ function mb_ucfirst($text) {
 
     function Goods() {
         var _options = {
-                isAnimating: false,
-                direction: "next",
-                fancyIsOpen: false,
-                animatingSpeed: browser.mobile ? 300 : 500,
-                $slider: jQuery('.b-goods-gallery'),
-                sliderName: 'b-goods-gallery',
-                fancySwipingClass: "fancybox-swiping",
-                loop: true,
-                slidesToShow: <?= count($imgs) > 2 ? '2' : '1' ?>,
-                imagesContainer: "#imagesLoadedGallery",
-                noSliderClass: "b-slider_no-slider"
-            },
-            $document = jQuery(document),
-            $html = jQuery("html"),
-            _ = _options,
-            _init = function () {
-                _initSlider();
-
-            },
-            _initSlider = function () {
-                _.$slider.slick({
-                    accessibility: false,
-                    dots: false,
-                    infinite: true,
-                    speed: _.animatingSpeed,
-                    slidesToShow: _.slidesToShow,
-                    touchThreshold: browser.mobile ? 5 : 50,
-                    centerMode: false,
-                    centerPadding: "0px",
-                    variableWidth: true,
-                    appendArrows: jQuery(".b-slider-arrows_project"),
-                    arrows: browser.mobile ? false : true,
-                    prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows_project__arrow b-slider-arrows__arrow_prev\" ></a>",
-                    nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow b-slider-arrows_project__arrow b-slider-arrows__arrow_next\" ></a>"
-                });
-
-                var imgLoad = imagesLoaded(_.imagesContainer);
-                imgLoad.on("always", function (instance) {
-                    var loadedImages = jQuery.grep(imgLoad.images, function (a) {
-                        return a.isLoaded == true;
-                    });
-                    _slideAdd(loadedImages);
-
-                });
-
-            },
-
-            _slideAdd = function (images) {
-                if (!images.length) return;
-                var slideElements = "";
-                for (var i = 0; i < images.length; ++i) {
-                    slideElements += jQuery(images[i].img).parentsUntil(_.imagesContainer).last()[0].outerHTML;
-                }
-
-
-                _.$slider.slick("slickAdd", slideElements);
-                if (images.length <= _.slidesToShow) {
-                    _.$slider.slick("unslick");
-                    _.$slider.addClass(_.noSliderClass);
-                }
-
-                _initFancy();
-                _bindEvents();
-                _initGallery();
-            },
-            _initFancy = function () {
-                _.$imagesLinks = _.$slider.find(".b-goods-gallery-item > a");
-//                        _.$imagesLinks = _.$slider.find(".b-slider__item:not(.slick-cloned) > a");
-                _.$fancy = _.$imagesLinks.fancybox({
-                    opacity: true,
-                    padding: 20,
-                    overlayShow: true,
-                    loop: true,
-                    parent: ".swipe-layout",
-                    transitionIn: 'elastic',
-                    transitionOut: 'elastic',
-                    helpers: {
-                        overlay: {
-                            closeClick: true
-                        }
-                    },
-                    prevSpeed: _.animatingSpeed,
-                    nextSpeed: _.animatingSpeed,
-                    beforeLoad: function () {
-                        if (_.isAnimating) return false;
-                        _.isAnimating = true;
-                        if (!_.firstCalling && !_.checked) {
-                            _.firstCalling = true;
-                            _.checked = true;
-                        }
-                        _.$fancy.triggerHandler("fancyBox.beforeLoad");
-                    },
-                    keys: {
-                        next: {
-                            39: 'left'
-                        },
-                        prev: {
-                            37: 'right'
-                        }
-                    },
-                    afterClose: function () {
-                        _.fancyIsOpen = false;
-                        $html.removeClass(_.fancySwipingClass);
-                        jQuery(".fancybox-overlay").off("mousedown.preventDrag");
-                        $document.off("ng.swipe.right.project").off("ng.swipe.left.project");
-                        _.firstCalling = false;
-                        _.checked = false;
-                    },
-                    beforeShow: function () {
-                        $document.on("ng.swipe.right.project", function () {
-                            if (_.isAnimating) return;
-                            _.direction = "prev";
-                            $.fancybox.prev();
-                        }).on("ng.swipe.left.project", function () {
-                            if (_.isAnimating) return;
-                            _.direction = "next";
-                            $.fancybox.next();
-                        });
-                    },
-                    afterShow: function () {
-                        _.fancyIsOpen = true;
-                        _.isAnimating = false;
-                        $html.addClass(_.fancySwipingClass);
-                        //�������� �������������� ��� ������
-                        jQuery(".fancybox-overlay").on("mousedown.preventDrag", function (e) {
-                            e.preventDefault();
-                        });
-                        document.addEventListener("keyup", function (e) {
-                            if (_.isAnimating && _.fancyIsOpen) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                return;
-                            }
-                            if (e.keyCode == 39) {
-                                _.direction = "next";
-                            } else if (e.keyCode == 37) {
-                                _.direction = "prev";
-                            }
-                        }, true);
-                    },
-                });
-            },
-            _bindEvents = function () {
-                _.$slider.on("mousedown", function () {
-                    return false;
-                });
-                _.$slider.on("click", function (e) {
-                    var $this = jQuery(e.target),
-                        id = $this.closest("[data-slick-index]").data("slick-index");
-                    _.$slider.slick("slickGoTo", id, false);
-                    $this.siblings("a").click();
-                }).on("afterChange", function () {
-                    _.isAnimating = false;
-                });
-
-
-                _.$fancy.on("fancyBox.beforeLoad", function () {
-                    if (_.firstCalling) {
-                        _.firstCalling = false;
-                        return;
-                    }
-                    _.$slider.slick(_.direction == "next" ? "slickNext" : "slickPrev");
-                });
-
-
-                document.addEventListener("click", function (e) {
-                    var $nextButton, $prevButton;
-                    if (_.fancyIsOpen) {
-                        $nextButton = jQuery(e.target).closest(".fancybox-next");
-                        $prevButton = jQuery(e.target).closest(".fancybox-prev");
-                    } else {
-                        return;
-                    }
-                    if (!$nextButton.length && !$prevButton.length) {
-                        return;
-                    }
-                    if (_.isAnimating) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        return;
-                    }
-
-                    _.direction = $nextButton.length ? "next" : "prev";
-                }, true);
-
-
-            },
-            _watchOnImageUploading = function () {
-                _.$slider.imagesLoaded()
-                    .progress(function () {
-                        _.$scroller.data("dragscroll").reInit();
-                    });
-            },
-            _initGallery = function () {
-                if (browser.mobile) return;
-
-                _.$scroller = _.$slider.dragscroll({
-                    autoFadeBars: false,
-                    scrollBars: true,
-                    smoothness: 15,
-                    mouseWheelVelocity: 0,
-                    mouseWheelEnabled: false,
-                    onRebuild: function (dragscroll) {
-//                        var noScrollClass = _.sliderName + "_no-scroll";
-//                        if (dragscroll.barIndex.X[0] == 1) {
-//                            this.addClass(noScrollClass);
-//                        } else {
-//                            this.removeClass(noScrollClass);
-//                        }
-                    }
-                });
-
-                console.log(_.$scroller);
-                _watchOnImageUploading();
-            };
-        return {init: _init};
-    }
-
-
-
-        /*
-
-        var _options = {
                 gallery: "b-goods-gallery",
                 imagesLinks: jQuery(".b-goods-gallery-item__link"),
                 $imagesLayout: jQuery(".b-goods-gallery-item__layout"),
@@ -797,7 +570,7 @@ function mb_ucfirst($text) {
             _init = function () {
                 _.$imagesLinks = jQuery(_.imagesLinks);
                 _initGallery();
-                _initFancy();
+                //_initFancy();
                 _bindEvents();
             },
             _bindEvents = function () {
@@ -805,14 +578,15 @@ function mb_ucfirst($text) {
                     var $layout = jQuery(e.target);
                     $layout.siblings(_.imagesLinks).trigger("click");
                 });
-                $document.on("ng.swipe.right", function () {
-                    $.fancybox.prev();
-                }).on("ng.swipe.left", function () {
-                    $.fancybox.next();
-                });
-                _.$imagesLinks.on("mouseup", function () {
-                    return false;
-                });*/
+//                $document.on("ng.swipe.right", function () {
+//                    $.fancybox.prev();
+//                }).on("ng.swipe.left", function () {
+//                    $.fancybox.next();
+//                });
+//                _.$imagesLinks.on("mouseup", function () {
+//                    return false;
+//                });
+//
 //                _.$gallery.on("click", function (e) {
 //                    var $this = jQuery(e.target);
 //                    $this.siblings("a").click();
@@ -827,7 +601,7 @@ function mb_ucfirst($text) {
 //                        return;
 //                    }
 //                });
-            //},
+            },
             /*_initFancy = function () {
                 _.$imagesLinks.fancybox({
                     opacity: true,
@@ -878,7 +652,7 @@ function mb_ucfirst($text) {
                     }
                 });
 
-            },
+            },*/
             _watchOnImageUploading = function () {
                 _.$gallery.imagesLoaded()
                     .progress(function () {
@@ -903,10 +677,11 @@ function mb_ucfirst($text) {
                         }
                     }
                 });
+
                 _watchOnImageUploading();
             };
         return { init: _init };
-    }*/
+    }
 
     var goods = Goods();
     goods.init();
