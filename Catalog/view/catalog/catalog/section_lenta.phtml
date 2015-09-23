@@ -109,7 +109,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
 			<div class="b-tabs-content b-tabs-content_goods tab-content">
 				<div class="b-tabs-content__item fade in active tab-pane" role="tabpanel" id="goods_1">
 			
-                    <? //$seriesOne; foreach($seAgg->getSeries($subsec->id) as $series){ if (!$seriesOne) $seriesOne = $series; ?>
+                    <? $seriesOne; foreach($seAgg->getSeries($subsec->id) as $series){ if (!$seriesOne) $seriesOne = $series; ?>
 
                             <div class="series-block" data-id="<?= $series->id ?>">
                                 <div class="row row-second-xs">
@@ -132,7 +132,7 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS;
                                     <? } ?>
                             </div>
 
-                        <? //} $series = $seriesOne; ?>
+                        <? } $series = $seriesOne; ?>
 				</div>
 				<div class="b-tabs-content__item fade tab-pane series-description-block" role="tabpanel" id="goods_2" style="padding-left: 30px">
 				<div class="row">
