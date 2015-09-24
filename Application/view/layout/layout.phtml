@@ -399,7 +399,7 @@ $url = $uriArr[0]
 
         +function () {
             var _recalculateLayoutDim = function () {
-                $layout.css({"padding-bottom": ($footer.outerHeight() - 24)});
+                $layout.css({"padding-bottom": ($footer.outerHeight() - <?= ($url == 'catalog') ? 0 : 24 ?>)});
 
             };
             var $footer = jQuery(".b-layout-footer"),

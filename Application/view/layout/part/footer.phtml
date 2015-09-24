@@ -1,3 +1,13 @@
+<?
+if (!$footerBlocks) {
+	$footerBlocks = $this->getHelperPluginManager()->getServiceLocator()->get('FooterBlocksTable')->fetchAll("order ASC");
+	
+	$footerArr = array();
+	foreach ($footerBlocks as $fb) {
+		$footerArr[$fb->column][] = $fb;
+	}
+}
+?>
 <footer class="b-layout-footer b-section">
     <div class="b-section__content">
         <div class="row b-footer-mobile-table">
@@ -40,11 +50,6 @@
                                 <? foreach ($footerArr[1] as $fa1) { ?>
                                 <li><a class="b-highlighted-link" href="<?= $fa1->link ?>"><?= $fa1->title ?></a></li>
                                 <? } ?>
-<!--                                <li><a class="b-highlighted-link" href="/solutions/">Решения</a></li>-->
-<!--                                <li><a class="b-highlighted-link" href="/partners/">Партнёрам</a></li>-->
-<!--                                <li><a class="b-highlighted-link" href="/info/service">Cервис aledo-pro</a></li>-->
-<!--                                <li><a class="b-highlighted-link" href="/guarantee">Сервис и гарантия</a></li>-->
-<!--                                <li><a class="b-highlighted-link" href="/info/delivery">Оплата и доставка</a></li>-->
                             </ul>
                         </div>
                         <div class=" col-md-3 panel">
@@ -57,12 +62,6 @@
                                 <? foreach ($footerArr[2] as $fa2) { ?>
                                     <li><a class="b-highlighted-link" href="<?= $fa2->link ?>"><?= $fa2->title ?></a></li>
                                 <? } ?>
-<!--                                <li><a class="b-highlighted-link" href="/info"> О компании</a></li>-->
-<!--                                <li><a class="b-highlighted-link" href="/info#reviews">Отзывы</a></li>-->
-<!--                                <li><a class="b-highlighted-link" href="/projects">Проекты</a></li>-->
-<!--                                <li><a class="b-highlighted-link" href="/brands">Производители</a></li>-->
-<!--                                <li><a class="b-highlighted-link" href="/pluses">Преимущества</a></li>-->
-<!--                                <li><a class="b-highlighted-link" href="/job">Работа у нас</a></li>-->
                             </ul>
                         </div>
                         <div class=" col-md-3 panel ">
@@ -74,9 +73,6 @@
                                 <? foreach ($footerArr[3] as $fa3) { ?>
                                     <li><a class="b-highlighted-link" href="<?= $fa3->link ?>"><?= $fa3->title ?></a></li>
                                 <? } ?>
-<!--                                <li><a class="b-highlighted-link" href="/files#instructions">Инструкции</a></li>-->
-<!--                                <li><a class="b-highlighted-link" href="/files#certificates">Сертификаты</a></li>-->
-<!--                                <li><a class="b-highlighted-link" href="/files#catalogs">Каталоги</a></li>-->
                             </ul>
                         </div>
                         <div class="col-md-2 ">
