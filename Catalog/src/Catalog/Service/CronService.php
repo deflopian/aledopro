@@ -136,6 +136,8 @@ class CronService {
             $product->exchangeArray($vars);
             $product->lumfx_abs = $lumfx_abs;
             $product->vangl_abs = $vangl_abs;
+
+			$product = self::modifySeriesName($product);
         } else {
             echo 'error';
             return false;
@@ -145,6 +147,51 @@ class CronService {
         return $product;
     }
 
+	/**
+    * преобразует одну серию продукта в другие в зависимости от условий
+    * @param Product $зкщвгсе
+    * @return Product
+    */
+	private static function modifySeriesName($product)
+	{
+		if ($product->seriesName == 'Одноцветные светодиодные ленты') {
+			if ($product->opt3 == 'Для общего освещения') {
+				if ($product->electro_power == '12 VDC') {
+					$product->seriesName = 'Одноцветные ленты, Светодиодные ленты для общего освещения, Напряжение питания 12 В';
+				}
+				else if ($product->electro_power == '24 VDC') {
+					$product->seriesName = 'Одноцветные ленты, Светодиодные ленты для общего освещения, Напряжение питания 24 В';
+				}
+			}
+			else if ($product->opt3 == 'Для декоративной подсветки') {
+				if ($product->electro_power == '12 VDC') {
+					$product->seriesName = 'Одноцветные ленты, Светодиодные ленты для декоративной подсветки, Напряжение питания 12 В';
+				}
+				else if ($product->electro_power == '24 VDC') {
+					$product->seriesName = 'Одноцветные ленты, Светодиодные ленты для декоративной подсветки, Напряжение питания 24 В';
+				}
+			}
+		}
+		else if ($product->seriesName == 'Мультицветные светодиодные ленты') {
+			if ($product->electro_power == '12 VDC') {
+				$product->seriesName = 'Мультицветные ленты, Напряжение питания 12 В';
+			}
+			else if ($product->electro_power == '24 VDC') {
+				$product->seriesName = 'Мультицветные ленты, Напряжение питания 24 В';
+			}
+		}
+		else if ($product->seriesName == 'Влагозащищенные светодиодные ленты') {
+			if ($product->electro_power == '12 VDC') {
+				$product->seriesName = 'Мультицветные ленты, Напряжение питания 12 В';
+			}
+			else if ($product->electro_power == '24 VDC') {
+				$product->seriesName = 'Мультицветные ленты, Напряжение питания 24 В';
+			}
+		}
+		
+		return $product;
+	}
+	
     private static function setProductSeriesMinMax($productSeries, $serName, $diapasonParamName, $min, $max)
     {
         /*if ($min == null) {
