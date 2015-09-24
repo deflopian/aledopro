@@ -39,7 +39,7 @@
                     <? $src = $this->basePath() . '/images/projects/' . $img->url ?>
                     <? $minSrc = $this->basePath() . '/images/projects/' . $minUrl ?>
 
-                    <a class="b-goods-gallery-item__link" href0="<?= $src ?>" rel="gallery">
+                    <a class="b-goods-gallery-item__link" rel="gallery">
                         <img class="b-slider__image" src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $img->url) ? $minSrc : $src ?>" alt="<?= $series->visible_title; ?> url" />
                     </a>
 <!--                    <a href="/images/projects/--><?//= $img->url ?><!--" rel="gallery">-->
@@ -547,6 +547,19 @@
 </script>
 <? } ?>
 
+<!-- начало информации для вставки слайдера других проектов -->
+<div style="display: none;">
+<? foreach ($otherProjects as $proj) { ?>
+	<? $minUrl = 'min_' . $proj->img ?>
+    <? $src = $this->basePath() . '/images/projects/' . $proj->img ?>
+    <? $minSrc = $this->basePath() . '/images/projects/' . $minUrl ?>
+
+    <a href="../<?= $proj->id ?>"><?= $proj->title ?><br>
+        <img src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $proj->img) ? $minSrc : $src ?>" alt="<?= $proj->title; ?> url" />
+    </a><br><br>
+<? } ?>
+</div>
+<!-- конец информации для вставки слайдера других проектов -->
 
 
 <script type="application/javascript">
