@@ -149,7 +149,7 @@ class CronService {
 
 	/**
     * преобразует одну серию продукта в другие в зависимости от условий
-    * @param Product $зкщвгсе
+    * @param Product $product
     * @return Product
     */
 	private static function modifySeriesName($product)
