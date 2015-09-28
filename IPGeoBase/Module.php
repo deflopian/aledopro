@@ -2,6 +2,8 @@
 namespace IPGeoBase;
 
 use IPGeoBase\Model\GeoBannerTable;
+use IPGeoBase\Model\GeoCountryTable;
+use IPGeoBase\Model\GeoRegionTable;
 use IPGeoBase\Model\ProdToProdTable;
 use IPGeoBase\Model\ProdToProjTable;
 use IPGeoBase\Model\DeveloperImgTable;
@@ -38,6 +40,16 @@ class Module
                 'GeoBannersTable' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table     = new GeoBannerTable($dbAdapter);
+                    return $table;
+                },
+				'GeoCountriesTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new GeoCountryTable($dbAdapter);
+                    return $table;
+                },
+				'GeoRegionsTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new GeoRegionTable($dbAdapter);
                     return $table;
                 },
             ),

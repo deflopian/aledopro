@@ -1,7 +1,7 @@
 <h1>
-    <a href="<?= $this->url('zfcadmin/developers') ?>">Производители</a>
+    <a href="<?= $this->url('zfcadmin/geobanners') ?>">Гео-баннеры</a>
     >
-    <? /** @var $entity \IPGeoBase\Model\Developer */ ?>
+    <? /** @var $entity \IPGeoBase\Model\GeoBanner */ ?>
     <span id="title"><?= $entity->title; ?></span>
 </h1>
 
@@ -15,32 +15,42 @@
                 <a href="#" data-type="text" data-name="title" class="editable-param"><?= $entity->title; ?></a>
             </td>
         </tr>
-        <tr>
-            <td>Псевдоним в URL</td>
+		<tr>
+            <td>Страна</td>
             <td>
-                <a href="#" data-type="text" data-name="alias" class="editable-param"><?= $entity->alias; ?></a>
+                <a href="#" data-type="select" data-name="country_code"
+					data-source='<?= \Zend\Json\Json::encode($countries); ?>'
+					data-value='<?= $entity->country_code; ?>' class="editable-param">
+						<?= $regions[$entity->country_code]; ?>
+				</a>
             </td>
         </tr>
         <tr>
-            <td>Выберите категорию</td>
+            <td>Регион</td>
             <td>
-                <a href="#" data-type="select" data-name="rubric_id"
-                   data-source='<?= \Zend\Json\Json::encode($rubrics); ?>'
-                   data-value="<?= $entity->rubric_id; ?>" class="editable-param">
-                    <?= $rubrics[$entity->rubric_id] ?>
+                <a href="#" data-type="select" data-name="region_code"
+					data-source='<?= \Zend\Json\Json::encode($regions); ?>'
+					data-value='<?= $entity->region_code; ?>' class="editable-param">
+						<?= $regions[$entity->region_code]; ?>
+				</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Выберите тип раздела для баннера</td>
+            <td>
+                <? $sectionTypes = array('1' => "Раздел", '2' => "Подраздел", '3' => "Серия"); ?>
+                <a href="#" data-type="select" data-name="section_type"
+                   data-source='<?= \Zend\Json\Json::encode($sectionTypes); ?>'
+                   data-value="<?= $entity->section_type; ?>" class="editable-param">
+                    <?= $sectionTypes[$entity->section_type] ?>
                 </a>
             </td>
         </tr>
+
         <tr>
-            <td>URL</td>
+            <td>ID раздела/подраздела/серии</td>
             <td>
-                <a href="#" data-type="text" data-name="url" class="editable-param"><?= $entity->url; ?></a>
-            </td>
-        </tr>
-        <tr>
-            <td>Краткое описание</td>
-            <td>
-                <div class="editor-get-btn" data-name="description"><?= $entity->description; ?></div>
+                <a href="#" data-type="text" data-name="section_id" class="editable-param"><?= $entity->section_id; ?></a>
             </td>
         </tr>
         <tr>
@@ -55,16 +65,16 @@
 
 <div class="section" id="imageMapper">
     <div ng-controller="ImageCtrl">
-        <h3>Лого</h3>
+        <h3>Изображение на баннере</h3>
 
         <div
             ng-single-image-upload
-            parent-type="developer"
+            parent-type="geoBanner"
             parent-id="<?= $entity->id ?>"
-            folder="developers"
-            field="preview"
-            img="<?= $entity->previewName ? $entity->previewName : "" ?>"
-            img-id ="<?= $entity->preview ? $entity->preview : "" ?>"
+            folder="geobanners"
+            field="img"
+            img="<?= $entity->imgName ? $entity->imgName : "" ?>"
+            img-id ="<?= $entity->img ? $entity->img : "" ?>"
             ></div>
 
         <script type="application/javascript">
@@ -73,169 +83,13 @@
     </div>
 </div>
 
-<div class="section" id="imageMapper2">
-    <div ng-controller="ImageCtrl">
-        <h3>Изображение</h3>
-
-        <div
-            ng-single-image-upload
-            parent-type="developer"
-            parent-id="<?= $entity->id ?>"
-            folder="developers"
-            field="img"
-            img="<?= $entity->imgName ? $entity->imgName : "" ?>"
-            img-id ="<?= $entity->img ? $entity->img : "" ?>"
-            ></div>
-
-        <script type="application/javascript">
-            AppFactory("imageMapper2", "images2", ["imageMapper", "ur.file"]);
-        </script>
-    </div>
-</div>
-
-
-<h2>Каталоги</h2>
-<div id="entityMapper_certificate">
-    <div ng-controller="EntitiesCtrl">
-        <div nd-entities-list-data>
-            <?= $catalogsJson ?>
-        </div>
-        <div nd-entities-list-pattern>
-            {
-            "title" : {
-            "type" : "text",
-            "default" : "",
-            "label" : "Название"
-            },
-            "type" : {
-            "type" : "hidden",
-            "default" : "<?= \Documents\Model\DocumentTable::TYPE_DEVELOPERS_CATALOG . $entity->id ?>",
-            "label" : "Тип"
-            }
-            }
-        </div>
-        <div
-            ng-entities-list
-            parent-type="0"
-            parent-id="0"
-            controller="documents"
-            type="<?= \Catalog\Controller\AdminController::DOCUMENT_TABLE?>"
-            rights="00111"
-            ></div>
-
-        <script type="application/javascript">
-            AppFactory("entityMapper_certificate", "entityMapper2", ["entitiesMapper"]);
-        </script>
-    </div>
-</div>
-
-<div class="section">
-    <h3>Изображения</h3>
-
-    <div class="addPanel">
-        <button type="button" class="btn btn-default" id="add-img">Добавить изображения</button>
-
-        <div class="form-inline" id="adding-form-img" style="display: none">
-            <form id="img-form" method="post" enctype="multipart/form-data">
-                <p>
-                    <input type="file" name="images[]" multiple="multiple"/>
-                    <input type="hidden" name="id" value="<?= $entity->id ?>"/>
-                    <input type="hidden" name="min_height" value="500"/>
-                </p>
-
-                <p>
-                    <input type="submit" class="btn btn-default"/>
-                    <button type="button" class="btn btn-default" id="adding-cancel-img">Отмена</button>
-                </p>
-            </form>
-        </div>
-    </div>
-
-    <div id="images-container">
-        <? foreach($imgs as $img){ ?>
-            <div class="admin-img" data-id="<?= $img->id ?>" >
-                <div class="admin-img-del">
-                    <button class="btn btn-xs btn-default"><i class="glyphicon glyphicon-remove"></i></button>
-                </div>
-
-                <? if($img->type == \Application\Service\ApplicationService::MEDIA_TYPE_IMG){ ?>
-                    <img style="height: 100%" src="<?= $this->basePath() . '/images/developers/' . $img->url ?>" alt=""/>
-                <? } ?>
-            </div>
-        <? } ?>
-    </div>
-
-    <div class="sample admin-img" data-id="" style="display: none">
-        <div class="admin-img-del">
-            <button class="btn btn-xs btn-default"><i class="glyphicon glyphicon-remove"></i></button>
-        </div>
-        <img style="height: 100%" src="" alt=""/>
-    </div>
-</div>
-
-
-<div class="section">
-    <h3>Связи</h3>
-    <div class="row" style="margin-bottom: 20px">
-        <div class="col-md-3">
-            <label for="linkType">Тип элемента</label>
-            <select name="linkType" class="form-control" onchange="catalog.getTagsByType($(this).val())">
-                <option value="<?=\Catalog\Controller\AdminController::PRODUCT_TABLE ?>">Продукт</option>
-                <option value="<?=\Catalog\Controller\AdminController::SERIES_TABLE ?>">Серия</option>
-                <option value="<?=\Catalog\Controller\AdminController::SUBSECTION_TABLE ?>">Подраздел</option>
-                <option value="<?=\Catalog\Controller\AdminController::SECTION_TABLE ?>" selected>Раздел</option>
-                <option value="<?=\Catalog\Controller\AdminController::SOLUTION_TABLE ?>">Решение</option>
-                <option value="<?=\Catalog\Controller\AdminController::PROJECT_TABLE ?>">Проект</option>
-            </select>
-        </div>
-    </div>
-    <div class="addPanel">
-        <button type="button" class="btn btn-default" id="linktagit-add">Добавить существующий элемент</button>
-
-        <div id="linktagit-form" style="display: none">
-            <ul id="tagit-links" ></ul>
-            <input type="hidden" id="tagit-links-res" name="linksIds"/>
-
-            <button type="button" class="btn btn-default" id="linktagit-save">Добавить</button>
-            <button type="button" class="btn btn-default" id="linktagit-cancel">Отмена</button>
-        </div>
-    </div>
-    <table class="table admin-table  table-striped">
-        <tr>
-            <th>Id</th>
-            <th>Тип</th>
-            <th>Название</th>
-            <th>Управление</th>
-        </tr>
-        <tbody id="sortable">
-
-        <? /** @var $links array */
-        foreach($links as $link){ ?>
-            <tr class="entity" data-linktype="<?= $link[0] ?>">
-                <td><?= $link[1]->id ?></td>
-                <td><?= $link[3] ?></td>
-                <td><?= $link[1]->title ?></td>
-                <td>
-                    <a href="#" class="removeLinkBtn">Открепить</a>
-                </td>
-            </tr>
-        <? } ?>
-        </tbody>
-    </table>
-</div>
-
-<?
-$sl = $this->getHelperPluginManager()->getServiceLocator();
-echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
-?>
 
 <script type="text/javascript">
     $(function(){
         catalog.parentId = '<?= $entity->id ?>';
         catalog.type = 'prmember';
-        catalog.baseUrl = '<?= $this->url('zfcadmin/developers') ?>';
-        catalog.editUrl = '<?= $this->url('zfcadmin/developers', array('action'=> 'viewMember')) ?>';
-        catalog.page_info_type = '<?= \Info\Service\SeoService::PROJECTS ?>';
+        catalog.baseUrl = '<?= $this->url('zfcadmin/geobanners') ?>';
+        catalog.page_info_type = '<?= \Info\Service\SeoService::IPGEOBASE ?>';
         catalog.init();
         catalog.initEditables();
 
@@ -244,14 +98,5 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
             saveFunction: wysiwyg.editablesSave
         });
 
-        imgUploader.init({
-            type: 'multiple',
-            delFunction: imgUploader.editablesDel,
-            imgUrl: '<?= $this->basePath() . '/images/developers/' ?>'
-        });
-
-        catalog.link_type_1 = '<?= \Catalog\Controller\AdminController::PROJECT_TABLE ?>';
-        catalog.getTagsByType(<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>);
-        $( "#linked_prods_and_series" ).sortable({stop: catalog.localChangeOrder}).disableSelection();
     });
 </script>

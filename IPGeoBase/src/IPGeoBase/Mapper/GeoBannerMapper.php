@@ -69,7 +69,6 @@ class GeoBannerMapper {
             $region = GeoService::getRegionName($data['country_code'], $code);
 
         }
-        //var_dump($region);
         return $region;
     }
 }

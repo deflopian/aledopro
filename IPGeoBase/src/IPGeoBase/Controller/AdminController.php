@@ -40,12 +40,73 @@ class AdminController extends SampleAdminController
 
     public function viewAction()
     {
-        $return = parent::viewAction();
+        $geoBannerMapper = GeoBannerMapper::getInstance($this->getServiceLocator());
+        $location = $geoBannerMapper->get($_SERVER['REMOTE_ADDR']);
+        $id = $this->params()->fromRoute('id', 0);
+        $this->table = "GeoBannersTable";
+        /*$return = parent::indexAction();
+        $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::IPGEOBASE, 1 );*/
+        $banner = $this->getServiceLocator()->get($this->table)->find($id);
+        $fileTable = $this->getServiceLocator()->get('FilesTable');
+        if ($banner->img) {
+            $file = $fileTable->find($banner->img);
+            if ($file) {
+                $imgFieldAndName = "imgName";
+                $banner->$imgFieldAndName = $file->name;
+            }
+        }
+		$countries = array();
+		$couns = $this->getServiceLocator()->get('GeoCountriesTable')->fetchByCond('id', 1);
+		foreach ($couns as $item) {
+			$countries[$item->code] = $item->title;
+		}
+		$regions = array();
+		$regs = $this->getServiceLocator()->get('GeoRegionsTable')->fetchByCond('country_id', 1, 'id ASC');
+		foreach ($regs as $item) {
+			$regions[$item->code] = $item->title . ' (' . $item->code . ')';
+		}
+        $return = array(
+            'entity' => $banner,
+            'location' => $location,
+			'countries' => $countries,
+			'regions' => $regions,
+        );
 
         return $return;
     }
 
 
+
+    public function updateEditableAction()
+    {
+        $this->setData();
+
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $post = $request->getPost()->toArray();
+            $success = 0;
+
+            if ($post['pk']) {
+                $pkData = explode('-',$post['pk']);
+                $type = false;
+                $data['id'] = $pkData[0];
+                $data[$post['name']] = $post['value'];
+
+                $table = 'GeoBannersTable';
+
+                $entity = new GeoBanner();
+                $entity->exchangeArray($data);
+
+                $this->getServiceLocator()->get($table)->save($entity);
+                $success = 1;
+            }
+
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode(array('success' => $success)));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+    }
 
     public function addEntityAction()
     {
