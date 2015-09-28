@@ -21,7 +21,7 @@
                 <a href="#" data-type="select" data-name="country_code"
 					data-source='<?= \Zend\Json\Json::encode($countries); ?>'
 					data-value='<?= $entity->country_code; ?>' class="editable-param">
-						<?= $regions[$entity->country_code]; ?>
+						<?= $countries[$entity->country_code]; ?>
 				</a>
             </td>
         </tr>
