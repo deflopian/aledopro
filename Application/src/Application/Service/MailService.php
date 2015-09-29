@@ -369,18 +369,20 @@ class MailService
 
     /**
      * @param $sl
-     * @param $user \ZfcUser\Entity\User | \Cart\Model\OrderUser
+     * @param $user \User\Model\User
      * @param $password string
+	 * @param $forced boolean
      * @return array
      */
-    public static function prepareRememberPasswordMailData($sl, $user, $password)
+    public static function prepareRememberPasswordMailData($sl, $user, $password, $forced = false)
     {
         $email = $user->email;
         $login = $email;
         $view = new ViewModel(array(
             'login' => $login,
             'username' => $user->username,
-            'password' => $password
+            'password' => $password,
+			'forced' => $forced
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-user-remember-password');

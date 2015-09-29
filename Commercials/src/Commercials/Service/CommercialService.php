@@ -21,8 +21,11 @@ class CommercialService {
             $objPHPExcel->getProperties()
                 ->setLastModifiedBy("Vadim Bannov");
         }
+		
+		$sheetTitle = (strlen($commercial->title) > 31) ? substr($commercial->title, 0, 28) . '...' : $commercial->title;
+		
         $sheet = $objPHPExcel->getActiveSheet();
-        $sheet->setTitle($commercial->title);
+        $sheet->setTitle($sheetTitle);
 
         $sheet = self::setColumnWidths($sheet);
 

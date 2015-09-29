@@ -15,7 +15,7 @@ class GeoService
     public static $defaultCode = "48"; //Москва
     public static $defaultRegion = "Москва";
 
-    private static $GEOIP_REGION_NAME = array(
+    /*private static $GEOIP_REGION_NAME = array(
     "RU" => array(
         "01" => "Республика Адыгея",
         "02" => "Забайкальский край",
@@ -139,11 +139,22 @@ class GeoService
         "26" => "Запорожская область",
         "27" => "Житомирская область"
     )
-);
+);*/
 
-    public static function getRegionsList($country = "ALL") {
+    public static function getRegionsList($sl, $country = "RU") {
         $res = array();
-        if ($country == "ALL") {
+		
+		$country_entity = $sl->get('GeoCountriesTable')->fetchByCond('code', $country);
+		
+		if (is_array($country_entity) && $country_entity[0]) {			
+			$regions = $sl->get('GeoRegionsTable')->fetchByCond('country_id', $country_entity[0]->id, 'id ASC');
+			
+			foreach ($regions as $item) {
+				$res[$item->code] = $item->title;
+			}
+		}
+		
+        /*if ($country == "ALL") {
             foreach (self::$GEOIP_REGION_NAME as $key => $regions) {
                 $res = array_merge($res, $regions);
             }
@@ -151,17 +162,31 @@ class GeoService
             if (isset(self::$GEOIP_REGION_NAME[$country])) {
                 $res = self::$GEOIP_REGION_NAME[$country];
             }
-        }
+        }*/
 
         return $res;
     }
 
-    public static function getRegionName($country, $region) {
-        if (isset(self::$GEOIP_REGION_NAME[$country]) && isset(self::$GEOIP_REGION_NAME[$country][$region])) {
+    public static function getRegionName($sl, $country, $region) {
+		$res = false;
+		
+		$country_entity = $sl->get('GeoCountriesTable')->fetchByCond('code', $country);
+		
+		if (is_array($country_entity) && $country_entity[0]) {
+			$region_entity = $sl->get('GeoRegionsTable')->fetchByConds(array('code' => $region, 'country_id' => $country_entity[0]->id));
+			
+			if (is_array($region_entity) && $region_entity[0]) {
+				$res = $region_entity[0]->title;
+			}
+		}
+		
+		return $res;
+		
+        /*if (isset(self::$GEOIP_REGION_NAME[$country]) && isset(self::$GEOIP_REGION_NAME[$country][$region])) {
             return self::$GEOIP_REGION_NAME[$country][$region];
         } else {
             return false;
-        }
+        }*/
     }
 
 

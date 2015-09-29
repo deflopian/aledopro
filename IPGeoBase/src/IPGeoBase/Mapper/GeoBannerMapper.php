@@ -1,7 +1,7 @@
 <?php
 namespace IPGeoBase\Mapper;
 
-use Application\Model\SampleModel;
+/*use Application\Model\SampleModel;
 use Application\Model\SampleTable;
 use Application\Service\ApplicationService;
 use Catalog\Controller\BaseController;
@@ -14,7 +14,7 @@ use Catalog\Service\Hierarchy;
 use Catalog\Service\ProductsAggregator;
 use Catalog\Service\SeriesAggregator;
 use Catalog\Service\SubsectionsAggregator;
-use IPGeoBase\Service\GeoService;
+*/use IPGeoBase\Service\GeoService;/*
 use Zend\Di\ServiceLocatorInterface;
 use Zend\Validator\File\ExcludeMimeType;
 use Zend\View\Model\ViewModel;
@@ -24,7 +24,7 @@ use Catalog\Model\Section;
 use Catalog\Model\SeriesDoc;
 use Catalog\Model\SubSection;
 use Catalog\Model\Series;
-use Catalog\Model\Product;
+use Catalog\Model\Product;*/
 
 class GeoBannerMapper {
     private static $instance = null;
@@ -66,7 +66,7 @@ class GeoBannerMapper {
                 $code = $data['region'];
             }
 
-            $region = GeoService::getRegionName($data['country_code'], $code);
+            $region = GeoService::getRegionName($this->sl, $data['country_code'], $code);
 
         }
         return $region;

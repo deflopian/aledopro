@@ -359,6 +359,12 @@ class AdminController extends SampleAdminController
 						$bcrypt = new Bcrypt();
 						$bcrypt->setCost(4);
 						$data['password'] = $bcrypt->create($post['value']);
+						
+						$user = $this->getServiceLocator()->get('UserTable')->find($data['user_id']);
+						if ($user->email) {
+							list($email, $mailView) = MailService::prepareRememberPasswordMailData($this->getServiceLocator(), $user, $post['value'], true);
+							MailService::sendMail($email, $mailView, "Вам установлен новый пароль на Aledo");
+						}
 					}
 					if ($post['name'] == 'email' && $post['value']) {
 						$someUsers = $this->getServiceLocator()->get('UserTable')->fetchByCond('email', $post['value']);

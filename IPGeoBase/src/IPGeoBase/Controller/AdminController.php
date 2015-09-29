@@ -2,24 +2,24 @@
 namespace IPGeoBase\Controller;
 
 use Application\Controller\SampleAdminController;
-use Application\Service\ApplicationService;
+/*use Application\Service\ApplicationService;
 use Catalog\Mapper\CatalogMapper;
 use Catalog\Service\CatalogService;
 use Documents\Model\DocumentTable;
-use Info\Service\SeoService;
-use IPGeoBase\Mapper\GeoBannerMapper;
-use IPGeoBase\Model\GeoBanner;
+*/use Info\Service\SeoService;
+use IPGeoBase\Mapper\GeoBannerMapper;/*
+*/use IPGeoBase\Model\GeoBanner;/*
 use IPGeoBase\Model\ProdToProd;
 use IPGeoBase\Model\ProdToProj;
 use IPGeoBase\Model\Developer;
 use IPGeoBase\Model\DeveloperImg;
-use IPGeoBase\Model\ProjToProj;
+use IPGeoBase\Model\ProjToProj;*/
 
 class AdminController extends SampleAdminController
 {
-    protected $entityName = 'IPGeoBase\Model\Developer';
+    /*protected $entityName = 'IPGeoBase\Model\Developer';
     protected $entityImgName = 'IPGeoBase\Model\DeveloperImg';
-    protected $memberEntityName = 'IPGeoBase\Model\DeveloperMember';
+    protected $memberEntityName = 'IPGeoBase\Model\DeveloperMember';*/
 
     public function indexAction()
     {
@@ -56,12 +56,17 @@ class AdminController extends SampleAdminController
             }
         }
 		$countries = array();
-		$couns = $this->getServiceLocator()->get('GeoCountriesTable')->fetchByCond('id', 1);
+		$curr_country = 0;
+		$couns = $this->getServiceLocator()->get('GeoCountriesTable')->fetchAll('id ASC');
 		foreach ($couns as $item) {
 			$countries[$item->code] = $item->title;
+			
+			if ($banner->country_code == $item->code) {
+				$curr_country = $item->id;
+			}
 		}
 		$regions = array();
-		$regs = $this->getServiceLocator()->get('GeoRegionsTable')->fetchByCond('country_id', 1, 'id ASC');
+		$regs = $this->getServiceLocator()->get('GeoRegionsTable')->fetchByCond('country_id', $curr_country, 'id ASC');
 		foreach ($regs as $item) {
 			$regions[$item->code] = $item->title . ' (' . $item->code . ')';
 		}
@@ -91,11 +96,15 @@ class AdminController extends SampleAdminController
                 $type = false;
                 $data['id'] = $pkData[0];
                 $data[$post['name']] = $post['value'];
-
-                $table = 'GeoBannersTable';
+				
+				$table = 'GeoBannersTable';
 
                 $entity = new GeoBanner();
                 $entity->exchangeArray($data);
+				
+				if ($post['name'] == 'country_code') {
+					$entity->region_code = '';
+				}
 
                 $this->getServiceLocator()->get($table)->save($entity);
                 $success = 1;
