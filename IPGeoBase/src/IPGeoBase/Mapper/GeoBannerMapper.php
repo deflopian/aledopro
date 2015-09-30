@@ -1,51 +1,26 @@
 <?php
 namespace IPGeoBase\Mapper;
 
-/*use Application\Model\SampleModel;
-use Application\Model\SampleTable;
-use Application\Service\ApplicationService;
-use Catalog\Controller\BaseController;
-use Catalog\Controller\CatalogController;
-use Catalog\Model\DopProdGroup;
-use Catalog\Model\ProductInMarket;
-use Catalog\Service\CatalogService;
-use Catalog\Controller\AdminController;
-use Catalog\Service\Hierarchy;
-use Catalog\Service\ProductsAggregator;
-use Catalog\Service\SeriesAggregator;
-use Catalog\Service\SubsectionsAggregator;
-*/use IPGeoBase\Service\GeoService;/*
-use Zend\Di\ServiceLocatorInterface;
-use Zend\Validator\File\ExcludeMimeType;
-use Zend\View\Model\ViewModel;
-
-use Catalog\Model\PopularSeries;
-use Catalog\Model\Section;
-use Catalog\Model\SeriesDoc;
-use Catalog\Model\SubSection;
-use Catalog\Model\Series;
-use Catalog\Model\Product;*/
-
 class GeoBannerMapper {
     private static $instance = null;
-    /** @var \Zend\ServiceManager\ServiceLocatorInterface $sl  */
     private $sl = null;
 
     private function __construct($sl) {
         $this->sl = $sl;
     }
 
-    /**
-     * @return \IPGeoBase\Model\GeoBannerTable
-     */
     private function getGeoBannerTable() {
         return $this->sl->get('GeoBannersTable');
     }
+	
+	private function getGeoCountryTable() {
+        return $this->sl->get('GeoCountriesTable');
+    }
+	
+	private function getGeoRegionTable() {
+        return $this->sl->get('GeoRegionsTable');
+    }
 
-    /**
-     * @param \Zend\ServiceManager\ServiceLocatorInterface $sl
-     * @return GeoBannerMapper
-     */
     public static function getInstance($sl) {
         if (is_null(self::$instance)) {
             self::$instance = new GeoBannerMapper($sl);
@@ -53,22 +28,35 @@ class GeoBannerMapper {
         return self::$instance;
     }
 
-    public function fetchGeoBanners() {
-        return $this->getGeoBannerTable()->fetchAll();
+    public function fetchGeoBanners($country = false, $region = '') {
+        if ($country) {
+			$res = array();
+			
+			if ($region) {
+				$res = $this->getGeoBannerTable()->fetchByConds(array('country_code' => $country, 'region_code' => ''));
+			}
+			$res = array_merge($res, $this->getGeoBannerTable()->fetchByConds(array('country_code' => $country, 'region_code' => $region)));
+			
+			return $res;
+		}
+		return $this->getGeoBannerTable()->fetchAll('id ASC');
     }
-
-    public function get($ip) {
-        $data = geoip_record_by_name($ip);
-        $code = GeoService::$defaultCode;
-        $region = GeoService::$defaultRegion;
-        if (is_array($data) && !empty($data['country_code'])) {
-            if (!empty($data['region'])) {
-                $code = $data['region'];
-            }
-
-            $region = GeoService::getRegionName($this->sl, $data['country_code'], $code);
-
-        }
-        return $region;
+	
+	public function fetchGeoBanner($id) {
+        return $this->getGeoBannerTable()->find($id);
+    }
+	
+	public function fetchGeoCountries() {
+        return $this->getGeoCountryTable()->fetchAll('id ASC');
+    }
+	
+	public function fetchGeoCountry($code) {
+        $countries = $this->getGeoCountryTable()->fetchByCond('code', $code);
+		if (is_array($countries) && $countries[0]) return $countries[0];
+		return false;
+    }
+	
+	public function fetchGeoRegions($country_id) {
+        return $this->getGeoRegionTable()->fetchByCond('country_id', $country_id, 'id ASC');
     }
 }

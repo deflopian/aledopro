@@ -2,37 +2,25 @@
 namespace IPGeoBase\Controller;
 
 use Application\Controller\SampleAdminController;
-/*use Application\Service\ApplicationService;
-use Catalog\Mapper\CatalogMapper;
-use Catalog\Service\CatalogService;
-use Documents\Model\DocumentTable;
-*/use Info\Service\SeoService;
-use IPGeoBase\Mapper\GeoBannerMapper;/*
-*/use IPGeoBase\Model\GeoBanner;/*
-use IPGeoBase\Model\ProdToProd;
-use IPGeoBase\Model\ProdToProj;
-use IPGeoBase\Model\Developer;
-use IPGeoBase\Model\DeveloperImg;
-use IPGeoBase\Model\ProjToProj;*/
+use Info\Service\SeoService;
+use IPGeoBase\Mapper\GeoBannerMapper;
+use IPGeoBase\Service\GeoService;
+use IPGeoBase\Model\GeoBanner;
 
 class AdminController extends SampleAdminController
 {
-    /*protected $entityName = 'IPGeoBase\Model\Developer';
-    protected $entityImgName = 'IPGeoBase\Model\DeveloperImg';
-    protected $memberEntityName = 'IPGeoBase\Model\DeveloperMember';*/
-
     public function indexAction()
     {
-        $geoBannerMapper = GeoBannerMapper::getInstance($this->getServiceLocator());
-        $location = $geoBannerMapper->get($_SERVER['REMOTE_ADDR']);
+        //echo GeoService::getGeoBanner($this->getServiceLocator(), $_SERVER['REMOTE_ADDR'])->text;
 
-        $this->table = "GeoBannersTable";
         /*$return = parent::indexAction();
         $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::IPGEOBASE, 1 );*/
-        $banners = $this->getServiceLocator()->get($this->table)->fetchAll();
+        
+		$geoBannerMapper = GeoBannerMapper::getInstance($this->getServiceLocator());
+		$banners = $geoBannerMapper->fetchGeoBanners();
+		
         $return = array(
             'entities' => $banners,
-            'location' => $location,
         );
 
         return $return;
@@ -40,39 +28,30 @@ class AdminController extends SampleAdminController
 
     public function viewAction()
     {
-        $geoBannerMapper = GeoBannerMapper::getInstance($this->getServiceLocator());
-        $location = $geoBannerMapper->get($_SERVER['REMOTE_ADDR']);
         $id = $this->params()->fromRoute('id', 0);
-        $this->table = "GeoBannersTable";
+        
         /*$return = parent::indexAction();
         $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::IPGEOBASE, 1 );*/
-        $banner = $this->getServiceLocator()->get($this->table)->find($id);
+        
+		$geoBannerMapper = GeoBannerMapper::getInstance($this->getServiceLocator());
+		$banner = $geoBannerMapper->fetchGeoBanner($id);
+		
         $fileTable = $this->getServiceLocator()->get('FilesTable');
+		
         if ($banner->img) {
             $file = $fileTable->find($banner->img);
+			
             if ($file) {
                 $imgFieldAndName = "imgName";
                 $banner->$imgFieldAndName = $file->name;
             }
         }
-		$countries = array();
-		$curr_country = 0;
-		$couns = $this->getServiceLocator()->get('GeoCountriesTable')->fetchAll('id ASC');
-		foreach ($couns as $item) {
-			$countries[$item->code] = $item->title;
-			
-			if ($banner->country_code == $item->code) {
-				$curr_country = $item->id;
-			}
-		}
-		$regions = array();
-		$regs = $this->getServiceLocator()->get('GeoRegionsTable')->fetchByCond('country_id', $curr_country, 'id ASC');
-		foreach ($regs as $item) {
-			$regions[$item->code] = $item->title . ' (' . $item->code . ')';
-		}
+		
+		$countries = GeoService::getCountriesList($this->getServiceLocator());		
+		$regions = GeoService::getRegionsList($this->getServiceLocator(), $banner->country_code);
+		
         $return = array(
             'entity' => $banner,
-            'location' => $location,
 			'countries' => $countries,
 			'regions' => $regions,
         );
@@ -128,7 +107,10 @@ class AdminController extends SampleAdminController
             $success = 0;
             $newId = 0;
             if ($title) {
-                $data = array('title' => $title);
+                $data = array(
+					'title' => $title,
+					'region_code' => '',
+					);
 
                 $table = $this->getServiceLocator()->get('GeoBannersTable');
 
@@ -174,5 +156,4 @@ class AdminController extends SampleAdminController
         }
         return $this->redirect()->toRoute('zfcadmin/'.$this->url);
     }
-
 }

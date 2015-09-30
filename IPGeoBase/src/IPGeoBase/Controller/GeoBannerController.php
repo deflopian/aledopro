@@ -1,18 +1,7 @@
 <?php
 namespace IPGeoBase\Controller;
 
-/*use Catalog\Controller\AdminController;
-use Catalog\Mapper\LinkToLinkMapper;
-use Catalog\Service\CatalogService;
-use IPGeoBase\Model\Developer;
-use Documents\Model\DocumentTable;
-use Info\Service\SeoService;
-*/use Zend\Mvc\Controller\AbstractActionController;/*
-use IPGeoBase\Model\DeveloperTable;
-use IPGeoBase\Model\DeveloperImgTable;
-use IPGeoBase\Model\DeveloperMemberTable;
-use IPGeoBase\Model\ProdToProjTable;
-use Zend\View\Model\ViewModel;*/
+use Zend\Mvc\Controller\AbstractActionController;
 
 class GeoBannerController extends AbstractActionController
 {
@@ -26,12 +15,10 @@ class GeoBannerController extends AbstractActionController
 
         $id = $this->params()->fromRoute('id', 0);
 
-
         $htmlViewPart = new ViewModel();
         $htmlViewPart->setVariables(array(
-
-                'sl'        => $sl,
-            ));
+            'sl' => $sl,
+        ));
         return $htmlViewPart;
     }
 
@@ -39,8 +26,6 @@ class GeoBannerController extends AbstractActionController
 
     public function indexAction()
     {
-
-
         return array(
         );
     }
