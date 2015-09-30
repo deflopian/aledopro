@@ -28,18 +28,35 @@ class GeoBannerMapper {
         return self::$instance;
     }
 
-    public function fetchGeoBanners($country = false, $region = '') {
+    public function fetchGeoBanners($country = false, $region = '', $section_type = false, $section_id = false) {
         if ($country) {
 			$res = array();
 			
 			if ($region) {
-				$res = $this->getGeoBannerTable()->fetchByConds(array('country_code' => $country, 'region_code' => ''));
+				$res = $this->getGeoBannerTable()->fetchByConds(
+					array(
+						'country_code' => $country,
+						'region_code' => '',
+						'section_type' => $section_type,
+						'section_id' => $section_id,
+						'deleted' => 0
+					)
+				);
 			}
-			$res = array_merge($res, $this->getGeoBannerTable()->fetchByConds(array('country_code' => $country, 'region_code' => $region)));
+			
+			$res = array_merge($res, $this->getGeoBannerTable()->fetchByConds(
+				array(
+					'country_code' => $country,
+					'region_code' => $region,
+					'section_type' => $section_type,
+					'section_id' => $section_id,
+					'deleted' => 0
+				)
+			));
 			
 			return $res;
 		}
-		return $this->getGeoBannerTable()->fetchAll('id ASC');
+		return $this->getGeoBannerTable()->fetchAll('order ASC');
     }
 	
 	public function fetchGeoBanner($id) {

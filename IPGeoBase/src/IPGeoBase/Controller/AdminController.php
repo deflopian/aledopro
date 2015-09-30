@@ -9,10 +9,10 @@ use IPGeoBase\Model\GeoBanner;
 
 class AdminController extends SampleAdminController
 {
+	protected $table = 'GeoBannersTable';
+	
     public function indexAction()
     {
-        //echo GeoService::getGeoBanner($this->getServiceLocator(), $_SERVER['REMOTE_ADDR'])->text;
-
         /*$return = parent::indexAction();
         $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::IPGEOBASE, 1 );*/
         
@@ -76,16 +76,14 @@ class AdminController extends SampleAdminController
                 $data['id'] = $pkData[0];
                 $data[$post['name']] = $post['value'];
 				
-				$table = 'GeoBannersTable';
-
-                $entity = new GeoBanner();
+				$entity = new GeoBanner();
                 $entity->exchangeArray($data);
 				
 				if ($post['name'] == 'country_code') {
 					$entity->region_code = '';
 				}
 
-                $this->getServiceLocator()->get($table)->save($entity);
+                $this->getServiceLocator()->get($this->table)->save($entity);
                 $success = 1;
             }
 
@@ -110,9 +108,10 @@ class AdminController extends SampleAdminController
                 $data = array(
 					'title' => $title,
 					'region_code' => '',
+					'deleted' => 0,
 					);
 
-                $table = $this->getServiceLocator()->get('GeoBannersTable');
+                $table = $this->getServiceLocator()->get($this->table);
 
                 $entity = new GeoBanner();
                 $entity->exchangeArray($data);
@@ -144,9 +143,87 @@ class AdminController extends SampleAdminController
             $success = 0;
 
             if ($id) {
-                $table = $this->getServiceLocator()->get('GeoBannersTable');
+                $table = $this->getServiceLocator()->get($this->table);
 
                 $table->del($id);
+                $success = 1;
+            }
+
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode(array('success' => $success)));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+    }
+	
+	public function hideEntityAction() {
+		$this->setData();
+		
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $id = $request->getPost('id', false);
+            $type = $request->getPost('type', false);
+            $success = 0;
+
+            if ($id) {
+				$entity = $this->getServiceLocator()->get($this->table)->find($id);
+                $entity->deleted = 1;
+                $this->getServiceLocator()->get($this->table)->save($entity);
+                $success = 1;
+            }
+
+            $returnArr = array('success' => $success);
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode($returnArr));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+    }
+	
+	public function showEntityAction() {
+		$this->setData();
+		
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $id = $request->getPost('id', false);
+            $type = $request->getPost('type', false);
+            $success = 0;
+
+            if ($id) {
+                $entity = $this->getServiceLocator()->get($this->table)->find($id);
+                $entity->deleted = 0;
+                $this->getServiceLocator()->get($this->table)->save($entity);
+                $success = 1;
+            }
+
+            $returnArr = array('success' => $success);
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode($returnArr));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+    }
+	
+    public function changeOrderAction() {
+        $this->setData();
+
+        $request = $this->getRequest();
+        if ($request->isXmlHttpRequest()) {
+            $order = $request->getPost('order', false);
+            $isImg = $request->getPost('isImg', false);
+            $success = 0;
+
+            if ($order) {
+                $tableName = $isImg ? $this->tableImg : $this->table;
+                $table = $this->getServiceLocator()->get($tableName);
+                foreach($order as $id=>$serialNum){
+                    $entity = $table->find($id);
+                    if($entity){
+                        $entity->order = $serialNum;
+                        $table->save($entity);
+                    }
+                }
+
                 $success = 1;
             }
 

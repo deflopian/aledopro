@@ -9,6 +9,20 @@ return array(
 
     'router' => array(
         'routes' => array(
+			'geobanners' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/geobanners[/:action][/:id][/][:hash]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'IPGeoBase\Controller\GeoBanner',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
 
@@ -24,7 +38,7 @@ return array(
     'bjyauthorize' => array(
         'guards'                => array(
             'BjyAuthorize\Guard\Route' => array(
-                array('route' => 'developers', 'roles' => array('guest', 'user')),
+                array('route' => 'geobanners', 'roles' => array('guest', 'user')),
             ),
             'BjyAuthorize\Guard\Controller' => array(
                 array( 'controller' => 'IPGeoBase\Controller\GeoBanner', 'roles' => array('guest','user') ),
