@@ -28,7 +28,7 @@ class GeoBannerMapper {
         return self::$instance;
     }
 
-    public function fetchGeoBanners($country = false, $region = '', $section_type = false, $section_id = false) {
+    public function fetchGeoBanners($country = false, $region = '', $section_type = false, $section_id = false, $no_arr = array()) {
         if ($country) {
 			$res = array();
 			
@@ -54,7 +54,14 @@ class GeoBannerMapper {
 				)
 			));
 			
-			return $res;
+			$res_ready = array();
+			
+			foreach ($res as $item) {
+				if (in_array($item->id, $no_arr) || !$item->text) continue;
+				$res_ready[] = $item;
+			}
+			
+			return $res_ready;
 		}
 		return $this->getGeoBannerTable()->fetchAll('order ASC');
     }

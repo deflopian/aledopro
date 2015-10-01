@@ -37,7 +37,7 @@ class GeoService {
         return $res;
     }
 	
-	public function getGeoBanner($sl, $ip, $section_type, $section_id) {
+	public function getGeoBanner($sl, $ip, $section_type, $section_id, $no_arr = array()) {
 		$data = geoip_record_by_name($ip);
 		
         $country = self::$defaultCountry;
@@ -57,7 +57,7 @@ class GeoService {
         }
 		
 		$geoBannerMapper = GeoBannerMapper::getInstance($sl);
-		$banners = $geoBannerMapper->fetchGeoBanners($country, $region, $section_type, $section_id);
+		$banners = $geoBannerMapper->fetchGeoBanners($country, $region, $section_type, $section_id, $no_arr);
 		
 		if (!empty($banners)) {
 			$ind = mt_rand(0, count($banners) - 1);

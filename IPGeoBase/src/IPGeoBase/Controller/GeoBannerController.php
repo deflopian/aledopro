@@ -1,8 +1,10 @@
 <?php
 namespace IPGeoBase\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Application\Service\MailService;
 use IPGeoBase\Service\GeoService;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Http\Header\SetCookie;
 
 class GeoBannerController extends AbstractActionController
 {
@@ -20,23 +22,42 @@ class GeoBannerController extends AbstractActionController
 			$section_type = $post['section_type'];
 			$section_id = $post['section_id'];
 			
-			$arr = array();
+			$res = array();
+			$response = $this->getResponse();
 			
-			if ($section_type && $section_id) {			
-				$banner = GeoService::getGeoBanner($sl, $ip, $section_type, $section_id);
+			if ($section_type && $section_id)
+			{
+				$hidden_banners = array();
+				if (isset($_COOKIE['geoBanners']) && is_array($_COOKIE['geoBanners']))
+				{
+					foreach ($_COOKIE['geoBanners'] as $key => $val)
+					{
+						if (!$val) continue;
+						$hidden_banners[] = $key;
+					}
+				}
 				
-				if ($banner) {
-					$arr = array(
+				if ($banner = GeoService::getGeoBanner($sl, $ip, $section_type, $section_id, $hidden_banners))
+				{
+					$res = array(
 						'id' => $banner->id,
 						'text' => $banner->text,
 						'link' => $banner->link,
 						'img' => $banner->img,
 					);
+					
+					$cookie = new SetCookie();
+					$cookie->setName('geoBanners[' . $banner->id . ']');
+					$cookie->setValue(1);
+					$cookie->setDomain(MailService::CURRENT_DOMEN);
+					$cookie->setPath('/');
+					$cookie->setExpires(time() + 86400);
+					
+					$response->getHeaders()->addHeader($cookie);
 				}
 			}
 			
-			$response = $this->getResponse();
-            $response->setContent(\Zend\Json\Json::encode($arr));
+            $response->setContent(\Zend\Json\Json::encode($res));
             return $response;
 		}
 		return $this->redirect()->toRoute('catalog');
