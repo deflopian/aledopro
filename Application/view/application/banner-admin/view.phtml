@@ -26,6 +26,17 @@
                 <a href="#" data-type="text" data-name="link" class="editable-param"><?= $entity->link; ?></a>
             </td>
         </tr>
+		<tr>
+            <td>Поведение ссылки</td>
+            <td>
+               <? $targets = array('1' => 'Открыть в новом окне', '2' => 'Открыть в текущем окне'); ?>
+				<a href="#" data-type="select" data-name="target"
+					data-source='<?= \Zend\Json\Json::encode($targets); ?>'
+					data-value='<?= $entity->target; ?>' class="editable-param">
+						<?= $targets[$entity->target]; ?>
+				</a>
+            </td>
+        </tr>
         <tr>
             <td>Расположение</td>
             <td>

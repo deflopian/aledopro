@@ -2,7 +2,7 @@
     <? $banner = reset($this->bannerImages) ?>
     <div class="b-main-banner b-slider_banners">
         <? foreach ($this->bannerImages as $banner) { ?>
-        <a href="<?= $banner->link ?>" class="b-slider_banners__slider">
+        <a href="<?= $banner->link ?>" class="b-slider_banners__slider" target="<?= ($banner->target == 1) ? '_blank' : '_self' ?>">
             <div class="b-slider__item b-slider_banners__item">
                 <i class="b-slider-item-layout"></i>
 
