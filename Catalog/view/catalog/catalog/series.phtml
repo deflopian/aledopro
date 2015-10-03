@@ -39,22 +39,24 @@ function mb_ucfirst($text) {
 
         <? } ?>
     </div>
-    <div class="b-goods-gallery">
+    <div class="b-slider-outer">
+    <div class="b-goods-gallery b-slider">
         <? $i = 0; ?>
         <? foreach($imgs as $img) { ?>
             <? if (!$series->preview && $series->img_gallery == $img->url) continue; ?>
             <? if (!$series->preview && $i++ == 0) continue; ?>
-            <div class="b-goods-gallery-item"><i class="b-goods-gallery-item__layout" style="width: 1px"></i>
+            <div class="b-goods-gallery-item b-slider__item">
+                <i class="b-goods-gallery-item__layout b-slider-item-layout"></i>
                 <? $minUrl = 'min_' . $img->url ?>
                 <? $src = $img->url ? $this->basePath() . '/images/series/' . $img->url : $this->basePath() . '/images/empty-series.png' ?>
                 <? $minSrc = $img->url ? $this->basePath() . '/images/series/' . $minUrl : $this->basePath() . '/images/empty-series.png' ?>
 
-                <a class="b-goods-gallery-item__link" href0="<?= $src ?>" rel="gallery">
+
                     <img class="b-goods-gallery-item__image" src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/series/min_' . $img->url) ? $minSrc : $src ?>" alt="<?= $series->visible_title; ?> url" />
-                </a>
+
             </div>
         <? } ?>
-    </div>
+    </div> </div>
 
 
     <div class="b-section__content">
@@ -571,7 +573,7 @@ function mb_ucfirst($text) {
                 _.$imagesLinks = jQuery(_.imagesLinks);
                 _initGallery();
                 //_initFancy();
-                _bindEvents();
+              //  _bindEvents();
             },
             _bindEvents = function () {
                 _.$gallery.clickOrNot().on("clickOrNot", function (e) {
@@ -660,25 +662,25 @@ function mb_ucfirst($text) {
                     });
             },
             _initGallery = function () {
-                if (browser.mobile) return;
+                _.$gallery.slick({
+                    accessibility: false,
+                    dots: false,
+                    infinite: true,
+                    speed: _.animatingSpeed,
+                    slidesToShow: _.slidesToShow,
+                    touchThreshold: browser.mobile ? 5 : 50,
+                    centerMode: true,
+                    centerPadding: "0px",
+                    variableWidth: true,
 
-                _.$scroller = _.$gallery.dragscroll({
-                    autoFadeBars: false,
-                    scrollBars: true,
-                    smoothness: 15,
-                    mouseWheelVelocity: 0,
-                    mouseWheelEnabled: false,
-                    onRebuild: function (dragscroll) {
-                        var noScrollClass = _.gallery + "_no-scroll";
-                        if (dragscroll.barIndex.X[0] == 1) {
-                            this.addClass(noScrollClass);
-                        } else {
-                            this.removeClass(noScrollClass);
-                        }
-                    }
+                    arrows: browser.mobile ? false : true,
+                    prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow  b-slider-arrows__arrow_prev b-goods-gallery__arrow\" ></a>",
+                    nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow  b-slider-arrows__arrow_next b-goods-gallery__arrow\" ></a>"
                 });
 
-                _watchOnImageUploading();
+
+
+
             };
         return { init: _init };
     }

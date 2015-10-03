@@ -39,9 +39,9 @@
                     <? $src = $this->basePath() . '/images/projects/' . $img->url ?>
                     <? $minSrc = $this->basePath() . '/images/projects/' . $minUrl ?>
 
-                    <a class="b-goods-gallery-item__link" rel="gallery">
+
                         <img class="b-slider__image" src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $img->url) ? $minSrc : $src ?>" alt="<?= $series->visible_title; ?> url" />
-                    </a>
+
 <!--                    <a href="/images/projects/--><?//= $img->url ?><!--" rel="gallery">-->
 <!--                        <img class="b-slider__image" src="/images/projects/--><?//= $img->url ?><!--"/>-->
 <!--                    </a>-->
