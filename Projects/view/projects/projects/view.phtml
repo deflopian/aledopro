@@ -311,6 +311,31 @@
             </div>
         </div>
     </div>
+
+
+    <div class="b-section b-section_another-projects">
+        <div class="b-section__content">
+            <h4 class="b-section_another-projects__heading">Другие проекты</h4>
+            <div class="b-slider b-slider_another-projects">
+
+
+                <? foreach ($otherProjects as $proj) { ?>
+                    <? $minUrl = 'min_' . $proj->img ?>
+                    <? $src = $this->basePath() . '/images/projects/' . $proj->img ?>
+                    <? $minSrc = $this->basePath() . '/images/projects/' . $minUrl ?>
+                    <div class="b-slider__item b-slider_another-projects__item">
+                        <a class="b-slider_another-projects__link"
+                           href="../<?= $proj->id ?>">
+                            <img class="b-slider_another-projects__image"
+                                 src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $proj->img) ? $minSrc : $src ?>" alt="<?= $proj->title; ?> url" />
+            <span class="b-slider_another-projects__title">
+                <?= $proj->title ?>
+            </span>
+                        </a>
+                    </div>
+                <? } ?>
+            </div>
+        </div></div>
 </div>
 <script>
     function ProjectProductSlider() {
@@ -547,28 +572,6 @@
 </script>
 <? } ?>
 
-<div class="b-section">
-    <div class="b-section__content">
-    <div class="b-slider b-slider_another-projects">
-
-
-<? foreach ($otherProjects as $proj) { ?>
-	<? $minUrl = 'min_' . $proj->img ?>
-    <? $src = $this->basePath() . '/images/projects/' . $proj->img ?>
-    <? $minSrc = $this->basePath() . '/images/projects/' . $minUrl ?>
-    <div class="b-slider__item b-slider_another-projects__item">
-        <a class="b-slider_another-projects__link"
-           href="../<?= $proj->id ?>">
-            <img class="b-slider_another-projects__image"
-                 src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $proj->img) ? $minSrc : $src ?>" alt="<?= $proj->title; ?> url" />
-            <span class="b-slider_another-projects__title">
-                <?= $proj->title ?>
-            </span>
-        </a>
-    </div>
-<? } ?>
-</div>
-</div></div>
 <script>
 
     (function () {
