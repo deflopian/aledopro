@@ -527,7 +527,7 @@
 <script>
     $(function() {
 
-    var $this = jQuery('.other-projects-slider');
+    var $this = jQuery('.b-project-products-slider');
     $this.slick({
         dots: false,
         infinite: true,
@@ -547,20 +547,71 @@
 </script>
 <? } ?>
 
-<!-- начало информации для вставки слайдера других проектов -->
-<div style="display: none;">
+<div class="b-section">
+    <div class="b-section__content">
+    <div class="b-slider b-slider_another-projects">
+
+
 <? foreach ($otherProjects as $proj) { ?>
 	<? $minUrl = 'min_' . $proj->img ?>
     <? $src = $this->basePath() . '/images/projects/' . $proj->img ?>
     <? $minSrc = $this->basePath() . '/images/projects/' . $minUrl ?>
-
-    <a href="../<?= $proj->id ?>"><?= $proj->title ?><br>
-        <img src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $proj->img) ? $minSrc : $src ?>" alt="<?= $proj->title; ?> url" />
-    </a><br><br>
+    <div class="b-slider__item b-slider_another-projects__item">
+        <a class="b-slider_another-projects__link"
+           href="../<?= $proj->id ?>">
+            <img class="b-slider_another-projects__image"
+                 src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $proj->img) ? $minSrc : $src ?>" alt="<?= $proj->title; ?> url" />
+            <span class="b-slider_another-projects__title">
+                <?= $proj->title ?>
+            </span>
+        </a>
+    </div>
 <? } ?>
 </div>
-<!-- конец информации для вставки слайдера других проектов -->
+</div></div>
+<script>
 
+    (function () {
+        var $this = jQuery('.b-slider_another-projects');
+        $this.slick({
+            dots: false,
+            infinite: true,
+            draggable: browser.mobile ? true : false,
+            speed: browser.mobile ? 300 : 500,
+            touchThreshold: browser.mobile ? 5 : 50,
+            slidesToShow: 4,
+
+
+            arrows: browser.mobile ? false : true,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3
+
+
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2
+
+                    }
+                }
+
+                ],
+            prevArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_prev b-slider_another-projects__arrow b-slider_another-projects__arrow_prev\">" +
+            "</a>",
+            nextArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_next b-slider_another-projects__arrow b-slider_another-projects__arrow_next\">" +
+            "</a>"
+        });
+
+
+    })();
+
+
+</script>
 
 <script type="application/javascript">
     $(window).keyup(function(event) {
