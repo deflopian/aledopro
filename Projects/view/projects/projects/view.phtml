@@ -325,7 +325,7 @@
                     <? $minSrc = $this->basePath() . '/images/projects/' . $minUrl ?>
                     <div class="b-slider__item b-slider_another-projects__item">
                         <a class="b-slider_another-projects__link"
-                           href="../<?= $proj->id ?>">
+                           href="../view/<?= $proj->id ?>">
                             <img class="b-slider_another-projects__image"
                                  src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $proj->img) ? $minSrc : $src ?>" alt="<?= $proj->title; ?> url" />
             <span class="b-slider_another-projects__title">
