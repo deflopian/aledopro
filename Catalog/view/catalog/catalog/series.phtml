@@ -451,6 +451,16 @@ function mb_ucfirst($text) {
                 <? } ?>
             </div>
         </div>
+		
+		<?=
+            $this->partial('catalog/catalog/part/part/geo-widget.phtml',
+                array(
+                    'type' => 3,
+                    'id' => $series->id
+                )
+            );
+        ?>
+		
         <script type="text/javascript">
             <? if ((count($this->products) > max($this->countOnBoard, 5)) && !$scrollToProduct) { ?>
             $(function() {seriesTableHideBlock($('#testApp_<?= $series->id ?>'), true)});

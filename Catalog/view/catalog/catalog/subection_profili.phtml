@@ -45,6 +45,15 @@
     <?= \Catalog\Service\CatalogService::renderSeoTextBlock($sl, $subsection); ?>
 </div>
 
+<?=
+$this->partial('catalog/catalog/part/part/geo-widget.phtml',
+    array(
+        'type' => 2,
+        'id' => $subsection->id
+    )
+);
+?>
+
 
 <script type="text/javascript">
 

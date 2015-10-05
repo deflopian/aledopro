@@ -11,55 +11,53 @@ class GeoBannerController extends AbstractActionController
     public function viewAction() {
 		return $this->redirect()->toRoute('catalog');
     }
+	
+	public function indexAction() {
+		return $this->redirect()->toRoute('catalog');
+    }
 
-    public function indexAction()
+    public function getAction()
     {
-		if ($this->getRequest()->isXmlHttpRequest()) {
-			$ip = $_SERVER['REMOTE_ADDR'];
-			$sl = $this->getServiceLocator();
-			
-			$post = $request->getPost()->toArray();
-			$section_type = $post['section_type'];
-			$section_id = $post['section_id'];
-			
-			$res = array();
-			$response = $this->getResponse();
-			
-			if ($section_type && $section_id)
+		$ip = $_SERVER['REMOTE_ADDR'];
+		$sl = $this->getServiceLocator();
+		
+		$post = $this->getRequest()->getPost()->toArray();
+		$section_type = $post['section_type'];
+		$section_id = $post['section_id'];
+		
+		$res = array();
+		$response = $this->getResponse();
+		
+		if ($section_type && $section_id)
+		{
+			$hidden_banners = array();
+			if (isset($_COOKIE['geoBanners']) && is_array($_COOKIE['geoBanners']))
 			{
-				$hidden_banners = array();
-				if (isset($_COOKIE['geoBanners']) && is_array($_COOKIE['geoBanners']))
+				foreach ($_COOKIE['geoBanners'] as $key => $val)
 				{
-					foreach ($_COOKIE['geoBanners'] as $key => $val)
-					{
-						if (!$val) continue;
-						$hidden_banners[] = $key;
-					}
-				}
-				
-				if ($banner = GeoService::getGeoBanner($sl, $ip, $section_type, $section_id, $hidden_banners))
-				{
-					$res = array(
-						'id' => $banner->id,
-						'text' => $banner->text,
-						'link' => $banner->link,
-						'img' => $banner->img,
-					);
-					
-					$cookie = new SetCookie();
-					$cookie->setName('geoBanners[' . $banner->id . ']');
-					$cookie->setValue(1);
-					$cookie->setDomain(MailService::CURRENT_DOMEN);
-					$cookie->setPath('/');
-					$cookie->setExpires(time() + 86400);
-					
-					$response->getHeaders()->addHeader($cookie);
+					if (!$val) continue;
+					$hidden_banners[] = $key;
 				}
 			}
 			
-            $response->setContent(\Zend\Json\Json::encode($res));
-            return $response;
+			if ($banner = GeoService::getGeoBanner($sl, $ip, $section_type, $section_id, $hidden_banners))
+			{
+				$res = array(
+					'id' => $banner->id,
+					'text' => $banner->text,
+					'link' => $banner->link
+				);
+					
+				$cookie = new SetCookie();
+				$cookie->setName('geoBanners[' . $banner->id . ']');
+				$cookie->setValue(1);
+				$cookie->setExpires(time() + 86400);
+				
+				$response->getHeaders()->addHeader($cookie);
+			}
 		}
-		return $this->redirect()->toRoute('catalog');
+			
+        $response->setContent(\Zend\Json\Json::encode($res));
+        return $response;
     }
 }

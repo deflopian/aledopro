@@ -123,6 +123,15 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER;
     <?= \Catalog\Service\CatalogService::renderSeoTextBlock($sl, $section); ?>
 </div>
 
+<?=
+$this->partial('catalog/catalog/part/part/geo-widget.phtml',
+    array(
+        'type' => 1,
+        'id' => $section->id
+    )
+);
+?>
+
 <script type="text/javascript">
     $(function() {
         popup.initCopyLinkBtns();
