@@ -675,7 +675,7 @@ function mb_ucfirst($text) {
                 _.$gallery.on("init", function(e, slick){
 				
 					if(slick.slideCount == 1 ){
-						.slick.slickSetOption('centerMode', false, false);
+						slick.slickSetOption('centerMode', false, false);
 						_.$gallery.addClass('b-slider_no-slider');
 					}
 					
