@@ -672,14 +672,21 @@ function mb_ucfirst($text) {
                     });
             },
             _initGallery = function () {
-                _.$gallery.slick({
+                _.$gallery.on("init", function(e, slick){
+				
+					if(slick.slideCount == 1 ){
+						.slick.slickSetOption('centerMode', false, false);
+						_.$gallery.addClass('b-slider_no-slider');
+					}
+					
+				}).slick({
                     accessibility: false,
                     dots: false,
                     infinite: true,
                     speed: _.animatingSpeed,
                     slidesToShow: 1,
                     touchThreshold: browser.mobile ? 5 : 50,
-                   // centerMode: true,
+                    centerMode: true,
                     centerPadding: "0px",
                     variableWidth: true,
 
