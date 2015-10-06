@@ -1,0 +1,702 @@
+<?
+/**
+ * @var array $members
+ * @var \Catalog\Model\SeriesDoc[] $docs
+ * @var boolean $admin
+ * @var integer $view
+ * @var \Articles\Model\Article[] $articles
+ * @var \Catalog\Model\SubSection $subsection
+ * @var \Catalog\Model\Product[] $relatedProds
+ * @var \Catalog\Model\Series[] $relatedSeries
+ * @var $sl
+ * @var \Projects\Model\Project $prevProd
+ * @var \Projects\Model\Project $nextProd
+ * @var \Projects\Model\ProjectImg[] $imgs
+ */
+/** @var integer $scrollToProduct*/
+mb_internal_encoding("UTF-8");
+function mb_ucfirst($text) {
+    return mb_strtouwpper(mb_substr($text, 0, 1)) . mb_substr($text, 1);
+}
+?>
+<div class="b-goods b-section" style="padding-top: 0">
+    <div class="b-section__content">
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+    </div>
+    <? $allSeries = array();
+    $allSeries = $seAgg->getSeries($subsection->id);
+    ?>
+    <? $series = reset($allSeries); $i=0; ?>
+    <div style="display: none">
+        <? foreach($series->imgs as $img) { ?>
+            <? if (!$series->preview && $series->img_gallery == $img->url) continue; ?>
+
+            <? $src = $img->url ? $this->basePath() . '/images/series/' . $img->url : $this->basePath() . '/images/empty-series.png' ?>
+
+            <img style="display: none" src="<?= $src ?>" />
+
+        <? } ?>
+    </div>
+    <div class="b-goods-gallery">
+        <? $i = 0; ?>
+        <? foreach($series->imgs as $img) { ?>
+            <? if (!$series->preview && $series->img_gallery == $img->url) continue; ?>
+            <div class="b-goods-gallery-item"><i class="b-goods-gallery-item__layout" style="width: 1px"></i>
+                <? $minUrl = 'min_' . $img->url ?>
+                <? $src = $img->url ? $this->basePath() . '/images/series/' . $img->url : $this->basePath() . '/images/empty-series.png' ?>
+                <? $minSrc = $img->url ? $this->basePath() . '/images/series/' . $minUrl : $this->basePath() . '/images/empty-series.png' ?>
+
+                <a class="b-goods-gallery-item__link" href0="<?= $src ?>" rel="gallery">
+                    <img class="b-goods-gallery-item__image" src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/series/min_' . $img->url) ? $minSrc : $src ?>" alt="<?= $series->visible_title; ?> url" />
+                </a>
+            </div>
+        <? } ?>
+    </div>
+
+    <div class="b-section__content">
+        <div class="b-goods-flexiable-table">
+
+            <div class="b-goods-flexiable-table__cell" style="text-align: left">
+                <div class="b-goods-title">
+                    <?= $subsection->title; ?>
+                </div>
+            </div>
+        </div>
+        <div class="b-tabs-wrapper b-tabs-wrapper_goods "  role="tabpanel">
+            <div class="b-goods-tabs">
+                <ul class="b-tabs list-unstyled b-tabs_goods" role="tablist">
+                    <li class="b-tabs__tab  active">
+                        <a class="b-tabs__link " role="tab" href="#goods_1" data-toggle="tab" aria-controls="goods_1" >Цены и модификации</a>
+                    </li>
+                    <li class="b-tabs__tab">
+                        <a class="b-tabs__link " role="tab" href="#goods_2"  data-toggle="tab" aria-controls="goods_2">Описание и комплектация</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="b-tabs-content b-tabs-content_goods tab-content">
+                <div class="b-tabs-content__item fade in active tab-pane" role="tabpanel" id="goods_1">
+                     <? $serCounter = 0; ?>
+                    <? foreach($allSeries as $serr) { ?>
+                    <div class="catalog" style="position: relative; <?= $view !== \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES ? '' : 'margin-top: 70px;' ?>">
+                        <? if ($serr->fourthTabName) { ?>
+                            <div style="<?= ($serCounter++ > 0) ? 'border-top: 1px dotted #6e7172;' : ''?>">
+                                <h2 class="catalog_series__h2"><?= $serr->fourthTabName ?></h2>
+                            </div>
+                        <? } ?>
+
+                        <? if ($serr->visible_title) { 
+							$visible_title = end(explode(', ', $serr->visible_title));
+						?>
+                            <h3 class="catalog_series__h3"><?= $visible_title ?></h3>
+                        <? } ?>
+                            <div class="row" id="serpopup-table-container">
+                                <div class="col-xs-12" id="testApp_<?= $serr->id ?>" style="overflow-y: hidden; overflow-x: visible; position: static">
+
+                                    <?
+                                    $tpl = 'product-table-lenti';
+                                    $displayStyle = 1;
+                                    $serNum = 1;
+                                    echo $this->partial(
+                                        'catalog/catalog/part/part/'. $tpl .'.phtml',
+                                        array(
+                                            'products' => \Catalog\Service\ProductsAggregator::getInstance()->getProducts($serr->id),
+                                            'commercialMode' =>  \User\Service\UserService::$commercialMode,
+                                            'offeredIds'   => $this->offeredIds,
+                                            'selectedProdId'   => $this->selectedProdId,
+                                            'admin'   => $admin,
+                                            'series'    => $serr,
+                                            'serNum' => $serr->id,
+                                            'user' => $this->user,
+                                            'params' => $this->params,
+                                            'hierarchies' => $this->hierarchies,
+                                            'discounts' => $this->discounts,
+                                            'displayStyle' => $displayStyle
+                                        )
+                                    ); ?>
+
+
+                                </div>
+
+                            </div>
+
+                            <? if (count($this->products) > max($this->countOnBoard, 5)) { ?>
+                            <div class="row ">
+                                <div class="col-xs-12">
+                                    <div class="product-table_allmods-block">
+                                        <div class="product-table_allmods-block__label arrow-show" onclick="seriesTableShowBlock($('#testApp_<?= $serr->id ?>'))">Смотреть все модификации<span class="allmods-block__open-arrow"></span></div>
+                                        <div class="product-table_allmods-block__label arrow-hidden" style="display: none" onclick="seriesTableHideBlock($('#testApp_<?= $serr->id ?>'))">Смотреть все модификации<span class="allmods-block__close-arrow"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <? } ?>
+
+                    </div>
+                    <? } ?>
+
+
+                    <div id="dopprods" name="dopprods">
+
+                    <? foreach ($firstTabGroups as $oneGroup) { ?>
+
+                        <div style="position: relative">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div>
+                                        <h2 class="series-description-block__title"><?= mb_ucfirst(trim($oneGroup['title'])) ?></h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row row-second-xs catalog">
+                                <div class="col-xs-12" id="testApp_<?= $oneGroup['id'] ?>">
+                                    <?
+                                    $view = ($oneGroup['display_style'] > 0 ? $oneGroup['display_style'] : $oneGroup['view'] );
+                                    switch($view){
+                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES: //це пиздец
+                                            $tpl = 'product-table-profili';
+                                            break;
+                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER: //це пиздец
+                                            $tpl = 'product-table-pitaine';
+                                            break;
+                                        case \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS: //це пиздец
+                                            $tpl = 'product-table-lenti';
+                                            break;
+                                        default:
+                                            $tpl = 'product-table';
+                                            break;
+                                    }
+
+                                    echo $this->partial(
+                                        'catalog/catalog/part/part/'. $tpl .'.phtml',
+                                        array(
+                                            'products' => $oneGroup['products'],
+                                            'offeredIds'   => $this->offeredIds,
+                                            'commercialMode' =>  \User\Service\UserService::$commercialMode,
+                                            'selectedProdId'   => $this->selectedProdId,
+                                            'user' => $this->user,
+                                            'serNum' => $oneGroup['id'],
+                                            'hierarchies' => $this->hierarchies,
+                                            'discounts' => $this->discounts,
+                                            'nonFilter' => true,
+                                            'parentSerNum' => $series->id,
+                                        )
+                                    );
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+
+                    <? } ?>
+                    </div>
+                    <?=
+                    $this->partial(
+                        "catalog/catalog/part/links-block.phtml",
+                        array(
+                            'links' => $this->links,
+                            'forWhat' => $subsection->title
+                        )
+                    );
+                    ?>
+                </div>
+
+                <div class="b-tabs-content__item fade tab-pane series-description-block" role="tabpanel" id="goods_2" style="padding-left: 30px">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div>
+                                        <h2 class="series-description-block__title">Описание</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row row-second-xs">
+                                <div class="col-xs-12 series-description">
+                            <?= (($num = strpos('<p>&nbsp;</p>', $series->text)) < 5 && $num !== false) ?
+                                substr($series->text, $num+13) : $series->text; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					
+                    <? if($series->text_charact = trim($series->text_charact)){ ?>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <h2 class="series-description-block__title">Характеристики</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-second-xs">
+                                    <div class="col-xs-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_charact)) < 5 && $num !== false) ?
+                                            substr($series->text_charact, $num+13) : $series->text_charact ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <? } ?>
+
+                    <? if($series->text_exploit = trim($series->text_exploit)){ ?>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <h2 class="series-description-block__title">Комплектация и условия эксплуатации</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-second-xs">
+                                    <div class="col-xs-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_exploit)) < 5 && $num !== false) ?
+                                            substr($series->text_exploit, $num+13) : $series->text_exploit ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <? } ?>
+					
+                <? if($series->text_sphere = trim($series->text_sphere)){ ?>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <h2 class="series-description-block__title">Область применения</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-second-xs">
+                                    <div class="col-xs-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_sphere)) < 5 && $num !== false) ?
+                                            substr($series->text_sphere, $num+13) : $series->text_sphere ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <? } ?>
+
+                    <? if($series->text_dimming = trim($series->text_dimming)){ ?>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <h2 class="series-description-block__title">Диммирование (Управление яркостью)</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-second-xs">
+                                    <div class="col-xs-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_dimming)) < 5 && $num !== false) ?
+                                            substr($series->text_dimming, $num+13) : $series->text_dimming ?>
+                                    </div>
+                                </div>
+                                <div class="b-section-dimmers">
+                                    <? foreach($dims as $dim){ ?>
+                                        <div class="b-section-dimmers__item">
+                                            <? $type = strtolower(substr($dim->url, -3)); ?>
+                                            <a class="b-section-dimmers__item-link" href="<?= $dim->url ? $this->basePath() . '/images/series_docs/' . $dim->url . '?originalName=' . urlencode($dim->original_name) : ''?>"
+                                               target="_blank"
+                                                <? if ($type != 'jpg' && $type != 'png' && $type != 'bmp' && $type != 'pdf' ) { ?>
+
+                                                <? } ?>
+                                               onclick="ga('send', 'event', 'button', 'click', 'download', '<?= $dim->url ?>');"
+                                                >
+
+
+                                                <span class="pull-left icon-title b-section-dimmers__item-title" style="font-size: 11px; font-weight: bold"><?= $dim->title; ?> (<?= $type ?>)</span>
+                                                <span class="pull-right icon-download icon-<?= $type?> b-section-dimmers__item-icon"></span>
+                                            </a>
+                                        </div>
+                                    <? } ?>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 series-description">
+                                        <?= (($num = strpos('<p>&nbsp;</p>', $series->text_after_dimming)) < 5 && $num !== false) ?
+                                            substr($series->text_after_dimming, $num+13) : $series->text_after_dimming ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <? } ?>
+                </div>
+                <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_3">
+                    <? if ($docs) { ?>
+                        <div class="row row-second-small">
+                            <div class="col-xs-12 b-section-materials">
+                                <? foreach($docs as $doc){ ?>
+                                    <div class="b-section-materials__item">
+                                        <? $type = strtolower(substr($doc->url, -3)); ?>
+                                        <a class="b-section-materials__item-link" href="<?= $doc->url ? $this->basePath() . '/images/series_docs/' . $doc->url . '?originalName=' . urlencode($doc->original_name) : ''?>"
+                                           target="_blank"
+                                            <? if ($type != 'jpg' && $type != 'png' && $type != 'bmp' && $type != 'pdf' ) { ?>
+
+                                            <? } ?>
+                                           onclick="ga('send', 'event', 'button', 'click', 'download', '<?= $doc->url ?>');"
+                                            >
+
+
+                                            <span class="icon-download icon-<?= $type?>-big b-section-materials__item-icon"></span><span class="icon-title b-section-materials__item-title" style="font-size: 11px; font-weight: bold"><?= $doc->title; ?> (<?= $type ?>)</span>
+                                        </a>
+                                    </div>
+                                <? } ?>
+                            </div>
+                        </div>
+                    <? } ?>
+                </div>
+                <? if (count($fourthTabGroups)) { ?>
+                <div class="b-tabs-content__item fade tab-pane" role="tabpanel" id="goods_4">
+                    <? foreach ($fourthTabGroups as $num => $dpGroup) { ?>
+
+                    <div style="position: relative">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div>
+                                    <h2 class="series-description-block__title"><?= mb_ucfirst($dpGroup['title']) ?></h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-second-xs catalog">
+                            <div class="col-xs-12" id="testApp_<?= $dpGroup['id'] ?>">
+                                <?
+                                $view = ($dpGroup['display_style'] > 0 ? $dpGroup['display_style'] : $dpGroup['view'] );
+                                switch($view){
+                                    case \Catalog\Service\CatalogService::DISPLAY_STYLE_PROFILES: //це пиздец
+                                        $tpl = 'product-table-profili';
+                                        break;
+                                    case \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER: //це пиздец
+                                        $tpl = 'product-table-pitaine';
+                                        break;
+                                    case \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS: //це пиздец
+                                        $tpl = 'product-table-lenti';
+                                        break;
+                                    default:
+                                        $tpl = 'product-table';
+                                        break;
+                                }
+
+                                echo $this->partial(
+                                    'catalog/catalog/part/part/'. $tpl .'.phtml',
+                                    array(
+                                        'products' => $dpGroup['products'],
+                                        'offeredIds'   => $this->offeredIds,
+                                        'selectedProdId'   => $this->selectedProdId,
+                                        'commercialMode' =>  \User\Service\UserService::$commercialMode,
+                                        'user' => $this->user,
+                                        'serNum' => $dpGroup['id'],
+                                        'hierarchies' => $this->hierarchies,
+                                        'discounts' => $this->discounts,
+                                        'nonFilter' => true,
+                                        'parentSerNum' => $series->id,
+                                        'partialTab' => '#goods_4',
+                                    )
+                                );
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <? } ?>
+                </div>
+                <? } ?>
+            </div>
+        </div>
+        <script type="text/javascript">
+            <? if ((count($this->products) > max($this->countOnBoard, 5)) && !$scrollToProduct) { ?>
+            $(function() {seriesTableHideBlock($('#testApp_<?= $series->id ?>'), true)});
+            <? } ?>
+            function seriesTableShowBlock(elem) {
+                var h = 0;
+                var soloTable = elem.find('solo-table').find('table');
+                h = $('#angular-filter').height() + 30 + soloTable.height();
+                $('.product-table_allmods-block__label.arrow-show').hide();
+                $('.product-table_allmods-block__label.arrow-hidden').show();
+                elem.animate({
+                    height: h
+                });
+
+            }
+
+            function seriesTableHideBlock(elem, preload) {
+                var h = 0;
+                var soloTable = elem.find('solo-table').find('table');
+                h = $('#angular-filter').height() + 30;
+                var i = 0;
+
+                soloTable.find('tr').each(function() {
+                    if (i++ <= <?= max($this->countOnBoard, 5) ?>) {
+                        h += $(this).height();
+                        if (i>1) {
+                            h += 15;
+                        }
+                    }
+                });
+//                elem.height(h + "px");
+                $('.product-table_allmods-block__label.arrow-hidden').hide();
+                $('.product-table_allmods-block__label.arrow-show').show();
+                if (preload) {
+                    elem.height(h);
+                } else {
+                    elem.animate({
+                        height: h
+                    });
+                }
+
+            }
+            (function () {
+                var $comparingElements = jQuery(".b-goods-characteristics-list, .b-goods-title"),
+                    $table = jQuery(".b-goods-flexiable-table"),
+                    rowableClass = "b-goods-flexiable-table_rowable",
+                    $contentSection = $comparingElements.parents(".b-section__content"),
+                    elementsComputedWidth = 0,
+                    _getSizes =  function() {
+                        elementsComputedWidth = 0;
+                        $comparingElements.each(function () {
+                            elementsComputedWidth += jQuery(this).outerWidth();
+                        });
+                    },
+                    _compareWidth = function () {
+                        var contentWidth = $contentSection.width() - (parseInt($contentSection.css("padding-right")) + parseInt($contentSection.css("padding-left")));
+                        return contentWidth < elementsComputedWidth;
+
+                    },
+
+                    setDisplay = function () {
+                        _compareWidth() && $table.addClass(rowableClass) || $table.removeClass(rowableClass);
+                    };
+                _getSizes();
+                setDisplay();
+                jQuery(window).on("resize.goods.flexible", function () {
+                    setDisplay();
+                });
+            })();
+        </script>
+    </div>
+</div>
+
+<?=
+$this->partial('catalog/catalog/part/part/geo-widget.phtml',
+    array(
+        'type' => 2,
+        'id' => $subsection->id
+    )
+);
+?>
+
+<script type="text/javascript">
+    $(function() {
+        $('a.b-tabs__link').click(function (e) {
+            e.preventDefault();
+            var h = $(this).attr('href');
+            if(history.pushState) {
+                history.pushState(null, null, h);
+            }
+            else {
+                location.hash = h;
+            }
+            $(this).tab('show');
+        });
+        $('a.attention-block_btn').click(function (e) {
+            $('a.b-tabs__link[href="#goods_4"]').trigger('click');
+        });
+
+        // Javascript to enable link to tab
+        var url = document.location.toString();
+        if (url.match('#')) {
+            var hash = "";
+            if (url.split('#')[1].substring(0,1) == '/') {
+                hash = url.split('#')[1].substring(1);
+            } else {
+                hash = url.split('#')[1];
+            }
+
+            $('a.b-tabs__link[href=#'+hash+']').tab('show') ;
+        }
+    });
+
+    function Goods() {
+        var _options = {
+                gallery: "b-goods-gallery",
+                imagesLinks: jQuery(".b-goods-gallery-item__link"),
+                $imagesLayout: jQuery(".b-goods-gallery-item__layout"),
+                animatingSpeed: browser.mobile ? 300 : 500,
+                fancyIsOpen: false,
+                isAnimating: false,
+                imagesOffsets: [],
+                fancySwipingClass: "fancybox-swiping"
+            },
+            _ = jQuery.extend(_options,{ $gallery : jQuery("."+_options.gallery)}),
+            $document = jQuery(document),
+            $html = jQuery("html"),
+            _init = function () {
+                _.$imagesLinks = jQuery(_.imagesLinks);
+                _initGallery();
+                //_initFancy();
+                _bindEvents();
+            },
+            _bindEvents = function () {
+                _.$gallery.clickOrNot().on("clickOrNot", function (e) {
+                    var $layout = jQuery(e.target);
+                    $layout.siblings(_.imagesLinks).trigger("click");
+                });
+//                $document.on("ng.swipe.right", function () {
+//                    $.fancybox.prev();
+//                }).on("ng.swipe.left", function () {
+//                    $.fancybox.next();
+//                });
+//                _.$imagesLinks.on("mouseup", function () {
+//                    return false;
+//                });
+//
+//                _.$gallery.on("click", function (e) {
+//                    var $this = jQuery(e.target);
+//                    $this.siblings("a").click();
+//                }).on("afterChange", function () {
+//                    _.isAnimating = false;
+//                });
+//
+//
+//                _.$gallery.on("fancyBox.beforeLoad", function () {
+//                    if (_.firstCalling) {
+//                        _.firstCalling = false;
+//                        return;
+//                    }
+//                });
+            },
+        /*_initFancy = function () {
+         _.$imagesLinks.fancybox({
+         opacity: true,
+         loop: false,
+         padding: 20,
+         overlayShow: true,
+         transitionIn: 'elastic',
+         transitionOut: 'elastic',
+         parent: ".swipe-layout",
+         helpers: {
+         overlay: {
+         closeClick: false
+         }
+         },
+         prevSpeed: _.animatingSpeed,
+         nextSpeed: _.animatingSpeed,
+         beforeLoad: function () {
+         //                        if (_.isAnimating) return false;
+         //                        _.isAnimating = true;
+         //                        if (!_.firstCalling && !_.checked) {
+         //                            _.firstCalling = true;
+         //                            _.checked = true;
+         //                        }
+         //                        _.$fancy.triggerHandler("fancyBox.beforeLoad");
+         },
+         keys: {
+         next: {
+         39: 'left'
+         },
+         prev: {
+         37: 'right'
+         }
+         },
+         afterLoad: function (current, previous) {
+         },
+         afterShow: function () {
+         _.fancyIsOpen = true;
+         $html.addClass(_.fancySwipingClass);
+         //отменяем перетаскивание при свайпе
+         jQuery(".fancybox-overlay").on("mousedown.preventDrag", function(e) {
+         e.preventDefault();
+         });
+         },
+         afterClose: function () {
+         _.fancyIsOpen = false;
+         $html.removeClass(_.fancySwipingClass);
+         jQuery(".fancybox-overlay").off("mousedown.preventDrag");
+         }
+         });
+
+         },*/
+            _watchOnImageUploading = function () {
+                _.$gallery.imagesLoaded()
+                    .progress(function () {
+                        _.$scroller.data("dragscroll").reInit();
+                    });
+            },
+            _initGallery = function () {
+                if (browser.mobile) return;
+
+                _.$scroller = _.$gallery.dragscroll({
+                    autoFadeBars: false,
+                    scrollBars: true,
+                    smoothness: 15,
+                    mouseWheelVelocity: 0,
+                    mouseWheelEnabled: false,
+                    onRebuild: function (dragscroll) {
+                        var noScrollClass = _.gallery + "_no-scroll";
+                        if (dragscroll.barIndex.X[0] == 1) {
+                            this.addClass(noScrollClass);
+                        } else {
+                            this.removeClass(noScrollClass);
+                        }
+                    }
+                });
+
+                _watchOnImageUploading();
+            };
+        return { init: _init };
+    }
+
+    var goods = Goods();
+    goods.init();
+
+</script>
+
+
+<script>
+    popup.renderCartedLines();
+    catalogClient.scrollToProduct = <?= $scrollToProduct ? $scrollToProduct : 'false'  ?>;
+
+    $(function() {
+        catalogClient.initUrl();
+    });
+
+    $(function() {
+        popup.initCopyLinkBtns();
+    });
+
+    <? if ($admin) : ?>
+    catalog.parentId = '<?= $series->id ?>';
+    <? endif; ?>
+    var pageTitle = "<?= !empty($series->visible_title) ? 'Купить ' . $series->visible_title . ' — цена, описание': 'Купить ' . $series->title . ' — цена, описание' ?>";
+
+    popup.pageTitle = pageTitle;
+    //document.title = pageTitle;
+    <? if ($admin && $series->sorted_field) : ?>
+    $('[data-param = <?= $series->sorted_field ?>]').addClass('active-<?= $series->sorted_order ?>');
+
+    <? endif; ?>
+
+
+    function scrollToPower() {
+        mainpage.scrollTo($('.scrollable_power:first'));
+    }
+
+</script>
+
+<script type="application/javascript">
+    $(window).keyup(function(event) {
+        if(event.ctrlKey){
+            if (event.keyCode==37) {
+                document.location = "/catalog/series/<?= $this->prevProd->id ?>";
+            } else if (event.keyCode==39) {
+                document.location = "/catalog/series/<?= $this->nextProd->id ?>";
+            }
+        }
+    });
+</script>

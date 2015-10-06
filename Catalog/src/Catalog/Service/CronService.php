@@ -137,7 +137,7 @@ class CronService {
             $product->lumfx_abs = $lumfx_abs;
             $product->vangl_abs = $vangl_abs;
 
-			$product = self::modifySeriesName($product);
+			//$product = self::modifySeriesName($product);
         } else {
             echo 'error';
             return false;
@@ -182,10 +182,10 @@ class CronService {
 		}
 		else if ($product->seriesName == 'Влагозащищенные светодиодные ленты') {
 			if ($product->electro_power == '12 VDC') {
-				$product->seriesName = 'Мультицветные ленты, Напряжение питания 12 В';
+				$product->seriesName = 'Влагозащищенные ленты, Напряжение питания 12 В';
 			}
 			else if ($product->electro_power == '24 VDC') {
-				$product->seriesName = 'Мультицветные ленты, Напряжение питания 24 В';
+				$product->seriesName = 'Влагозащищенные ленты, Напряжение питания 24 В';
 			}
 		}
 		

@@ -303,6 +303,9 @@ class CatalogController extends BaseController
         if (!$id) {
             return $this->redirect()->toRoute('catalog');
         }
+		/*if ($id == 29) {
+			return $this->redirect()->toRoute('catalog', array('action'=>'subsection', 'id'=>30));
+		}*/
         $sl = $this->getServiceLocator();
         $cm = CatalogMapper::getInstance($sl);
 
@@ -437,6 +440,46 @@ class CatalogController extends BaseController
         return $view;
     }
 
+    public function renderSubsectionLentsAction() {
+        $id = $this->params()->fromRoute('id', 0);
+        $sl = $this->getServiceLocator();
+        $cm = CatalogMapper::getInstance($sl);
+
+        $subsection = $cm->getSubsection($id, true, true);
+        $id = $subsection->id;
+
+        $params = $sl->get('Catalog\Model\ProductParamsTable')->fetchAll();
+
+        $series = SeriesAggregator::getInstance()->getSeries($id);
+        $series = reset($series);
+        $dopProducts = $series->dopProducts;
+        $firstTabGroups = array();
+        $fourthTabGroups = array();
+        foreach ($dopProducts as $gr) {
+            if ($gr['placement'] == 4 || $gr['placement'] == 0) {
+                $fourthTabGroups[] = $gr;
+            } elseif ($gr['placement'] == 1) {
+                $firstTabGroups[] = $gr;
+            }
+        }
+
+        $view = new ViewModel();
+        $view
+            ->setVariables(array(
+                'curSer'   => $series,
+                'params'             => $params,
+                'view' => $view,
+                'seAgg' => SeriesAggregator::getInstance(),
+                'firstTabGroups' => $firstTabGroups,
+                'fourthTabGroups' => $fourthTabGroups,
+                'sl'       => $sl
+            ));
+        $links = LinkToLinkMapper::getInstance($sl)->fetchCatalogSortedBySectionType($id, AdminController::SUBSECTION_TABLE);
+        $view->setVariable('links', $links);
+        $view->setTemplate('catalog/catalog/subsection_lenta');
+        return $view;
+    }
+
     public function subsectionAction()
     {
         $id = $this->params()->fromRoute('id', 0);
@@ -463,7 +506,8 @@ class CatalogController extends BaseController
                 $url = $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->id));
                 $url .= '?subsec=' . $subsection->id;
                 return $this->redirect()->toUrl($url)->setStatusCode(301);
-
+                
+				/*$view = $this->forward()->dispatch('catalog', array('action'=>'renderSubsectionLents', 'id'=>$id));*/
                 break;
 
             case CatalogService::DISPLAY_STYLE_POWER:
@@ -521,12 +565,18 @@ class CatalogController extends BaseController
                 array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
                 $breadCrumbsSection
             );
+			/*if ($section->id != 29) {
+				$breadcrumbs[] = $breadCrumbsSection;
+			}*/
         } else {
             $breadcrumbs =  array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
                 array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
                 $breadCrumbsSection
             );
+			/*if ($section->id != 29) {
+				$breadcrumbs[] = $breadCrumbsSection;
+			}*/
         }
 
         $return = array(
