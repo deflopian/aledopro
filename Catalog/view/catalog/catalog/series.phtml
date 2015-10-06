@@ -672,11 +672,14 @@ function mb_ucfirst($text) {
                     });
             },
             _initGallery = function () {
-                _.$gallery.on("init", function(e, slick){
+                var imgLoaded = imagesLoaded(".b-goods-gallery");
+				imgLoaded.on("always", function(){
+					_.$gallery.on("init", function(e, slick){
 				
 					if(slick.slideCount == 1 ){
-						slick.slickSetOption('centerMode', false, false);
+					slick.slickSetOption('fade', true, true);
 						_.$gallery.addClass('b-slider_no-slider');
+						_.$gallery.addClass('b-slider_no-slider_fade');
 					}
 					
 				}).slick({
@@ -686,7 +689,7 @@ function mb_ucfirst($text) {
                     speed: _.animatingSpeed,
                     slidesToShow: 1,
                     touchThreshold: browser.mobile ? 5 : 50,
-                    centerMode: true,
+                    //centerMode: true,
                     centerPadding: "0px",
                     variableWidth: true,
 
@@ -694,6 +697,8 @@ function mb_ucfirst($text) {
                     prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow  b-slider-arrows__arrow_prev b-goods-gallery__arrow\" ></a>",
                     nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow  b-slider-arrows__arrow_next b-goods-gallery__arrow\" ></a>"
                 });
+				});
+				
 
 
 
