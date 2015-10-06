@@ -137,10 +137,22 @@ class ProjectsController extends AbstractActionController
         $rubric = $this->getServiceLocator()->get('ProjectRubricTable')->find($groupId);
 
         if ($rubric) {
-            $projects = $this->getServiceLocator()->get('ProjectsTable')->fetchByConds(array('rubric_id' => $groupId, 'deleted' => 0), false, 'order asc');
+			if ($this->zfcUserAuthentication()->getIdentity()) {
+				$uid = $this->zfcUserAuthentication()->getIdentity()->getId();
+				$user = $this->getServiceLocator()->get('UserTable')->find($uid);
+				
+				$roleLinker = $this->getServiceLocator()->get('RoleLinkerTable')->find($user->user_id, 'user_id');
+				$role = $roleLinker->role_id;
 
-
-        } else {
+				if ($role == 'admin' || $role == 'manager') {
+					$projects = $this->getServiceLocator()->get('ProjectsTable')->fetchByCond('rubric_id', $groupId, 'order asc');
+				}
+			}
+			else {
+				$projects = $this->getServiceLocator()->get('ProjectsTable')->fetchByConds(array('rubric_id' => $groupId, 'deleted' => 0), false, 'order asc');
+			}
+        }
+		else {
             return $this->redirect()->toRoute('home');
         }
 

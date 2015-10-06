@@ -332,13 +332,6 @@ class AdminController extends SampleAdminController
 
                 $this->getServiceLocator()->get($table)->save($entity);
                 $success = 1;
-				
-				if ($post['name'] == "rubric_id") {
-					$project = $this->getServiceLocator()->get($table)->find($entity->id);
-					
-					list($email, $mailView) = MailService::prepareNotificationMailData($this->getServiceLocator(), $project, MailService::NOTIFICATION_PROJECTS);
-					MailService::sendMail($email, $mailView, "Новый проект добавлен на сайт!");
-				}
             }
 
             $response = $this->getResponse();
@@ -347,6 +340,31 @@ class AdminController extends SampleAdminController
         }
         return $this->redirect()->toRoute('zfcadmin/'.$this->url);
     }
+	
+	public function sendNotificationAction()
+    {
+		$this->setData();
+
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $post = $request->getPost()->toArray();
+            $success = 0;
+			
+			if ($post['id']) {
+				$project = $this->getServiceLocator()->get($this->table)->find($post['id']);
+				
+				list($email, $mailView) = MailService::prepareNotificationMailData($this->getServiceLocator(), $project, MailService::NOTIFICATION_PROJECTS);
+				MailService::sendMail($email, $mailView, "Новый проект добавлен на сайт!");
+				
+				$success = 1;
+			}
+			
+			$response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode(array('success' => $success)));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+	}
 
     public function saveTagitAction()
     {
