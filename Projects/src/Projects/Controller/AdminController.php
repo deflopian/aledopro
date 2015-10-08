@@ -347,11 +347,11 @@ class AdminController extends SampleAdminController
 
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
-            $post = $request->getPost()->toArray();
+            $id = $request->getPost('id', false);
             $success = 0;
 			
-			if ($post['id']) {
-				$project = $this->getServiceLocator()->get($this->table)->find($post['id']);
+			if ($id) {
+				$project = $this->getServiceLocator()->get($this->table)->find($id);
 				
 				list($email, $mailView) = MailService::prepareNotificationMailData($this->getServiceLocator(), $project, MailService::NOTIFICATION_PROJECTS);
 				MailService::sendMail($email, $mailView, "Новый проект добавлен на сайт!");

@@ -657,11 +657,6 @@ class AdminController extends SampleAdminController
                         $entity->deleted = 0;
                         $this->getServiceLocator()->get('Catalog\Model\\'. $tableName )->save($entity);
                         $success = 1;
-						
-						if ($type == self::SERIES_TABLE) {
-							list($email, $mailView) = MailService::prepareNotificationMailData($this->getServiceLocator(), $entity, MailService::NOTIFICATION_SERIES);
-							MailService::sendMail($email, $mailView, "Новая серия добавлена на сайт!");
-						}
                     }
                 }
             }
@@ -673,6 +668,34 @@ class AdminController extends SampleAdminController
         }
         return $this->redirect()->toRoute('zfcadmin/catalog');
     }
+	
+	public function sendNotificationAction() {
+		$request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $id = $request->getPost('id', false);
+            $type = $request->getPost('type', false);
+            $success = 0;
+			
+			if ($id && $type) {
+				if ($type == self::SERIES_TABLE) {
+                    $tableName = CatalogService::getTableName($type);
+                    if ($tableName) {
+						$entity = $this->getServiceLocator()->get('Catalog\Model\\'. $tableName)->find($id);
+						
+						list($email, $mailView) = MailService::prepareNotificationMailData($this->getServiceLocator(), $entity, MailService::NOTIFICATION_SERIES);
+						MailService::sendMail($email, $mailView, "Новая серия добавлена на сайт!");
+						
+						$success = 1;
+					}
+				}
+			}
+			
+			$response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode(array('success' => $success)));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+	}
 
 
     public function delEntityAction()
