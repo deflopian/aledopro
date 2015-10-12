@@ -22,7 +22,7 @@ class YMLService {
             <name>Aledo</name>
             <company>Aledo</company>
             <url>http://www.aledo-pro.ru/</url>
-            <email>deflopian@gmail.com</email>
+            <email>info@aledo-pro.ru</email>
         ";
     }
 

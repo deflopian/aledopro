@@ -408,7 +408,6 @@ class CartController extends AbstractActionController
                                 );
                             }
                             MailService::sendMail(MailService::$currentManagerMail, $mailView, "Новый заказ номер " . $orderId . " на Aledo");
-                            MailService::sendMail("deflopian@gmail.com", $mailView, "Новый заказ номер " . $orderId . " на Aledo");
 
                         }
                     }

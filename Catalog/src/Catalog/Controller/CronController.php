@@ -404,7 +404,6 @@ class CronController extends BaseController
             if (isset($orphanSeriesReport->items) && count($orphanSeriesReport->items) > 0) {
                 //list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $orphanSeriesReport);
                 //MailService::sendMail($email, $mailView, "Отчёт по добавленным сериям номер " . $orphanSeriesReport->id);
-                //MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт по добавленным сериям номер " . $orphanSeriesReport->id );
             } elseif (count($orphanSeriesReport->items) == 0) {
                 $reportMapper->delete($orphanSeriesReport->id);
             }
@@ -412,7 +411,6 @@ class CronController extends BaseController
             if (isset($zeroPriceReport->items) && count($zeroPriceReport->items) > 0) {
                 list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $zeroPriceReport);
                 MailService::sendMail($email, $mailView, "Отчёт по продуктам без цены номер " . $zeroPriceReport->id);
-                MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт по продуктам без цены номер " . $zeroPriceReport->id);
             } elseif (count($zeroPriceReport->items) == 0) {
                 $reportMapper->delete($zeroPriceReport->id);
             }
@@ -420,7 +418,6 @@ class CronController extends BaseController
             if (isset($newProdsReport->items) && count($newProdsReport->items) > 0) {
                 list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $newProdsReport);
                 MailService::sendMail($email, $mailView, "Отчёт по новым продуктам номер " . $newProdsReport->id);
-                MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт по новым продуктам номер " . $newProdsReport->id);
             } elseif (count($newProdsReport->items) == 0) {
                 $reportMapper->delete($newProdsReport->id);
             }
@@ -428,7 +425,6 @@ class CronController extends BaseController
             if (isset($withoutPreviewReport->items) && count($withoutPreviewReport->items) > 0) {
                 list($email, $mailView) = MailService::prepareReportData($this->getServiceLocator(), $withoutPreviewReport);
                 MailService::sendMail($email, $mailView, "Отчёт по продуктам без превью номер " . $withoutPreviewReport->id);
-                MailService::sendMail("deflopian@gmail.com", $mailView, "Отчёт по продуктам без превью номер " . $withoutPreviewReport->id);
             } elseif (count($withoutPreviewReport->items) == 0) {
                 $reportMapper->delete($withoutPreviewReport->id);
             }

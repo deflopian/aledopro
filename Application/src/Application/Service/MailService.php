@@ -23,7 +23,7 @@ class MailService
 {
     public static $currentManagerMail = "info@aledo-pro.ru";
     private static $kaledoscopManagerMail = "info@kaledoscop.ru";
-    public static $developerMail = "deflopian@gmail.com";
+    public static $developerMail = "sek@aledo-pro.ru";
     
 	const CURRENT_DOMEN = "aledo-pro.ru";	
 	const NOTIFICATION_SERIES = 1;
