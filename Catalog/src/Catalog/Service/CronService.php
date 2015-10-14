@@ -109,7 +109,19 @@ class CronService {
                 }
 
                 if ($key_vars[$num-$shit] == 'power') {
-                    $value = str_replace(",",".",$value);
+                    $value = floatval(str_replace(",",".",$value));
+                }
+				
+				if ($key_vars[$num-$shit] == 'year_made' || $key_vars[$num-$shit] == 'free_balance' || $key_vars[$num-$shit] == 'expected_count' ||
+					$key_vars[$num-$shit] == 'price_without_nds' || $key_vars[$num-$shit] == 'count_of_diodes' || $key_vars[$num-$shit] == 'ip_rating' ||
+					$key_vars[$num-$shit] == 'number_of_channels' || $key_vars[$num-$shit] == 'sv_effect' || $key_vars[$num-$shit] == 'u_in' ||
+					$key_vars[$num-$shit] == 'ECE' || $key_vars[$num-$shit] == 'cos' || $key_vars[$num-$shit] == 'weight' ||
+					$key_vars[$num-$shit] == 'wholesale_price') {
+                    $value = intval($value);
+                }
+				if ($key_vars[$num-$shit] == 'length' || $key_vars[$num-$shit] == 'u_out' || $key_vars[$num-$shit] == 'current_per_channel' ||
+					$key_vars[$num-$shit] == 'cri') {
+                    $value = floatval($value);
                 }
 
                 if ($key_vars[$num-$shit] == 'luminous_flux') {
@@ -248,11 +260,11 @@ class CronService {
             // I'm some kind of stupid with table fields, so we need to check price particularly
             if ($productSeries[$serName]['wholesale_price']['min'] < $series->min_price) {
                 $changedFlag = true;
-                $series->min_price = $productSeries[$serName]['wholesale_price']['min'];
+                $series->min_price = intval($productSeries[$serName]['wholesale_price']['min']);
             }
             if ($productSeries[$serName]['wholesale_price']['max'] > $series->max_price) {
                 $changedFlag = true;
-                $series->max_price = $productSeries[$serName]['wholesale_price']['max'];
+                $series->max_price = intval($productSeries[$serName]['wholesale_price']['max']);
             }
 
             // остальное хуячим магией
@@ -261,13 +273,13 @@ class CronService {
                 if ($diapasonParamName == $allDiapasonParams[0]) continue;
                 $minValueName = 'min_' . $diapasonParamName;
                 $maxValueName = 'max_' . $diapasonParamName;
-                if ($productSeries[$serName][$diapasonParamName]['min'] < $series->$minValueName) {
+                if ($productSeries[$serName][$diapasonParamName]['min'] != $series->$minValueName) {
                     $changedFlag = true;
-                    $series->$minValueName = $productSeries[$serName][$diapasonParamName]['min'];
+                    $series->$minValueName = intval($productSeries[$serName][$diapasonParamName]['min']);
                 }
-                if ($productSeries[$serName][$diapasonParamName]['max'] > $series->$maxValueName) {
+                if ($productSeries[$serName][$diapasonParamName]['max'] != $series->$maxValueName) {
                     $changedFlag = true;
-                    $series->$maxValueName = $productSeries[$serName][$diapasonParamName]['max'];
+                    $series->$maxValueName = intval($productSeries[$serName][$diapasonParamName]['max']);
                 }
             }
 
@@ -280,8 +292,8 @@ class CronService {
             $seriesEntity = new SeriesParams();
             $seriesEntity->series_id = $product->series_id;
 
-            $seriesEntity->min_price = $productSeries[$serName]['wholesale_price']['min'] == null ? 0 : $productSeries[$serName]['wholesale_price']['min'] ;
-            $seriesEntity->max_price = $productSeries[$serName]['wholesale_price']['max'] == null ? 0 : $productSeries[$serName]['wholesale_price']['max'] ;
+            $seriesEntity->min_price = $productSeries[$serName]['wholesale_price']['min'] == null ? 0 : intval($productSeries[$serName]['wholesale_price']['min']) ;
+            $seriesEntity->max_price = $productSeries[$serName]['wholesale_price']['max'] == null ? 0 : intval($productSeries[$serName]['wholesale_price']['max']) ;
 
             // magic!
             foreach ($allDiapasonParams as $diapasonParamName) {
@@ -289,8 +301,8 @@ class CronService {
                 $minValueName = 'min_' . $diapasonParamName;
                 $maxValueName = 'max_' . $diapasonParamName;
 
-                $seriesEntity->$minValueName = $productSeries[$serName][$diapasonParamName]['min'] == null ? 0 : $productSeries[$serName][$diapasonParamName]['min'];
-                $seriesEntity->$maxValueName = $productSeries[$serName][$diapasonParamName]['max'] == null ? 0 : $productSeries[$serName][$diapasonParamName]['max'];
+                $seriesEntity->$minValueName = $productSeries[$serName][$diapasonParamName]['min'] == null ? 0 : intval($productSeries[$serName][$diapasonParamName]['min']);
+                $seriesEntity->$maxValueName = $productSeries[$serName][$diapasonParamName]['max'] == null ? 0 : intval($productSeries[$serName][$diapasonParamName]['max']);
             }
             $insertedSeriesMinMax++;
             $filterTable->save($seriesEntity);
