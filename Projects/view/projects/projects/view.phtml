@@ -40,7 +40,7 @@
                     <? $minSrc = $this->basePath() . '/images/projects/' . $minUrl ?>
 
 
-                        <img class="b-slider__image" src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $img->url) ? $minSrc : $src ?>" alt="<?= $series->visible_title; ?> url" />
+                        <img class="b-slider__image pinit-image" src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $img->url) ? $minSrc : $src ?>" alt="<?= $series->visible_title; ?> url" />
 
 <!--                    <a href="/images/projects/--><?//= $img->url ?><!--" rel="gallery">-->
 <!--                        <img class="b-slider__image" src="/images/projects/--><?//= $img->url ?><!--"/>-->
@@ -309,6 +309,40 @@
                     </div>
                 </div>
             </div>
+			
+			<hr class="dotted-separator b-article__separator">
+			<center>
+				<script type="text/javascript">
+					function getShareWindow(url) {
+						var width = 554;
+						var height = 349;
+						var left = (screen.width - width) / 2;
+						var top = (screen.height - height) / 2;
+						var popupParams = 'scrollbars=0, resizable=1, menubar=0, left=' + left + ', top=' + top + ', width=' + width + ', height=' + height + ', toolbar=0, status=0';
+						window.open(url, 'shareWindow', popupParams);
+					}
+				</script>
+				
+				<a class="b-blog-social-link-nav" href="#" onclick="getShareWindow('http://www.facebook.com/share.php?u='+ window.location +'&title=' + document.title);return false;">
+					<img src="/Content/images/social/blog_f_.svg"/>
+					<img src="/Content/images/social/blog_f_hover.svg" />
+				</a>
+				
+				<script type="text/javascript" src="http://vk.com/js/api/share.js?92" charset="windows-1251"></script>
+				<script type="text/javascript">
+					document.write(VK.Share.button(false, {type: 'custom', text: '<div class="b-blog-social-link-nav"><img src="/Content/images/social/blog_vk_.svg""/><img src="/Content/images/social/blog_vk_hover.svg" /></div>'}));
+				</script>
+				
+				<a class="b-blog-social-link-nav" href="#" onclick="getShareWindow('http://www.linkedin.com/shareArticle?mini=true&url='+ window.location +'&title=' + document.title + '&source=Aledo');return false;">
+					<img src="/Content/images/social/blog_L_in.svg"/>
+					<img src="/Content/images/social/blog_L_in_hover.svg" />
+				</a>
+				<a class="b-blog-social-link-nav" href="#" onclick="getShareWindow('http://pinterest.com/pin/create/button/?media=http://aledo-pro.ru' + $('.pinit-image:first').attr('src') + '&url='+ window.location +'&description=' + document.title);return false;">
+					<img src="/Content/images/social/blog_pin.svg"/>
+					<img src="/Content/images/social/blog_pin_hover.svg" />
+				</a>
+			</center>
+		
         </div>
     </div>
 
