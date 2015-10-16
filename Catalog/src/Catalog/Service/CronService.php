@@ -167,7 +167,7 @@ class CronService {
 	private static function modifySeriesName($product)
 	{
 		if ($product->seriesName == 'Одноцветные светодиодные ленты') {
-			if ($product->opt3 == 'Для общего освещения') {
+			if ($product->power > 10) {
 				if ($product->electro_power == '12 VDC') {
 					$product->seriesName = 'Одноцветные ленты, Светодиодные ленты для общего освещения, Напряжение питания 12 В';
 				}
@@ -175,7 +175,7 @@ class CronService {
 					$product->seriesName = 'Одноцветные ленты, Светодиодные ленты для общего освещения, Напряжение питания 24 В';
 				}
 			}
-			else if ($product->opt3 == 'Для декоративной подсветки') {
+			else {
 				if ($product->electro_power == '12 VDC') {
 					$product->seriesName = 'Одноцветные ленты, Светодиодные ленты для декоративной подсветки, Напряжение питания 12 В';
 				}
