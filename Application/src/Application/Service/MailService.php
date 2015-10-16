@@ -291,6 +291,8 @@ class MailService
     public static function prepareNotificationMailData($sl, $entity, $type)
     {
         $title = $entity->title;
+		$id = 0;
+		$need_share = false;
 		
 		switch ($type) {
 			case self::NOTIFICATION_SERIES:
@@ -301,10 +303,12 @@ class MailService
 			case self::NOTIFICATION_PROJECTS:
 				$category = 'новый проект';
 				$link = '/projects/view/' . $entity->id . '/';
+				$need_share = true;
 				break;
 			case self::NOTIFICATION_ARTICLES:
 				$category = 'новая статья в блоге';
 				$link = '/articles/view/' . $entity->id . '/';
+				$need_share = true;
 				break;
 			case self::NOTIFICATION_DEVELOPERS:
 				$category = 'новый производитель';
@@ -335,7 +339,8 @@ class MailService
 			'id' => $id,
             'category' => $category,
 			'title' => $title,
-			'link' => $link
+			'link' => $link,
+			'need_share' => $need_share
         ));
         $view->setTerminal(true);
 		$view->setTemplate('application/index/email/email-notification');
