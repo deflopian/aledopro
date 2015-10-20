@@ -691,7 +691,7 @@ function mb_ucfirst($text) {
                     dots: false,
                     infinite: true,
                     speed: _.animatingSpeed,
-                    slidesToShow: 3,
+                    slidesToShow: $(".b-goods-gallery-item__image").length > 3 ? 3 : 1,
                     touchThreshold: browser.mobile ? 5 : 50,
                     //centerMode: true,
                     centerPadding: "0px",
