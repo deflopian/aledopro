@@ -5,7 +5,7 @@
     >
     <span id="title"><?= $entity->title; ?></span>
 </h1>
-
+<button type="button" class="btn btn-default" id="send-notification">Уведомить сотрудников о новой статье в блоге</button>
 <div class="section">
     <h3>Основная информация</h3>
     <table class="table admin-table  table-striped">
@@ -205,6 +205,7 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
         catalog.parentId = '<?= $entity->id ?>';
         catalog.baseUrl = '<?= $this->url('zfcadmin/articles') ?>';
         catalog.page_info_type = '<?= \Info\Service\SeoService::ARTICLES ?>';
+		catalog.init();
         catalog.initEditables();
 
         wysiwyg.init({

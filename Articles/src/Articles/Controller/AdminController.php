@@ -99,9 +99,6 @@ class AdminController extends SampleAdminController
                 $entity->deleted = 0;
                 $this->getServiceLocator()->get($this->table)->save($entity);
                 $success = 1;
-				
-				list($email, $mailView) = MailService::prepareNotificationMailData($this->getServiceLocator(), $entity, MailService::NOTIFICATION_ARTICLES);
-				MailService::sendMail($email, $mailView, "Новая статья в блоге добавлена на сайт!");
             }
 
             $returnArr = array('success' => $success);
@@ -164,6 +161,31 @@ class AdminController extends SampleAdminController
         }
         return $this->redirect()->toRoute('zfcadmin/'.$this->url);
     }
+	
+	public function sendNotificationAction()
+    {
+		$this->setData();
+
+        $request = $this->getRequest();
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $id = $request->getPost('id', false);
+            $success = 0;
+			
+			if ($id) {
+				$article = $this->getServiceLocator()->get($this->table)->find($id);
+				
+				list($email, $mailView) = MailService::prepareNotificationMailData($this->getServiceLocator(), $article, MailService::NOTIFICATION_ARTICLES);
+				MailService::sendMail($email, $mailView, "Новая статья в блоге добавлена на сайт!");
+				
+				$success = 1;
+			}
+			
+			$response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode(array('success' => $success)));
+            return $response;
+        }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+	}
 
     public function viewAction()
     {

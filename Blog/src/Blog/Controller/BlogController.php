@@ -96,7 +96,22 @@ class BlogController extends AbstractActionController
     public function indexAction()
     {
         $sl = $this->getServiceLocator();
-        $articles = $sl->get('ArticlesTable')->fetchByCond('deleted', 0, 'order ASC');
+		
+		if ($this->zfcUserAuthentication()->getIdentity()) {
+			$uid = $this->zfcUserAuthentication()->getIdentity()->getId();
+			$user = $sl->get('UserTable')->find($uid);
+				
+			$roleLinker = $sl->get('RoleLinkerTable')->find($user->user_id, 'user_id');
+			$role = $roleLinker->role_id;
+
+			if ($role == 'admin' || $role == 'manager') {
+				$articles = $sl->get('ArticlesTable')->fetchAll('order ASC');
+			}
+		}
+		else {
+			$articles = $sl->get('ArticlesTable')->fetchByCond('deleted', 0, 'order ASC');
+		}
+		
         $fileTable = $this->getServiceLocator()->get('FilesTable');
         $tagToArticleTable = $this->getServiceLocator()->get('TagToArticlesTable');
         $tagsTable = $this->getServiceLocator()->get('ArticleTagsTable');
