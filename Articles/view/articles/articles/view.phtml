@@ -41,12 +41,14 @@
             <? if ($block->text) { ?>
                 <?= $block->text ?>
             <? } ?>
+			<div style="white-space: nowrap;">
             <? if ($block->img_name) { ?>
-                <img src="/images/articles/<?= $block->img_name ?>"/>
+                <img src="/images/articles/<?= $block->img_name ?>"<?= ($article->id==6 && $block->order==1) ? ' style="display: inline; width: 350px; height: auto;"' : '' ?>/>
             <? } ?>
 			<? if ($block->img2_name) { ?>
-                <img src="/images/articles/<?= $block->img2_name ?>"/>
+                <img src="/images/articles/<?= $block->img2_name ?>"<?= ($article->id==6 && $block->order==1) ? ' style="display: inline; width: 350px; height: auto;"' : '' ?>/>
             <? } ?>
+			</div>
             <? if ($block->textafter) { ?>
                 <?= $block->textafter ?>
             <? } ?>

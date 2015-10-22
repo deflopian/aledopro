@@ -307,7 +307,7 @@ class AdminController extends SampleAdminController
             $this->response->setContent(Json::encode(array('success' => $success)))->setStatusCode(200);
             return $this->response;
         } else {
-            return $this->redirect()->toRoute('admin/blog');
+            return $this->redirect()->toRoute('zfcadmin/blog');
         }
     }
 
@@ -335,7 +335,7 @@ class AdminController extends SampleAdminController
             $this->response->setContent(Json::encode(array('success' => $success)))->setStatusCode(200);
             return $this->response;
         } else {
-            return $this->redirect()->toRoute('admin/blog');
+            return $this->redirect()->toRoute('zfcadmin/blog');
         }
     }
 
@@ -358,7 +358,7 @@ class AdminController extends SampleAdminController
             $this->response->setContent(Json::encode(array('success' => $success)))->setStatusCode(200);
             return $this->response;
         } else {
-            return $this->redirect()->toRoute('admin/blog');
+            return $this->redirect()->toRoute('zfcadmin/blog');
         }
     }
 
