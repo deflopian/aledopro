@@ -74,8 +74,8 @@ $url = $uriArr[0]
 	
     <? if ($this->og) { ?>
     <meta property="og:url" content="<?= $this->og['url'] ?>"/>
-    <meta property="og:title" content="<?= $this->og['title'] ?>"/>
-    <meta property="og:description" content="<?= $this->og['description'] ?>"/>
+    <meta property="og:title" content="<?= htmlspecialchars($this->og['title']) ?>"/>
+    <meta property="og:description" content="<?= htmlspecialchars($this->og['description']) ?>"/>
     <meta property="og:image" content="<?= $this->og['image'] ?>"/>
     <? } ?>
 
