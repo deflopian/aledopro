@@ -15,8 +15,28 @@ $url = $uriArr[0]
     ? ($uriArr[0] == 'info' ? $uriArr[1] : $uriArr[0])
     : 'app';
 ?>
+<?
+ $isDesktopVersion = false;
+ 
+ if(strpos($_SERVER["REQUEST_URI"], 'subsection') ||
+  strpos($_SERVER["REQUEST_URI"], 'series') ||
+ (strpos($_SERVER["REQUEST_URI"], 'section') && strpos($_SERVER["REQUEST_URI"], '33')) ||
+ 
+ (strpos($_SERVER["REQUEST_URI"], 'solutions') && strpos($_SERVER["REQUEST_URI"], 'view'))
+ 
+ ){
+	 $isDesktopVersion = true;
+ } else{
+	 switch($active){
+		 case 'pluses'  :
+		 case 'cart'
+		 : $isDesktopVersion = true;
+		 break;
+	 }
+	  }
 
-<html lang="ru">
+?>
+<html lang="ru" class="<?=$isDesktopVersion ? "b-html_desktop" : ""?>">
 <head>
     <meta charset="utf-8">
     <meta name='yandex-verification' content='45f1d1c6724f6951'/>
@@ -44,7 +64,20 @@ $url = $uriArr[0]
     }
     ?>
 
-    <?= $meta->appendName('viewport', 'width=device-width'); ?>
+    <? if($isDesktopVersion) {
+	echo $meta->appendName('viewport', 'width=device-width');
+	
+	} else {
+	echo $meta->appendName('viewport', 'width=device-width; initial-scale=1.0');
+	
+	}	?>
+	
+    <? if ($this->og) { ?>
+    <meta property="og:url" content="<?= $this->og['url'] ?>"/>
+    <meta property="og:title" content="<?= $this->og['title'] ?>"/>
+    <meta property="og:description" content="<?= $this->og['description'] ?>"/>
+    <meta property="og:image" content="<?= $this->og['image'] ?>"/>
+    <? } ?>
 
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
     <link href="/favicon.ico" rel="icon" type="image/x-icon">
@@ -121,6 +154,7 @@ $url = $uriArr[0]
 	<script src="/Scripts/aledo.app/aledo.directives/geo.widget.directive.js"></script>
     <script src="/Scripts/aledo.app/aledo.directives/angular-sortable-view.min.js"></script>
     <script src="/Scripts/aledo.app/aledo.services/aledo.cart.service.js"></script>
+	<script src="/Scripts/aledo.app/aledo.directives/mobile.directives.js"></script>
     <script src="/Scripts/imagesloaded.pkgd.js"></script>
     <script src="http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU"
             type="text/javascript"></script>
@@ -374,7 +408,7 @@ $url = $uriArr[0]
     </script>
 		
     <!-- RedHelper -->
-    <script id="rhlpscrtg" type="text/javascript" charset="utf-8" async="async" src="https://web.redhelper.ru/service/main.js?c=aledo"></script>
+    <!-- <script id="rhlpscrtg" type="text/javascript" charset="utf-8" async="async" src="https://web.redhelper.ru/service/main.js?c=aledo"></script> -->
     <!-- /RedHelper -->
 
     <script type="text/javascript">

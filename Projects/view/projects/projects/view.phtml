@@ -258,8 +258,8 @@
 
 
             <div class="b-about-project">
-                <div class="b-about-project__row">
-                    <div class="b-about-project__cell b-about-project__cell_left b-about-project__cell_heading">
+                <div class="b-about-project__row hidden-xs">
+                    <div class="b-about-project__cell b-about-project__cell_left b-about-project__cell_heading ">
                         <h4 class="b-about-project__heading"><?= $project->title ?></h4>
                     </div>
                     <div class="b-about-project__cell b-about-project__cell_center">
@@ -269,15 +269,20 @@
                     </div>
                 </div>
                 <div class="b-about-project__row">
+                    <div class="b-about-project__cell b-about-project__cell_left b-about-project__cell_heading visible-xs ">
+                        <h4 class="b-about-project__heading"><?= $project->title ?></h4>
+                    </div>
                     <div class="b-about-project__cell b-about-project__cell_left">
                         <div class="b-project-description">
                             <?= $project->text ?>
                         </div>
                     </div>
-                    <div class="b-about-project__cell b-about-project__cell_center">
+                    <div class="b-about-project__cell b-about-project__cell_center hidden-xs">
                         <div class="b-about-project__separator"></div>
                     </div>
-
+                    <div class="b-about-project__cell b-about-project__cell_right  b-about-project__cell_heading visible-xs">
+                        <h4 class="b-about-project__heading b-about-project__heading_products">Оборудование в проекте</h4>
+                    </div>
                     <div class="b-about-project__cell b-about-project__cell_right">
                         <div class="b-project-products">
 
@@ -359,7 +364,7 @@
                     <? $minSrc = $this->basePath() . '/images/projects/' . $minUrl ?>
                     <div class="b-slider__item b-slider_another-projects__item">
                         <a class="b-slider_another-projects__link"
-                           href="../view/<?= $proj->id ?>">
+                           href="../<?= $proj->id ?>">
                             <img class="b-slider_another-projects__image"
                                  src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/projects/min_' . $proj->img) ? $minSrc : $src ?>" alt="<?= $proj->title; ?> url" />
             <span class="b-slider_another-projects__title">
@@ -616,28 +621,13 @@
             draggable: browser.mobile ? true : false,
             speed: browser.mobile ? 300 : 500,
             touchThreshold: browser.mobile ? 5 : 50,
-            slidesToShow: 4,
+            slidesToShow: 3,
+            centerMode: true,
+            variableWidth: true,
 
 
             arrows: browser.mobile ? false : true,
-            responsive: [
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 3
 
-
-                    }
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2
-
-                    }
-                }
-
-                ],
             prevArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_prev b-slider_another-projects__arrow b-slider_another-projects__arrow_prev\">" +
             "</a>",
             nextArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_next b-slider_another-projects__arrow b-slider_another-projects__arrow_next\">" +

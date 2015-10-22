@@ -101,11 +101,19 @@ class ProjectsController extends AbstractActionController
         foreach($relatedProjIds as $sid){
             $relatedProjects[] = $this->getProjectTable()->find($sid);
         }
-        $this->layout()->pageTitle = $project->title;
+        $this->layout()->seoData = $seoData;
+		$this->layout()->pageTitle = $project->title;
         $this->layout()->breadCrumbs  = array(
             array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
             array('link'=> $this->url()->fromRoute('projects'), 'text'=>ucfirst('Проекты'))
         );
+		$this->layout()->og = array(
+			'url' => 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
+			'title' => $project->title,
+			'description' => $seoData ? $seoData->description : '',
+			'image' => isset($imgs[0]) ? 'http://aledo-pro.ru/images/projects/' . $imgs[0]->url : ''
+		);
+		
         $htmlViewPart = new ViewModel();
         $htmlViewPart->setVariables(array(
                 'project'   => $project,

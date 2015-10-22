@@ -75,6 +75,13 @@ class ArticlesController extends AbstractActionController
         $this->layout()->breadCrumbs  = array(
             array('link'=> $this->url()->fromRoute('blog'), 'text'=>ucfirst('Блог'))
         );
+		$this->layout()->og = array(
+			'url' => 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
+			'title' => $article->title,
+			'description' => $seoData ? $seoData->description : '',
+			'image' => $article->img ? 'http://aledo-pro.ru/images/articles/' . $article->img : ''
+		);
+		
         $htmlViewPart = new ViewModel();
         $htmlViewPart->setVariables(array(
             'article'   => $article,
