@@ -684,14 +684,16 @@ function mb_ucfirst($text) {
 					slick.slickSetOption('fade', true, true);
 						_.$gallery.addClass('b-slider_no-slider');
 						_.$gallery.addClass('b-slider_no-slider_fade');
+                        return;
 					}
+                        slick.slickSetOption('slidesToShow', slick.slideCount -1, true);
 					
 				}).slick({
-                    accessibility: true,
+                    accessibility: false,
                     dots: false,
                     infinite: true,
                     speed: _.animatingSpeed,
-                    slidesToShow: $(".b-goods-gallery-item__image").length > 3 ? 3 : 1,
+slidesToShow:1,
                     touchThreshold: browser.mobile ? 5 : 50,
                     //centerMode: true,
                     centerPadding: "0px",

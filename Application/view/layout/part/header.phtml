@@ -4,7 +4,7 @@
         <a href="javascript:void(0)" class="b-authorize__close" onclick="aledo.hideAuthBlock()">
             <img src="/Content/images/icon-close.svg" width="20" height="20" />
         </a>
-        <div class="b-section__content b-clearfix">
+        <div class="b-section__content  b-clearfix">
             <div class="b-authorize__row">
                 <form novalidate
                       name="login-form"
@@ -49,10 +49,10 @@
             </div>
         </div>
     </div>
-    <div class="b-section__content">
+    <div class="b-section__content b-section__content_mobile-header" id="mobile_header_anchor">
         <div class="b-header-top-section">
             <div class="b-header-top-section__left">
-                <a href="/" class="b-header-top-section__logo-link" style="margin-left: -3px;">
+                <a href="/" class="b-header-top-section__logo-link">
 
                     <svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                          viewBox="0 136 960 289" enable-background="new 0 136 960 289" xml:space="preserve" class="b-logo-icon">
@@ -219,7 +219,7 @@
                     </ul>
                 </div>
                 <ul class="b-header-top-section__list list-unstyled b-right">
-                    <li class="b-header-top-section__list-item" style="text-align: right">
+                    <li class="b-header-top-section__list-item hidden-xs" style="text-align: right">
                         <a href="/info/" class="b-highlighted-link b-header-top-section__link b-header-top-section__link_about-company <?= ($active=='info' && $action=='index') ? 'b-header-top-section__link-active' : ''?>">О компании</a><br class=" visible-sm-block visible-xs-block" />
                         <a href="/partners/" class="b-highlighted-link b-header-top-section__link <?= $active=='partners' ? 'b-header-top-section__link-active' : ''?>">Партнерам</a>
                         <? if ($isManager && $godModeId && $godModeName) { ?>
@@ -233,21 +233,21 @@
                         <? } ?>
                     </li>
 
-                        <li class="b-header-top-section__list-item" style="border-right: none">
+                        <li class="b-header-top-section__list-item  hidden-xs" style="border-right: none">
                             <? if ($user = $this->zfcUserIdentity()){ ?>
                                 <a href="/cabinet/" class="b-highlighted-link b-header-top-section__link">Личный кабинет</a><br />
                             <? } else { ?>
                                 <a href="javascript:void(0)" id="auth_block_trigger" class="b-highlighted-link b-header-top-section__link">Войти</a><br />
                             <? } ?>
-                            <a href="/cart/" id="main-cart" class="b-highlighted-link b-header-top-section__link cart-empty">Корзина&nbsp;<span id="main-cart-badge">(<span id="main-cart-val"></span>)</span></a>
+                            <a href="/cart/"  class="main-cart b-highlighted-link b-header-top-section__link cart-empty">Корзина&nbsp;<span class="main-cart-badge">(<span class="main-cart-val"></span>)</span></a>
                         </li>
 
-                    <li class="b-header-top-section__list-item">
+                    <li class="b-header-top-section__list-item b-header-top-section__list-item_mobile">
                         <span href="javascript:void(0)" class="b-header-top-section__link b-header-top-section__we-work__list-item">Работаем по всей РФ</span><br />
                         <a href="javascript:void(0)" class="b-header-top-section__link link_tel">8 (800) 555 56 72</a>
                     </li>
 
-                    <li class="b-header-top-section__list-item">
+                    <li class="b-header-top-section__list-item  b-header-top-section__list-item_mobile">
                         <!-- javascript:void(0) -->
                         <a href="callto:+78124485849" class="b-header-top-section__link link_tel">8 (812) 448 58 49 <span style="color: a5a5a5">СПБ</span></a><br />
                         <a href="tel:+74997032442" class="b-header-top-section__link link_tel">8 (499) 703 24 42 <span style="color: a5a5a5">МСК</span></a>
@@ -262,7 +262,79 @@
     <? if (\User\Service\UserService::$commercialMode) { ?>
         <aledo-commercial-prods-data style="display: none"><?= $_COOKIE['prodscommercial'] ?></aledo-commercial-prods-data>
     <? } ?>
-    <div class="b-header-bottom-section">
+	
+	
+  <div class="visible-xs b-mobile-nav" ng-mobile-nav>
+    <a href="javascript:void(0)" class="b-mobile-nav__trigger" >МЕНЮ
+    <span class="b-menu-icon  b-mobile-nav__menu-icon">
+        <i class="b-menu-icon__line b-menu-icon__line_t"></i>
+    <i class="b-menu-icon__line b-menu-icon__line_c"></i>
+    <i class="b-menu-icon__line b-menu-icon__line_b"></i>
+    </span>
+      </a>
+    <ul class="b-mobile-nav-list list-unstyled">
+      <li class="b-mobile-nav-list__list-item b-mobile-search" ng-mobile-search>
+        <div class="b-mobile-search__inner">
+         
+                <form name="search" method="get" role="search" action="<?= $this->url('search'); ?>">
+                <!--<div class="b-mobile-search__input-wrapper">
+                 
+                  </div>-->
+                   <div class="b-mobile-search__cell">
+             <input  name="search" type="text" class="b-mobile-search__input"  placeholder="НАЧНИТЕ ПОИСК ПРОДУКЦИИ"/>
+          </div>
+          <div class="b-mobile-search__cell b-mobile-search__cell_r">
+            <a class="b-mobile-search__trigger" href="javascript:void(0)"><!-- --></a>
+          </div>
+                 
+                  </form>
+         
+        </div>
+       
+      </li>
+      <li class="b-mobile-nav-list__list-item">
+        <a  class="b-mobile-nav-list__link b-highlighted-link <?= $active=='catalog' ? 'b-mobile-nav-list__link_active' : ''?>" href="/catalog/">Каталог</a>
+      </li>
+      <li class="b-mobile-nav-list__list-item">
+        <a  class="b-mobile-nav-list__link b-highlighted-link <?= $active=='projects' ? 'b-mobile-nav-list__link_active' : ''?>" href="/projects/">Проекты</a>
+      </li>
+      <li class="b-mobile-nav-list__list-item">
+        <a class="b-mobile-nav-list__link b-highlighted-link <?= $active=='solutions' ? 'b-mobile-nav-list__link_active' : ''?>" href="/solutions/">Решения</a>
+      </li>
+      <li class="b-mobile-nav-list__list-item">
+        <a class="b-mobile-nav-list__link b-highlighted-link <?= ($active=='info' && $action=='delivery') ? 'b-mobile-nav-list__link_active' : ''?>" href="/info/delivery">Доставка и оплата</a>
+      </li>
+      <li class="b-mobile-nav-list__list-item">
+        <a  class="b-mobile-nav-list__link b-highlighted-link b-highlighted-link <?= ($active=='blog' || $active=='articles') ? 'b-mobile-nav-list__link_active' : ''?>" href="/blog/">Блог</a>
+      </li>
+      <li class="b-mobile-nav-list__list-item">
+        <a  class="b-mobile-nav-list__link b-highlighted-link  <?= $active=='contacts' ? 'b-mobile-nav-list__link_active' : ''?>" href="/contacts/">Контакты</a>
+      </li>
+      <li class="b-mobile-nav-list__list-item">
+        <? if ($user = $this->zfcUserIdentity()){ ?>
+                  
+           
+      <a href="/cabinet/" class="b-mobile-nav-list__link b-highlighted-link">Личный кабинет</a>
+     
+      <? } else { ?>
+                                
+      <a href="#mobile_header_anchor" id="auth_block_trigger" class="b-mobile-nav-list__link b-highlighted-link">Войти</a>
+      
+      <? } ?>
+           
+      </li>
+      <li class="b-mobile-nav-list__list-item">
+        <a href="/cart/"  class="main-cart b-mobile-nav-list__link cart-empty  b-highlighted-link">
+          Корзина&nbsp;<span class="main-cart-badge">
+            (<span class="main-cart-val"></span>)
+          </span>
+        </a>
+      </li>
+    </ul>
+
+  </div>
+	
+    <div class="b-header-bottom-section hidden-xs">
         <div class="b-section__content">
             <ul class="b-main-navigation list-unstyled">
                 <li class="b-main-navigation__list-item">
