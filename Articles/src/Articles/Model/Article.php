@@ -13,6 +13,7 @@ class Article extends SampleModel
     public $alias;
     public $text;
     public $img;
+    public $video;
     public $date;
     public $order;
     public $preview;

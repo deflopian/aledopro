@@ -13,5 +13,6 @@ class ArticleBlock extends SampleModel
     public $textafter;
     public $img;
     public $img2;
+    public $video;
     public $hidden = 0;
 }
