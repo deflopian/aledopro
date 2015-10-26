@@ -77,6 +77,7 @@ class ProjectsController extends AbstractActionController
         $projects = $this->getServiceLocator()->get('ProjectsTable')->fetchByConds(array('rubric_id' => 1, 'deleted' => 0), false, 'order asc');
         $fileTable = $this->getServiceLocator()->get('FilesTable');
         foreach ($projects as $pkey => &$one) {
+			$arrayIds[] = $one->id;
             if ($one->id == $project->id) {
                 unset($projects[$pkey]);
                 continue;
