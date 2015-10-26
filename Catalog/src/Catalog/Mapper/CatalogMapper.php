@@ -274,6 +274,7 @@ class CatalogMapper {
                 $i = 0;
                 foreach($dopprods as $dp) {
                     $dpp = $this->getProductTable()->find($dp->product_id);
+					if (!isset($dpp->id)) continue;
                     $dopProducts[] = $dpp;
 
                     if ($i == 0) {

@@ -1377,7 +1377,8 @@ class AdminController extends SampleAdminController
         $dopProducts = array();
         foreach($dopprods as $dp)
         {
-            $dopProducts[] = $allProds[$dp->product_id];
+            if (!isset($allProds[$dp->product_id])) continue;
+			$dopProducts[] = $allProds[$dp->product_id];
         }
 
         $displayStyles = array(
