@@ -28,6 +28,9 @@
         <? if ($article->img) { ?>
             <img src="/images/articles/<?= $article->img ?>" id="pinit-image"/>
         <? } ?>
+		<? if ($article->video) { ?>
+			<iframe width="560" height="315" src="<?= $article->video ?>" frameborder="0" allowfullscreen></iframe>
+		<? } ?>
         <? if ($article->text) { ?>
             <?= $article->text ?>
         <? } ?>
@@ -48,6 +51,9 @@
 			<? if ($block->img2_name) { ?>
                 <img src="/images/articles/<?= $block->img2_name ?>"<?= ($article->id==6 && $block->order==1) ? ' style="display: inline; width: 50%; height: auto;"' : '' ?>/>
             <? } ?>
+			<? if ($block->video) { ?>
+				<iframe width="560" height="315" src="<?= $block->video ?>" frameborder="0" allowfullscreen></iframe>
+			<? } ?>
 			</div>
             <? if ($block->textafter) { ?>
                 <?= $block->textafter ?>
