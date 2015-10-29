@@ -23,6 +23,7 @@
 
              }
                  }}">
+        <h2 class="b-section_catalogs__heading visible-xs">Каталоги</h2>
         <div class=" b-section__content">
             <div class="b-downloads b-downloads_catalogs">
                 <div class="b-downloads-table">
@@ -120,6 +121,7 @@
 
              }
                  }}">
+        <h2 class="b-section_certificates__heading visible-xs">Сертификаты</h2>
         <div class="b-section__content">
             <div class="b-downloads b-downloads_certificates">
                 <div class="b-downloads-table">
@@ -151,44 +153,62 @@
     </div>
 </div>
 <script type="text/javascript">
-    (function() {
-        jQuery('.b-downloads-slider').each(function() {
-            if(browser.mobile) return;
-            var $this = jQuery(this),
-                $slides = $this.find(".b-downloads-slider__item"),
-                noSliderClass = "b-slider_no-slider";
-            if ($slides.length == 1) {
+    jQuery(function() {
+        var timer,
+            _initSlider =  function(){
+                jQuery('.b-downloads-slider').each(function() {
+                    var $this = jQuery(this),
+                        $slides = $this.find(".b-downloads-slider__item"),
+                        noSliderClass = "b-slider_no-slider";
 
-                return;
 
-            }
-            $this.removeClass(noSliderClass);
-            $this.slick({
-                dots: false,
-                infinite: true,
-                speed: browser.mobile ? 300 : 500,
-                touchThreshold: browser.mobile ? 5 : 50,
-                slidesToShow: 1,
-                centerMode: true,
-                variableWidth: true,
-                responsive: [
-                    {
-                        breakpoint: 991,
-                        settings: {
-                            fade: true
+                    if(browser.screen.xs) {
+                        if ($this.hasClass("slick-initialized")) {
+                            $this.slick("unslick");
                         }
+                        return;
                     }
-                ],
-                prevArrow: "<a href=\"javascript:void(0)\" class=\"b-downloads-slider-arrow b-downloads-slider-arrow_prev\">" +
-                "<img class=\"b-downloads-slider-arrow__image\" src=\"/Content/images/button-arrow-white.png\"/>" +
-                "</a>",
-                nextArrow: "<a href=\"javascript:void(0)\" class=\"b-downloads-slider-arrow b-downloads-slider-arrow_next\">" +
-                "<img class=\"b-downloads-slider-arrow__image\" src=\"/Content/images/button-arrow-white.png\"/>" +
-                "</a>"
-            });
 
+                    if($this.hasClass("slick-initialized")) return;
+                    if ($slides.length == 1) {
+                        return;
+                    }
+                    $this.removeClass(noSliderClass);
+
+                    $this.slick({
+                        dots: false,
+                        infinite: true,
+                        speed: browser.mobile ? 300 : 500,
+                        touchThreshold: browser.mobile ? 5 : 50,
+                        slidesToShow: 1,
+                        centerMode: true,
+                        variableWidth: true,
+                        
+                        responsive: [
+                            {
+                                breakpoint: 991,
+                                settings: {
+                                    fade: true
+                                }
+                            }
+                        ],
+                        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-downloads-slider-arrow b-downloads-slider-arrow_prev\">" +
+                        "<img class=\"b-downloads-slider-arrow__image\" src=\"/Content/images/button-arrow-white.png\"/>" +
+                        "</a>",
+                        nextArrow: "<a href=\"javascript:void(0)\" class=\"b-downloads-slider-arrow b-downloads-slider-arrow_next\">" +
+                        "<img class=\"b-downloads-slider-arrow__image\" src=\"/Content/images/button-arrow-white.png\"/>" +
+                        "</a>"
+                    });
+
+                });
+            };
+        jQuery(window).on("resize.downloadsslider", function(){
+            if(timer) clearTimeout(timer);
+            timer= setTimeout(function(){
+                _initSlider();
+            },500);
         });
-
+        _initSlider();
         jQuery(".b-downloads-slider__link_certificate").fancybox({
             'opacity': true,
             padding: 20,
@@ -196,6 +216,6 @@
             'transitionIn': 'elastic',
             'transitionOut': 'elastic'
         });
-    })();
+        });
 
 </script>

@@ -156,6 +156,9 @@ $url = $uriArr[0]
     <script src="/Scripts/aledo.app/aledo.services/aledo.cart.service.js"></script>
 	<script src="/Scripts/aledo.app/aledo.directives/mobile.directives.js"></script>
 	<script src="/Scripts/aledo.app/aledo.directives/iframe.directive.js"></script>
+		<script src="/Scripts/aledo.app/aledo.factories/browser.factory.js"></script>
+	<script src="/Scripts/aledo.app/aledo.directives/screen.directive.js"></script>
+
 	
     <script src="/Scripts/imagesloaded.pkgd.js"></script>
     <script src="http://api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU"
@@ -447,6 +450,21 @@ $url = $uriArr[0]
     <script type="text/javascript">
         domReady();
     </script>
+	
+	 <div class="b-screen-helpers" ng-screen-helper>
+            <div class="b-screen-helpers__xs visible-xs">
+
+            </div>
+            <div class="b-screen-helpers__sm visible-sm">
+
+            </div>
+            <div class="b-screen-helpers__md visible-md">
+
+            </div>
+            <div class="b-screen-helpers__lg visible-lg">
+
+            </div>
+        </div>
     
     <div class="swipe-layout" ng-controller="SwipeController" ng-swipe-left="swipe('left')"
         ng-swipe-right="swipe('right')"></div>
