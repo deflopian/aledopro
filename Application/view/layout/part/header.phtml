@@ -293,38 +293,46 @@
        
       </li>
       <li class="b-mobile-nav-list__list-item">
-        <a  class="b-mobile-nav-list__link b-highlighted-link <?= $active=='catalog' ? 'b-mobile-nav-list__link_active' : ''?>" href="/catalog/">Каталог</a>
+        <a  class="b-mobile-nav-list__link b-highlighted-link b-highlighted-link_mobile-nav-link<?= $active=='catalog' ? 'b-mobile-nav-list__link_active' : ''?>" href="/catalog/">Каталог</a>
       </li>
       <li class="b-mobile-nav-list__list-item">
-        <a  class="b-mobile-nav-list__link b-highlighted-link <?= $active=='projects' ? 'b-mobile-nav-list__link_active' : ''?>" href="/projects/">Проекты</a>
+        <a  class="b-mobile-nav-list__link b-highlighted-link b-highlighted-link_mobile-nav-link  <?= $active=='projects' ? 'b-mobile-nav-list__link_active' : ''?>" href="/projects/">Проекты</a>
       </li>
       <li class="b-mobile-nav-list__list-item">
-        <a class="b-mobile-nav-list__link b-highlighted-link <?= $active=='solutions' ? 'b-mobile-nav-list__link_active' : ''?>" href="/solutions/">Решения</a>
+        <a class="b-mobile-nav-list__link b-highlighted-link b-highlighted-link_mobile-nav-link  <?= $active=='solutions' ? 'b-mobile-nav-list__link_active' : ''?>" href="/solutions/">Решения</a>
       </li>
       <li class="b-mobile-nav-list__list-item">
-        <a class="b-mobile-nav-list__link b-highlighted-link <?= ($active=='info' && $action=='delivery') ? 'b-mobile-nav-list__link_active' : ''?>" href="/info/delivery">Доставка и оплата</a>
+        <a class="b-mobile-nav-list__link b-highlighted-link  b-highlighted-link_mobile-nav-link <?= ($active=='info' && $action=='delivery') ? 'b-mobile-nav-list__link_active' : ''?>" href="/info/delivery">Доставка и оплата</a>
       </li>
       <li class="b-mobile-nav-list__list-item">
-        <a  class="b-mobile-nav-list__link b-highlighted-link b-highlighted-link <?= ($active=='blog' || $active=='articles') ? 'b-mobile-nav-list__link_active' : ''?>" href="/blog/">Блог</a>
+        <a  class="b-mobile-nav-list__link b-highlighted-link b-highlighted-link_mobile-nav-link <?= ($active=='blog' || $active=='article') ? 'b-mobile-nav-list__link_active' : ''?>" href="/blog/">Блог</a>
       </li>
       <li class="b-mobile-nav-list__list-item">
-        <a  class="b-mobile-nav-list__link b-highlighted-link  <?= $active=='contacts' ? 'b-mobile-nav-list__link_active' : ''?>" href="/contacts/">Контакты</a>
+        <a  class="b-mobile-nav-list__link b-highlighted-link b-highlighted-link_mobile-nav-link <?= $active=='contacts' ? 'b-mobile-nav-list__link_active' : ''?>" href="/contacts/">Контакты</a>
       </li>
+	   <li class="b-mobile-nav-list__list-item">
+        <a  class="b-mobile-nav-list__link b-highlighted-link b-highlighted-link_mobile-nav-link <?= ($active=='info' && $action=='index') ? 'b-mobile-nav-list__link_active' : ''?>" href="/info/">О компании</a>
+      </li>
+	     <li class="b-mobile-nav-list__list-item">
+        <a  class="b-mobile-nav-list__link b-highlighted-link b-highlighted-link_mobile-nav-link <?= ($active=='partners') ? 'b-mobile-nav-list__link_active' : ''?>" href="/partners/">Партнерам</a>
+      </li>
+	  
+	  
       <li class="b-mobile-nav-list__list-item">
         <? if ($user = $this->zfcUserIdentity()){ ?>
                   
            
-      <a href="/cabinet/" class="b-mobile-nav-list__link b-highlighted-link">Личный кабинет</a>
+      <a href="/cabinet/" class="b-mobile-nav-list__link b-highlighted-link  b-highlighted-link_mobile-nav-link">Личный кабинет</a>
      
       <? } else { ?>
                                 
-      <a href="#mobile_header_anchor" id="auth_block_trigger" class="b-mobile-nav-list__link b-highlighted-link">Войти</a>
+      <a href="#mobile_header_anchor" id="auth_block_trigger" class="b-mobile-nav-list__link b-highlighted-link b-highlighted-link_mobile-nav-link">Войти</a>
       
       <? } ?>
            
       </li>
       <li class="b-mobile-nav-list__list-item">
-        <a href="/cart/"  class="main-cart b-mobile-nav-list__link cart-empty  b-highlighted-link">
+        <a href="/cart/"  class="main-cart b-mobile-nav-list__link cart-empty  b-highlighted-link  b-highlighted-link_mobile-nav-link">
           Корзина&nbsp;<span class="main-cart-badge">
             (<span class="main-cart-val"></span>)
           </span>

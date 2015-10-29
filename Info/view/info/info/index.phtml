@@ -406,6 +406,7 @@
 </div>
 <script type="text/javascript">
     (function () {
+        if(browser.mobile) return;
         var $this = jQuery('.b-downloads-slider'),
             $slides = $this.find(".b-downloads-slider__item"),
             noSliderClass = "b-slider_no-slider";

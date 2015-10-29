@@ -17,10 +17,14 @@
 
     <script type="text/javascript">
 
-
         (function () {
             var $this = jQuery('.b-slider_banners');
-            $this.slick({
+
+            if(browser.mobile) {
+                $this.remove();
+                return;
+            }
+                $this.slick({
                 dots: false,
                 infinite: true,
                 draggable: true,
@@ -83,7 +87,7 @@
                 speed: browser.mobile ? 300 : 500,
                 touchThreshold: browser.mobile ? 5 : 50,
                 slidesToShow: 3,
-                
+                centerMode: true,
                 variableWidth: true,
                 arrows: browser.mobile ? false : true,
                 prevArrow: "<a href=\"javascript:void(0)\" class=\"b-simple-arrow  b-simple-arrow_prev\">" +

@@ -11,7 +11,7 @@ if (!$footerBlocks) {
 <footer class="b-layout-footer b-section">
     <div class="b-section__content">
         <div class="row b-footer-mobile-table">
-            <div class="col-xs-6  col-md-3 b-footer-mobile-col b-footer-mobile-col_left">
+            <div class="col-xs-12 col-sm-6  col-md-3 b-footer-mobile-col b-footer-mobile-col_left">
                 <div class="b-footer-mobile-col__inner">
 					<? foreach($contacts_ as $contact) {?>
                     <p>
@@ -34,8 +34,8 @@ if (!$footerBlocks) {
 <!--                    </p>-->
                 </div>
             </div>
-            <div class="b-footer-mobile-col b-footer-mobile-col_decoration visible-sm-table-cell visible-xs-table-cell"></div>
-            <div class=" col-xs-6 col-md-9 b-footer-mobile-col b-footer-mobile-col_right">
+            <div class="b-footer-mobile-col b-footer-mobile-col_decoration visible-sm-table-cell visible-xs"></div>
+            <div class=" col-xs-12 col-sm-6 col-md-9 b-footer-mobile-col b-footer-mobile-col_right">
                 <div class="row">
                     <div class="b-footer-mobile-col__inner b-footer-mobile-col_right__inner" id="footer_collapse">
                         <div class="col-md-4 panel">
@@ -91,7 +91,7 @@ if (!$footerBlocks) {
             </div>
         </div>
 
-        <br/>
+        <br class="hidden-xs"/>
 
         <hr class="dotted-separator" />
         <div class="b-footer-link-nav">
@@ -112,90 +112,7 @@ if (!$footerBlocks) {
          </div> -->
     </div>
 </footer>
-<!---->
-<!--<footer class="panel-footer">-->
-<!--    <div class="container">-->
-<!--        <div class="row">-->
-<!--            <div class="col-md-3 footer-contacts">-->
-<!--                <div>--><?//= $contacts->adress ?><!--</div>-->
-<!---->
-<!--                <div class="row-second-small">--><?//= $contacts->work_time ?><!--</div>-->
-<!--                <div class="row-second-small">--><?//= $contacts->phone ?><!--</div>-->
-<!--                <div>--><?//= $contacts->fax ?><!--</div>-->
-<!--                <div class="row-second-small">--><?//= $contacts->mail ?><!--</div>-->
-<!--            </div>-->
-<!---->
-<!--            <div class="col-md-2">-->
-<!--                <ul>-->
-<!--                    <li><a href="--><?//= $this->url('sitemap'); ?><!--">Карта сайта</a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!---->
-<!--            <div class="col-md-2">-->
-<!--                <ul>-->
-<!--                    --><?// foreach($sections as $section){ ?>
-<!--                        <li>-->
-<!--                            <a href="--><?//= empty($section->display_name) ?
-//                                $this->url('catalog', array('action'=>'section', 'id'=>$section->id)) :
-//                                $this->url('catalog', array('action'=>'section', 'id'=>$section->display_name)); ?><!--">-->
-<!--                                --><?//= $section->title ?>
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                    --><?// } ?>
-<!--                </ul>-->
-<!--            </div>-->
-<!---->
-<!--            <div class="col-md-3">-->
-<!--                <ul>-->
-<!--                    <li><a href="--><?//= $this->url('projects'); ?><!--">Проекты</a></li>-->
-<!--                    <li><a href="--><?//= $this->url('news'); ?><!--">Новости компании</a></li>-->
-<!--                    <li><a href="--><?//= $this->url('offers'); ?><!--">Спецпредложения</a></li>-->
-<!--                    <li><a href="--><?//= $this->url('vacancies'); ?><!--">Вакансии</a></li>-->
-<!--			<li style="display: block; padding: 5px 15px"><a  class="catalog-ledionopto" href="/uploads/catalogue_aledo_S_.pdf" style="padding: 0; background-color: transparent !important;">Скачать каталог продукции Ledionopto</a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!---->
-<!--            <div class="col-md-2">-->
-<!--                <ul>-->
-<!--                    --><?// if ($this->zfcUserIdentity()){ ?>
-<!--                        <li><a href="--><?//= $this->url('cabinet'); ?><!--">Личный кабинет</a></li>-->
-<!--                        <li><a id="footer-logout" href="--><?//= $this->url('zfcuser/logout'); ?><!--">Выйти</a></li>-->
-<!--                    --><?// } else { ?>
-<!--                        <li><a id="footer-login" href="#">Войти</a></li>-->
-<!--                        <li><a id="popup-register" href="#">Зарегистрироваться</a></li>-->
-<!--                    --><?// } ?>
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </div>-->
-<!---->
-<!--        <div class="row row-second-big">-->
-<!--            <div class="col-md-6 col-md-offset-3 text-center">-->
-<!--                <a class="footer-logos" href="#"><img src="--><?//= $this->basePath() . '/images/aledo-logo-med-white.png' ?><!--" alt="Карта проезда"/></a>-->
-<!--                <div id="logos-line" class="dotted-left-white" ></div>-->
-<!--                <a class="footer-logos" href="http://www.kaledoscop.ru"><img src="--><?//= $this->basePath() . '/images/kaledoscop-logo-med-white.png' ?><!--" alt="Карта проезда"/></a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="row row-second-small">-->
-<!--            <div class="col-md-6 col-md-offset-3"><div class="dotted-bottom-white"></div></div>-->
-<!--        </div>-->
-<!---->
-<!--        <div class="row row-second">-->
-<!--            <div class="col-md-4 col-md-offset-4 text-center">-->
-<!--                <a href="http://vk.com/kaledoscop"-->
-<!--                   target="_blank"-->
-<!---->
-<!--                   onclick="ga('send', 'event', 'button', 'click', 'social btns', 'http://vk.com/kaledoscop', {'nonInteraction': 1});"-->
-<!--                ><span class="soc-icon soc-icon-vk"></span></a>-->
-<!---->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="row">-->
-<!--            <div class="col-md-4 col-md-offset-4 text-center">-->
-<!--                <span id="copyright">© 2011–--><?//= date("Y"); ?><!-- aledo kaledoscop Планар</span>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</footer>-->
+
 <script>
     $('#popup-register').on('click', function(e){
         e.preventDefault();
