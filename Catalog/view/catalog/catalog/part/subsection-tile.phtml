@@ -1,0 +1,18 @@
+<? $url = $this->url('catalog', array(
+    'action' => 'subsection',
+    'id' => $subsection->id
+));
+
+?>
+    <a href="<?= $url ?>">
+        <div class="tile-title-series">
+
+            <span>
+                <?= $subsection->title ?>
+            </span>
+        </div>
+        <? $src = $subsection->url ? $this->basePath() . '/images/subsections/' . $subsection->url : $this->basePath() . '/images/empty-series.png' ?>
+        <div style="position: relative; padding-top: 7px;">
+        <img src="<?= $src ?>" alt="<?= $subsection->title ?>"/>
+        </div>
+    </a>

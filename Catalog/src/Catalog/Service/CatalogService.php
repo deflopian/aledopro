@@ -741,6 +741,18 @@ RewriteRule ^.*$ index.php [NC,L]
         }
         return $serviceLocator->get('viewrenderer')->render($htmlViewPart);
     }
+	
+	 public static function renderSubsectionTile($serviceLocator, $subsection)
+    {
+        $htmlViewPart = new ViewModel();
+        $htmlViewPart->setTerminal(true)
+            ->setTemplate('catalog/catalog/part/subsection-tile');
+        
+            $htmlViewPart->setVariables(array(
+                'subsection' => $subsection,
+            ));
+        return $serviceLocator->get('viewrenderer')->render($htmlViewPart);
+    }
 
     public static function renderSeoTextBlock($sl, $entity)
     {

@@ -1,0 +1,70 @@
+<? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
+<? include 'part/part/mobile-modal.phtml'; ?>
+    <div class="b-mobile-catalog visible-xs visible-sm">
+        <? foreach ($subsections as $subsecId=>$subsection) { ?>
+            <div class="b-mobile-catalog__item">
+                <a class="b-mobile-catalog__link text-uppercase"
+                   data-target="#catalog_mobile_redirect"
+                   data-toggle="modal"
+                   data-href="<?= empty($subsection->display_name) ?
+                       $this->url('catalog', array('action'=>'subsection', 'id'=>$subsection->id)) :
+                       $this->url('catalog', array('action'=>'subsection', 'id'=>$subsection->display_name));?>">
+                    <?= $subsection->title; ?>
+                </a>
+            </div>
+        <? } ?>
+        <? unset($subsection); ?>
+    </div>
+<div class="b-section__content">
+
+    <div class="b-breadcrumbs">
+        <? foreach ($breadCrumbs as $bc) { ?>
+            <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+        <? } ?>
+        <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+    </div>
+
+</div>
+<div class="section b-section__content catalog hidden-xs hidden-sm">
+
+    <? $num = 0; ?>
+        <div class="row <?= ($num++ == 0) ? '': 'row-second' ?>" id="subsec-<?= $section->id ?>">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a class="catalog-section-bar" data-id="<?= $section->id ?>"
+                           href="<?= $this->url('catalog', array('action'=>'section', 'id'=>$section->id)) ?>">
+                            <h2 style="font-size: 16px; font-family: Arial, sans-serif;">LED ленты</h2>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row row-second subsection" data-type="catalog">
+                    <?
+                    if(isset($seAgg)){
+                        $i = 0;
+                        foreach($subsections as $ser){ ?>
+                            <div class="col-xs-2 series-tile" data-id="<?= $ser->id ?>">
+                                <?= \Catalog\Service\CatalogService::renderSubsectionTile($sl, $ser);?>
+                            </div>
+                            <?
+                            if(($i+1)%6==0){ echo '</div><div class="row row-second subsection" data-type="catalog">'; }
+                            $i++;
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+
+    <?= \Catalog\Service\CatalogService::renderSeoTextBlock($sl, $section); ?>
+</div>
+
+<?=
+$this->partial('catalog/catalog/part/part/geo-widget.phtml',
+    array(
+        'type' => 1,
+        'id' => $section->id
+    )
+);
+?>

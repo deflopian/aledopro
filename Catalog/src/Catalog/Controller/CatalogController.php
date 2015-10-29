@@ -212,6 +212,13 @@ class CatalogController extends BaseController
         $view->setTemplate('catalog/catalog/section_profili');
         return $view;
     }
+	
+	public function renderSectionLentsGroupAction() {
+        $id = $this->params()->fromRoute('id', 0);
+        $view = $this->prepareDividedList($id);
+        $view->setTemplate('catalog/catalog/section_lents_group');
+        return $view;
+    }
 
     private function prepareDividedList($id) {
         $sl = $this->getServiceLocator();
@@ -303,10 +310,8 @@ class CatalogController extends BaseController
         if (!$id) {
             return $this->redirect()->toRoute('catalog');
         }
-		/*if ($id == 29) {
-			return $this->redirect()->toRoute('catalog', array('action'=>'subsection', 'id'=>30));
-		}*/
-        $sl = $this->getServiceLocator();
+		
+		$sl = $this->getServiceLocator();
         $cm = CatalogMapper::getInstance($sl);
 
         $section = $cm->getSection($id);
@@ -318,8 +323,8 @@ class CatalogController extends BaseController
                 break;
 
             case CatalogService::DISPLAY_STYLE_LENTS:
-
                 $view = $this->forward()->dispatch('catalog', array('action'=>'renderSectionLents', 'id'=>$id));
+				//$view = $this->forward()->dispatch('catalog', array('action'=>'renderSectionLentsGroup', 'id' => $id));
                 break;
 
             case CatalogService::DISPLAY_STYLE_POWER:
@@ -507,7 +512,7 @@ class CatalogController extends BaseController
                 $url .= '?subsec=' . $subsection->id;
                 return $this->redirect()->toUrl($url)->setStatusCode(301);
                 
-				/*$view = $this->forward()->dispatch('catalog', array('action'=>'renderSubsectionLents', 'id'=>$id));*/
+				//$view = $this->forward()->dispatch('catalog', array('action'=>'renderSubsectionLents', 'id'=>$id));
                 break;
 
             case CatalogService::DISPLAY_STYLE_POWER:
@@ -565,18 +570,12 @@ class CatalogController extends BaseController
                 array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
                 $breadCrumbsSection
             );
-			/*if ($section->id != 29) {
-				$breadcrumbs[] = $breadCrumbsSection;
-			}*/
         } else {
             $breadcrumbs =  array(
                 array('link'=> $this->url()->fromRoute('home'), 'text'=>ucfirst('Главная')),
                 array('link'=> $this->url()->fromRoute('catalog'), 'text'=>ucfirst('Каталог')),
                 $breadCrumbsSection
             );
-			/*if ($section->id != 29) {
-				$breadcrumbs[] = $breadCrumbsSection;
-			}*/
         }
 
         $return = array(
