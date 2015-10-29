@@ -323,8 +323,8 @@ class CatalogController extends BaseController
                 break;
 
             case CatalogService::DISPLAY_STYLE_LENTS:
-                $view = $this->forward()->dispatch('catalog', array('action'=>'renderSectionLents', 'id'=>$id));
-				//$view = $this->forward()->dispatch('catalog', array('action'=>'renderSectionLentsGroup', 'id' => $id));
+                //$view = $this->forward()->dispatch('catalog', array('action'=>'renderSectionLents', 'id'=>$id));
+				$view = $this->forward()->dispatch('catalog', array('action'=>'renderSectionLentsGroup', 'id' => $id));
                 break;
 
             case CatalogService::DISPLAY_STYLE_POWER:
@@ -508,11 +508,11 @@ class CatalogController extends BaseController
                 break;
 
             case CatalogService::DISPLAY_STYLE_LENTS:
-                $url = $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->id));
+                /*$url = $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->id));
                 $url .= '?subsec=' . $subsection->id;
-                return $this->redirect()->toUrl($url)->setStatusCode(301);
+                return $this->redirect()->toUrl($url)->setStatusCode(301);*/
                 
-				//$view = $this->forward()->dispatch('catalog', array('action'=>'renderSubsectionLents', 'id'=>$id));
+				$view = $this->forward()->dispatch('catalog', array('action'=>'renderSubsectionLents', 'id'=>$id));
                 break;
 
             case CatalogService::DISPLAY_STYLE_POWER:

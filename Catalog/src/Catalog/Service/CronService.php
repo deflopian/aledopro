@@ -149,7 +149,7 @@ class CronService {
             $product->lumfx_abs = $lumfx_abs;
             $product->vangl_abs = $vangl_abs;
 
-			//$product = self::modifySeriesName($product);
+			$product = self::modifySeriesName($product);
         } else {
             echo 'error';
             return false;
@@ -168,35 +168,35 @@ class CronService {
 	{
 		if ($product->seriesName == 'Одноцветные светодиодные ленты') {
 			if ($product->power > 10) {
-				if ($product->electro_power == '12 VDC') {
+				if ($product->electro_power == '12 VDC' || $product->electro_power == '12VDC') {
 					$product->seriesName = 'Одноцветные ленты, Светодиодные ленты для общего освещения, Напряжение питания 12 В';
 				}
-				else if ($product->electro_power == '24 VDC') {
+				else if ($product->electro_power == '24 VDC' || $product->electro_power == '24VDC') {
 					$product->seriesName = 'Одноцветные ленты, Светодиодные ленты для общего освещения, Напряжение питания 24 В';
 				}
 			}
 			else {
-				if ($product->electro_power == '12 VDC') {
+				if ($product->electro_power == '12 VDC' || $product->electro_power == '12VDC') {
 					$product->seriesName = 'Одноцветные ленты, Светодиодные ленты для декоративной подсветки, Напряжение питания 12 В';
 				}
-				else if ($product->electro_power == '24 VDC') {
+				else if ($product->electro_power == '24 VDC' || $product->electro_power == '24VDC') {
 					$product->seriesName = 'Одноцветные ленты, Светодиодные ленты для декоративной подсветки, Напряжение питания 24 В';
 				}
 			}
 		}
 		else if ($product->seriesName == 'Мультицветные светодиодные ленты') {
-			if ($product->electro_power == '12 VDC') {
+			if ($product->electro_power == '12 VDC' || $product->electro_power == '12VDC') {
 				$product->seriesName = 'Мультицветные ленты, Напряжение питания 12 В';
 			}
-			else if ($product->electro_power == '24 VDC') {
+			else if ($product->electro_power == '24 VDC' || $product->electro_power == '24VDC') {
 				$product->seriesName = 'Мультицветные ленты, Напряжение питания 24 В';
 			}
 		}
 		else if ($product->seriesName == 'Влагозащищенные светодиодные ленты') {
-			if ($product->electro_power == '12 VDC') {
+			if ($product->electro_power == '12 VDC' || $product->electro_power == '12VDC') {
 				$product->seriesName = 'Влагозащищенные ленты, Напряжение питания 12 В';
 			}
-			else if ($product->electro_power == '24 VDC') {
+			else if ($product->electro_power == '24 VDC' || $product->electro_power == '24VDC') {
 				$product->seriesName = 'Влагозащищенные ленты, Напряжение питания 24 В';
 			}
 		}
