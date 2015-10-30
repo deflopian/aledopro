@@ -386,6 +386,7 @@ class AdminController extends SampleAdminController
 					if ($flag) {
 						$entity = new $this->entityName;
 						$entity->exchangeArray($data);
+						$entity->state = 1;
 						$this->getServiceLocator()->get('UserTable')->save($entity);
 					}
 
@@ -453,7 +454,7 @@ class AdminController extends SampleAdminController
         return $this->redirect()->toRoute('zfcadmin/'.$this->url);
     }
 
-    public function delEntityAction()
+    /*public function delEntityAction()
     {
         $this->setData();
 
@@ -472,6 +473,45 @@ class AdminController extends SampleAdminController
             $response->setContent(\Zend\Json\Json::encode(array('success' => $success)));
             return $response;
         }
+        return $this->redirect()->toRoute('zfcadmin/'.$this->url);
+    }*/
+	
+	public function blockAction() {
+		$this->setData();
+		
+        //$request = $this->getRequest();
+        //if ($this->getRequest()->isXmlHttpRequest()) {
+            //$id = $request->getPost('id', false);
+            //$type = $request->getPost('type', false);
+            //$success = 0;
+			
+			$id = (int) $this->params()->fromRoute('id', 0);
+			
+            if ($id) {
+				$entity = $this->getServiceLocator()->get($this->table)->find($id);
+                $entity->state = 0;
+				$entity->is_partner = 0;
+                $entity->partner_group = 0;
+                $this->getServiceLocator()->get($this->table)->save($entity);
+				
+				$userRole = $this->getServiceLocator()->get('RoleLinkerTable')->find($id, 'user_id');
+				$userRole->role_id = 'user';
+                $this->getServiceLocator()->get('RoleLinkerTable')->save($userRole, 'user_id');
+						
+				$userEntities = $this->getServiceLocator()->get($this->table)->fetchByCond('manager_id', $id);
+				foreach($userEntities as $userEntity) {
+					$userEntity->manager_id = 0;
+					$this->getServiceLocator()->get($this->table)->save($userEntity);
+				}
+				
+                //$success = 1;
+            }
+
+            /*$returnArr = array('success' => $success);
+            $response = $this->getResponse();
+            $response->setContent(\Zend\Json\Json::encode($returnArr));
+            return $response;*/
+        //}
         return $this->redirect()->toRoute('zfcadmin/'.$this->url);
     }
 
