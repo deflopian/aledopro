@@ -39,6 +39,15 @@ class GeoBannerController extends AbstractActionController
 					$hidden_banners[] = $key;
 				}
 			}
+			if (isset($_COOKIE['geoBannersTimes']) && is_array($_COOKIE['geoBannersTimes']))
+			{
+				foreach ($_COOKIE['geoBannersTimes'] as $key => $val)
+				{
+					if (in_array($key, $hidden_banners)) continue;
+					if ($val < 4) continue;
+					$hidden_banners[] = $key;
+				}
+			}
 			
 			if ($banner = GeoService::getGeoBanner($sl, $ip, $section_type, $section_id, $hidden_banners))
 			{
@@ -52,6 +61,19 @@ class GeoBannerController extends AbstractActionController
 				$cookie->setName('geoBanners[' . $banner->id . ']');
 				$cookie->setValue(1);
 				$cookie->setExpires(time() + 86400);
+				
+				$response->getHeaders()->addHeader($cookie);
+				
+				$times = 0;
+				if (isset($_COOKIE['geoBannersTimes'][$banner->id]))
+				{
+					$times = (int)$_COOKIE['geoBannersTimes'][$banner->id];
+				}
+				
+				$cookie = new SetCookie();
+				$cookie->setName('geoBannersTimes[' . $banner->id . ']');
+				$cookie->setValue($times + 1);
+				$cookie->setExpires(time() + (86400 * 365));
 				
 				$response->getHeaders()->addHeader($cookie);
 			}
