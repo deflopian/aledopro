@@ -688,15 +688,3 @@ $this->partial('catalog/catalog/part/part/geo-widget.phtml',
     }
 
 </script>
-
-<script type="application/javascript">
-    $(window).keyup(function(event) {
-        if(event.ctrlKey){
-            if (event.keyCode==37) {
-                document.location = "/catalog/series/<?= $this->prevProd->id ?>";
-            } else if (event.keyCode==39) {
-                document.location = "/catalog/series/<?= $this->nextProd->id ?>";
-            }
-        }
-    });
-</script>

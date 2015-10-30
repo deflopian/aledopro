@@ -288,7 +288,6 @@ class CatalogController extends BaseController
     public function renderSectionLentsAction() {
         $id = $this->params()->fromRoute('id', 0);
         $view = $this->preparePlaneProductList($id);
-		$view->setVariable('seAgg', SeriesAggregator::getInstance());////////////////////////////////////добавлено
         $view->setTemplate('catalog/catalog/section_lenta');
 
         return $view;
@@ -467,18 +466,43 @@ class CatalogController extends BaseController
                 $firstTabGroups[] = $gr;
             }
         }
-
-        $view = new ViewModel();
+		$view = new ViewModel();
         $view
             ->setVariables(array(
-                'curSer'   => $series,
-                'params'             => $params,
+                'curSer' => $series,
+                'params' => $params,
                 'view' => $view,
                 'seAgg' => SeriesAggregator::getInstance(),
                 'firstTabGroups' => $firstTabGroups,
                 'fourthTabGroups' => $fourthTabGroups,
-                'sl'       => $sl
+                'sl' => $sl
             ));
+		
+		$hierarchies = Hierarchy::getInstance()->getProducts();
+
+        if ($this->zfcUserAuthentication()->hasIdentity()) {
+            $identity = $this->zfcUserAuthentication()->getIdentity();
+            $isManager = UserService::$isManager;
+            $godModeId = UserService::$godModeId;
+            $godModeName = UserService::$godModeName;
+
+            if ($isManager
+                && $godModeId
+                && $godModeName) {
+                $godModePartnerGroupId = UserService::$godModePartnerGroupId;
+                /** @var DiscountTable $discountsTable */
+                $discountsTable = $sl->get('DiscountTable');
+                $discounts = $discountsTable->fetchByUserId($godModeId, $godModePartnerGroupId, false, 0, $sl);
+
+            } else {
+                $discounts = $sl->get('DiscountTable')->fetchByUserId($identity->getId(), $identity->getPartnerGroup(), false, 0, $sl);
+            }
+
+            $view->setVariable('user', $identity);
+            $view->setVariable('discounts', $discounts);
+            $view->setVariable('hierarchies', $hierarchies);
+        }
+			
         $links = LinkToLinkMapper::getInstance($sl)->fetchCatalogSortedBySectionType($id, AdminController::SUBSECTION_TABLE);
         $view->setVariable('links', $links);
         $view->setTemplate('catalog/catalog/subsection_lenta');
