@@ -335,8 +335,17 @@ class AdminController extends SampleAdminController
                 if ($post['name'] == 'role_id') {
                     if ($identity->getId() !=  $post['pk']) {
                         $userRole = $this->getServiceLocator()->get('RoleLinkerTable')->find($post['pk'], 'user_id');
-                        $userRole->role_id = $post['value'];
+                        $oldRole = $userRole->role_id;
+						$userRole->role_id = $post['value'];
                         $this->getServiceLocator()->get('RoleLinkerTable')->save($userRole, 'user_id');
+						
+						if ($oldRole == "manager") {
+							$userEntities = $this->getServiceLocator()->get('UserTable')->fetchByCond('manager_id', $post['pk']);
+							foreach($userEntities as $userEntity) {
+								$userEntity->manager_id = 0;
+								$this->getServiceLocator()->get('UserTable')->save($userEntity);
+							}
+						}
                     }
 
                 } else {

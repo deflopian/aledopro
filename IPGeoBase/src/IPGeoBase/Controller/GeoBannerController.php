@@ -44,7 +44,7 @@ class GeoBannerController extends AbstractActionController
 				foreach ($_COOKIE['geoBannersTimes'] as $key => $val)
 				{
 					if (in_array($key, $hidden_banners)) continue;
-					if ($val < 4) continue;
+					if ($val < 3) continue;
 					$hidden_banners[] = $key;
 				}
 			}
