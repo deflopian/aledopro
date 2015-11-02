@@ -503,7 +503,7 @@ class CatalogController extends BaseController
             $view->setVariable('hierarchies', $hierarchies);
         }
 			
-        $links = LinkToLinkMapper::getInstance($sl)->fetchCatalogSortedBySectionType($id, AdminController::SUBSECTION_TABLE);
+        $links = LinkToLinkMapper::getInstance($sl)->fetchCatalogSortedBySectionType($subsection->section_id, AdminController::SECTION_TABLE);
         $view->setVariable('links', $links);
         $view->setTemplate('catalog/catalog/subsection_lenta');
         return $view;
