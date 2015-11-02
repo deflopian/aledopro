@@ -26,7 +26,7 @@
         <? } ?>
             <hr class="dotted-separator b-article__separator"/>
         <? if ($article->img) { ?>
-            <img src="/images/articles/<?= $article->img ?>" class="pinit-image"<?= $article->video ? ' style="display: none;"' : '' ?>/>
+            <img src="/images/articles/<?= $article->img ?>" class="pinit-image"<?= $article->video ? ' style="display: none !important;"' : '' ?>/>
         <? } ?>
 		<? if ($article->video) { ?>
 			<iframe width="560" height="315" ng-iframe src="<?= $article->video ?>" frameborder="0" allowfullscreen></iframe>
