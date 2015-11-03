@@ -44,7 +44,7 @@
                            href="<?= empty($subsection->display_name) ?
                                $this->url('catalog', array('action'=>'subsection', 'id'=>$subsection->id)) :
                                $this->url('catalog', array('action'=>'subsection', 'id'=>$subsection->display_name));?>">
-                            <h2 style="font-size: 16px; font-family: Arial, sans-serif;"><?= $subsection->title; ?></h2>
+                            <h2><?= $subsection->title; ?></h2>
                         </a>
                     </div>
                 </div>
