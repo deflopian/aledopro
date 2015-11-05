@@ -86,7 +86,7 @@
 <!--            --><?// foreach($entities as $entity){ ?>
                 <tr class="entity" ng-repeat="item in filtered = (original | filterByFields:filterModelUsername:['username'] | filterByFields:filterModelEmail:['email'] | filterByFields:filterModelAlias:['alias'] | filterByFields:filterModelCity:['city'] | filterByFields:filterModelManager:['manager_name'] | filterByFields:filterModelRole:['true_role'])">
                     <td>{{item.user_id}}</td>
-                    <td>{{item.username}}</td>
+                    <td>{{item.username}}<br><span ng-show="item.state==0"><b>Заблокирован</b></span></td>
                     <td>{{item.email}}</td>
                     <td>{{item.true_role}}</td>
                     <td>{{item.alias}}</td>
@@ -100,8 +100,8 @@
                     </td>
                     <td>
                         <a ng-href="/admin/user/view/{{item.user_id}}/" class="editBtn">Редактировать</a>
-						<a ng-href="/admin/user/block/{{item.user_id}}/" ng-hide="item.state==0" class="hideBtn">Заблокировать</a>
-						<span ng-show="item.state==0">Заблокирован</span>
+						<a ng-href="/admin/user/block/{{item.user_id}}/" ng-hide="item.state==0">Заблокировать</a>
+						<a ng-href="/admin/user/block/{{item.user_id}}/" ng-show="item.state==0"><b>Разблокировать</b></a>
                     </td>
                 </tr>
             </tbody>

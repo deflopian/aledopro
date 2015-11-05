@@ -386,7 +386,6 @@ class AdminController extends SampleAdminController
 					if ($flag) {
 						$entity = new $this->entityName;
 						$entity->exchangeArray($data);
-						$entity->state = 1;
 						$this->getServiceLocator()->get('UserTable')->save($entity);
 					}
 
@@ -489,19 +488,27 @@ class AdminController extends SampleAdminController
 			
             if ($id) {
 				$entity = $this->getServiceLocator()->get($this->table)->find($id);
-                $entity->state = 0;
-				$entity->is_partner = 0;
-                $entity->partner_group = 0;
-                $this->getServiceLocator()->get($this->table)->save($entity);
 				
-				$userRole = $this->getServiceLocator()->get('RoleLinkerTable')->find($id, 'user_id');
-				$userRole->role_id = 'user';
-                $this->getServiceLocator()->get('RoleLinkerTable')->save($userRole, 'user_id');
-						
-				$userEntities = $this->getServiceLocator()->get($this->table)->fetchByCond('manager_id', $id);
-				foreach($userEntities as $userEntity) {
-					$userEntity->manager_id = 0;
-					$this->getServiceLocator()->get($this->table)->save($userEntity);
+				if ($entity->state == 1) {				
+					$entity->state = 0;
+					$entity->is_partner = 0;
+					$entity->is_spamed = 0;
+					$entity->partner_group = 0;
+					$this->getServiceLocator()->get($this->table)->save($entity);
+					
+					$userRole = $this->getServiceLocator()->get('RoleLinkerTable')->find($id, 'user_id');
+					$userRole->role_id = 'user';
+					$this->getServiceLocator()->get('RoleLinkerTable')->save($userRole, 'user_id');
+					
+					$userEntities = $this->getServiceLocator()->get($this->table)->fetchByCond('manager_id', $id);
+					foreach($userEntities as $userEntity) {
+						$userEntity->manager_id = 0;
+						$this->getServiceLocator()->get($this->table)->save($userEntity);
+					}
+				}
+				else {
+					$entity->state = 1;
+					$this->getServiceLocator()->get($this->table)->save($entity);
 				}
 				
                 //$success = 1;
