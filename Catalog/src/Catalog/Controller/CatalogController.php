@@ -555,6 +555,10 @@ class CatalogController extends BaseController
                 break;
 
         }
+		
+		if ($prodId = $this->params()->fromQuery('product')) {
+            $view->setVariable('scrollToProduct', $prodId);
+        }
 
         $seoData = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SUBSECTION, $subsection->id);
         $filterData = $this->getFilterData($section->id, $subsection->id);
@@ -935,7 +939,7 @@ class CatalogController extends BaseController
                 break;
 
             case CatalogService::DISPLAY_STYLE_LENTS:
-                $url = $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->id));
+                $url = $this->url()->fromRoute('catalog', array('action'=>'subsection', 'id'=>$subsection->id));
                 $url .= '?product=' . $id;
                 return $this->redirect()->toUrl($url)->setStatusCode(301);
 
