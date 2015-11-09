@@ -23,7 +23,7 @@ if ($user && $user->getIsPartner()) {
 }
 
 $posVals = \Catalog\Service\CatalogService::getValsJSON($products, $filteredFields, 0, $params);
-$isDriver = (reset($products)->type == 'Драйвер тока');
+$isDriver = (reset($products)->type == 'Драйвер тока' || reset($products)->type == 'Драйвер торка');
 $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, $series, $hierarchies, $discounts, $filteredFields, $isDriver);
 
 ?>
