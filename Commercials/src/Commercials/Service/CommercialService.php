@@ -15,15 +15,17 @@ class CommercialService {
     {
         $objPHPExcel = new \PHPExcel();
         $objPHPExcel->getProperties()
-            ->setCreator("Aledo Pro");
+            ->setTitle($commercial->title)
+            ->setCreator("aledo-pro.ru")
+            ->setDescription("Коммерческое предложение");
 
         if ($userName) {
             $objPHPExcel->getProperties()
-                ->setLastModifiedBy("Vadim Bannov");
+                ->setLastModifiedBy($userName);
         }
-		
-		$sheetTitle = (strlen($commercial->title) > 31) ? substr($commercial->title, 0, 28) . '...' : $commercial->title;
-		
+
+        $sheetTitle = (strlen($commercial->title) > 31) ? mb_substr($commercial->title, 0, 28, "utf-8") . '...' : $commercial->title;
+
         $sheet = $objPHPExcel->getActiveSheet();
         $sheet->setTitle($sheetTitle);
 
