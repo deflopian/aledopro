@@ -105,14 +105,14 @@ class ElecService {
         return $categories;
     }
 
-    private static function getOffers($products) {
+    private static function getOffers($products, $sl) {
         $offers = "<offers>\n";
 
 
         $i = 1;
         foreach ($products as $group => $prs) {
             foreach ($prs as $product) {
-                $offers .= self::getOneOffer($product, $i, $group);
+                $offers .= self::getOneOffer($product, $i, $group, $sl);
             }
             $i++;
         }
@@ -128,7 +128,20 @@ class ElecService {
      * @param $groupKey integer
      * @return string
      */
-    private static function getOneOffer($product, $i, $groupKey) {
+    private static function getOneOffer($product, $i, $groupKey, $sl) {
+		$hierarchies = array();
+
+		$series = $sl->get('Catalog/Model/SeriesTable')->find($product->series_id);
+		$subsection = $sl->get('Catalog/Model/SubSectionTable')->find($series->subsection_id);
+		$section = $sl->get('Catalog/Model/SectionTable')->find($subsection->section_id);
+
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::PRODUCT_TABLE] = $product->id;
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::SERIES_TABLE] = $series->id;
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::SUBSECTION_TABLE] = $subsection->id;
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::SECTION_TABLE] = $section->id;
+
+		$priceRequestTable = $sl->get('PriceRequestTable');
+		$requests = $priceRequestTable->fetchAllSorted();
 
         $offer = "\t<offer id=\"" . $product->id . "\">\n";
 
@@ -136,7 +149,7 @@ class ElecService {
         $offer .= "\t\t<keyword>" . (!empty($product->type) ? $product->type : self::$groupsNames[$groupKey]) . "</keyword>\n";
         $offer .= "\t\t<title>" . $product->title . "</title>\n";
         $offer .= "\t\t<url>http://aledo-pro.ru/catalog/products/" . $product->id . "</url>\n";
-        $offer .= "\t\t<price>" . CatalogService::getTruePrice($product->price_without_nds) . "</price>\n";
+        $offer .= "\t\t<price>" . CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests) . "</price>\n";
         $offer .= "\t\t<artno>" . $product->id . "</artno>\n";
         $offer .= "\t\t<picture>" . $product->series_img . "</picture>\n";
         $offer .= "\t\t<vendor>" . $product->brand . "</vendor>\n";
@@ -168,14 +181,14 @@ class ElecService {
         return "</elec_market>\n";
     }
 
-    public static function makeElecFile($products)
+    public static function makeElecFile($products, $sl)
     {
 
          //участвовать в программе Покупка на Маркете (1) или нет (0)
         $catalog = self::getHeader();
         $catalog .= self::getCategories();
 
-        $catalog .= self::getOffers($products);
+        $catalog .= self::getOffers($products, $sl);
 
         $catalog .= self::getFooter();
 

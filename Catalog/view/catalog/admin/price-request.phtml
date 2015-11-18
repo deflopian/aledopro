@@ -1,0 +1,148 @@
+<h1>
+    <a href="<?= $this->url('zfcadmin/catalog') ?>">Каталог</a>
+    >
+    <span id="title">Цена по запросу</span>
+</h1>
+
+<div class="section" ng-app="dflTree">
+    <div ng-controller="DflTreeCtrl">
+        <div class="col-md-8">
+            <dfl-tree parent-type="project">
+                <div dfl-tree-data ng-cloak><?= $treeDateByLvlJson ?></div>
+
+                <div dfl-tree-hierarchy ng-cloak><?= $treeHierarchyJson ?></div>
+
+                <div class="tree" ng-repeat="(key, item) in items[1]">
+                    <div class="row tree-row">
+                        <div class="col-md-1">
+                        <span
+                            class="btn small-icon glyphicon glyphicon-plus"
+                            ng-show="!items[1][key].shown"
+                            ng-click="items[1][key].shown = true"></span>
+                        <span
+                            class="btn small-icon glyphicon glyphicon-minus"
+                            ng-show="items[1][key].shown"
+                            ng-click="items[1][key].shown = false"></span>
+                        </div>
+                        <div class="col-md-8" ng-click="items[1][key].shown = !items[1][key].shown" ng-bind="items[1][key].title"></div>
+                        <div class="col-md-3 pull-right" style="text-align: right; padding-right: 0; padding-top: 0">
+                        <span>
+                            <select
+                                   ng-class="{pristineDiscount: (items[1][key].inherited == 0 && !items[1][key].discount)}"
+                                   ng-model="items[1][key].discount"
+                                ><option value="0">нет</option><option value="1">по запросу</option></select>
+                        </span>
+                        <span
+                            class="btn glyphicon glyphicon-ok-circle"
+                            style="color: #BBBBBB"
+                            ng-click="changeField('<?= \Catalog\Controller\AdminController::PRICE_REQUEST_TABLE ?>', -1, 'is_requestable', items[1][key].discount, {discountType:<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>, sectionId:key}, 'discountCallback')"></span>
+						<span
+                            class="btn glyphicon glyphicon-remove"
+                            ng-show="items[1][key].dId"
+                            style="color: #BBBBBB;margin-right: -44px;"
+                            ng-click="removeField('<?= \Catalog\Controller\AdminController::PRICE_REQUEST_TABLE ?>', items[1][key].dId, {discountType:<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>, sectionId:key}, 'removeDiscountCallback')"></span>
+                        </div>
+                    </div>
+
+                    <div ng-if="hierarchy[key] && items[1][key].shown">
+                        <div ng-repeat="(subsectionId, series) in hierarchy[key]">
+                            <div style="margin-left: 15px;" class="row tree-row">
+                                <div class="col-md-1">
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-plus"
+                                    ng-show="!items[2][subsectionId].shown"
+                                    ng-click="items[2][subsectionId].shown = true"></span>
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-minus"
+                                    ng-show="items[2][subsectionId].shown"
+                                    ng-click="items[2][subsectionId].shown = false"></span>
+                                </div>
+                                <div class="col-md-8" ng-click="items[2][subsectionId].shown = !items[2][subsectionId].shown" ng-bind="items[2][subsectionId].title"></div>
+                                <div class="col-md-3 pull-right" style="text-align: right; padding-right: 0; padding-top: 0">
+                                <span>
+                                    <select
+                                           ng-class="{inheritedDiscount: items[2][subsectionId].inherited, pristineDiscount: (items[2][subsectionId].inherited == 0 && !items[2][subsectionId].discount)}"
+                                           ng-model="items[2][subsectionId].discount"
+                                        ><option value="0">нет</option><option value="1">по запросу</option></select>
+                                </span>
+                                <span
+                                    class="btn glyphicon glyphicon-ok-circle"
+                                    style="color: #BBBBBB"
+                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::PRICE_REQUEST_TABLE ?>', -1, 'is_requestable', items[2][subsectionId].discount, {discountType:<?= \Catalog\Controller\AdminController::SUBSECTION_TABLE ?>, sectionId:subsectionId}, 'discountCallback')"></span>
+								<span
+                                    class="btn glyphicon glyphicon-remove"
+                                    ng-show="items[2][subsectionId].dId"
+                                    style="color: #BBBBBB;margin-right: -44px;"
+                                    ng-click="removeField('<?= \Catalog\Controller\AdminController::PRICE_REQUEST_TABLE ?>', items[2][subsectionId].dId, {discountType:<?= \Catalog\Controller\AdminController::SUBSECTION_TABLE ?>, sectionId:subsectionId}, 'removeDiscountCallback')"></span>
+                                </div>
+                            </div>
+
+
+                            <div ng-if="series && items[2][subsectionId].shown">
+                                <div ng-repeat="(seriesId, products) in series">
+                                    <div style="margin-left: 30px;" class="row tree-row">
+                                        <div class="col-md-1">
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-plus"
+                                    ng-show="!items[3][seriesId].shown"
+                                    ng-click="items[3][seriesId].shown = true"></span>
+                                <span
+                                    class="btn small-icon glyphicon glyphicon-minus"
+                                    ng-show="items[3][seriesId].shown"
+                                    ng-click="items[3][seriesId].shown = false"></span>
+                                        </div>
+                                        <div class="col-md-8" ng-bind="items[3][seriesId].title" ng-click="items[3][seriesId].shown = !items[3][seriesId].shown"></div>
+                                        <div class="col-md-3 pull-right" style="text-align: right; padding-right: 0; padding-top: 0">
+                                        <span>
+                                            <select
+                                                   ng-class="{inheritedDiscount: items[3][seriesId].inherited, pristineDiscount: (items[3][seriesId].inherited == 0 && !items[3][seriesId].discount)}"
+                                                   ng-model="items[3][seriesId].discount"
+                                                ><option value="0">нет</option><option value="1">по запросу</option></select>
+                                        </span>
+                                        <span
+                                            class="btn glyphicon glyphicon-ok-circle"
+                                            style="color: #BBBBBB"
+                                            ng-click="changeField('<?= \Catalog\Controller\AdminController::PRICE_REQUEST_TABLE ?>', -1, 'is_requestable', items[3][seriesId].discount, {discountType:<?= \Catalog\Controller\AdminController::SERIES_TABLE ?>, sectionId:seriesId}, 'discountCallback')"></span>
+										<span
+                                            class="btn glyphicon glyphicon-remove"
+                                            ng-show="items[3][seriesId].dId"
+                                            style="color: #BBBBBB;margin-right: -44px;"
+                                            ng-click="removeField('<?= \Catalog\Controller\AdminController::PRICE_REQUEST_TABLE ?>', items[3][seriesId].dId, {discountType:<?= \Catalog\Controller\AdminController::SERIES_TABLE ?>, sectionId:seriesId}, 'removeDiscountCallback')"></span>
+                                        </div>
+                                    </div>
+                                    <div ng-if="products && items[3][seriesId].shown">
+                                        <div ng-repeat="(productId, staff) in products">
+                                            <div style="margin-left: 45px;" class="row tree-row">
+                                                <div class="col-md-8 col-md-offset-1" ng-bind="items[4][productId].title"></div>
+                                                <div class="col-md-3 pull-right" style="text-align: right; padding-right: 0; padding-top: 0">
+                                                <span>
+                                                    <select
+                                                           ng-class="{inheritedDiscount: items[4][productId].inherited, pristineDiscount: (items[4][productId].inherited == 0 && !items[4][productId].discount)}"
+                                                           ng-model="items[4][productId].discount"
+                                                        ><option value="0">нет</option><option value="1">по запросу</option></select>
+                                                </span>
+                                                <span
+                                                    class="btn glyphicon glyphicon-ok-circle"
+                                                    style="color: #BBBBBB"
+                                                    ng-click="changeField('<?= \Catalog\Controller\AdminController::PRICE_REQUEST_TABLE ?>', -1, 'is_requestable', items[4][productId].discount, {discountType:<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>, sectionId:productId}, 'discountCallback')"></span>
+												<span
+                                                    class="btn glyphicon glyphicon-remove"
+                                                    ng-show="items[4][productId].dId"
+                                                    style="color: #BBBBBB;margin-right: -44px;"
+                                                    ng-click="removeField('<?= \Catalog\Controller\AdminController::PRICE_REQUEST_TABLE ?>', items[4][productId].dId, {discountType:<?= \Catalog\Controller\AdminController::PRODUCT_TABLE ?>, sectionId:productId}, 'removeDiscountCallback')"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </dfl-tree>
+        </div>
+        <script type="application/javascript">
+            AppFactory("dflTree", "trees", ["dflTree"]);
+        </script>
+    </div>
+</div>

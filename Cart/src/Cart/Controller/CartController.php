@@ -56,15 +56,15 @@ class CartController extends AbstractActionController
                     if ($file) {
                         $series->previewName = $file->name;
                     }
-                }
+                }				
 
+				$hierarchies[$product->id][\Catalog\Controller\AdminController::PRODUCT_TABLE] = $product->id;
+				$hierarchies[$product->id][\Catalog\Controller\AdminController::SERIES_TABLE] = $series->id;
+				$hierarchies[$product->id][\Catalog\Controller\AdminController::SUBSECTION_TABLE] = $subsection->id;
+				$hierarchies[$product->id][\Catalog\Controller\AdminController::SECTION_TABLE] = $section->id;
+				
                 if ($this->zfcUserAuthentication()->hasIdentity()) {
                     $identity = $this->zfcUserAuthentication()->getIdentity();
-                    $hierarchies[$product->id][\Catalog\Controller\AdminController::PRODUCT_TABLE] = $product->id;
-                    $hierarchies[$product->id][\Catalog\Controller\AdminController::SERIES_TABLE] = $series->id;
-                    $hierarchies[$product->id][\Catalog\Controller\AdminController::SUBSECTION_TABLE] = $subsection->id;
-                    $hierarchies[$product->id][\Catalog\Controller\AdminController::SECTION_TABLE] = $section->id;
-
                 }
 
                 $product->preview_img = (isset($series->previewName) ? $series->previewName : $series->img);
@@ -131,9 +131,13 @@ class CartController extends AbstractActionController
             $discounts = $sl->get('DiscountTable')->fetchByUserId($identity->getId(), $identity->getPartnerGroup(), false, 0, $sl);
             $return['user'] = $identity;
             $return['discounts'] = $discounts;
-            $return['hierarchies'] = $hierarchies;
         }
-
+		
+		$priceRequestTable = $sl->get('PriceRequestTable');
+		$requests = $priceRequestTable->fetchAllSorted();
+		
+		$return['hierarchies'] = $hierarchies;
+		$return['requests'] = $requests;
         $return['isAuth'] = $this->zfcUserAuthentication()->hasIdentity();
 
 
@@ -260,24 +264,27 @@ class CartController extends AbstractActionController
                     //$productsInfo[$id]->mainParams = $mainParams;
 
                     $trueCount = floor($prodData->count);
+					
+					$priceRequestTable = $sl->get('PriceRequestTable');
+					$requests = $priceRequestTable->fetchAllSorted();
+					
+					$hierarchies[$product->id][\Catalog\Controller\AdminController::PRODUCT_TABLE] = $product->id;
+                    $hierarchies[$product->id][\Catalog\Controller\AdminController::SERIES_TABLE] = $series->id;
+                    $hierarchies[$product->id][\Catalog\Controller\AdminController::SUBSECTION_TABLE] = $subsection->id;
+                    $hierarchies[$product->id][\Catalog\Controller\AdminController::SECTION_TABLE] = $section->id;
 
                     if ($identity && $identity->getIsPartner()) {
-
-                        $hierarchies[$product->id][\Catalog\Controller\AdminController::PRODUCT_TABLE] = $product->id;
-                        $hierarchies[$product->id][\Catalog\Controller\AdminController::SERIES_TABLE] = $series->id;
-                        $hierarchies[$product->id][\Catalog\Controller\AdminController::SUBSECTION_TABLE] = $subsection->id;
-                        $hierarchies[$product->id][\Catalog\Controller\AdminController::SECTION_TABLE] = $section->id;
-
                         $truePrice = CatalogService::getTruePrice(
                             $product->price_without_nds,
                             $identity,
                             $hierarchies[$product->id],
                             $discounts,
-                            $product->opt2
+                            $product->opt2,
+							$requests
                         );
 
                     } else {
-                        $truePrice = CatalogService::getTruePrice($product->price_without_nds);
+                        $truePrice = CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests);
                     }
 
                     $productData[$id]->price = $truePrice;

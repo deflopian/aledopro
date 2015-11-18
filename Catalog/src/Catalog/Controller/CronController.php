@@ -577,7 +577,7 @@ class CronController extends BaseController
         }
 
         //return false;
-        $ymlFile = YMLService::makeYMLFile($sections, $subsections, $series, $products, $allParams);
+        $ymlFile = YMLService::makeYMLFile($sections, $subsections, $series, $products, $allParams, $this->getServiceLocator());
         $result = file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/aledo-shop.dtd', $ymlFile);
         return $this->redirect()->toRoute('zfcadmin/market');
     }
@@ -635,7 +635,7 @@ class CronController extends BaseController
             }
         }
 
-        $gmcFile = GMCService::makeGMCFile($series, $products);
+        $gmcFile = GMCService::makeGMCFile($series, $products, $this->getServiceLocator());
         $result = file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/gmc-aledo.xml', $gmcFile);
 
         return $this->redirect()->toRoute('zfcadmin/market');
@@ -699,7 +699,7 @@ class CronController extends BaseController
             }
         }
 
-        $gmcFile = ElecService::makeElecFile($products);
+        $gmcFile = ElecService::makeElecFile($products, $this->getServiceLocator());
         $result = file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/elec-aledo.xml', $gmcFile);
 
         return $this->redirect()->toRoute('zfcadmin/market');

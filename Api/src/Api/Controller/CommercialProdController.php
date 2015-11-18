@@ -147,13 +147,16 @@ class CommercialProdController extends ApiController
         }
 
         $discounts = $sl->get('DiscountTable')->fetchByUserId($user->getId(), $user->getPartnerGroup(), false, 0, $sl);
+		
+		$priceRequestTable = $sl->get('PriceRequestTable');
+		$requests = $priceRequestTable->fetchAllSorted();
 
-        list( $tree, $type) = $catalogMapper->getParentTree($prodId);
+        list($tree, $type) = $catalogMapper->getParentTree($prodId);
         $prod = new CommercialProd();
         $prod->room_id = $roomId;
         $prod->product_id = $prodId;
         $prod->count = 1;
-        $prod->old_price = CatalogService::getTruePrice($metaProd->price_without_nds);
+        $prod->old_price = CatalogService::getTruePrice($metaProd->price_without_nds, null, $tree, null, 0, $requests);
 //        $prod->old_price = CatalogService::getTruePrice($metaProd->price_without_nds, $user, $tree, $discounts, $metaProd->opt2);
 
         $result = $cpm->add($prod);

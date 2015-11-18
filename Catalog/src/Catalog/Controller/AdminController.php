@@ -55,6 +55,7 @@ class AdminController extends SampleAdminController
     const ARTICLE_BLOCKS_TABLE = 36;
     const FOOTER_BLOCKS_TABLE = 37;
     const GEOBANNERS_TABLE = 38;
+    const PRICE_REQUEST_TABLE = 39;
 
     protected $tableImg = 'SeriesImgTable';
     protected $entityImgName = 'Catalog\Model\SeriesImg';
@@ -80,7 +81,6 @@ class AdminController extends SampleAdminController
             $treeDataByLvl[23][] = $filter;
         }
 
-
         $treeDataByLvlJson = \Zend\Json\Json::encode($treeDataByLvl);
 
         return array(
@@ -90,6 +90,120 @@ class AdminController extends SampleAdminController
         );
     }
 
+    public function priceRequestAction()
+    {
+		$sl = $this->getServiceLocator();
+		
+        $priceRequestTable = $sl->get('PriceRequestTable');
+        $sortedDiscounts = $priceRequestTable->fetchAllSorted();
+
+
+
+        $cm = CatalogMapper::getInstance($this->getServiceLocator());
+        $sections = $cm->fetchAllSections();
+        $subsections = $cm->fetchAllSubsections(true);
+        $series = $cm->fetchAllSeries(true);
+        $products = $cm->fetchAllProducts(true);
+        $treeDateByLvl = array();
+        $treeHierarchy = array();
+        foreach ($sections as $section) {
+            $discVal = 0;
+            $originalId = 0;
+            if (isset($sortedDiscounts[\Catalog\Controller\AdminController::SECTION_TABLE][$section->id])) {
+                $discVal = $sortedDiscounts[\Catalog\Controller\AdminController::SECTION_TABLE][$section->id]->is_requestable;
+                $originalId = $sortedDiscounts[\Catalog\Controller\AdminController::SECTION_TABLE][$section->id]->id;
+            }
+            $treeDateByLvl[\Catalog\Controller\AdminController::SECTION_TABLE][$section->id] = array('title' => $section->title, 'discount' => $discVal, 'inherited' => 0, 'dId' => ($originalId > 0 ? $originalId : false));
+            $treeHierarchy[$section->id] = array();
+        }
+        foreach ($subsections as $subsection) {
+            if (isset($treeHierarchy[$subsection->section_id])) {
+                $treeHierarchy[$subsection->section_id][$subsection->id] = array();
+                $discVal = 0;
+                $inherited = 0;
+                $originalId = 0;
+                if (isset($sortedDiscounts[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$subsection->id])) {
+                    $discVal = $sortedDiscounts[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$subsection->id]->is_requestable;
+                    $originalId = $sortedDiscounts[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$subsection->id]->id;
+                } else {
+                    $discVal = $treeDateByLvl[\Catalog\Controller\AdminController::SECTION_TABLE][$subsection->section_id]['discount'];
+                    $inherited = 1;
+                }
+                $treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$subsection->id] = array('title' => $subsection->title, 'parentId' => $subsection->section_id, 'discount' => $discVal, 'inherited' => $inherited, 'dId' => ($originalId > 0 ? $originalId : false));
+                if (!$inherited) {
+                    $treeDateByLvl[\Catalog\Controller\AdminController::SECTION_TABLE][$subsection->section_id]['shown'] = true;
+//                    $treeDateByLvl[\Catalog\Controller\AdminController::SECTION_TABLE][$subsection->section_id]['dId'] = $sortedDiscounts[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$subsection->id]->discount;
+
+                }
+            }
+        }
+        foreach ($series as $oneser) {
+
+            $subsection = $treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$oneser->subsection_id];
+            if ($subsection) {
+                $sectionId = $subsection['parentId'];
+                if (isset($treeHierarchy[$sectionId][$oneser->subsection_id])) {
+                    $treeHierarchy[$sectionId][$oneser->subsection_id][$oneser->id] = array();
+                    $discVal = 0;
+                    $originalId = 0;
+                    $inherited = 0;
+                    if (isset($sortedDiscounts[\Catalog\Controller\AdminController::SERIES_TABLE][$oneser->id])) {
+                        $discVal = $sortedDiscounts[\Catalog\Controller\AdminController::SERIES_TABLE][$oneser->id]->is_requestable;
+                        $originalId = $sortedDiscounts[\Catalog\Controller\AdminController::SERIES_TABLE][$oneser->id]->id;
+                    } else {
+                        $discVal = $treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$oneser->subsection_id]['discount'];
+                        $inherited = 1;
+                    }
+                    $treeDateByLvl[\Catalog\Controller\AdminController::SERIES_TABLE][$oneser->id] = array('title' => $oneser->title, 'parentId' => $oneser->subsection_id, 'discount' => $discVal, 'inherited' => $inherited, 'dId' => ($originalId > 0 ? $originalId : false));
+                    if (!$inherited) {
+                        $treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$oneser->subsection_id]['shown'] = true;
+                        $treeDateByLvl[\Catalog\Controller\AdminController::SECTION_TABLE][$treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$oneser->subsection_id]['parentId']]['shown'] = true;
+                    }
+                }
+            }
+
+
+        }
+        foreach ($products as $product) {
+            $series = $treeDateByLvl[\Catalog\Controller\AdminController::SERIES_TABLE][$product->series_id];
+            $subsectionId = $series['parentId'];
+            $subsection = $treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$subsectionId];
+            if ($subsection) {
+                $sectionId = $subsection['parentId'];
+                if (isset($treeHierarchy[$sectionId][$subsectionId][$product->series_id])) {
+                    $treeHierarchy[$sectionId][$subsectionId][$product->series_id][$product->id] = $product->id;
+                    $discVal = 0;
+                    $inherited = 0;
+                    $originalId = 0;
+                    if (isset($sortedDiscounts[\Catalog\Controller\AdminController::PRODUCT_TABLE][$product->id])) {
+                        $discVal = $sortedDiscounts[\Catalog\Controller\AdminController::PRODUCT_TABLE][$product->id]->is_requestable;
+                        $originalId = $sortedDiscounts[\Catalog\Controller\AdminController::PRODUCT_TABLE][$product->id]->id;
+                    } else {
+                        $discVal = $treeDateByLvl[\Catalog\Controller\AdminController::SERIES_TABLE][$product->series_id]['discount'];
+                        $inherited = 1;
+                    }
+
+                    $treeDateByLvl[\Catalog\Controller\AdminController::PRODUCT_TABLE][$product->id] = array('title' => $product->title, 'parentId' => $product->series_id, 'discount' => $discVal, 'inherited' => $inherited, 'dId' => ($originalId > 0 ? $originalId : false));
+                    if (!$inherited) {
+                        $treeDateByLvl[\Catalog\Controller\AdminController::SERIES_TABLE][$product->series_id]['shown'] = true;
+                        $prevSer = $treeDateByLvl[\Catalog\Controller\AdminController::SERIES_TABLE][$product->series_id];
+                        $treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$prevSer['parentId']]['shown'] = true;
+                        $prevSS = $treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$prevSer['parentId']];
+                        $treeDateByLvl[\Catalog\Controller\AdminController::SECTION_TABLE][$prevSS['parentId']]['shown'] = true;
+                    }
+                }
+            }
+        }
+
+        $treeDateByLvlJson = \Zend\Json\Json::encode($treeDateByLvl);
+        $treeHierarchyJson = \Zend\Json\Json::encode($treeHierarchy);
+		
+		return array(
+            'treeDateByLvlJson' => $treeDateByLvlJson,
+			'treeHierarchyJson' => $treeHierarchyJson,
+        );
+    }
+	
     public function getTagsByTypeAction() {
         $request = $this->getRequest();
         $sl = $this->getServiceLocator();

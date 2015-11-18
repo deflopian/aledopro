@@ -168,6 +168,7 @@ function mb_ucfirst($text) {
                                         'params' => $this->params,
                                         'hierarchies' => $this->hierarchies,
                                         'discounts' => $this->discounts,
+										'requests' => $this->requests,
                                         'displayStyle' => $displayStyle
                                     )
                                 ); ?>
@@ -229,6 +230,7 @@ function mb_ucfirst($text) {
                                             'serNum' => $oneGroup['id'],
                                             'hierarchies' => $this->hierarchies,
                                             'discounts' => $this->discounts,
+											'requests' => $this->requests,
                                             'nonFilter' => true,
                                             'parentSerNum' => $series->id,
                                         )

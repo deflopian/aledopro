@@ -249,6 +249,7 @@ class CatalogController extends BaseController
         );
 
         $hierarchies = Hierarchy::getInstance()->getProducts();
+		$view->setVariable('hierarchies', $hierarchies);
 
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             $identity = $this->zfcUserAuthentication()->getIdentity();
@@ -271,8 +272,12 @@ class CatalogController extends BaseController
 
             $view->setVariable('user', $identity);
             $view->setVariable('discounts', $discounts);
-            $view->setVariable('hierarchies', $hierarchies);
         }
+		
+		$priceRequestTable = $sl->get('PriceRequestTable');
+		$requests = $priceRequestTable->fetchAllSorted();
+		
+		$view->setVariable('requests', $requests);
 
         $return['offeredIds'] = $sl->get('OfferContentTable')->fetchAll('', true);
         $return['allSeries'] = SeriesAggregator::getInstance()->getSeries();
@@ -479,6 +484,7 @@ class CatalogController extends BaseController
             ));
 		
 		$hierarchies = Hierarchy::getInstance()->getProducts();
+		$view->setVariable('hierarchies', $hierarchies);
 
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             $identity = $this->zfcUserAuthentication()->getIdentity();
@@ -500,8 +506,12 @@ class CatalogController extends BaseController
 
             $view->setVariable('user', $identity);
             $view->setVariable('discounts', $discounts);
-            $view->setVariable('hierarchies', $hierarchies);
         }
+		
+		$priceRequestTable = $sl->get('PriceRequestTable');
+		$requests = $priceRequestTable->fetchAllSorted();
+		
+		$view->setVariable('requests', $requests);
 			
         $links = LinkToLinkMapper::getInstance($sl)->fetchCatalogSortedBySectionType($subsection->section_id, AdminController::SECTION_TABLE);
         $view->setVariable('links', $links);
@@ -714,6 +724,9 @@ class CatalogController extends BaseController
                 'sl'       => $sl
             ));
 
+		$hierarchies = Hierarchy::getInstance()->getProducts();
+        $view->setVariable('hierarchies', $hierarchies);
+			
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             $identity = $this->zfcUserAuthentication()->getIdentity();
             $isManager = UserService::$isManager;
@@ -729,11 +742,15 @@ class CatalogController extends BaseController
                 $discounts = $sl->get('DiscountTable')->fetchByUserId($identity->getId(), $identity->getPartnerGroup(), false, 0, $sl);
             }
             $view->setVariable('discounts', $discounts);
-            $hierarchies = Hierarchy::getInstance()->getProducts();
-            $view->setVariable('hierarchies', $hierarchies);
             $view->setVariable('discountProducts', array_keys($hierarchies));
             $view->setVariable('user', $identity);
         }
+		
+		$priceRequestTable = $sl->get('PriceRequestTable');
+		$requests = $priceRequestTable->fetchAllSorted();
+		
+		$view->setVariable('requests', $requests);
+		
         $links = LinkToLinkMapper::getInstance($sl)->fetchCatalogSortedBySectionType($id, AdminController::SERIES_TABLE);
         $view->setVariable('links', $links);
         $view->setTemplate('catalog/catalog/series');

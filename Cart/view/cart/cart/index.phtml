@@ -55,8 +55,8 @@
                 </td>
 
                 <? //высчитываем обычную цену, цену со скидкой и скидку:
-
-                $price = \Catalog\Service\CatalogService::getTruePrice($prod->price_without_nds);
+				
+				$price = \Catalog\Service\CatalogService::getTruePrice($prod->price_without_nds, null, $this->hierarchies[$prod->id], null, 0, $this->requests);
 
                 if ($user && $user->getIsPartner()) {
                     $discountPrice = \Catalog\Service\CatalogService::getTruePrice(
@@ -64,7 +64,8 @@
                         $user,
                         $this->hierarchies[$prod->id] ? $this->hierarchies[$prod->id] : array(),
                         $this->discounts,
-                        $prod->opt2
+                        $prod->opt2,
+						$this->requests
                     );
 
                     $realDiscount = round((1 - ($discountPrice / $price))*100);

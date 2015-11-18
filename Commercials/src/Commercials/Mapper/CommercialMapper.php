@@ -83,8 +83,11 @@ class CommercialMapper {
         foreach ($commercial->rooms as $room) {
             /** @var CommercialProd $commProd */
             foreach ($room->prods as &$commProd) {
+				$priceRequestTable = $this->sl->get('PriceRequestTable');
+				$requests = $priceRequestTable->fetchAllSorted();
+				
                 list($tree, $type) = $cm->getParentTree($commProd->product_id);
-                $price = CatalogService::getTruePriceUser($commProd->product->price_without_nds, $priceUser, $tree, $discounts, $commProd->product->opt2);
+                $price = CatalogService::getTruePriceUser($commProd->product->price_without_nds, $priceUser, $tree, $discounts, $commProd->product->opt2, $requests);
                 //$price = CatalogService::getTruePrice($commProd->product->price_without_nds);
                 $cpm->updatePrice($commProd->id, $price);
             }

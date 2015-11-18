@@ -23,6 +23,7 @@ use Catalog\Model\SubSectionTable;
 use Catalog\Model\SeriesTable;
 use Catalog\Model\ProductTable;
 use Catalog\Model\ProductParamsTable;
+use Catalog\Model\PriceRequestTable;
 use Terms\Model\Terms;
 use Terms\Model\TermsTable;
 
@@ -174,6 +175,16 @@ class Module
                 'Terms\Model\Terms' => function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table = new TermsTable($dbAdapter);
+                    return $table;
+                },
+				'Catalog\Model\PriceRequestTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table = new PriceRequestTable($dbAdapter);
+                    return $table;
+                },
+				'PriceRequestTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table = new PriceRequestTable($dbAdapter);
                     return $table;
                 },
             ),

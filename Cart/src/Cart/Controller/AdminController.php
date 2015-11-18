@@ -5,6 +5,7 @@ use Application\Controller\SampleAdminController;
 use Application\Service\ApplicationService;
 use Cart\Model\Order;
 use Catalog\Service\CatalogService;
+use Catalog\Mapper\CatalogMapper;
 use Info\Service\SeoService;
 
 class AdminController extends SampleAdminController
@@ -47,9 +48,15 @@ class AdminController extends SampleAdminController
             $relatedProds = $sl->get('ProdToOrderTable')->fetchByCond('order_id', $return['entity']->id);
             $prodTable = $sl->get('Catalog/Model/ProductTable');
             foreach($relatedProds as $i=>$relProd){
+				$catalogMapper = CatalogMapper::getInstance($sl);
+				list($tree, $type) = $catalogMapper->getParentTree($relProd->product_id);
+				
+				$priceRequestTable = $sl->get('PriceRequestTable');
+				$requests = $priceRequestTable->fetchAllSorted();
+		
                 $prod = $prodTable->find($relProd->product_id);
                 $relatedProds[$i]->title = $prod->title;
-                $relatedProds[$i]->price = CatalogService::getTruePrice($prod->price_without_nds);
+                $relatedProds[$i]->price = CatalogService::getTruePrice($prod->price_without_nds, null, $tree, null, 0, $requests);
             }
             $return['relatedProds'] = $relatedProds;
         }

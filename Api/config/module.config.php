@@ -56,7 +56,7 @@ return array(
                 'options' => array(
                     'route'    => '/api/tree[/:id][/]',
                     'constraints' => array(
-                        'id'     => '[0-9]+',
+                        'id'     => '[0-9_]+',
                     ),
                     'defaults' => array(
                         'controller' => 'TreeApiController',

@@ -89,11 +89,11 @@ class GMCService {
         return array($categories, $categoriesIds, $catId);
     }
 
-    private static function getOffers($products, $series) {
+    private static function getOffers($products, $series, $sl) {
         $offers = "";
 
         foreach ($products as $product) {
-            $offers .= self::getOneOffer($product);
+            $offers .= self::getOneOffer($product, $sl);
         }
 
         return $offers;
@@ -103,8 +103,21 @@ class GMCService {
      * @param $product \Catalog\Model\Product
      * @return string
      */
-    private static function getOneOffer($product) {
+    private static function getOneOffer($product, $sl) {
+		$hierarchies = array();
 
+		$series = $sl->get('Catalog/Model/SeriesTable')->find($product->series_id);
+		$subsection = $sl->get('Catalog/Model/SubSectionTable')->find($series->subsection_id);
+		$section = $sl->get('Catalog/Model/SectionTable')->find($subsection->section_id);
+
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::PRODUCT_TABLE] = $product->id;
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::SERIES_TABLE] = $series->id;
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::SUBSECTION_TABLE] = $subsection->id;
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::SECTION_TABLE] = $section->id;
+
+		$priceRequestTable = $sl->get('PriceRequestTable');
+		$requests = $priceRequestTable->fetchAllSorted();
+	
         $offer = '<item>';
 
         $offer .= '<title>' . $product->title . '</title>';
@@ -115,7 +128,7 @@ class GMCService {
         }
         $offer .= '<g:id>' . $product->id . '</g:id>';
         $offer .= '<g:condition>new</g:condition>';
-        $offer .= '<g:price>' . CatalogService::getTruePrice($product->price_without_nds) . ' RUB </g:price>';
+        $offer .= '<g:price>' . CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests) . ' RUB </g:price>';
         $offer .= '<g:availability>' . ($product->free_balance ? 'in stock' : 'preorder') . '</g:availability>';
         $offer .= '<g:image_link>http://aledo-pro.ru/images/series/' . $product->series_img . '</g:image_link>';
         $offer .= '<g:brand>' . $product->brand . '</g:brand>';
@@ -149,7 +162,7 @@ class GMCService {
         ';
     }
 
-    public static function makeGMCFile($series, $products)
+    public static function makeGMCFile($series, $products, $sl)
     {
 
          //участвовать в программе Покупка на Маркете (1) или нет (0)
@@ -158,7 +171,7 @@ class GMCService {
         $catalog .= self::getShopDescription(); //общая инфа о магазине
 
 
-        $catalog .= self::getOffers($products, $series);
+        $catalog .= self::getOffers($products, $series, $sl);
 
         $catalog .= self::getFooter();
 

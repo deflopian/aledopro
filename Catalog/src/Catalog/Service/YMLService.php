@@ -92,10 +92,10 @@ class YMLService {
         return array($categories, $categoriesIds, $catId);
     }
 
-    private static function getOffers($products, $allParams, $categoriesIds) {
+    private static function getOffers($products, $allParams, $categoriesIds, $sl) {
         $offers = "<offers>";
         foreach ($products as $product) {
-            $offers .= self::getOneOffer($product, $allParams, $categoriesIds);
+            $offers .= self::getOneOffer($product, $allParams, $categoriesIds, $sl);
         }
         $offers .= "</offers>";
 
@@ -107,15 +107,30 @@ class YMLService {
      * @param $allParams array
      * @return string
      */
-    private static function getOneOffer($product, $allParams, $categoriesIds) {
+    private static function getOneOffer($product, $allParams, $categoriesIds, $sl) {
         //todome здесь следует добавить ставки (bid) на кошерные продукты
+		
+		$hierarchies = array();
+
+		$series = $sl->get('Catalog/Model/SeriesTable')->find($product->series_id);
+		$subsection = $sl->get('Catalog/Model/SubSectionTable')->find($series->subsection_id);
+		$section = $sl->get('Catalog/Model/SectionTable')->find($subsection->section_id);
+
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::PRODUCT_TABLE] = $product->id;
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::SERIES_TABLE] = $series->id;
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::SUBSECTION_TABLE] = $subsection->id;
+		$hierarchies[$product->id][\Catalog\Controller\AdminController::SECTION_TABLE] = $section->id;
+
+		$priceRequestTable = $sl->get('PriceRequestTable');
+		$requests = $priceRequestTable->fetchAllSorted();
+		
         $offer = '
             <offer id="' . $product->id . '" available="' . ($product->free_balance ? 'true' : 'false') . '" type="vendor.model"' . ($product->bid ? ' bid="' . $product->bid . '"' : '') . '>
         ';
 
         $offer .= '
             <url>http://aledo-pro.ru/catalog/products/' . $product->id . '</url>
-            <price>' . CatalogService::getTruePrice($product->price_without_nds) . '</price>
+            <price>' . CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests) . '</price>
             <currencyId>RUR</currencyId>
             <categoryId>' . $categoriesIds[$product->series_id] . '</categoryId >
         ';
@@ -183,7 +198,7 @@ class YMLService {
         ';
     }
 
-    public static function makeYMLFile($sections, $subsections, $series, $products, $allParams)
+    public static function makeYMLFile($sections, $subsections, $series, $products, $allParams, $sl)
     {
          //участвовать в программе Покупка на Маркете (1) или нет (0)
         $catalog = self::getHeader();
@@ -203,7 +218,7 @@ class YMLService {
                     <cpa>' . self::$amIWannaMarketPurchase . '</cpa>
         ';
 
-        $catalog .= self::getOffers($products, $allParams, $catsIds);
+        $catalog .= self::getOffers($products, $allParams, $catsIds, $sl);
 
         $catalog .= self::getFooter();
 

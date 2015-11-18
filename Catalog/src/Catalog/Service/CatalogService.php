@@ -98,16 +98,16 @@ class CatalogService {
         return true;
     }
 	
-	public static function getRegularPriceWithNds($product, $isLents = false)
+	public static function getRegularPriceWithNds($product, $isLents = false, $hierarchies = array(), $requests = array())
 	{
 		if ($product->length > 0 && $isLents) {
-            return round(self::getTruePrice($product->price_without_nds) / $product->length);
+            return round(self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests) / $product->length);
         } else {
-            return self::getTruePrice($product->price_without_nds);
+            return self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests);
         }
 	}
 
-    public static function getProductsJSON($products, $fields, $user, $series = 0, $hierarchies=array(), $discounts=null, $hashedFields = array(), $isDriver = true, $isLents = false)
+    public static function getProductsJSON($products, $fields, $user, $series = 0, $hierarchies=array(), $discounts=null, $hashedFields = array(), $isDriver = true, $isLents = false, $requests = array())
     {
         $jsonString = "";
 
@@ -128,9 +128,9 @@ class CatalogService {
                 } elseif ($field == 'price_with_nds') {
                     if ($product->length > 0 && $isLents) {
 
-                        $jsonString .= '"' . $field . '":' . round(self::getTruePrice( $product->price_without_nds )/$product->length) . ',';
+                        $jsonString .= '"' . $field . '":' . round(self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests)/$product->length) . ',';
                     } else {
-                        $jsonString .= '"' . $field . '":' . self::getTruePrice( $product->price_without_nds ) . ',';
+                        $jsonString .= '"' . $field . '":' . self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests) . ',';
                     }
 
                 } elseif ($field == 'i_out') {
@@ -147,7 +147,8 @@ class CatalogService {
                         $user,
                         $hierarchies[$product->id] ? $hierarchies[$product->id] : array(),
                         $discounts,
-                        $product->opt2
+                        $product->opt2,
+						$requests
                     );
                     if ($product->length > 0 && $isLents) {
                         $jsonString .= '"' . $field . '":' . round($truePrice/$product->length) . ',';
@@ -171,7 +172,7 @@ class CatalogService {
                             $product->free_balance = 7;
                         }*/
                         $jsonString .= '"' . $field . '":' . $product->free_balance . ',';
-                    } else {
+					} else {
                         if ($product->$field > 0) {
                             $jsonString .= '"' . $field . '":"-1",';
                         } else {
@@ -180,6 +181,10 @@ class CatalogService {
 
                     }
 
+                } elseif ($field == 'is_price_requestable') {
+                    $jsonString .= '"' . $field . '":' . (self::isPriceRequestable($requests, $hierarchies[$product->id]) ? 1 : 0) . ',';
+                } elseif ($field == 'price_without_nds') {
+					$jsonString .= '"' . $field . '":' . (self::isPriceRequestable($requests, $hierarchies[$product->id]) ? 0 : $product->$field) . ',';
                 } else {
                     if (is_integer($product->$field)) {
                         $jsonString .= '"' . $field . '":' . $product->$field . ',';
@@ -781,6 +786,22 @@ RewriteRule ^.*$ index.php [NC,L]
 
         return max($price * (1 - $currentDiscount * 0.01), $minPrice);
     }
+	
+	private static function isPriceRequestable($requests, $hierarchy) {
+		$status = false;
+
+        for ($i = AdminController::PRODUCT_TABLE; $i >= AdminController::SECTION_TABLE; $i--) {
+            if (array_key_exists($i, $requests) && array_key_exists($i, $hierarchy)) {
+                $hKey = $hierarchy[$i];
+                if (array_key_exists($hKey, $requests[$i])) {
+                    $status = $requests[$i][$hKey]->is_requestable ? true : false;
+                    break;
+                }
+            }
+        }
+
+        return $status;
+    }
 
     public static function renderPopupNav($serviceLocator, $prevEntity, $nextEntity, $folder, $robot = false)
     {
@@ -1009,18 +1030,26 @@ RewriteRule ^.*$ index.php [NC,L]
         return $validatedParams;
     }
 
-    public static function getTruePrice($price, $user = null, $hierarchy = array(), $discounts = null, $minPrice = 0)
+    public static function getTruePrice($price, $user = null, $hierarchy = array(), $discounts = null, $minPrice = 0, $requests = null)
     {
-        if ($user && $user->getIsPartner()) {
+        if ($hierarchy && $requests) {
+			if (self::isPriceRequestable($requests, $hierarchy)) return 0;
+		}
+		
+		if ($user && $user->getIsPartner()) {
             return round(self::getPartnerPrice($price * 1.18, $hierarchy, $discounts, $minPrice));
         }
 
         return round($price * 1.18);
     }
 	
-	public static function getTruePriceUser($price, $user = null, $hierarchy = array(), $discounts = null, $minPrice = 0)
+	public static function getTruePriceUser($price, $user = null, $hierarchy = array(), $discounts = null, $minPrice = 0, $requests = null)
     {
-        if ($user && $user->is_partner) {
+        if ($hierarchy && $requests) {
+			if (self::isPriceRequestable($requests, $hierarchy)) return 0;
+		}
+		
+		if ($user && $user->is_partner) {
             return round(self::getPartnerPrice($price * 1.18, $hierarchy, $discounts, $minPrice));
         }
 

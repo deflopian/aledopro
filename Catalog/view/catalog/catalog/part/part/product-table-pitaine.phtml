@@ -1,5 +1,9 @@
-<? foreach($products as $product) { 
-	$price = \Catalog\Service\CatalogService::getRegularPriceWithNds($product); 
+<? 
+$hierarchies = $this->hierarchies;
+$discounts = $this->discounts;
+
+foreach($products as $product) { 
+	$price = \Catalog\Service\CatalogService::getRegularPriceWithNds($product, false, $hierarchies, $this->requests); 
 ?>
 	<div itemscope itemtype="http://schema.org/Product" style="display:none;">
 		<meta itemprop="productID" content="<?= $product->id ?>" />
@@ -13,10 +17,7 @@
 <? } ?>
 
 <?
-$hierarchies = $this->hierarchies;
-$discounts = $this->discounts;
-
-$fields = array('id', 'title', 'file_custom', 'controller_type', 'power', 'i_out', 'u_out', 'warranty', 'free_balance', 'price_without_nds', 'price_with_nds', 'length', 'is_offer');
+$fields = array('id', 'title', 'file_custom', 'controller_type', 'power', 'i_out', 'u_out', 'warranty', 'free_balance', 'price_without_nds', 'price_with_nds', 'length', 'is_offer', 'is_price_requestable');
 $filteredFields = array('power', 'i_out', 'u_out', 'warranty');
 if ($user && $user->getIsPartner()) {
     $fields[] = 'partner_price';
@@ -24,7 +25,7 @@ if ($user && $user->getIsPartner()) {
 
 $posVals = \Catalog\Service\CatalogService::getValsJSON($products, $filteredFields, 0, $params);
 $isDriver = (reset($products)->type == 'Драйвер тока' || reset($products)->type == 'Драйвер торка');
-$products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, $series, $hierarchies, $discounts, $filteredFields, $isDriver);
+$products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, $series, $hierarchies, $discounts, $filteredFields, $isDriver, false, $this->requests);
 
 ?>
 
@@ -167,25 +168,31 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
                 </td>
 
                 <td class="price-with-nds">
-                    <span>
-                        {{item.price_with_nds}}
-                    </span>
-                    <span>
-                        <span class="b-rub">Р</span>
-                    </span>
+                    <span ng-if="item.is_price_requestable == 0">
+						<span>
+							{{item.price_with_nds}}
+						</span>
+						<span>
+							<span class="b-rub">Р</span>
+						</span>
+					</span>
+					<div class="b-price-requestable" ng-if="item.is_price_requestable == 1">по<br>запросу</div>
                 </td>
 
                 <? if ($user && $user->getIsPartner()) { ?>
                     <td class="td-grey partner-price">
-                    <span>
-                        {{item.partner_price}}
-                    </span>
-                    <span ng-if="item.length > 0">
-                        <span class="b-rub">Р</span>/м
-                    </span>
-                    <span ng-if="item.length == 0">
-                        <span class="b-rub">Р</span>
-                    </span>
+						<span ng-if="item.is_price_requestable == 0">
+							<span>
+								{{item.partner_price}}
+							</span>
+							<span ng-if="item.length > 0">
+								<span class="b-rub">Р</span>/м
+							</span>
+							<span ng-if="item.length == 0">
+								<span class="b-rub">Р</span>
+							</span>
+						</span>
+						<div class="b-price-requestable" ng-if="item.is_price_requestable == 1">по<br>запросу</div>
                     </td>
                 <? } ?>
         <!--                <td class="td-grey"></td>-->

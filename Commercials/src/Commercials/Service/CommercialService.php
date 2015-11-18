@@ -68,10 +68,14 @@ class CommercialService {
 				if ($priceUser) {
 					$discounts = $serviceLocator->get('DiscountTable')->fetchByUserId($commercial->price_user_id, $priceUser->partner_group, false, 0,  $serviceLocator);
 				}
-				else $discounts = null;		
+				else $discounts = null;
+				
+				$priceRequestTable = $serviceLocator->get('PriceRequestTable');
+				$requests = $priceRequestTable->fetchAllSorted();
+			
 				$cm = CatalogMapper::getInstance($serviceLocator);				
 				list($tree, $type_) = $cm->getParentTree($prod->product_id);
-				$price = CatalogService::getTruePriceUser($prod->product->price_without_nds, $priceUser, $tree, $discounts, $prod->product->opt2);
+				$price = CatalogService::getTruePriceUser($prod->product->price_without_nds, $priceUser, $tree, $discounts, $prod->product->opt2, $requests);
                 
 				$count = $prod->count ? $prod->count : 1;
 

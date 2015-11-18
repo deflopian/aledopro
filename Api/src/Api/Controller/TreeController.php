@@ -5,6 +5,8 @@ use Api\Model\File;
 use Api\Model\FileTable;
 use Catalog\Mapper\CatalogMapper;
 use Catalog\Model\FilterField;
+use Catalog\Model\PriceRequest;
+use Catalog\Model\PriceRequestTable;
 use Catalog\Service\CatalogService;
 use Commercials\Model\CommercialProd;
 use Discount\Mapper\DiscountMapper;
@@ -97,8 +99,27 @@ class TreeController extends ApiController
 
             $res = $entityTable->save($entity);
             return $this->response->setContent($res)->setStatusCode(200);
-        } elseif ($type == \Catalog\Controller\AdminController::COMMERCIAL_ROOMS_TABLE) {
 
+        } elseif ($type == \Catalog\Controller\AdminController::PRICE_REQUEST_TABLE) {
+            $entityTable = $sl->get('PriceRequestTable');
+            $entities = $entityTable->fetchByConds(array('section_type' => $options['discountType'], 'section_id' => $options['sectionId']));
+
+            if ($entities) {
+                $entity = reset($entities);
+            } else {
+                $entity = new PriceRequest();
+                $entity->section_id = $options['sectionId'];
+                $entity->section_type = $options['discountType'];
+            }
+
+            foreach ($data as $field => $val) {
+                $entity->$field = $val;
+            }
+
+            $res = $entityTable->save($entity);
+            return $this->response->setContent($res)->setStatusCode(200);
+
+        } elseif ($type == \Catalog\Controller\AdminController::COMMERCIAL_ROOMS_TABLE) {
             $entityTable = $sl->get('CommercialProdsTable');
             if (array_key_exists("add", $data)) {
                 $entity = new CommercialProd();
@@ -258,9 +279,20 @@ class TreeController extends ApiController
      */
     public function delete($id, $data) {
         $sl = $this->getServiceLocator();
-        /** @var DiscountTable $entityTable */
-        $entityTable = $sl->get('DiscountTable');
+        
+		$params = explode('_', $id);
+		if (count($params) != 2) return $this->response->setStatusCode(400);
+		
+		if ($params[0] == 39) {
+			$entityTable = $sl->get('PriceRequestTable');
+		}
+		else {
+			$entityTable = $sl->get('DiscountTable');
+		}
+		
+		$id = $params[1];
         $entityTable->delById($id);
+		
         return $this->response->setStatusCode(200);
     }
 }

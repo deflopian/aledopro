@@ -130,8 +130,13 @@ class UserController extends AbstractActionController
         if ($user && $user->getisPartner()) {
             $discounts = $sl->get('DiscountTable')->fetchByUserId($user->getId(), $user->getPartnerGroup(), false, 0, $sl);
             $return['discounts'] = $discounts;
-            $return['hierarchies'] = $hierarchies;
         }
+		
+		$priceRequestTable = $sl->get('PriceRequestTable');
+		$requests = $priceRequestTable->fetchAllSorted();
+		
+		$return['hierarchies'] = $hierarchies;
+		$return['requests'] = $requests;
 
         return $return;
     }
@@ -186,13 +191,18 @@ class UserController extends AbstractActionController
                 $hierarchies[$prodId][\Catalog\Controller\AdminController::SUBSECTION_TABLE] = $subsection->id;
                 $hierarchies[$prodId][\Catalog\Controller\AdminController::SECTION_TABLE] = $section->id;
             }
+			
+			$priceRequestTable = $sl->get('PriceRequestTable');
+			$requests = $priceRequestTable->fetchAllSorted();
+			
             $productsInfo[$prodId]->count = $prodCount;
             $truePrice = CatalogService::getTruePrice(
                 $productsInfo[$prodId]->price_without_nds,
                 $user,
                 $hierarchies[$prodId],
                 $discounts,
-                $productsInfo[$prodId]->opt2
+                $productsInfo[$prodId]->opt2,
+				$requests
             );
             $productsInfo[$prodId]->price = $truePrice;
             $orderSumm += $productsInfo[$prodId]->price*$prodCount;
