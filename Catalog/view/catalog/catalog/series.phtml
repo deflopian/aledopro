@@ -47,7 +47,7 @@ function mb_ucfirst($text) {
             <? if (!$series->preview && $series->img_gallery == $img->url) continue; ?>
             <? if (!$series->preview && $i++ == 0) continue; ?>
             <div class="b-goods-gallery-item b-slider__item">
-                <i class="b-goods-gallery-item__layout b-slider-item-layout"></i>
+                <!-- <i class="b-goods-gallery-item__layout b-slider-item-layout"></i> -->
                 <? $minUrl = 'min_' . $img->url ?>
                 <? $src = $img->url ? $this->basePath() . '/images/series/' . $img->url : $this->basePath() . '/images/empty-series.png' ?>
                 <? $minSrc = $img->url ? $this->basePath() . '/images/series/' . $minUrl : $this->basePath() . '/images/empty-series.png' ?>
