@@ -436,7 +436,7 @@
                                     <a ng-click="commercial.priceMode=MODE_PRICE_ADD_DISCOUNTS" href="javascript:void(0)"> Выбрать цены партнёра</a>
                                 </div>
                             </div>
-							<div ng-show="commercial.price_user_id > 0">Выбраны цены партнёра: <strong>{{commercial.price_user_id}} {{priceUser.username}} ({{priceUser.email}})</strong>.
+							<div ng-show="commercial.price_user_id > 0" style="padding-bottom:10px;">Выбраны цены партнёра: <strong>{{commercial.price_user_id}} {{priceUser.username}} ({{priceUser.email}})</strong>.
                                 <a href="javascript:void(0)" ng-click="commercialAPI.actualize(commercial.uid, 0, true)"> Сбросить цены к розничным</a>
                             </div>
 							<div class="b-offer-panel" ng-show="commercial.rooms.length > 0 && commercial.priceMode == MODE_PRICE_ADD_DISCOUNTS">
@@ -456,7 +456,9 @@
                                             </div>
 										</div>
 										
-										<div ng-show="pageNums.length > 1"><br>
+										<div style="padding-top:10px;"><input type="text" class="b-form-control" ng-model="filterModelAll" name="username" placeholder="Введите любую информацию для поиска..." /></div>
+										
+										<div ng-show="pageNums.length > 1" style="padding-top:10px;">
 				                            <span ng-model="pageNums" ng-repeat="i in pageNums track by $index">&nbsp;&nbsp;<a href="#" ng-class="{'b-header-top-section__link link_tel': $index == pager.currentPage - 1}" ng-click="gotoPage($index+1)">{{$index+1}}</a>&nbsp;&nbsp;<span ng-hide="$index == pageNums.length - 1">|</span></span>
 										</div>
 								
@@ -511,7 +513,7 @@
 										    </thead>
 											
 										    <tbody>            
-										        <tr class="b-order-history__row" ng-repeat="item in filtered = (original | filterByFields:filterModelUsername:['username'] | filterByFields:filterModelEmail:['email'] | filterByFields:filterModelAlias:['alias'] | filterByFields:filterModelCity:['city'] | filterByFields:filterModelManager:['manager_name'] | filterByFields:filterModelGroup:['group_name'])">
+										        <tr class="b-order-history__row" ng-repeat="item in filtered = (original | filterByFields:filterModelUsername:['username'] | filterByFields:filterModelEmail:['email'] | filterByFields:filterModelAlias:['alias'] | filterByFields:filterModelCity:['city'] | filterByFields:filterModelManager:['manager_name'] | filterByFields:filterModelGroup:['group_name'] | filterByFields:filterModelAll:['username','email','alias','city','manager_name','group_name'])">
 										            <td class="b-order-history__cell">{{item.user_id}}</td>
 										            <td class="b-order-history__cell">{{item.username}}</td>
 										            <td class="b-order-history__cell">{{item.email}}</td>
