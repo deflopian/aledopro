@@ -108,6 +108,20 @@ class ApplicationService
             return null;
         }
     }
+	
+    public static function isDomainZone($zone)
+    {
+        $parts = explode('.', $_SERVER['SERVER_NAME']);
+        if (count($parts) > 1) {
+			$parts = array_reverse($parts);
+			if ($zone == $parts[0]) return true;
+			return false;
+		}
+		else {
+			if ($zone == 'ru') return true;
+			return false;
+		}
+    }
 
     public static function makeIdArrayFromObjectArray($objArr, $idFiled = 'id')
     {
