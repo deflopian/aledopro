@@ -7,6 +7,12 @@
 <div class="section">
     <table class="table admin-table  table-striped">
         <tbody>
+		<tr>
+            <td>Наименование</td>
+            <td>
+                <a href="#" data-type="text" data-name="title" class="editable-param"><?= $contact->title; ?></a>
+            </td>
+        </tr>
         <tr>
             <td>Адрес</td>
             <td>
@@ -37,10 +43,40 @@
                 <a href="#" data-type="text" data-name="fax" class="editable-param"><?= $contact->fax; ?></a>
             </td>
         </tr>
+		<tr>
+            <td>Дополнительный телефон 1</td>
+            <td>
+                <a href="#" data-type="text" data-name="add_phone_1" class="editable-param"><?= $contact->add_phone_1; ?></a>
+            </td>
+        </tr>
+		<tr>
+            <td>Дополнительный телефон 2</td>
+            <td>
+                <a href="#" data-type="text" data-name="add_phone_2" class="editable-param"><?= $contact->add_phone_2; ?></a>
+            </td>
+        </tr>
         <tr>
             <td>Почта</td>
             <td>
                 <a href="#" data-type="text" data-name="mail" class="editable-param"><?= $contact->mail; ?></a>
+            </td>
+        </tr>
+		<tr>
+            <td>GPS-координаты офиса</td>
+            <td>
+                <a href="#" data-type="text" data-name="gps_point" class="editable-param"><?= $contact->gps_point; ?></a>
+            </td>
+        </tr>
+		<tr>
+            <td>GPS-координаты центра карты</td>
+            <td>
+                <a href="#" data-type="text" data-name="gps_center" class="editable-param"><?= $contact->gps_center; ?></a>
+            </td>
+        </tr>
+		<tr>
+            <td>GPS-увеличение</td>
+            <td>
+                <a href="#" data-type="text" data-name="gps_zoom" class="editable-param"><?= $contact->gps_zoom; ?></a>
             </td>
         </tr>
 		</tbody>

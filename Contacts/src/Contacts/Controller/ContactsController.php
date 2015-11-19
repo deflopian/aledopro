@@ -48,9 +48,6 @@ class ContactsController extends AbstractActionController
         $sl = $this->getServiceLocator();
 //        $contacts = self::getContacts($sl);
         $contacts = $sl->get('ContactsTable')->fetchAll();
-        if (!isset($contacts[1])) {
-            $contacts[1] = $contacts[0];
-        }
 
         return array(
             'contacts' => $contacts,

@@ -4,10 +4,10 @@
 <div class="b-contacts-page b-section">
     <div class="b-section__content">
         <div class="b-contacts-table text-center">
-            <div class="b-contacts-table__cell b-contacts-cell dotted-right">
-<!--            <div class="b-contacts-table__cell b-contacts-cell">-->
+            <? if (isset($contacts[1])) { ?><div class="b-contacts-table__cell b-contacts-cell dotted-right">
+            <? } else { ?><div class="b-contacts-table__cell b-contacts-cell"><? } ?>
                 <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully" style="font-weight: 600">
-                    ОФИС В САНКТ-ПЕТЕРБУРГЕ
+                    <?= $contacts[0]->title ?>
                 </h4>
 
                 <div class="b-mb4">
@@ -28,10 +28,10 @@
                 <div id="map_spb" class="b-map"></div>
             </div>
 
-
+            <? if (isset($contacts[1])) { ?>
             <div class="b-contacts-table__cell b-contacts-cell b-contacts-cell_right">
                 <h4 class="b-contacts-cell__heading b-dotted-decorated b-dotted-decorated_downed b-dotted-decorated_fully" style="font-weight: 600">
-                    ОФИС В МОСКВЕ
+                    <?= $contacts[1]->title ?>
                 </h4>
 
                 <div class="b-mb4">
@@ -52,6 +52,7 @@
                 <div id="map_msc" class="b-map"></div>
 
             </div>
+            <? } ?>
         </div>
     </div>
 </div>
@@ -62,8 +63,8 @@
             placemarks: [],
             container: "map_spb",
             mapOptions: {
-                center: [59.909567, 30.306876],
-                zoom: 17,
+                center: [<?= $contacts[0]->gps_center ?>],
+                zoom: <?= $contacts[0]->gps_zoom ?>,
                 controls: ['smallMapDefaultSet']
             }
         }, _ = _options, map;
@@ -110,18 +111,17 @@
     ymaps.ready(function () {
         var mapInstance = Map();
         mapInstance.init();
-        mapInstance.addPlacemark([59.909316, 30.307032])
+        mapInstance.addPlacemark([<?= $contacts[0]->gps_point ?>])
     });
     ymaps.ready(function () {
         var mapInstance = Map();
         mapInstance.init({
             mapOptions: {
-                center: [55.724756, 37.644533]
+                center: [<?= $contacts[1]->gps_center ?>]
             },
             container: "map_msc"
         });
-        mapInstance.addPlacemark([55.724756,  37.644533]);
-//        mapInstance.addPlacemark([55.725564, 37.645519])
+        mapInstance.addPlacemark([<?= $contacts[1]->gps_point ?>]);
     });
 
 </script>

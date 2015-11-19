@@ -5,20 +5,17 @@
 $sl = $this->getHelperPluginManager()->getServiceLocator();
 $contacts_ = \Contacts\Controller\ContactsController::getContacts($sl);
 $sections = \Catalog\Controller\CatalogController::getSections($sl);
-
-
-
+$isDomainZoneBy = \Application\Service\ApplicationService::isDomainZone('by');
 
 $uri = substr($_SERVER["REQUEST_URI"], 1);
 $uriArr = explode('/', $uri);
 $url = $uriArr[0]
     ? ($uriArr[0] == 'info' ? $uriArr[1] : $uriArr[0])
     : 'app';
-?>
-<?
- $isDesktopVersion = false;
+
+$isDesktopVersion = false;
  
- if(strpos($_SERVER["REQUEST_URI"], 'subsection') ||
+if(strpos($_SERVER["REQUEST_URI"], 'subsection') ||
   strpos($_SERVER["REQUEST_URI"], 'series') ||
  (strpos($_SERVER["REQUEST_URI"], 'section') && strpos($_SERVER["REQUEST_URI"], '33')) ||
  
@@ -412,7 +409,7 @@ $url = $uriArr[0]
         });
     </script>
 		
-    <? if (!$this->isMobile) { ?>
+    <? if (!$this->isMobile && !$isDomainZoneBy) { ?>
     <!-- RedHelper -->
     <script id="rhlpscrtg" type="text/javascript" charset="utf-8" async="async" src="https://web.redhelper.ru/service/main.js?c=aledo"></script>
     <!-- /RedHelper -->

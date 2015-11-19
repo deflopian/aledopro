@@ -5,6 +5,7 @@ use Api\Model\File;
 use Api\Model\FileTable;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractRestfulController;
+use Application\Service\ApplicationService;
 use Application\Service\GoogleContactsService;
 use Application\Service\MailService;
 
@@ -41,6 +42,10 @@ class FileController extends ApiController
         }
         $folder = $data['folder'];
         $field = $data['field'];
+		
+		if ($parentType == 'contacts' && ApplicationService::isDomainZone('by')) {
+			return $this->response->setStatusCode(400);
+		}
 
         $parentObjectTableName = $this->getTableName($parentType);
         $parentObjectTable = $sl->get($parentObjectTableName);

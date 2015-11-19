@@ -122,6 +122,11 @@ class ApplicationService
 			return false;
 		}
     }
+	
+    public static function formatRawTel($str)
+    {
+        return preg_replace('/\D/', '', $str);
+    }
 
     public static function makeIdArrayFromObjectArray($objArr, $idFiled = 'id')
     {

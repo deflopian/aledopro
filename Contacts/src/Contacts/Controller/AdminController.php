@@ -2,6 +2,7 @@
 namespace Contacts\Controller;
 
 use Application\Controller\SampleAdminController;
+use Application\Service\ApplicationService;
 use Contacts\Model\Contact;
 use Info\Service\SeoService;
 
@@ -13,7 +14,12 @@ class AdminController extends SampleAdminController
     {
         $this->setData();
 		$contacts = $this->getServiceLocator()->get($this->table)->fetchAll('id ASC');
-		$our_contacts = $this->getServiceLocator()->get("AledoContactsTable")->fetchAll('id ASC');
+		
+		$our_contacts = array();
+		if (!ApplicationService::isDomainZone('by')) {
+			$our_contacts = $this->getServiceLocator()->get("AledoContactsTable")->fetchAll('id ASC');
+		}
+		
         return array(
             'subsections' => $contacts,
 			'our_contacts' => $our_contacts,
@@ -47,11 +53,15 @@ class AdminController extends SampleAdminController
 
             if ($title) {
                 $data = array(
-					'adress' => $title,
+					'title' => $title,
+					'adress' => '',
 					'work_time' => '',
 					'phone' => '',
 					'fax' => '',
-					'mail' => ''
+					'add_phone_1' => '',
+					'add_phone_2' => '',
+					'mail' => '',
+					'gps_zoom' => 17
 				);
 
                 if($parentId){
