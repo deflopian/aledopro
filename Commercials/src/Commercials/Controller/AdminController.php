@@ -22,7 +22,9 @@ class AdminController extends SampleAdminController {
 
     public function viewAction()
     {
-        $sl = $this->getServiceLocator();
+        return $this->redirect()->toRoute('zfcadmin'); // stop here!
+
+		$sl = $this->getServiceLocator();
         $commercialMapper = CommercialMapper::getInstance($sl);
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -51,6 +53,8 @@ class AdminController extends SampleAdminController {
 
     public function exportFileAction()
     {
+        return $this->redirect()->toRoute('zfcadmin'); // stop here!
+
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('zfcadmin/'.$this->url);
@@ -65,6 +69,8 @@ class AdminController extends SampleAdminController {
 
     public function viewRoomAction()
     {
+        return $this->redirect()->toRoute('zfcadmin'); // stop here!
+
         $sl = $this->getServiceLocator();
         $commercialRoomMapper = CommercialRoomMapper::getInstance($sl);
         $commercialMapper = CommercialMapper::getInstance($sl);
@@ -182,6 +188,8 @@ class AdminController extends SampleAdminController {
 
     public function indexAction()
     {
+        return $this->redirect()->toRoute('zfcadmin'); // stop here!
+
         $sl = $this->getServiceLocator();
         $commercialMapper = CommercialMapper::getInstance($sl);
         $commercials = $commercialMapper->getList();

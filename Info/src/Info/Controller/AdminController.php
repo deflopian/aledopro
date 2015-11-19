@@ -407,6 +407,28 @@ class AdminController extends SampleAdminController
                         $success = 1;
                         break;
                     }
+					case SeoService::FILES :
+                    {
+                        $data['id'] = 1;
+                        $table = $this->getServiceLocator()->get('InfoFilesTable');
+                        $entity = $table->find(1);
+                        $entity->exchangeArray($data);
+
+                        $table->save($entity);
+                        $success = 1;
+                        break;
+                    }
+					case SeoService::JOB :
+                    {
+                        $data['id'] = 1;
+                        $table = $this->getServiceLocator()->get('JobsTable');
+                        $entity = $table->find(1);
+                        $entity->exchangeArray($data);
+
+                        $table->save($entity);
+                        $success = 1;
+                        break;
+                    }
                     default :
                     {
                         $success = 0;
@@ -494,6 +516,28 @@ class AdminController extends SampleAdminController
                     case SeoService::DELIVERY :
                     {
                         $table = $this->getServiceLocator()->get('DeliveryTable');
+                        $entity = $table->find(1);
+                        $data['id'] = 1;
+                        $data[$wid] = $text;
+                        $entity->exchangeArray($data);
+                        $table->save($entity);
+                        $success = 1;
+                        break;
+                    }
+					case SeoService::FILES :
+                    {
+                        $table = $this->getServiceLocator()->get('InfoFilesTable');
+                        $entity = $table->find(1);
+                        $data['id'] = 1;
+                        $data[$wid] = $text;
+                        $entity->exchangeArray($data);
+                        $table->save($entity);
+                        $success = 1;
+                        break;
+                    }
+					case SeoService::JOB :
+                    {
+                        $table = $this->getServiceLocator()->get('JobsTable');
                         $entity = $table->find(1);
                         $data['id'] = 1;
                         $data[$wid] = $text;
