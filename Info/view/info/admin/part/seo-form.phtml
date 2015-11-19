@@ -6,7 +6,7 @@
             <label for="consult-phone" class="col-md-2 control-label">Title</label>
             <div class="col-md-9">
                 <input type="text" class="form-control" id="consult-phone" name="title"
-                       value="<?= $seoData->title ?>">
+                       value="<?= htmlspecialchars($seoData->title) ?>">
             </div>
         </div>
 
@@ -14,7 +14,7 @@
             <label for="consult-mail" class="col-md-2 control-label">Description</label>
             <div class="col-md-9">
                 <input type="text" class="form-control" id="consult-mail" name="description"
-                       value="<?= $seoData->description ?>">
+                       value="<?= htmlspecialchars($seoData->description) ?>">
             </div>
         </div>
 
@@ -22,7 +22,7 @@
             <label for="consult-city" class="col-md-2 control-label">KeyWords</label>
             <div class="col-md-9">
                 <input type="text" class="form-control" id="consult-city" name="keywords"
-                       value="<?= $seoData->keywords ?>">
+                       value="<?= htmlspecialchars($seoData->keywords) ?>">
             </div>
         </div>
         <? if ($seoData->type == \Info\Service\SeoService::CATALOG_INDEX) { ?>
@@ -30,7 +30,7 @@
                 <label for="consult-city" class="col-md-2 control-label">SEO-заголовок</label>
                 <div class="col-md-9">
                     <input type="text" class="form-control" id="consult-city" name="seo_title"
-                           value="<?= $seoData->seo_title ?>">
+                           value="<?= htmlspecialchars($seoData->seo_title) ?>">
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
                 <label for="consult-city" class="col-md-2 control-label">SEO-текст</label>
                 <div class="col-md-9">
                     <input type="textarea" class="form-control" id="consult-city" name="seo_text"
-                           value="<?= $seoData->seo_text ?>">
+                           value="<?= htmlspecialchars($seoData->seo_text) ?>">
                 </div>
             </div>
         <? } ?>
