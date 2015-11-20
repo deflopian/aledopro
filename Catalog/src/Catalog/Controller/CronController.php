@@ -3,6 +3,7 @@ namespace Catalog\Controller;
 
 use Api\Model\File;
 use Api\Model\FileTable;
+use Application\Service\ApplicationService;
 use Application\Service\MailService;
 use Catalog\Mapper\CatalogMapper;
 use Catalog\Model\FilterParam;
@@ -97,12 +98,13 @@ class CronController extends BaseController
             $response->setStatusCode(404);
             return new ViewModel();
         }
-//        return array();
+
+        ApplicationService::updateCurrencyRate('BYR');
+
         $url = 'http://www.planar.spb.ru/ekdb/kgoods.csv';
         $newPathFile =  $_SERVER['DOCUMENT_ROOT'] . '/' . $this->csvName;
         $prevModifiedPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->prevModifiedPath;
         $linePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->lineCSVFilePath;
-
 
         @ $headers = get_headers($url, 1);
         if ($headers === false) {

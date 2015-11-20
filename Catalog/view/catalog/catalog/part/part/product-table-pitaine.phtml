@@ -3,7 +3,7 @@ $hierarchies = $this->hierarchies;
 $discounts = $this->discounts;
 
 foreach($products as $product) { 
-	$price = \Catalog\Service\CatalogService::getRegularPriceWithNds($product, false, $hierarchies, $this->requests); 
+	$price = \Catalog\Service\CatalogService::getRegularPriceWithNds($product, false, $hierarchies, $this->requests, true); 
 ?>
 	<div itemscope itemtype="http://schema.org/Product" style="display:none;">
 		<meta itemprop="productID" content="<?= $product->id ?>" />
@@ -11,7 +11,7 @@ foreach($products as $product) {
 		<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 			<meta itemprop="availability" content="<?= $product->free_balance > 0 ? 'http://schema.org/InStock' : 'http://schema.org/OutOfStock' ?>" />
 			<meta itemprop="price" content="<?= $price ?>" />
-			<meta itemprop="priceCurrency" content="RUB" />
+			<meta itemprop="priceCurrency" content="<?= \Application\Service\ApplicationService::isDomainZone('by') ? 'BYR' : 'RUB' ?>" />
 		</div>
 	</div>
 <? } ?>
@@ -25,7 +25,7 @@ if ($user && $user->getIsPartner()) {
 
 $posVals = \Catalog\Service\CatalogService::getValsJSON($products, $filteredFields, 0, $params);
 $isDriver = (reset($products)->type == 'Драйвер тока' || reset($products)->type == 'Драйвер торка');
-$products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, $series, $hierarchies, $discounts, $filteredFields, $isDriver, false, $this->requests);
+$products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, $series, $hierarchies, $discounts, $filteredFields, $isDriver, false, $this->requests, true);
 
 ?>
 

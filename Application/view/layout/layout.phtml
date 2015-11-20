@@ -440,10 +440,9 @@ if(strpos($_SERVER["REQUEST_URI"], 'subsection') ||
                 jQuery(".b-search").toggleClass("b-search_active").find("input").focus();
             });
         jQuery(".b-placeholdered-input").emulatePlaceholder();
-
-       
-
-
+<? if ($isDomainZoneBy) { ?>  
+        jQuery("span.b-rub").removeClass("b-rub");
+<? } ?> 
     </script>
 
     <script type="text/javascript">

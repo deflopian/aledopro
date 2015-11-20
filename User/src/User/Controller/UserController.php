@@ -202,7 +202,8 @@ class UserController extends AbstractActionController
                 $hierarchies[$prodId],
                 $discounts,
                 $productsInfo[$prodId]->opt2,
-				$requests
+				$requests,
+				true
             );
             $productsInfo[$prodId]->price = $truePrice;
             $orderSumm += $productsInfo[$prodId]->price*$prodCount;

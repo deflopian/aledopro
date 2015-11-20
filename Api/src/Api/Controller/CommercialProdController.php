@@ -156,7 +156,7 @@ class CommercialProdController extends ApiController
         $prod->room_id = $roomId;
         $prod->product_id = $prodId;
         $prod->count = 1;
-        $prod->old_price = CatalogService::getTruePrice($metaProd->price_without_nds, null, $tree, null, 0, $requests);
+        $prod->old_price = CatalogService::getTruePrice($metaProd->price_without_nds, null, $tree, null, 0, $requests, true);
 //        $prod->old_price = CatalogService::getTruePrice($metaProd->price_without_nds, $user, $tree, $discounts, $metaProd->opt2);
 
         $result = $cpm->add($prod);

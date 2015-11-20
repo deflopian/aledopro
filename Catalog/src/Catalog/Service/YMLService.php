@@ -130,7 +130,7 @@ class YMLService {
 
         $offer .= '
             <url>http://aledo-pro.ru/catalog/products/' . $product->id . '</url>
-            <price>' . CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests) . '</price>
+            <price>' . CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests, false) . '</price>
             <currencyId>RUR</currencyId>
             <categoryId>' . $categoriesIds[$product->series_id] . '</categoryId >
         ';

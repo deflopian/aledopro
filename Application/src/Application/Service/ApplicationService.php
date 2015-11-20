@@ -127,6 +127,38 @@ class ApplicationService
     {
         return preg_replace('/\D/', '', $str);
     }
+	
+	public static function updateCurrencyRate($currency)
+	{
+		$url = 'http://www.cbr.ru/scripts/XML_daily.asp';
+		$path = $_SERVER['DOCUMENT_ROOT'] . '/rate_' . strtolower($currency) . '.txt';
+		$value = 0;
+
+		$file_content = file_get_contents($url);
+		if ($file_content !== false) {
+			$items = simplexml_load_string($file_content);
+			
+			foreach($items as $item) {
+				if ($item->CharCode && $item->CharCode == $currency) {
+					$value = ((float)str_replace(',', '.', $item->Value)) / ((int)$item->Nominal);
+				}
+			}
+        }
+		
+		if ($value) {
+			if (file_put_contents($path, $value) !== false)	return true;
+			return false;
+		}
+		
+		return false;
+    }
+	
+	public static function getCurrencyRate($currency)
+	{
+		$path = $_SERVER['DOCUMENT_ROOT'] . '/rate_' . strtolower($currency) . '.txt';
+		$value = file_get_contents($path);
+		return ($value !== false) ? $value : 1;
+	}
 
     public static function makeIdArrayFromObjectArray($objArr, $idFiled = 'id')
     {

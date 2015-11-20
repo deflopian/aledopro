@@ -98,16 +98,16 @@ class CatalogService {
         return true;
     }
 	
-	public static function getRegularPriceWithNds($product, $isLents = false, $hierarchies = array(), $requests = array())
+	public static function getRegularPriceWithNds($product, $isLents = false, $hierarchies = array(), $requests = array(), $currRateFix = false)
 	{
 		if ($product->length > 0 && $isLents) {
-            return round(self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests) / $product->length);
+            return round(self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests, $currRateFix) / $product->length);
         } else {
-            return self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests);
+            return self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests, $currRateFix);
         }
 	}
 
-    public static function getProductsJSON($products, $fields, $user, $series = 0, $hierarchies=array(), $discounts=null, $hashedFields = array(), $isDriver = true, $isLents = false, $requests = array())
+    public static function getProductsJSON($products, $fields, $user, $series = 0, $hierarchies=array(), $discounts=null, $hashedFields = array(), $isDriver = true, $isLents = false, $requests = array(), $currRateFix = false)
     {
         $jsonString = "";
 
@@ -128,9 +128,9 @@ class CatalogService {
                 } elseif ($field == 'price_with_nds') {
                     if ($product->length > 0 && $isLents) {
 
-                        $jsonString .= '"' . $field . '":' . round(self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests)/$product->length) . ',';
+                        $jsonString .= '"' . $field . '":' . round(self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests, $currRateFix)/$product->length) . ',';
                     } else {
-                        $jsonString .= '"' . $field . '":' . self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests) . ',';
+                        $jsonString .= '"' . $field . '":' . self::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests, $currRateFix) . ',';
                     }
 
                 } elseif ($field == 'i_out') {
@@ -148,7 +148,8 @@ class CatalogService {
                         $hierarchies[$product->id] ? $hierarchies[$product->id] : array(),
                         $discounts,
                         $product->opt2,
-						$requests
+						$requests,
+						$currRateFix
                     );
                     if ($product->length > 0 && $isLents) {
                         $jsonString .= '"' . $field . '":' . round($truePrice/$product->length) . ',';
@@ -184,7 +185,7 @@ class CatalogService {
                 } elseif ($field == 'is_price_requestable') {
                     $jsonString .= '"' . $field . '":' . (self::isPriceRequestable($requests, $hierarchies[$product->id]) ? 1 : 0) . ',';
                 } elseif ($field == 'price_without_nds') {
-					$jsonString .= '"' . $field . '":' . (self::isPriceRequestable($requests, $hierarchies[$product->id]) ? 0 : $product->$field) . ',';
+					$jsonString .= '"' . $field . '":' . ((self::isPriceRequestable($requests, $hierarchies[$product->id]) || ApplicationService::isDomainZone('by')) ? 0 : $product->$field) . ',';
                 } else {
                     if (is_integer($product->$field)) {
                         $jsonString .= '"' . $field . '":' . $product->$field . ',';
@@ -1030,10 +1031,14 @@ RewriteRule ^.*$ index.php [NC,L]
         return $validatedParams;
     }
 
-    public static function getTruePrice($price, $user = null, $hierarchy = array(), $discounts = null, $minPrice = 0, $requests = null)
+    public static function getTruePrice($price, $user = null, $hierarchy = array(), $discounts = null, $minPrice = 0, $requests = null, $currRateFix = false)
     {
         if ($hierarchy && $requests) {
 			if (self::isPriceRequestable($requests, $hierarchy)) return 0;
+		}
+		
+		if ($currRateFix && ApplicationService::isDomainZone('by')) {
+			$price = $price / ApplicationService::getCurrencyRate('BYR');
 		}
 		
 		if ($user && $user->getIsPartner()) {
@@ -1043,10 +1048,14 @@ RewriteRule ^.*$ index.php [NC,L]
         return round($price * 1.18);
     }
 	
-	public static function getTruePriceUser($price, $user = null, $hierarchy = array(), $discounts = null, $minPrice = 0, $requests = null)
+	public static function getTruePriceUser($price, $user = null, $hierarchy = array(), $discounts = null, $minPrice = 0, $requests = null, $currRateFix = false)
     {
         if ($hierarchy && $requests) {
 			if (self::isPriceRequestable($requests, $hierarchy)) return 0;
+		}
+		
+		if ($currRateFix && ApplicationService::isDomainZone('by')) {
+			$price = $price / ApplicationService::getCurrencyRate('BYR');
 		}
 		
 		if ($user && $user->is_partner) {
