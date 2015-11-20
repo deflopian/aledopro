@@ -148,7 +148,7 @@ class FileController extends ApiController
 			GoogleContactsService::parseCSV($sl, $_SERVER['DOCUMENT_ROOT'] . '/images/' . $folder . '/' . $adapter->getFileName(null, false), $filetype);
 		}
 		
-		if ($parentType == "document") {
+		if ($parentType == "document" && !ApplicationService::isDomainZone('by')) {
 			list($email, $mailView) = MailService::prepareNotificationMailData($sl, $parentObject, MailService::NOTIFICATION_DOCUMENTS);
 			MailService::sendMail($email, $mailView, "Новый документ загружен на сайт!");
 		}

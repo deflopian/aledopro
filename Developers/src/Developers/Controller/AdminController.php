@@ -26,7 +26,11 @@ class AdminController extends SampleAdminController
 
     public function indexAction()
     {
-        $return = parent::indexAction();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$return = parent::indexAction();
         $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::DEVELOPERS, 1 );
 
         return $return;
@@ -34,7 +38,11 @@ class AdminController extends SampleAdminController
 
     public function viewAction()
     {
-        $sl = $this->getServiceLocator();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$sl = $this->getServiceLocator();
         $viewHelper = $sl->get('viewhelpermanager');
         $viewHelper->get('headscript')->prependFile('/js/adminDeveloper.js');
 
@@ -95,7 +103,11 @@ class AdminController extends SampleAdminController
 
     public function viewMemberAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $id = (int) $this->params()->fromRoute('id', 0);
         $member = $this->getServiceLocator()->get($this->memberTable)->find($id);
@@ -113,7 +125,11 @@ class AdminController extends SampleAdminController
 
     public function addEntityAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -159,7 +175,11 @@ class AdminController extends SampleAdminController
 
     public function delEntityAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -182,6 +202,10 @@ class AdminController extends SampleAdminController
     }
 	
 	public function hideEntityAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
 		$this->setData();
 		
         $request = $this->getRequest();
@@ -206,6 +230,10 @@ class AdminController extends SampleAdminController
     }
 	
 	public function showEntityAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
 		$this->setData();
 		
         $request = $this->getRequest();
@@ -231,7 +259,11 @@ class AdminController extends SampleAdminController
 
     public function changeOrderAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -273,7 +305,11 @@ class AdminController extends SampleAdminController
 
     public function updateEditableAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -318,7 +354,11 @@ class AdminController extends SampleAdminController
 
     public function saveTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $developerId = $request->getPost('id', false);
             $prodIds = $request->getPost('tagitIds', false);
@@ -365,7 +405,11 @@ class AdminController extends SampleAdminController
 
     public function saveRelProjAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $developerId = $request->getPost('id', false);
             $prodIds = $request->getPost('tagitIds', false);
@@ -396,7 +440,11 @@ class AdminController extends SampleAdminController
 
     public function removeParentTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $productId = $request->getPost('id', false);
             $developerId = $request->getPost('parentId', false);
@@ -417,7 +465,11 @@ class AdminController extends SampleAdminController
 
     public function removeRelProjAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $productId = $request->getPost('id', false);
             $developerId = $request->getPost('parentId', false);

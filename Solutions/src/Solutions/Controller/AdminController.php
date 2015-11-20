@@ -24,7 +24,11 @@ class AdminController extends SampleAdminController
 
     public function viewAction()
     {
-        $sl = $this->getServiceLocator();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$sl = $this->getServiceLocator();
         $viewHelper = $sl->get('viewhelpermanager');
         $viewHelper->get('headscript')->prependFile('/js/adminProject.js');
         $this->imgFields = array('img', 'preview', 'light_img', 'compare_img_1', 'compare_img_2', 'diagram_1', 'diagram_2', 'diagram_3');
@@ -65,6 +69,10 @@ class AdminController extends SampleAdminController
 
     public function saveImgAction()
     {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
@@ -120,7 +128,11 @@ class AdminController extends SampleAdminController
 
     public function saveTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $solutionId = $request->getPost('id', false);
             $prodIds = $request->getPost('tagitIds', false);
@@ -149,7 +161,11 @@ class AdminController extends SampleAdminController
 
     public function saveRelProjAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $solutionId = $request->getPost('id', false);
             $prodIds = $request->getPost('tagitIds', false);
@@ -179,7 +195,11 @@ class AdminController extends SampleAdminController
 
     public function removeParentTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $productId = $request->getPost('id', false);
             $solId = $request->getPost('parentId', false);
@@ -200,7 +220,11 @@ class AdminController extends SampleAdminController
 
     public function removeRelProjAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $projId = $request->getPost('id', false);
             $solId = $request->getPost('parentId', false);

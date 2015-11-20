@@ -2,6 +2,7 @@
 namespace Info\Controller;
 
 use Application\Controller\SampleAdminController;
+use Application\Service\ApplicationService;
 use Catalog\Mapper\LinkToLinkMapper;
 use Info\Model\About;
 use Info\Model\SeoData;
@@ -58,7 +59,11 @@ class AdminController extends SampleAdminController
     }
 
     public function plusesAction() {
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::PLUSES, 1);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::PLUSES, 1);
 
         $entity = $this->getServiceLocator()->get('PlusesTable')->find(1);
 
@@ -90,7 +95,11 @@ class AdminController extends SampleAdminController
     }
 
     public function jobAction() {
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::JOB, 1);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::JOB, 1);
 
         $entity = $this->getServiceLocator()->get('JobsTable')->find(1);
 
@@ -122,7 +131,11 @@ class AdminController extends SampleAdminController
     }
 
     public function filesAction() {
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::FILES, 1);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::FILES, 1);
 
         $entity = $this->getServiceLocator()->get('InfoFilesTable')->find(1);
 
@@ -154,7 +167,11 @@ class AdminController extends SampleAdminController
     }
 
     public function guaranteeAction() {
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::GUARANTEE, 1);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::GUARANTEE, 1);
 
         $entity = $this->getServiceLocator()->get('GuaranteeTable')->find(1);
 
@@ -189,7 +206,11 @@ class AdminController extends SampleAdminController
     }
 
     public function partnerAction() {
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::PARTNERS, 1);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::PARTNERS, 1);
 
         $entity = $this->getServiceLocator()->get('PartnersTable')->find(1);
 
@@ -221,7 +242,11 @@ class AdminController extends SampleAdminController
     }
 
     public function serviceAction() {
-        $seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::SERVICES, 1);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::SERVICES, 1);
 
         $entity = $this->getServiceLocator()->get('InfoServicesTable')->find(1);
 

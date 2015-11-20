@@ -1,5 +1,7 @@
+<? $isDomainZoneBy = \Application\Service\ApplicationService::isDomainZone('by'); ?>
 <h1>Документы</h1>
 
+<? if (!$isDomainZoneBy) { ?>
 <h2>Каталоги</h2>
 <div id="entityMapper_catalog">
     <div ng-controller="EntitiesCtrl">
@@ -104,6 +106,7 @@
         </script>
     </div>
 </div>
+<? } ?>
 
 <h2>Отзывы</h2>
 <div id="entityMapper_comment">

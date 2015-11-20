@@ -2,6 +2,7 @@
 namespace News\Controller;
 
 use Application\Controller\SampleAdminController;
+use Application\Service\ApplicationService;
 use Info\Service\SeoService;
 use News\Model\News;
 
@@ -11,14 +12,22 @@ class AdminController extends SampleAdminController
 
     public function indexAction()
     {
-        $return = parent::indexAction();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$return = parent::indexAction();
         $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::NEWS, 1 );
         return $return;
     }
 
     public function viewAction()
     {
-        $return = parent::viewAction();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$return = parent::viewAction();
 
         if(is_array($return)){
             $id = (int) $this->params()->fromRoute('id', 0);

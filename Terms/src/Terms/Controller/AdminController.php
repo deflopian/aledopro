@@ -11,7 +11,11 @@ class AdminController extends SampleAdminController
 
     public function indexAction()
     {
-        parent::setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		parent::setData();
         $entities = $this->getServiceLocator()->get($this->table)->fetchAll('letter asc');
         $letters = ApplicationService::getLettersArr();
         array_unshift($letters,'не указана');
@@ -24,7 +28,11 @@ class AdminController extends SampleAdminController
 
     public function viewAction()
     {
-        $return = parent::viewAction();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$return = parent::viewAction();
 
         $letters = ApplicationService::getLettersArr();
         array_unshift($letters,'не указана');

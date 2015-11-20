@@ -11,4 +11,5 @@ class Document extends SampleModel
     public $order;
     public $title;
     public $type; //тип документа (инструкция, каталог, сертификат...)
+    public $zone; //разграничение для России и Белоруссии
 }

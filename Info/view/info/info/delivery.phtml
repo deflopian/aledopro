@@ -26,6 +26,11 @@
                 </div>
                 <div class="b-tabs-content__item fade" id="paymentInfo_2">
                     <?= $entity->text2 ?>
+					<? if ($entity->text2_details) { ?>
+					<div style="padding: 0px 0px 15px 25px;">
+					    <a data-target="#demo" data-toggle="collapse" href="javascript:void(0)" class="collapsed" aria-expanded="false">Смотреть реквизиты</a>
+					</div>
+					<? } ?>
                     <div id="demo" class="collapse delivery-details"><?= $entity->text2_details ?></div>
                     <?= $entity->text2_part2 ?>
                 </div>

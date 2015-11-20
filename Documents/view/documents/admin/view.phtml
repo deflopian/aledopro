@@ -1,10 +1,15 @@
+<? $isDomainZoneBy = \Application\Service\ApplicationService::isDomainZone('by'); ?>
+
 <h1>
     <a href="<?= $this->url('zfcadmin/documents') ?>">Документы</a>
     >
     <span id="title"><?= $entity->title; ?></span>
 </h1>
 
+<? if (!$isDomainZoneBy) { ?>
 <div class="col-md-12 alert alert-warning">При загрузке основного файла (документа), все сотрудники компании получат уведомление об этом!</div>
+<? } ?>
+
 <div class="section">
     <h3>Основная информация</h3>
     <div id="entityMapper">

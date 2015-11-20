@@ -3,6 +3,7 @@ namespace Documents\Controller;
 
 use Api\Model\File;
 use Application\Controller\SampleAdminController;
+use Application\Service\ApplicationService;
 use Documents\Model\DocumentTable;
 use Info\Service\SeoService;
 use Documents\Model\Document;
@@ -16,7 +17,7 @@ class AdminController extends SampleAdminController
         $return = parent::indexAction();
         $documentsTable = $this->getServiceLocator()->get('DocumentsTable');
         $catalogs = $documentsTable->fetchByCond('type', DocumentTable::TYPE_CATALOG);
-        $comments = $documentsTable->fetchByCond('type', DocumentTable::TYPE_COMMENT);
+        $comments = $documentsTable->fetchByConds(array('type' => DocumentTable::TYPE_COMMENT, 'zone' => ApplicationService::isDomainZone('by') ? 'by' : 'ru'));
         $certificates = $documentsTable->fetchByCond('type', DocumentTable::TYPE_CERTIFICATE);
         $instructions = $documentsTable->fetchByCond('type', DocumentTable::TYPE_INSTRUCTION);
 

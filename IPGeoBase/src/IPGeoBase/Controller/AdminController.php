@@ -2,6 +2,7 @@
 namespace IPGeoBase\Controller;
 
 use Application\Controller\SampleAdminController;
+use Application\Service\ApplicationService;
 use Info\Service\SeoService;
 use IPGeoBase\Mapper\GeoBannerMapper;
 use IPGeoBase\Service\GeoService;
@@ -13,7 +14,11 @@ class AdminController extends SampleAdminController
 	
     public function indexAction()
     {
-        /*$return = parent::indexAction();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		/*$return = parent::indexAction();
         $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::IPGEOBASE, 1 );*/
         
 		$geoBannerMapper = GeoBannerMapper::getInstance($this->getServiceLocator());
@@ -28,7 +33,11 @@ class AdminController extends SampleAdminController
 
     public function viewAction()
     {
-        $id = $this->params()->fromRoute('id', 0);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$id = $this->params()->fromRoute('id', 0);
         
         /*$return = parent::indexAction();
         $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::IPGEOBASE, 1 );*/
@@ -63,7 +72,11 @@ class AdminController extends SampleAdminController
 
     public function updateEditableAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -96,7 +109,11 @@ class AdminController extends SampleAdminController
 
     public function addEntityAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -135,7 +152,11 @@ class AdminController extends SampleAdminController
 
     public function delEntityAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -157,6 +178,10 @@ class AdminController extends SampleAdminController
     }
 	
 	public function hideEntityAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
 		$this->setData();
 		
         $request = $this->getRequest();
@@ -181,6 +206,10 @@ class AdminController extends SampleAdminController
     }
 	
 	public function showEntityAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
 		$this->setData();
 		
         $request = $this->getRequest();
@@ -205,7 +234,11 @@ class AdminController extends SampleAdminController
     }
 	
     public function changeOrderAction() {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {

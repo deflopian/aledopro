@@ -4,6 +4,7 @@ namespace Application\Controller;
 use Api\Model\File;
 use Api\Model\FileTable;
 use Application\Model\BannerImg;
+use Application\Service\ApplicationService;
 use Info\Service\SeoService;
 use Zend\Json\Json;
 
@@ -14,7 +15,11 @@ class AdminController extends SampleAdminController
 
     public function indexAction()
     {
-        $sl = $this->getServiceLocator();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$sl = $this->getServiceLocator();
         $blocks = $sl->get('MainPageBlocksTable')->fetchAll();
         $blocksJson = Json::encode($blocks);
 
@@ -33,7 +38,11 @@ class AdminController extends SampleAdminController
 
     public function blockAction()
     {
-        $sl = $this->getServiceLocator();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$sl = $this->getServiceLocator();
         $this->table = "MainPageBlocksTable";
         $return = parent::viewAction();
         $entity = $return['entity'];
@@ -47,7 +56,11 @@ class AdminController extends SampleAdminController
     }
     public function footerBlockAction()
     {
-        $this->table = "FooterBlocksTable";
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->table = "FooterBlocksTable";
         $return = parent::viewAction();
         $entity = $return['entity'];
         $entityJson = \Zend\Json\Json::encode($entity);
@@ -56,7 +69,11 @@ class AdminController extends SampleAdminController
     }
     public function blockimageAction()
     {
-        $sl = $this->getServiceLocator();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$sl = $this->getServiceLocator();
         $this->table = 'MainPageBlockImagesTable';
         $return = parent::viewAction();
         $entity = $return['entity'];

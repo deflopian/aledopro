@@ -3,6 +3,7 @@ namespace Articles\Controller;
 
 use Application\Controller\SampleAdminController;
 use Application\Service\MailService;
+use Application\Service\ApplicationService;
 use Articles\Model\ArticleBlock;
 use Articles\Model\ArticleTag;
 use Articles\Model\TagToArticle;
@@ -17,9 +18,12 @@ class AdminController extends SampleAdminController
     protected $entityName = 'Articles\Model\Article';
     private $sToATable = 'SeriesToArticlesTable';
 
-    public function addEntityAction()
-    {
-        $this->setData();
+    public function addEntityAction() {
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
         $type = false;
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -62,6 +66,10 @@ class AdminController extends SampleAdminController
     }
 	
 	public function hideEntityAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
 		$this->setData();
 		
         $request = $this->getRequest();
@@ -86,6 +94,10 @@ class AdminController extends SampleAdminController
     }
 	
 	public function showEntityAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
 		$this->setData();
 		
         $request = $this->getRequest();
@@ -111,7 +123,11 @@ class AdminController extends SampleAdminController
 
     public function updateEditableAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
         $type = false;
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -164,6 +180,10 @@ class AdminController extends SampleAdminController
 	
 	public function sendNotificationAction()
     {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
 		$this->setData();
 
         $request = $this->getRequest();
@@ -189,7 +209,11 @@ class AdminController extends SampleAdminController
 
     public function viewAction()
     {
-        $this->imgFields=array('img', 'img2', 'preview');
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->imgFields=array('img', 'img2', 'preview');
         //$return = parent::viewAction();
         $return = array();
         $id = $this->params()->fromRoute('id', 0);
@@ -285,6 +309,10 @@ class AdminController extends SampleAdminController
     }
 
     public function addTagAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
         $request = $this->getRequest();
 
         $success = 0;
@@ -312,6 +340,10 @@ class AdminController extends SampleAdminController
     }
 
     public function addNewTagAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
         $request = $this->getRequest();
 
         $success = 0;
@@ -340,6 +372,10 @@ class AdminController extends SampleAdminController
     }
 
     public function removeTagAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
         $request = $this->getRequest();
 
         $success = 0;
@@ -364,7 +400,11 @@ class AdminController extends SampleAdminController
 
     public function saveTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $articleId = $request->getPost('id', false);
             $seriesIds = $request->getPost('tagitIds', false);
@@ -395,7 +435,11 @@ class AdminController extends SampleAdminController
 
     public function removeParentTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $sid = $request->getPost('id', false);
             $aid = $request->getPost('parentId', false);

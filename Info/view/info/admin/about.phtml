@@ -1,3 +1,5 @@
+<? $isDomainZoneBy = \Application\Service\ApplicationService::isDomainZone('by'); ?>
+
 <h1>
     <a href="<?= $this->url('zfcadmin/info') ?>">Информация</a>
     > О компании
@@ -88,6 +90,7 @@
         </td>
     </tr>
 
+	<? if (!$isDomainZoneBy) { ?>
     <tr>
         <td>Название</td>
         <td>
@@ -213,6 +216,8 @@
             </script>
         </td>
     </tr>
+	<? } ?>
+	
     </tbody>
 </table>
 

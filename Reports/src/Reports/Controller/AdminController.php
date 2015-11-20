@@ -11,6 +11,7 @@ namespace Reports\Controller;
 
 
 use Application\Controller\SampleAdminController;
+use Application\Service\ApplicationService;
 use Application\Service\MailService;
 use Reports\Config\ReportConfig;
 use Reports\Mapper\ReportItemMapper;
@@ -21,7 +22,11 @@ class AdminController extends SampleAdminController {
 
     public function viewAction()
     {
-        $sl = $this->getServiceLocator();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$sl = $this->getServiceLocator();
         $reportMapper = ReportMapper::getInstance($sl);
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -42,7 +47,11 @@ class AdminController extends SampleAdminController {
 
     public function delEntityAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -69,7 +78,11 @@ class AdminController extends SampleAdminController {
 
     public function indexAction()
     {
-        $sl = $this->getServiceLocator();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$sl = $this->getServiceLocator();
         $reportMapper = ReportMapper::getInstance($sl);
 
         $entities = array();
@@ -112,6 +125,10 @@ class AdminController extends SampleAdminController {
 	
 	public function sendOrphanSeriesReportAction()
 	{
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
 		$this->setData();
 		
 		$request = $this->getRequest();

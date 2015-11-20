@@ -2,6 +2,7 @@
 namespace Vacancies\Controller;
 
 use Application\Controller\SampleAdminController;
+use Application\Service\ApplicationService;
 use Info\Service\SeoService;
 use Vacancies\Model\Vacancy;
 
@@ -13,7 +14,11 @@ class AdminController extends SampleAdminController
 
     public function indexAction()
     {
-        $return = parent::indexAction();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$return = parent::indexAction();
         if(is_array($return)){
             $vacancyRequests = $this->getServiceLocator()->get($this->requestTable)->fetchAll();
             $return['requests'] = $vacancyRequests;
@@ -25,7 +30,11 @@ class AdminController extends SampleAdminController
 	
 	public function viewAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $id = $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -66,7 +75,11 @@ class AdminController extends SampleAdminController
 	
     public function addEntityAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
         $type = false;
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -103,6 +116,10 @@ class AdminController extends SampleAdminController
     }
 	
 	public function hideEntityAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
 		$this->setData();
 		
         $request = $this->getRequest();
@@ -127,6 +144,10 @@ class AdminController extends SampleAdminController
     }
 	
 	public function showEntityAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
 		$this->setData();
 		
         $request = $this->getRequest();

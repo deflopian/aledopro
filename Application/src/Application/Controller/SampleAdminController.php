@@ -15,6 +15,9 @@ class SampleAdminController extends AbstractActionController
     protected $entityName;
     protected $entityImgName;
     protected $url;
+	
+	protected $forbiddenUrls = array('by' => array('index','blog','articles','terms','news','solutions','projects','services',
+		'offers','vacancies','clients','banner','showroom','reports','brands','developers','geobanners'));
 
     protected function setData()
     {
@@ -38,6 +41,10 @@ class SampleAdminController extends AbstractActionController
     public function indexAction()
     {
         $this->setData();
+		
+		if (ApplicationService::isDomainZone('by') && in_array($this->url, $this->forbiddenUrls['by'])) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
 
         $entities = $this->getServiceLocator()->get($this->table)->fetchAll('order asc');
 
@@ -49,6 +56,11 @@ class SampleAdminController extends AbstractActionController
     public function addEntityAction()
     {
         $this->setData();
+		
+		if (ApplicationService::isDomainZone('by') && in_array($this->url, $this->forbiddenUrls['by'])) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
         $type = false;
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -87,6 +99,10 @@ class SampleAdminController extends AbstractActionController
     public function viewAction()
     {
         $this->setData();
+		
+		if (ApplicationService::isDomainZone('by') && in_array($this->url, $this->forbiddenUrls['by'])) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
 
         $id = $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -128,6 +144,11 @@ class SampleAdminController extends AbstractActionController
     public function updateEditableAction()
     {
         $this->setData();
+		
+		if (ApplicationService::isDomainZone('by') && in_array($this->url, $this->forbiddenUrls['by'])) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
         $type = false;
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -162,6 +183,10 @@ class SampleAdminController extends AbstractActionController
     public function delEntityAction()
     {
         $this->setData();
+		
+		if (ApplicationService::isDomainZone('by') && in_array($this->url, $this->forbiddenUrls['by'])) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
 
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -189,6 +214,10 @@ class SampleAdminController extends AbstractActionController
     public function changeOrderAction()
     {
         $this->setData();
+		
+		if (ApplicationService::isDomainZone('by') && in_array($this->url, $this->forbiddenUrls['by'])) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
 
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -220,6 +249,10 @@ class SampleAdminController extends AbstractActionController
     public function saveImgAction()
     {
         $this->setData();
+		
+		if (ApplicationService::isDomainZone('by') && in_array($this->url, $this->forbiddenUrls['by'])) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
 
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -277,6 +310,10 @@ class SampleAdminController extends AbstractActionController
     public function saveGalleryAction()
     {
         $this->setData();
+		
+		if (ApplicationService::isDomainZone('by') && in_array($this->url, $this->forbiddenUrls['by'])) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
 
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
@@ -375,6 +412,10 @@ class SampleAdminController extends AbstractActionController
     public function delImgAction()
     {
         $this->setData();
+		
+		if (ApplicationService::isDomainZone('by') && in_array($this->url, $this->forbiddenUrls['by'])) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
 
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {

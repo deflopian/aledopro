@@ -459,7 +459,11 @@ class AdminController extends SampleAdminController
 
     public function marketAction()
     {
-        $sl = $this->getServiceLocator();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$sl = $this->getServiceLocator();
         $products = $sl->get('Catalog\Model\ProductInMarketTable')->fetchAll('order ASC');
         $allProds = ApplicationService::makeIdArrayFromObjectArray($sl->get('Catalog\Model\ProductTable')->fetchByConds(array(), array('series_id' => 0)));
 
@@ -735,7 +739,11 @@ class AdminController extends SampleAdminController
 
     public function productInMarketAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('zfcadmin/market');
         }

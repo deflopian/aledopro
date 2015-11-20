@@ -4,6 +4,7 @@ namespace Api\Controller;
 use Api\Model\File;
 use Api\Model\FileTable;
 use Api\Service\EntityService;
+use Application\Service\ApplicationService;
 use Catalog\Service\CatalogService;
 use Zend\Json\Json;
 use Zend\Mvc\Controller\AbstractRestfulController;
@@ -30,6 +31,10 @@ class EntityController extends ApiController
         $type = $data['type'];
 
         $entity = $data['entity'];
+		
+		if ($type == 26) {
+			$entity['zone'] = ApplicationService::isDomainZone('by') ? 'by' : 'ru';
+		}
 
         $entity = CatalogService::createAndFillEntity($type, $entity);
 

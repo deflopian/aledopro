@@ -2,6 +2,7 @@
 namespace Info\Controller;
 
 use Application\Service\MailService;
+use Application\Service\ApplicationService;
 use Catalog\Controller\AdminController;
 use Catalog\Mapper\LinkToLinkMapper;
 use Documents\Model\DocumentTable;
@@ -75,7 +76,7 @@ class InfoController extends AbstractActionController
         }
 
         $documentsTable = $this->getServiceLocator()->get('DocumentsTable');
-        $comments = $documentsTable->fetchByCond('type', DocumentTable::TYPE_COMMENT);
+        $comments = $documentsTable->fetchByConds(array('type' => DocumentTable::TYPE_COMMENT, 'zone' => ApplicationService::isDomainZone('by') ? 'by' : 'ru'));
 
 
         foreach ($comments as &$comment) {

@@ -1,4 +1,5 @@
 <?= $this->doctype(); ?>
+<? $isDomainZoneBy = \Application\Service\ApplicationService::isDomainZone('by'); ?>
 
 <html lang="ru">
 <head>
@@ -61,30 +62,30 @@
             <nav class="collapse navbar-collapse" role="navigation">
                 <ul class="nav navbar-nav">
                     <li><a href="<?= $this->url('home'); ?>">На сайт</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/index'); ?>">Главная</a></li>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/index'); ?>">Главная</a></li><? } ?>
 
                     <li style="clear: left"><a href="<?= $this->url('zfcadmin/catalog'); ?>">Каталог</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/blog'); ?>">Блог</a></li>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/blog'); ?>">Блог</a></li><? } ?>
                     <li><a href="<?= $this->url('zfcadmin/info'); ?>">Информация</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/solutions'); ?>">Решения</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/projects'); ?>">Проекты</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/services'); ?>">Услуги</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/offers'); ?>">Спец предложения</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/vacancies'); ?>">Вакансии</a></li>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/solutions'); ?>">Решения</a></li><? } ?>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/projects'); ?>">Проекты</a></li><? } ?>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/services'); ?>">Услуги</a></li><? } ?>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/offers'); ?>">Спец предложения</a></li><? } ?>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/vacancies'); ?>">Вакансии</a></li><? } ?>
                     <li><a href="<?= $this->url('zfcadmin/team'); ?>">Команда</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/clients'); ?>">Клиенты</a></li>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/clients'); ?>">Клиенты</a></li><? } ?>
                     <li><a href="<?= $this->url('zfcadmin/contacts'); ?>">Контакты</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/banner'); ?>">Баннер</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/showroom'); ?>">Шоурум</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/user'); ?>">Юзеры</a></li>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/banner'); ?>">Баннер</a></li><? } ?>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/showroom'); ?>">Шоурум</a></li><? } ?>
+                    <li><a href="<?= $this->url('zfcadmin/user'); ?>">Пользователи</a></li>
                     <li><a href="<?= $this->url('zfcadmin/requests'); ?>">Заявки</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/market'); ?>">Яндекс.Маркет</a></li>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/market'); ?>">Яндекс.Маркет</a></li><? } ?>
                     <li><a href="<?= $this->url('zfcadmin/discounts'); ?>">Партнёрский раздел</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/reports'); ?>">Отчёты</a></li>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/reports'); ?>">Отчёты</a></li><? } ?>
                     <!--li><a href="<?= $this->url('zfcadmin/commercials'); ?>">КП</a></li-->
                     <li><a href="<?= $this->url('zfcadmin/documents'); ?>">Документы</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/brands'); ?>">Производители</a></li>
-                    <li><a href="<?= $this->url('zfcadmin/geobanners'); ?>">Геобаннеры</a></li>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/brands'); ?>">Производители</a></li><? } ?>
+                    <? if (!$isDomainZoneBy) { ?><li><a href="<?= $this->url('zfcadmin/geobanners'); ?>">Геобаннеры</a></li><? } ?>
                 </ul>
             </nav>
         </div>

@@ -2,6 +2,7 @@
 namespace Offers\Controller;
 
 use Application\Controller\SampleAdminController;
+use Application\Service\ApplicationService;
 use Catalog\Service\CatalogService;
 use Info\Service\SeoService;
 use Offers\Model\Offer;
@@ -15,7 +16,11 @@ class AdminController extends SampleAdminController
 
     public function indexAction()
     {
-        $return = parent::indexAction();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$return = parent::indexAction();
         $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::OFFERS, 1 );
 
         $cm = CatalogMapper::getInstance($this->getServiceLocator());
@@ -87,7 +92,11 @@ class AdminController extends SampleAdminController
 
     public function viewAction()
     {
-        $return = parent::viewAction();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$return = parent::viewAction();
 
         if(is_array($return)){
             $id = (int) $this->params()->fromRoute('id', 0);
@@ -112,7 +121,11 @@ class AdminController extends SampleAdminController
 
     public function saveTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $offerId = $request->getPost('id', false);
             $prodIds = $request->getPost('tagitIds', false);
@@ -144,7 +157,11 @@ class AdminController extends SampleAdminController
 
 
     public function makeOfferAction() {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         $success = 0;
         if ($this->getRequest()->isXmlHttpRequest()) {
             $type = $request->getPost('type', false);
@@ -168,7 +185,11 @@ class AdminController extends SampleAdminController
     }
 
     public function removeOfferAction() {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         $success = 0;
         if ($this->getRequest()->isXmlHttpRequest()) {
             $type = $request->getPost('type', false);
@@ -194,7 +215,11 @@ class AdminController extends SampleAdminController
 
     public function removeParentTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $offerId = $request->getPost('parentId', false);
             $prodId = $request->getPost('id', false);
@@ -215,7 +240,11 @@ class AdminController extends SampleAdminController
 
     public function changeActivityStatusAction()
     {
-        $this->setData();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$this->setData();
 
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
