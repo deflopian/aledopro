@@ -1,5 +1,16 @@
 <? $sl = $this->getHelperPluginManager()->getServiceLocator(); ?>
 <? include 'part/part/mobile-modal.phtml'; ?>
+
+    <div class="b-section__content">
+
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+
+    </div>
     <div class="b-mobile-catalog visible-xs visible-sm">
         <? foreach ($subsections as $subsecId=>$subsection) { ?>
             <div class="b-mobile-catalog__item">
@@ -15,16 +26,7 @@
         <? } ?>
         <? unset($subsection); ?>
     </div>
-<div class="b-section__content">
 
-    <div class="b-breadcrumbs">
-        <? foreach ($breadCrumbs as $bc) { ?>
-            <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
-        <? } ?>
-        <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
-    </div>
-
-</div>
 <div class="section b-section__content catalog hidden-xs hidden-sm">
 
     <? $num = 0; ?>

@@ -534,14 +534,14 @@ $this->partial('catalog/catalog/part/part/geo-widget.phtml',
                 imagesOffsets: [],
                 fancySwipingClass: "fancybox-swiping"
             },
-            _ = jQuery.extend(_options,{ $gallery : jQuery("."+_options.gallery)}),
+            _ = jQuery.extend(_options, {$gallery: jQuery("." + _options.gallery)}),
             $document = jQuery(document),
             $html = jQuery("html"),
             _init = function () {
                 _.$imagesLinks = jQuery(_.imagesLinks);
                 _initGallery();
                 //_initFancy();
-                _bindEvents();
+                //  _bindEvents();
             },
             _bindEvents = function () {
                 _.$gallery.clickOrNot().on("clickOrNot", function (e) {
@@ -630,27 +630,38 @@ $this->partial('catalog/catalog/part/part/geo-widget.phtml',
                     });
             },
             _initGallery = function () {
-                if (browser.mobile) return;
+                var imgLoaded = imagesLoaded(".b-goods-gallery");
+                imgLoaded.on("always", function () {
+                    _.$gallery.on("init", function (e, slick) {
 
-                _.$scroller = _.$gallery.dragscroll({
-                    autoFadeBars: false,
-                    scrollBars: true,
-                    smoothness: 15,
-                    mouseWheelVelocity: 0,
-                    mouseWheelEnabled: false,
-                    onRebuild: function (dragscroll) {
-                        var noScrollClass = _.gallery + "_no-scroll";
-                        if (dragscroll.barIndex.X[0] == 1) {
-                            this.addClass(noScrollClass);
-                        } else {
-                            this.removeClass(noScrollClass);
+                        if (slick.slideCount == 1) {
+                            slick.slickSetOption('fade', true, true);
+                            _.$gallery.addClass('b-slider_no-slider');
+                            _.$gallery.addClass('b-slider_no-slider_fade');
+                            return;
                         }
-                    }
+                        slick.slickSetOption('slidesToShow', slick.slideCount - 1, true);
+
+                    }).slick({
+                        accessibility: false,
+                        dots: false,
+                        infinite: true,
+                        speed: _.animatingSpeed,
+                        slidesToShow: 1,
+                        touchThreshold: browser.mobile ? 5 : 50,
+
+                        centerPadding: "0px",
+                        variableWidth: true,
+
+                        arrows: browser.mobile ? false : true,
+                        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow  b-slider-arrows__arrow_prev b-goods-gallery__arrow\" ></a>",
+                        nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow  b-slider-arrows__arrow_next b-goods-gallery__arrow\" ></a>"
+                    });
                 });
 
-                _watchOnImageUploading();
+
             };
-        return { init: _init };
+        return {init: _init};
     }
 
     var goods = Goods();
