@@ -148,13 +148,6 @@
 
 
 <div class="section" ng-app="dflTree">
-    <? if ($entity->partner_group) { ?>
-        <div class="col-md-12 alert alert-warning">
-            Этот пользователь состоит в группе партнёров.
-            <br>Редактируя эти скидки, вы меняете скидки всей <a href="/admin/discounts/viewGroup/<?= $entity->partner_group ?>/">группы</a>!
-        </div>
-    <? } ?>
-
     <div ng-controller="DflTreeCtrl">
         <h3>Скидки</h3>
         <div class="col-md-8">
