@@ -112,7 +112,7 @@ class ProjectsController extends AbstractActionController
 			'url' => 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
 			'title' => $project->title,
 			'description' => $seoData ? $seoData->description : '',
-			'image' => isset($imgs[0]) ? 'http://aledo-pro.ru/images/projects/' . $imgs[0]->url : ''
+			'image' => isset($imgs[0]) ? 'http://' . $_SERVER['HTTP_HOST'] . '/images/projects/' . $imgs[0]->url : ''
 		);
 		
         $htmlViewPart = new ViewModel();

@@ -16,7 +16,7 @@ class CommercialService {
         $objPHPExcel = new \PHPExcel();
         $objPHPExcel->getProperties()
             ->setTitle($commercial->title)
-            ->setCreator("aledo-pro.ru")
+            ->setCreator($_SERVER['HTTP_HOST'])
             ->setDescription("Коммерческое предложение");
 
         if ($userName) {
@@ -92,7 +92,7 @@ class CommercialService {
 
                 $sheet->setCellValue('B' . $currentRow, $prod->product->title);
 
-                $sheet->setCellValueExplicit('B' . ($currentRow + 1), "Показать на сайте", \PHPExcel_Cell_DataType::TYPE_STRING2, TRUE)->getHyperlink()->setUrl('http://www.aledo-pro.ru/catalog/product/' . $prod->product->id);
+                $sheet->setCellValueExplicit('B' . ($currentRow + 1), "Показать на сайте", \PHPExcel_Cell_DataType::TYPE_STRING2, TRUE)->getHyperlink()->setUrl('http://' . $_SERVER['HTTP_HOST'] . '/catalog/product/' . $prod->product->id);
 
                 // Config
                 $link_style_array = array(
@@ -113,7 +113,7 @@ class CommercialService {
                         }
 
                         $function = 'imagecreatefrom' . $type;
-                        $gdImage = $function('http://aledo-pro.ru/images/products/' . $prod->product->previewName);
+                        $gdImage = $function('http://' . $_SERVER['HTTP_HOST'] . '/images/products/' . $prod->product->previewName);
                         $objDrawing->setName('Product image');
                         $objDrawing->setDescription('Product image');
                         $objDrawing->setImageResource($gdImage);

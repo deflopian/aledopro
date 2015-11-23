@@ -21,14 +21,14 @@
                             <tbody>
                             <tr>
                                 <td colspan="2">
-                                    <img src="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?>/images/aledo-logo-without-title.png" width="212" height="40" alt="Aledo <8 (800) 555 56 72>" />
+                                    <img src="http://<?= $_SERVER['HTTP_HOST'] ?>/images/aledo-logo-without-title.png" width="212" height="40" alt="Aledo <<?= $this->contacts[0]->phone ?>>" />
                                 </td>
                                 <td>&nbsp;</td>
                             </tr>
                             <tr>
                                 <td width="18">&nbsp;</td>
                                 <td>
-                                    8 (800) 555 56 72
+                                    <?= $this->contacts[0]->phone ?>
                                 </td>
                                 <td>&nbsp;</td>
                             </tr>
@@ -49,8 +49,8 @@
                     <td height="20">&nbsp;</td>
                     <td height="20" colspan="2">
                         <p>
-                            На нашем сайте <?= \Application\Service\MailService::CURRENT_DOMEN ?> появилось обновление: <b><?= $category ?></b>.<br><br>
-							<?= $id ? $id . '&nbsp;&nbsp;' : '' ?><a href="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?><?= $link ?>"><?= $title ?></a><br><br>
+                            На нашем сайте <?= $_SERVER['SERVER_NAME'] ?> появилось обновление: <b><?= $category ?></b>.<br><br>
+							<?= $id ? $id . '&nbsp;&nbsp;' : '' ?><a href="http://<?= $_SERVER['HTTP_HOST'] ?><?= $link ?>"><?= $title ?></a><br><br>
                         </p>
                     </td>
                     <td height="20">&nbsp;</td>

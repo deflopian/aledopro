@@ -148,7 +148,7 @@ class ElecService {
         $offer .= "\t\t<categoryId>" . $i . "</categoryId>\n";
         $offer .= "\t\t<keyword>" . (!empty($product->type) ? $product->type : self::$groupsNames[$groupKey]) . "</keyword>\n";
         $offer .= "\t\t<title>" . $product->title . "</title>\n";
-        $offer .= "\t\t<url>http://aledo-pro.ru/catalog/products/" . $product->id . "</url>\n";
+        $offer .= "\t\t<url>http://aledo-pro.ru/catalog/product/" . $product->id . "</url>\n";
         $offer .= "\t\t<price>" . CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests, false) . "</price>\n";
         $offer .= "\t\t<artno>" . $product->id . "</artno>\n";
         $offer .= "\t\t<picture>" . $product->series_img . "</picture>\n";

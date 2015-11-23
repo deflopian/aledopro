@@ -87,7 +87,7 @@
                 <img src="/Content/images/social/blog_L_in.svg"/>
                 <img src="/Content/images/social/blog_L_in_hover.svg" />
             </a>
-			<a class="b-blog-social-link-nav" href="#" onclick="getShareWindow('http://pinterest.com/pin/create/button/?media=http://aledo-pro.ru' + $('.pinit-image:first').attr('src') + '&url='+ window.location +'&description=' + document.title);return false;">
+			<a class="b-blog-social-link-nav" href="#" onclick="getShareWindow('http://pinterest.com/pin/create/button/?media=http://<?= $_SERVER['HTTP_HOST'] ?>' + $('.pinit-image:first').attr('src') + '&url='+ window.location +'&description=' + document.title);return false;">
                 <img src="/Content/images/social/blog_pin.svg"/>
                 <img src="/Content/images/social/blog_pin_hover.svg" />
             </a>

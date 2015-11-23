@@ -1,7 +1,6 @@
 <?php
 namespace User\Service;
 
-use Application\Service\MailService;
 use User\Model\UserHistory;
 
 class UserService
@@ -126,8 +125,8 @@ class UserService
             $url = substr($url, 7);
         }
 
-        if (strstr($url, MailService::CURRENT_DOMEN)) {
-            $url = substr($url, strlen(MailService::CURRENT_DOMEN));
+        if (strstr($url, $_SERVER['HTTP_HOST'])) {
+            $url = substr($url, strlen($_SERVER['HTTP_HOST']));
         }
 
         $url = trim($url, '/');

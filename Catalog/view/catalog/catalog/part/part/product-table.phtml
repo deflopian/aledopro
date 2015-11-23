@@ -207,7 +207,7 @@ $parentSerNum = $this->parentSerNum ? $this->parentSerNum : 0;
                 <a class="getlink-btn">
                     <div class="icon-getlink zeroclipboard"
                          title="Скопировать ссылку в буфер обмена"
-                         data-clipboard-text="http://<?=\Application\Service\MailService::CURRENT_DOMEN?>/catalog/product/{{item.id}}/<?= $nonFilter ? '?ser=' . $parentSerNum . ($partialTab ? $partialTab : '') : '' ?>"></div>
+                         data-clipboard-text="http://<?= $_SERVER['HTTP_HOST'] ?>/catalog/product/{{item.id}}/<?= $nonFilter ? '?ser=' . $parentSerNum . ($partialTab ? $partialTab : '') : '' ?>"></div>
                 </a>
 
 

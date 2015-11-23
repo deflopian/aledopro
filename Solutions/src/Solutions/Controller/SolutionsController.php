@@ -123,6 +123,7 @@ class SolutionsController extends AbstractActionController
         $htmlViewPart = new ViewModel();
 
         $l2lMapper = LinkToLinkMapper::getInstance($sl);
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $htmlViewPart
             ->setVariables(array(
@@ -138,6 +139,7 @@ class SolutionsController extends AbstractActionController
 //                'prevSol' => $prevSol,
 //                'relatedProjs' => $relatedProjs,
                 'links' => $l2lMapper->fetchAll($id,AdminController::SOLUTION_TABLE),
+				'contacts' => $contacts,
                 'sl'        => $sl
             ));
         return $htmlViewPart;

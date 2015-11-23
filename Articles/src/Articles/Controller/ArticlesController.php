@@ -79,7 +79,7 @@ class ArticlesController extends AbstractActionController
 			'url' => 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
 			'title' => $article->title,
 			'description' => $seoData ? $seoData->description : '',
-			'image' => $article->img ? 'http://aledo-pro.ru/images/articles/' . $article->img : ''
+			'image' => $article->img ? 'http://' . $_SERVER['HTTP_HOST'] . '/images/articles/' . $article->img : ''
 		);
 		
         $htmlViewPart = new ViewModel();

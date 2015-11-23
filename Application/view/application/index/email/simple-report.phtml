@@ -21,14 +21,14 @@
                             <tbody>
                             <tr>
                                 <td colspan="2">
-                                    <img src="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?>/images/aledo-logo-without-title.png" width="212" height="40" alt="Aledo <8 (800) 555 56 72>" />
+                                    <img src="http://<?= $_SERVER['HTTP_HOST'] ?>/images/aledo-logo-without-title.png" width="212" height="40" alt="Aledo <<?= $this->contacts[0]->phone ?>>" />
                                 </td>
                                 <td>&nbsp;</td>
                             </tr>
                             <tr>
                                 <td width="18">&nbsp;</td>
                                 <td>
-                                    8 (800) 555 56 72
+                                    <?= $this->contacts[0]->phone ?>
                                 </td>
                                 <td>&nbsp;</td>
                             </tr>
@@ -71,10 +71,10 @@
                             <? foreach ($report->items as $item) { ?>
                                 <tr height="30">
                                     <td width="30%" style="color: #666666">
-                                        <a href="http://<?= \Application\Service\MailService::CURRENT_DOMEN . $item->url ?>"><?= $item->linked_id ?></a>
+                                        <a href="http://<?= $_SERVER['HTTP_HOST'] . $item->url ?>"><?= $item->linked_id ?></a>
                                     </td>
                                     <td width="70%" style="color: #666666">
-                                        <a href="http://<?= \Application\Service\MailService::CURRENT_DOMEN . $item->url ?>"><?= $item->title ?></a>
+                                        <a href="http://<?= $_SERVER['HTTP_HOST'] . $item->url ?>"><?= $item->title ?></a>
                                     </td>
                                 </tr>
                             <? } ?>

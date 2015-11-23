@@ -21,14 +21,14 @@
                             <tbody>
                             <tr>
                                 <td colspan="2">
-                                    <img src="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?>/images/aledo-logo-without-title.png" width="212" height="40" alt="Aledo <8 (800) 555 56 72>" />
+                                    <img src="http://<?= $_SERVER['HTTP_HOST'] ?>/images/aledo-logo-without-title.png" width="212" height="40" alt="Aledo <<?= $this->contacts[0]->phone ?>>" />
                                 </td>
                                 <td>&nbsp;</td>
                             </tr>
                             <tr>
                                 <td width="18">&nbsp;</td>
                                 <td>
-                                    8 (800) 555 56 72
+                                    <?= $this->contacts[0]->phone ?>
                                 </td>
                                 <td>&nbsp;</td>
                             </tr>
@@ -49,7 +49,7 @@
                     <td height="20">&nbsp;</td>
                     <td height="20" colspan="2">
                         <p>
-                            Ваш адрес электронной почты был указан при регистрации на сайте www.aledo-pro.ru
+                            Ваш адрес электронной почты был указан при регистрации на сайте <?= $_SERVER['SERVER_NAME'] ?>
                         </p>
                     </td>
                     <td height="20">&nbsp;</td>

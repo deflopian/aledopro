@@ -2,6 +2,7 @@
 namespace Application\Service;
 
 use BjyAuthorize\Guard\Controller;
+use Application\Service\ApplicationService;
 use Catalog\Controller\CatalogController;
 use Catalog\Mapper\CatalogMapper;
 use Catalog\Service\CatalogService;
@@ -21,17 +22,20 @@ use Zend\View\View;
 
 class MailService
 {
-    public static $currentManagerMail = "info@aledo-pro.ru";
-    private static $kaledoscopManagerMail = "info@kaledoscop.ru";
-    public static $developerMail = "sek@aledo-pro.ru";
+    private static $kaledoscopManagerMail = 'info@kaledoscop.ru';
+    public static $developerMail = 'sek@aledo-pro.ru';
     
-	const CURRENT_DOMEN = "aledo-pro.ru";	
-	const NOTIFICATION_SERIES = 1;
-	const NOTIFICATION_PROJECTS = 2;
-	const NOTIFICATION_ARTICLES = 3;
-	const NOTIFICATION_DEVELOPERS = 4;
-	const NOTIFICATION_DOCUMENTS = 5;
+    const NOTIFICATION_SERIES = 1;
+    const NOTIFICATION_PROJECTS = 2;
+    const NOTIFICATION_ARTICLES = 3;
+    const NOTIFICATION_DEVELOPERS = 4;
+    const NOTIFICATION_DOCUMENTS = 5;
 
+	public static function getCurrentManagerMail()
+	{
+		return ApplicationService::isDomainZone('by') ? 'info@aledo-pro.by' : 'info@aledo-pro.ru';
+	}
+	
     public static function sendMail($email, $data, $subject = "Новый заказ", $from = false)
     {
         $message = new Message();
@@ -44,7 +48,7 @@ class MailService
 
         $bodyPart->setParts(array($bodyMessage));
 
-        $fromMail = $from ? $from : self::$currentManagerMail;
+        $fromMail = $from ? $from : self::getCurrentManagerMail();
 
         $message->setBody($bodyPart);
         $message->addFrom($fromMail, 'Aledo')
@@ -69,12 +73,15 @@ class MailService
     public static function prepareOrderUserMailData($sl, $user, $orderId, $order, $productsInfo, $ptos)
     {
         $email = $user->getEmail();
+		$contacts = $sl->get('ContactsTable')->fetchAll();
+		
         $view = new ViewModel(array(
             'username' => $user->getUsername(),
             'orderId' => $orderId,
             'orderInfo' => $order,
             'products' => $productsInfo,
             'prodsInfo' => $ptos,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-after-order-user');
@@ -86,7 +93,7 @@ class MailService
 
         }
 
-        $managerMail = self::$currentManagerMail;
+        $managerMail = self::getCurrentManagerMail();
         if ($managerId) {
             $manager = $sl->get('UserTable')->find($managerId);
             $managerMail = $manager->email;
@@ -112,10 +119,13 @@ class MailService
         $params['Телефон'] = $user->phone;
         $params['Город'] = $user->city;
         $params['Подписка'] = $user->is_spamed ? 'Да' : 'Нет';
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
             'params' => $params,
-            'username' => $manager->username
+            'username' => $manager->username,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-manager-newmanager-add');
@@ -134,11 +144,13 @@ class MailService
     {
         $manager = $sl->get('UserTable')->find($managerId);
         $email = $user->email;
-
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
             'manager' => $manager,
-            'username' => $user->username
+            'username' => $user->username,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-user-newmanager-add');
@@ -155,10 +167,11 @@ class MailService
     public static function prepareUserPartnershipMailData($sl, $user)
     {
         $email = $user->email;
-
+        $contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
-            'username' => $user->username
+            'username' => $user->username,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-user-add-to-partner');
@@ -174,13 +187,16 @@ class MailService
      */
     public static function prepareReportData($sl, $report)
     {
-        $view = new ViewModel(array(
-            'report' => $report
+        $contacts = $sl->get('ContactsTable')->fetchAll();
+		
+		$view = new ViewModel(array(
+            'report' => $report,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/simple-report');
         $formView = $sl->get('viewrenderer')->render($view);
-        return array(self::$currentManagerMail, $formView);
+        return array(self::getCurrentManagerMail(), $formView);
     }
 
 
@@ -194,10 +210,11 @@ class MailService
     public static function prepareUserRequestPartnershipMailData($sl, $request, $user)
     {
         $email = $user->getEmail();
-
+        $contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
-            'username' => $request->partner_lastname . " " . $request->partner_name . " " . $request->partner_fathername
+            'username' => $request->partner_lastname . " " . $request->partner_name . " " . $request->partner_fathername,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-user-request-partnership');
@@ -231,16 +248,19 @@ class MailService
         $params2['Телефоны офиса'] = $partnerRequest->partner_office_tel ? $partnerRequest->partner_office_tel : "не указано";
         $params2['Website'] = $partnerRequest->partner_website ? $partnerRequest->partner_website : "не указано";
 
-        $view = new ViewModel(array(
+		$contacts = $sl->get('ContactsTable')->fetchAll();
+        
+		$view = new ViewModel(array(
             'paramsClient' => $params1,
             'paramsCompany' => $params2,
             'requestId' => $requestId,
+			'contacts' => $contacts
         ));
 
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-manager-request-partnership');
         $formView = $sl->get('viewrenderer')->render($view);
-        return array(self::$currentManagerMail, $formView, $user->getEmail());
+        return array(self::getCurrentManagerMail(), $formView, $user->getEmail());
     }
 
 
@@ -253,15 +273,18 @@ class MailService
      */
     public static function prepareVacancyMailData($sl, $requestId, $requestDetails, $vacancy)
     {
-        $view = new ViewModel(array(
+        $contacts = $sl->get('ContactsTable')->fetchAll();
+		
+		$view = new ViewModel(array(
             'requestId' => $requestId,
-            'requestDetails'     => $requestDetails,
-            'vacancy'   => $vacancy
+            'requestDetails' => $requestDetails,
+            'vacancy'   => $vacancy,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-vacancy-manager');
         $formView = $sl->get('viewrenderer')->render($view);
-        return array(self::$currentManagerMail, $formView);
+        return array(self::getCurrentManagerMail(), $formView);
     }
 	
 	 /**
@@ -272,9 +295,12 @@ class MailService
      */
     public static function prepareVacancyAcceptedMailData($sl, $requestDetails, $vacancy)
     {
-        $view = new ViewModel(array(
-            'requestDetails'     => $requestDetails,
-            'vacancy'   => $vacancy
+        $contacts = $sl->get('ContactsTable')->fetchAll();
+		
+		$view = new ViewModel(array(
+            'requestDetails' => $requestDetails,
+            'vacancy' => $vacancy,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-vacancy-employee');
@@ -335,19 +361,22 @@ class MailService
 				break;
 		}
 		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
+		
 		$view = new ViewModel(array(
 			'id' => $id,
             'category' => $category,
 			'title' => $title,
 			'link' => $link,
-			'need_share' => $need_share
+			'need_share' => $need_share,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
 		$view->setTemplate('application/index/email/email-notification');
         $formView = $sl->get('viewrenderer')->render($view);
 		
 		$to = GoogleContactsService::getMails($sl);
-		return array($to ? $to : self::$currentManagerMail, $formView);
+		return array($to ? $to : self::getCurrentManagerMail(), $formView);
     }
 
     /**
@@ -360,10 +389,14 @@ class MailService
     {
         $email = $user->email;
         $login = $email;
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
+		
         $view = new ViewModel(array(
             'login' => $login,
             'username' => $user->username,
-            'token' => $token
+            'token' => $token,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-user-forgot-password');
@@ -383,11 +416,15 @@ class MailService
     {
         $email = $user->email;
         $login = $email;
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
+		
         $view = new ViewModel(array(
             'login' => $login,
             'username' => $user->username,
             'password' => $password,
-			'forced' => $forced
+			'forced' => $forced,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-user-remember-password');
@@ -441,6 +478,8 @@ class MailService
         if ($user->getIsSpamed() != "") {
             $params['Подписка'] = $user->getIsSpamed() ? 'Да' : 'Нет';
         }
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
             'orderId' => $orderId,
@@ -448,12 +487,13 @@ class MailService
             'products' => $productsInfo,
             'prodsInfo' => $ptos,
             'params' => $params,
-            'filePath' => (is_null($filePath) ? null : ('http://' . self::CURRENT_DOMEN . $filePath)),
+            'filePath' => (is_null($filePath) ? null : ('http://' . $_SERVER['HTTP_HOST'] . $filePath)),
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-after-order-manager');
         $formView = $sl->get('viewrenderer')->render($view);
-        return array($managerId ? $manager->email : self::$currentManagerMail, $formView, $user->getEmail());
+        return array($managerId ? $manager->email : self::getCurrentManagerMail(), $formView, $user->getEmail());
     }
 
     /**
@@ -496,17 +536,20 @@ class MailService
         if ($user->getIsSpamed() != "") {
             $params['Подписка'] = $user->getIsSpamed() ? 'Да' : 'Нет';
         }
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
             'orderId' => $orderId,
             'orderInfo' => $order,
             'products' => $productsInfo,
             'params' => $params,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-change-order-manager');
         $formView = $sl->get('viewrenderer')->render($view);
-        return array($managerId ? $manager->email : self::$currentManagerMail, $formView, );
+        return array($managerId ? $manager->email : self::getCurrentManagerMail(), $formView, );
     }
 
 /**
@@ -547,6 +590,8 @@ class MailService
         if ($user->getIsSpamed() != "") {
             $params['Подписка'] = $user->getIsSpamed() ? 'Да' : 'Нет';
         }
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
             'orderId' => $orderId,
@@ -554,6 +599,7 @@ class MailService
             'products' => $productsInfo,
             'params' => $params,
             'username' => $user->getUsername(),
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-change-order-user');
@@ -624,6 +670,8 @@ class MailService
                 $products[$fs->id] = $fs;
             }
         }
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
             'username' => $user->username,
@@ -632,6 +680,7 @@ class MailService
             'series' => $series,
             'products' => $products,
             'discounts' => $discounts,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-user-discounts');
@@ -641,7 +690,7 @@ class MailService
         $formViewManager = $sl->get('viewrenderer')->render($view);
         $managerId = $user->manager_id;
 
-        $managerMail = self::$currentManagerMail;
+        $managerMail = self::getCurrentManagerMail();
         if ($managerId) {
             $manager = $sl->get('UserTable')->find($managerId);
             $managerMail = $manager->email;
@@ -713,6 +762,8 @@ class MailService
                 $products[$fs->id] = $fs;
             }
         }
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
             'username' => $user->alias ? $user->alias : $user->username,
@@ -721,13 +772,14 @@ class MailService
             'series' => $series,
             'products' => $products,
             'discounts' => $discounts,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-manager-discounts');
         $formView = $sl->get('viewrenderer')->render($view);
         $managerId = $user->manager_id;
 
-        $managerMail = self::$currentManagerMail;
+        $managerMail = self::getCurrentManagerMail();
         if ($managerId) {
             $manager = $sl->get('UserTable')->find($managerId);
             $managerMail = $manager->email;
@@ -743,12 +795,16 @@ class MailService
         if (isset($data['file']['name'])) {
             $fileName = $data['file']['name'];
         }
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
             'username' => $username,
             'orderId' => $orderId,
             'comment' => $data['comment'],
-            'attachedFileName' => $fileName));
+            'attachedFileName' => $fileName,
+			'contacts' => $contacts
+			));
         $view->setTerminal(true);
 
         if ($type == ServicesController::CALCULATION_FORM) {
@@ -793,10 +849,14 @@ class MailService
     {
         $email = $user->getEmail();
         $login = $email;
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
+		
         $view = new ViewModel(array(
             'login' => $login,
             'username' => $user->getUsername(),
-            'password' => $password
+            'password' => $password,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-user-newuser-registered');
@@ -819,14 +879,17 @@ class MailService
         $params['Телефон'] = $user->getPhone();
         $params['Город'] = $user->getCity();
         $params['Подписка'] = $user->getIsSpamed() ? 'Да' : 'Нет';
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
-            'params' => $params
+            'params' => $params,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-manager-newuser-registered');
         $formView = $sl->get('viewrenderer')->render($view);
-        return array(self::$currentManagerMail, $formView);
+        return array(self::getCurrentManagerMail(), $formView);
     }
 
     /**
@@ -843,14 +906,17 @@ class MailService
         $params['E-Mail'] = $user->getEmail();
         $params['Город'] = $user->getCity();
         $params['Телефон'] = $user->getPhone();
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
-            'params' => $params
+            'params' => $params,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
         $view->setTemplate('application/index/email/email-new-spamed-register-manager');
         $formView = $sl->get('viewrenderer')->render($view);
-        return array(self::$currentManagerMail, $formView);
+        return array(self::getCurrentManagerMail(), $formView);
     }
 
     /**
@@ -889,13 +955,16 @@ class MailService
         if (isset($data['file']['name'])) {
             $fileName = $data['file']['name'];
         }
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
             'params' => $data,
             'orderId' => $orderId,
             'formName' => $formName,
             'attachedFileName' => $fileName,
-            'attachedFilePath' => (is_null($filePath) ? null : ('http://' . self::CURRENT_DOMEN . $filePath)),
+            'attachedFilePath' => (is_null($filePath) ? null : ('http://' . $_SERVER['HTTP_HOST'] . $filePath)),
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
 
@@ -940,7 +1009,7 @@ class MailService
 
         $formView = $sl->get('viewrenderer')->render($view);
 
-        return array(self::$currentManagerMail, $formView);
+        return array(self::getCurrentManagerMail(), $formView);
     }
 
     /**
@@ -954,9 +1023,12 @@ class MailService
         if (!isset($data['name']) || !is_string($data['name']) || !isset($data['email']) || !is_string($data['email'])) {
             return false;
         }
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
             'params' => $data,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
 
@@ -978,9 +1050,12 @@ class MailService
         if (!isset($data['fio']) || !is_string($data['fio']) || !isset($data['email']) || !is_string($data['email'])) {
             return false;
         }
+		
+		$contacts = $sl->get('ContactsTable')->fetchAll();
 
         $view = new ViewModel(array(
             'params' => $data,
+			'contacts' => $contacts
         ));
         $view->setTerminal(true);
 
@@ -988,6 +1063,6 @@ class MailService
 
         $formView = $sl->get('viewrenderer')->render($view);
 
-        return array(self::$currentManagerMail, $formView);
+        return array(self::getCurrentManagerMail(), $formView);
     }
 }

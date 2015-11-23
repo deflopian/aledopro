@@ -403,7 +403,7 @@ class CartController extends AbstractActionController
                             //сообщаем менеджеру детали нового заказа
 
                             list($email, $mailView, $from) = MailService::prepareOrderManagerMailData($this->serviceLocator, $userInfo, $orderId, $order, $productsInfo, $ptosIds, $isRegistered, $filePath);
-                            if ($email != MailService::$currentManagerMail) {
+                            if ($email != MailService::getCurrentManagerMail()) {
                                 MailService::sendMail($email, $mailView, "Новый заказ номер " . $orderId . " на Aledo", $from);
                             }
                             if ($user && $this->zfcUserAuthentication()->getIdentity()->getIsPartner()) {
@@ -415,7 +415,7 @@ class CartController extends AbstractActionController
                                     time()
                                 );
                             }
-                            MailService::sendMail(MailService::$currentManagerMail, $mailView, "Новый заказ номер " . $orderId . " на Aledo");
+                            MailService::sendMail(MailService::getCurrentManagerMail(), $mailView, "Новый заказ номер " . $orderId . " на Aledo");
 
                         }
                     }

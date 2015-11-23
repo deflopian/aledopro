@@ -24,14 +24,14 @@
                             <tbody>
                             <tr>
                                 <td colspan="2">
-                                    <img src="http://<?= \Application\Service\MailService::CURRENT_DOMEN ?>/images/aledo-logo-without-title.png" width="212" height="40" alt="Aledo <8 (800) 555 56 72>" />
+                                    <img src="http://<?= $_SERVER['HTTP_HOST'] ?>/images/aledo-logo-without-title.png" width="212" height="40" alt="Aledo <<?= $this->contacts[0]->phone ?>>" />
                                 </td>
                                 <td>&nbsp;</td>
                             </tr>
                             <tr>
                                 <td width="18">&nbsp;</td>
                                 <td>
-                                    8 (800) 555 56 72
+                                    <?= $this->contacts[0]->phone ?>
                                 </td>
                                 <td>&nbsp;</td>
                             </tr>
@@ -55,7 +55,7 @@
                             <div style="max-width: 600px; padding-top: 20px; ">
                                 <? if ($discount->section_type == \Catalog\Controller\AdminController::SECTION_TABLE) {
                                     if (array_key_exists($discount->section_id, $sections)) {
-                                        $path = 'http://' . \Application\Service\MailService::CURRENT_DOMEN . '/catalog/section/' . $discount->section_id;
+                                        $path = 'http://' . $_SERVER['HTTP_HOST'] . '/catalog/section/' . $discount->section_id;
 
 
                                         if ($discount->discount) {
@@ -66,7 +66,7 @@
                                     }
                                 } elseif ($discount->section_type == \Catalog\Controller\AdminController::SUBSECTION_TABLE) {
                                     if (array_key_exists($discount->section_id, $subsections)) {
-                                        $path = 'http://' . \Application\Service\MailService::CURRENT_DOMEN . '/catalog/subsection/' . $discount->section_id;
+                                        $path = 'http://' . $_SERVER['HTTP_HOST'] . '/catalog/subsection/' . $discount->section_id;
                                         if ($discount->discount) {
                                             echo '<div><a style="color: #666666; padding-left: ' .  (40 * ($discount->section_type-1)) . 'px;" href="' . $path . '"><span style="font-size: 14px;  text-decoration: underline;">' . $subsections[$discount->section_id]->title . '</span></a>:  <span style="float: right; font-size: 16px; color: #C8CF76; font-weight: bold">' . $discount->discount . '%</span></div>';
                                         } else {
@@ -75,7 +75,7 @@
                                     }
                                 } elseif ($discount->section_type == \Catalog\Controller\AdminController::SERIES_TABLE) {
                                     if (array_key_exists($discount->section_id, $series)) {
-                                        $path = 'http://' . \Application\Service\MailService::CURRENT_DOMEN . '/catalog/series/' . $discount->section_id;
+                                        $path = 'http://' . $_SERVER['HTTP_HOST'] . '/catalog/series/' . $discount->section_id;
                                         if ($discount->discount) {
                                             echo '<div><a style="color: #666666; padding-left: ' .  (40 * ($discount->section_type-1)) . 'px;" href="' . $path . '"><span style="font-size: 14px;  text-decoration: underline;">' . $series[$discount->section_id]->title . '</span></a>:  <span style="float: right; font-size: 16px; color: #C8CF76; font-weight: bold">' . $discount->discount . '%</span></div>';
                                         } else {
@@ -83,7 +83,7 @@
                                         }
                                     }
                                 } elseif ($discount->section_type == \Catalog\Controller\AdminController::PRODUCT_TABLE) {
-                                    $path = 'http://' . \Application\Service\MailService::CURRENT_DOMEN . '/catalog/product/' . $discount->section_id;
+                                    $path = 'http://' . $_SERVER['HTTP_HOST'] . '/catalog/product/' . $discount->section_id;
                                     if (array_key_exists($discount->section_id, $products)) {
                                        echo '<div><a style="color: #666666; padding-left: ' .  (40 * ($discount->section_type-1)) . 'px;" href="' . $path . '"><span style="font-size: 14px;  text-decoration: underline;">' . $products[$discount->section_id]->title . '</span></a>:  <span style="float: right; font-size: 16px; color: #C8CF76; font-weight: bold">' . $discount->discount . '%</span></div>';
                                     }

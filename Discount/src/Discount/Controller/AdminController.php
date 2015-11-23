@@ -332,11 +332,11 @@ class AdminController extends SampleAdminController
         list($mail, $dataUser, $dataManager, $from) = MailService::prepareDiscountMailData($sl, $flatDiscounts, $user);
         MailService::sendMail($mail, $dataUser, "Вам назначена скидка на Aledo", $from);
 
-        if ($from != MailService::$currentManagerMail) {
+        if ($from != MailService::getCurrentManagerMail()) {
             MailService::sendMail($from, $dataManager, "Пользователю номер " . $user->user_id . " назначена скидка на Aledo");
         }
 
-        MailService::sendMail(MailService::$currentManagerMail, $dataManager, "Пользователю номер " . $user->user_id . " назначена скидка на Aledo");
+        MailService::sendMail(MailService::getCurrentManagerMail(), $dataManager, "Пользователю номер " . $user->user_id . " назначена скидка на Aledo");
         return $this->redirect()->toRoute('zfcadmin/discounts');
     }
 
@@ -374,7 +374,7 @@ class AdminController extends SampleAdminController
             MailService::sendMail($mail, $dataUser, "Вам назначена скидка на Aledo", $from);
 
 //            list($mail, $dataUser, $dataManager, $from) = MailService::prepareDiscountMailData($sl, $flatDiscounts, $user);
-            MailService::sendMail(MailService::$currentManagerMail, $dataUser, "Копия письма со скидками, адрес: " . $mail, $from);
+            MailService::sendMail(MailService::getCurrentManagerMail(), $dataUser, "Копия письма со скидками, адрес: " . $mail, $from);
         }
         /** @var Response $response */
         $response = $this->getResponse();

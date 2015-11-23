@@ -228,7 +228,7 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
             <a class="getlink-btn">
                 <div class="icon-getlink zeroclipboard"
                      title="Скопировать ссылку в буфер обмена"
-                     data-clipboard-text="http://<?=\Application\Service\MailService::CURRENT_DOMEN?>/catalog/product/{{item.id}}/<?= $nonFilter ? '?ser=' . $parentSerNum . ($partialTab ? $partialTab : '') : '' ?>"></div>
+                     data-clipboard-text="http://<?= $_SERVER['HTTP_HOST'] ?>/catalog/product/{{item.id}}/<?= $nonFilter ? '?ser=' . $parentSerNum . ($partialTab ? $partialTab : '') : '' ?>"></div>
             </a>
 <!--            <a class="buy-back-btn" ng-click="removeItemFromCart(item.id)" title="убрать из корзины"><div class="icon-whitecross"></div></a>-->
 

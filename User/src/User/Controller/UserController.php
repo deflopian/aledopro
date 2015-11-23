@@ -48,7 +48,7 @@ class UserController extends AbstractActionController
             $header->setValue(urlencode('/admin/discounts/partners/' . $id . '/'));
         }
 
-        $header->setDomain(MailService::CURRENT_DOMEN);
+        $header->setDomain($_SERVER['HTTP_HOST']);
         $header->setPath('/');
         $header->setExpires(time() + 86400);
         $this->getResponse()->getHeaders()->addHeader($header);
@@ -233,11 +233,11 @@ class UserController extends AbstractActionController
 
         list($email, $mailView) = MailService::prepareChangeOrderManagerMailData($this->serviceLocator, $user, $orderId, $order, $productsInfo);
 
-        if ($email != MailService::$currentManagerMail) {
+        if ($email != MailService::getCurrentManagerMail()) {
             MailService::sendMail($email, $mailView, "Корректировка заказа номер " . $orderId . " на Aledo");
         }
 
-        MailService::sendMail(MailService::$currentManagerMail, $mailView, "Корректировка заказа номер " . $orderId . " на Aledo");
+        MailService::sendMail(MailService::getCurrentManagerMail(), $mailView, "Корректировка заказа номер " . $orderId . " на Aledo");
 
         list($email, $mailView) = MailService::prepareChangeOrderUserMailData($this->serviceLocator, $user, $orderId, $order, $productsInfo);
         MailService::sendMail($email, $mailView, "Корректировка заказа номер " . $orderId . " на Aledo");
@@ -383,7 +383,7 @@ class UserController extends AbstractActionController
         /** @var \ZfcUser\Mapper\User $userMapper */
         $this->getUserTable()->save($user);
         list($email, $mailView) = MailService::prepareRememberPasswordMailData($this->getServiceLocator(), $user, $password);
-        MailService::sendMail($email, $mailView, "Новый пароль на aledo-pro.ru");
+        MailService::sendMail($email, $mailView, "Новый пароль на " . $_SERVER['SERVER_NAME']);
         if ($user->is_partner) {
             UserService::addHistoryAction(
                 $this->getServiceLocator(),
@@ -429,7 +429,7 @@ class UserController extends AbstractActionController
             /** @var \ZfcUser\Mapper\User $userMapper */
             $this->getUserTable()->save($user);
             list($email, $mailView) = MailService::prepareForgotPasswordMailData($this->getServiceLocator(), $user, $token);
-            MailService::sendMail($email, $mailView, "Запрос на восстановление пароля для aledo-pro.ru");
+            MailService::sendMail($email, $mailView, "Запрос на восстановление пароля для " . $_SERVER['SERVER_NAME']);
             if ($user->is_partner) {
                 UserService::addHistoryAction(
                     $this->getServiceLocator(),

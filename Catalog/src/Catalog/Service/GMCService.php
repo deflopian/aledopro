@@ -121,7 +121,7 @@ class GMCService {
         $offer = '<item>';
 
         $offer .= '<title>' . $product->title . '</title>';
-        $offer .= '<link>http://aledo-pro.ru/catalog/products/' . $product->id . '</link>';
+        $offer .= '<link>http://aledo-pro.ru/catalog/product/' . $product->id . '</link>';
 
         if ($product->text && stripos($product->text, 'pdf') === false) {
             $offer .= '<description>' . $product->text . '</description>';
