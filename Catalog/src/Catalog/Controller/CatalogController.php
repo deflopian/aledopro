@@ -396,6 +396,7 @@ class CatalogController extends BaseController
             'slidersData' => \Zend\Json\Json::encode($filterData['sliders']),
             'postVals' => \Zend\Json\Json::encode($filterData['postVals']),
             'qtexts' => \Zend\Json\Json::encode($filterData['qtexts']),
+			'qtextsArr' => $filterData['qtexts']
         );
         $view->setVariables($return);
         return $view;
@@ -626,6 +627,7 @@ class CatalogController extends BaseController
             'slidersData' => \Zend\Json\Json::encode($filterData['sliders']),
             'postVals' => \Zend\Json\Json::encode($filterData['postVals']),
             'qtexts' => \Zend\Json\Json::encode($filterData['qtexts']),
+			'qtextsArr' => $filterData['qtexts']
         );
         $view->setVariables($return);
         return $view;

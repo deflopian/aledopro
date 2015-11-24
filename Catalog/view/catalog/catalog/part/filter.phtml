@@ -21,7 +21,9 @@
                     <div class="filter-arrow panel-heading__icon"></div>
                     <span class="panel-heading__title"><?= $param->title ?></span>
                 </a>
+                <? if ($this->qtextsArr[$param->id]['text']) { ?>
                 <span class="popupsmall-button panel-heading__icon filter-question pull-right" data-id="<?= $param->id ?>">?</span>
+                <? } ?>
             </div>
 
             <div id="f-<?= $param->field ?>"
