@@ -118,7 +118,7 @@
                                 </small>
                                 <small class="b-form-error"
                                        ng-show="partnerRegistration.partner_city.$error.stringLengthTooShort">
-                                    Длина поля должна быть по меньшей мере 3 символа
+                                    Длина поля должна быть по меньшей мере 2 символа
                                 </small>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                                 </small>
                                 <small class="b-form-error"
                                        ng-show="partnerRegistration.partner_tel.$error.stringLengthTooShort">
-                                    Длина поля должна быть по меньшей мере 3 символа
+                                    Длина поля должна быть по меньшей мере 6 символов
                                 </small>
                             </div>
                         </div>
@@ -249,7 +249,7 @@
                                     Пароли не совпадают
                                 </small>
                                 <small class="b-form-error"
-                                       ng-show="partnerRegistration.partner_password_repeat.$error.stringLengthTooShort">
+                                       ng-show="partnerRegistration.partner_password_repeat.$error.stringLengthTooShort && !partnerRegistration.partner_password_repeat.$error.notSame">
                                     Длина поля должна быть по меньшей мере 6 символов
                                 </small>
                             </div>
@@ -401,7 +401,7 @@
                             <p>*поля отмеченные звездочкой(*) обязательны к заполнению</p>
                             <p>Мы гарантируем, что Ваши персональные данные не будут переданы третьим лицам</p>
 
-                            <div class="b-button b-button_gray" ng-click="submit()" id="partner_reistration_button" ng-disabled="partnerRegistration.$invalid && !reSubmit">
+                            <div class="b-button b-button_gray" ng-click="submit()" id="partner_reistration_button" ng-disabled="partnerRegistration.$invalid">
                                             <span class="b-button__text">
                                                 отправить заявку на регистрацию
                                             </span>
