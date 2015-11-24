@@ -26,7 +26,7 @@
                             <label for="phone">Контактный телефон*</label>
                         </div>
                         <div class="b-registration__cell b-registration__cell_right">
-                            <input type="text" input-mask="+7 (999) 999-99-99"
+                            <input type="text" input-mask0="<?= $isDomainZoneBy ? '+385' : '+7' ?> (999) 999-99-99"
                                    class="b-form-control b-form-control_small" id="phone" ng-model="formData.phone" autocomplete="on"
                                 <?= ($this->isRegistered && $this->user->getPhone()) ? 'value="' . $this->user->getPhone() . '"' : ''?> required />
                         </div>

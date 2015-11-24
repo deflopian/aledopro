@@ -2,6 +2,7 @@
 namespace Discount\Model;
 
 use Application\Model\SampleModel;
+use Application\Service\ApplicationService;
 use Catalog\Mapper\CatalogMapper;
 use Zend\Db\Sql\Predicate;
 use Application\Model\SampleTable;
@@ -14,11 +15,15 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class DiscountTable extends SampleTable
 {
-    protected $table ='discounts';
+    protected $table = 'discounts';
 
     public function __construct(Adapter $adapter)
     {
-        $this->adapter = $adapter;
+        if (ApplicationService::isDomainZone('by')) {
+            $this->table = 'by_discounts';
+        }
+		
+		$this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
         $this->resultSetPrototype->setArrayObjectPrototype(new Discount());
         $this->initialize();

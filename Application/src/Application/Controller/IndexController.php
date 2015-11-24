@@ -175,6 +175,7 @@ class IndexController extends AbstractActionController
                         ->setVariables(array(
                             'url' => $url,
                             'params' => $params,
+							'isDomainZoneBy' => ApplicationService::isDomainZone('by')
                         ));
 
                     if ($type === 'register' || $type === 'registerFromCart' || $type === ApplicationService::ALEDO_POPUP_REGISTER || $type === ApplicationService::ALEDO_POPUP_CART_REGISTER) {
@@ -184,7 +185,6 @@ class IndexController extends AbstractActionController
 
 
                     if ($type === 'partner-card' || $type == ApplicationService::ALEDO_POPUP_PARTNER_CARD) {
-//                        var_dump($this->zfcUserAuthentication()->getIdentity());
                         $htmlViewPart->setVariable('user', $this->zfcUserAuthentication()->getIdentity());
                     }
 

@@ -220,8 +220,15 @@ class InfoController extends AbstractActionController
         $entity = $guaranteeTable->find(1);
 		$seoData = $this->getServiceLocator()->get('SeoDataTable')->find( \Info\Service\SeoService::GUARANTEE, 1);
 		
+		$contacts = $this->getServiceLocator()->get('ContactsTable')->fetchAll();
+		
 		$this->layout()->pageTitle = 'Сервис и гарантия';
 		$this->layout()->seoData = $seoData;
+		
+		if (ApplicationService::isDomainZone('by')) {
+			$entity->text2 = str_replace('8 (800) 555-56-72', $contacts[0]->phone, $entity->text2);
+			$entity->text3 = str_replace('.ru', '.by', $entity->text3);
+		}
 
         return array(
             'entity' => $entity,
@@ -326,6 +333,10 @@ class InfoController extends AbstractActionController
 		
 		$this->layout()->pageTitle = 'Партнёрам';
 		$this->layout()->seoData = $seoData;
+		
+		if (ApplicationService::isDomainZone('by')) {
+			$entity->text1 = str_replace('.ru', '.by', $entity->text1);
+		}
 		
         return array(
             'entity' => $entity,

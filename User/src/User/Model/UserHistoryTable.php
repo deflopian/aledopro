@@ -3,6 +3,7 @@ namespace User\Model;
 
 use Application\Model\SampleModel;
 use Application\Model\SampleTable;
+use Application\Service\ApplicationService;
 use User\Service\UserService;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\ResultSet\ResultSet;
@@ -12,11 +13,15 @@ use Zend\Db\TableGateway\AbstractTableGateway;
 
 class UserHistoryTable extends SampleTable
 {
-    protected $table ='user_history';
+    protected $table = 'user_history';
 
     public function __construct(Adapter $adapter)
     {
-        $this->adapter = $adapter;
+        if (ApplicationService::isDomainZone('by')) {
+            $this->table = 'by_user_history';
+        }
+		
+		$this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
         $this->resultSetPrototype->setArrayObjectPrototype(new UserHistory());
         $this->initialize();

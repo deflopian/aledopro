@@ -8,7 +8,7 @@ use Zend\Db\ResultSet\ResultSet;
 
 class UserRoleTable extends SampleTable
 {
-    protected $table ='user_role';
+    protected $table = 'user_role';
 
     public function __construct(Adapter $adapter)
     {

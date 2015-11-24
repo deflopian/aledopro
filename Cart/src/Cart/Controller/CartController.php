@@ -139,7 +139,8 @@ class CartController extends AbstractActionController
 		$return['hierarchies'] = $hierarchies;
 		$return['requests'] = $requests;
         $return['isAuth'] = $this->zfcUserAuthentication()->hasIdentity();
-
+		
+		$return['isDomainZoneBy'] = ApplicationService::isDomainZone('by');
 
         $return['pageTitle'] = 'Корзина';
         $return['breadCrumbs'] = array(

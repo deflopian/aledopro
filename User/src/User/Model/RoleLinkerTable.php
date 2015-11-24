@@ -3,6 +3,7 @@ namespace User\Model;
 
 use Application\Model\SampleModel;
 use Application\Model\SampleTable;
+use Application\Service\ApplicationService;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Select;
@@ -11,11 +12,15 @@ use Zend\Db\TableGateway\AbstractTableGateway;
 
 class RoleLinkerTable extends SampleTable
 {
-    protected $table ='user_role_linker';
+    protected $table = 'user_role_linker';
 
     public function __construct(Adapter $adapter)
     {
-        $this->adapter = $adapter;
+        if (ApplicationService::isDomainZone('by')) {
+            $this->table = 'by_user_role_linker';
+        }
+		
+		$this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
         $this->resultSetPrototype->setArrayObjectPrototype(new RoleLinker());
         $this->initialize();
