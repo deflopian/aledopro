@@ -23,6 +23,7 @@ class Series extends SampleModel
     public $preview;
     public $deleted;
     public $show_scroll_btn;
+    public $show_spec_matrix;
     public $is_offer = 0;
     public $fourthTabName;
 }

@@ -1,0 +1,154 @@
+<div class="b-goods b-section" style="padding-top: 0">
+    <div class="b-section__content">
+        <div class="b-breadcrumbs">
+            <? foreach ($breadCrumbs as $bc) { ?>
+                <a class="b-breadcrumbs__item" href="<?= $bc['link'] ?>"><?= $bc['text'] ?></a>&nbsp;/
+            <? } ?>
+            <strong class="b-breadcrumbs__item b-breadcrumbs__item_active"><?= $pageTitle ?></strong>
+        </div>
+    </div>
+
+    <div class="b-goods-gallery">
+        <div class="b-goods-gallery-item"><i class="b-goods-gallery-item__layout" style="width: 1px"></i>
+            <a class="b-goods-gallery-item__link" href0="" rel="gallery">
+                <img class="b-goods-gallery-item__image" src="/images/subsections/modular_aledo-pro_99_.jpg" alt="Modular" />
+            </a>
+        </div>
+    </div>
+
+    <div class="b-section__content">
+        <div class="b-goods-flexiable-table">
+
+            <div class="b-goods-flexiable-table__cell" style="text-align: left">
+                <div class="b-goods-title">
+                    Описание системы Модулар:
+                </div>
+            </div>
+        </div>
+		<div style="padding: 15px 0px 15px 0px;">Универсальная светодиодная модульная система MODULAR обладает всеми преимуществами традиционных карданных светильников, но в то же время является более гибкой и многофункциональной. Универсальность и взаимозаменяемость модулей, а также наличие различных цветов отделки рамок и корпусов позволяет создавать невероятное количество уникальных комбинаций для решения множества задач. 
+Для освещения различных зон желательно использовать светодиодные модули разной цветности (3000К, 4000К, 5700К). Для повышения продаж хлебо-булочных изделий, мясных продуктов, одежды и косметических товаров рекомендуем освещать эти зоны модулями со специальными светодиодными матрицами (доступны под заказ).<br/><br/>
+			<div>
+				<strong>SNOWHITE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AROMA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RUBY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MELA</strong>
+			</div>
+		</div>
+		<hr class="dotted-separator">
+        
+		<div class="row">
+			<div class="col-xs-9">
+				<div class="row row-second subsection" data-type="catalog" data-action="series">
+                <? $i = 0; foreach($series as $ser){ ?>
+                    <div class="col-xs-3 series-tile" data-id="<?= $ser->id ?>">
+                        <?= \Catalog\Service\CatalogService::renderSeriesTile($sl, $ser); ?>
+                    </div>
+                <? if(($i+1)%4==0){ echo '</div><div class="row row-second subsection" data-type="catalog" data-action="series">'; }
+                    $i++;
+                } ?>
+				</div>
+			</div>
+		</div>
+        <?= \Catalog\Service\CatalogService::renderSeoTextBlock($sl, $subsection); ?>
+    </div>
+</div>
+
+<?=
+$this->partial('catalog/catalog/part/part/geo-widget.phtml',
+    array(
+        'type' => 2,
+        'id' => $subsection->id
+    )
+);
+?>
+
+<script type="text/javascript">
+    function Goods() {
+        var _options = {
+                gallery: "b-goods-gallery",
+                imagesLinks: jQuery(".b-goods-gallery-item__link"),
+                $imagesLayout: jQuery(".b-goods-gallery-item__layout"),
+                animatingSpeed: browser.mobile ? 300 : 500,
+                fancyIsOpen: false,
+                isAnimating: false,
+                imagesOffsets: [],
+                fancySwipingClass: "fancybox-swiping"
+            },
+            _ = jQuery.extend(_options, {$gallery: jQuery("." + _options.gallery)}),
+            $document = jQuery(document),
+            $html = jQuery("html"),
+            _init = function () {
+                _.$imagesLinks = jQuery(_.imagesLinks);
+                _initGallery();
+            },
+            _bindEvents = function () {
+                _.$gallery.clickOrNot().on("clickOrNot", function (e) {
+                    var $layout = jQuery(e.target);
+                    $layout.siblings(_.imagesLinks).trigger("click");
+                });
+//                $document.on("ng.swipe.right", function () {
+//                    $.fancybox.prev();
+//                }).on("ng.swipe.left", function () {
+//                    $.fancybox.next();
+//                });
+//                _.$imagesLinks.on("mouseup", function () {
+//                    return false;
+//                });
+//
+//                _.$gallery.on("click", function (e) {
+//                    var $this = jQuery(e.target);
+//                    $this.siblings("a").click();
+//                }).on("afterChange", function () {
+//                    _.isAnimating = false;
+//                });
+//
+//
+//                _.$gallery.on("fancyBox.beforeLoad", function () {
+//                    if (_.firstCalling) {
+//                        _.firstCalling = false;
+//                        return;
+//                    }
+//                });
+            },
+            _watchOnImageUploading = function () {
+                _.$gallery.imagesLoaded()
+                    .progress(function () {
+                        _.$scroller.data("dragscroll").reInit();
+                    });
+            },
+            _initGallery = function () {
+                var imgLoaded = imagesLoaded(".b-goods-gallery");
+                imgLoaded.on("always", function () {
+                    _.$gallery.on("init", function (e, slick) {
+
+                        if (slick.slideCount == 1) {
+                            slick.slickSetOption('fade', true, true);
+                            _.$gallery.addClass('b-slider_no-slider');
+                            _.$gallery.addClass('b-slider_no-slider_fade');
+                            return;
+                        }
+                        slick.slickSetOption('slidesToShow', slick.slideCount - 1, true);
+
+                    }).slick({
+                        accessibility: false,
+                        dots: false,
+                        infinite: true,
+                        speed: _.animatingSpeed,
+                        slidesToShow: 1,
+                        touchThreshold: browser.mobile ? 5 : 50,
+
+                        centerPadding: "0px",
+                        variableWidth: true,
+
+                        arrows: browser.mobile ? false : true,
+                        prevArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow  b-slider-arrows__arrow_prev b-goods-gallery__arrow\" ></a>",
+                        nextArrow: "<a href=\"javascript:void(0)\" class=\"b-slider-arrows__arrow  b-slider-arrows__arrow_next b-goods-gallery__arrow\" ></a>"
+                    });
+                });
+
+
+            };
+        return {init: _init};
+    }
+
+    var goods = Goods();
+    goods.init();
+
+</script>

@@ -89,12 +89,10 @@ function mb_ucfirst($text) {
         <div class="b-tabs-wrapper b-tabs-wrapper_goods "  role="tabpanel">
             <div class="b-goods-tabs">
                 <ul class="b-tabs list-unstyled b-tabs_goods" role="tablist">
-                    <? if ($series->id != 100140) { ?>
-					<li class="b-tabs__tab  active">
+                    <li class="b-tabs__tab  active">
                         <a class="b-tabs__link " role="tab" href="#goods_1" data-toggle="tab" aria-controls="goods_1" >Цены и модификации</a>
                     </li>
-					<? } ?>
-                    <li class="b-tabs__tab<? if ($series->id == 100140) echo ' active'; ?>">
+                    <li class="b-tabs__tab">
                         <a class="b-tabs__link " role="tab" href="#goods_2"  data-toggle="tab" aria-controls="goods_2">Описание и комплектация</a>
                     </li>
                     <li class="b-tabs__tab">
@@ -116,8 +114,10 @@ function mb_ucfirst($text) {
                 $attention = 'Источник питания приобретается отдельно.';
             } ?>
             <div class="b-tabs-content b-tabs-content_goods tab-content">
-				<? if ($series->id != 100140) { ?>
-                <div class="b-tabs-content__item fade in active tab-pane" role="tabpanel" id="goods_1">
+				<div class="b-tabs-content__item fade in active tab-pane" role="tabpanel" id="goods_1">
+				<? if ($series->show_spec_matrix) { ?>
+				<div style="padding: 10px 0px 10px 0px;"><strong>SNOWHITE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AROMA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RUBY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MELA</strong></div>
+				<? } ?>
                     <? if ($series->show_scroll_btn == 1) { ?>
                         <div class="attention-block">
                             <span class="attention-block_important">Важно!</span>
@@ -252,9 +252,8 @@ function mb_ucfirst($text) {
                     );
                     ?>
                 </div>
-				<? } ?>
 
-                <div class="b-tabs-content__item fade<? if ($series->id == 100140) echo ' in active'; ?> tab-pane series-description-block" role="tabpanel" id="goods_2" style="padding-left: 30px">
+                <div class="b-tabs-content__item fade tab-pane series-description-block" role="tabpanel" id="goods_2" style="padding-left: 30px">
 
                     <div class="row">
                         <div class="col-xs-12">

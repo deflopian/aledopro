@@ -519,6 +519,31 @@ class CatalogController extends BaseController
         $view->setTemplate('catalog/catalog/subsection_lenta');
         return $view;
     }
+	
+	public function renderSubsectionModularAction() {
+        $id = $this->params()->fromRoute('id', 0);
+        $sl = $this->getServiceLocator();
+        $cm = CatalogMapper::getInstance($sl);
+
+        $subsection = $cm->getSubsection($id, true, true);
+        $id = $subsection->id;
+
+        $params = $sl->get('Catalog\Model\ProductParamsTable')->fetchAll();
+	
+		$view = new ViewModel();
+        $view
+            ->setVariables(array(
+                'series' => SeriesAggregator::getInstance()->getSeries($id),
+                'params' => $params,
+                'view' => $view,
+                'sl' => $sl
+            ));
+			
+        $links = LinkToLinkMapper::getInstance($sl)->fetchCatalogSortedBySectionType($id, AdminController::SUBSECTION_TABLE);
+        $view->setVariable('links', $links);
+        $view->setTemplate('catalog/catalog/subsection_modular');
+        return $view;
+    }
 
     public function subsectionAction()
     {
@@ -566,6 +591,10 @@ class CatalogController extends BaseController
                 break;
 
         }
+		
+		if ($subsection->id == 37) {
+			$view = $this->forward()->dispatch('catalog', array('action'=>'renderSubsectionModular', 'id'=>$id));
+		}
 		
 		if ($prodId = $this->params()->fromQuery('product')) {
             $view->setVariable('scrollToProduct', $prodId);
