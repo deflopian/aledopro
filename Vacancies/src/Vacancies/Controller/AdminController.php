@@ -14,15 +14,12 @@ class AdminController extends SampleAdminController
 
     public function indexAction()
     {
-        if (ApplicationService::isDomainZone('by')) {
-			return $this->redirect()->toRoute('zfcadmin');
-		}
-		
-		$return = parent::indexAction();
+        $return = parent::indexAction();
         if(is_array($return)){
             $vacancyRequests = $this->getServiceLocator()->get($this->requestTable)->fetchAll();
             $return['requests'] = $vacancyRequests;
             $return['seoData'] = $this->getServiceLocator()->get('SeoDataTable')->find( SeoService::JOB, 1 );
+            $return['isDomainZoneBy'] = ApplicationService::isDomainZone('by');
         }
 
         return $return;

@@ -30,7 +30,8 @@ class AdminController extends SampleAdminController
             'entities' => $entities,
             'users' => $users,
             'unregUsers' => $unregUsers,
-            'seoData' => $seoData
+            'seoData' => $seoData,
+			'isDomainZoneBy' => ApplicationService::isDomainZone('by')
         );
     }
 

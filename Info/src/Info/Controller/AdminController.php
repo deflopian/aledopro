@@ -48,7 +48,8 @@ class AdminController extends SampleAdminController
                 'entity' => $entity,
                 'id'     => 0,
                 'seoData' => $seoData,
-                'links' =>  LinkToLinkMapper::getInstance($this->getServiceLocator())->fetchAll(0, \Catalog\Controller\AdminController::INFO_TABLE)
+                'links' =>  LinkToLinkMapper::getInstance($this->getServiceLocator())->fetchAll(0, \Catalog\Controller\AdminController::INFO_TABLE),
+				'isDomainZoneBy' => ApplicationService::isDomainZone('by')
             ));
 
         return $view;
@@ -199,7 +200,8 @@ class AdminController extends SampleAdminController
                 'entity' => $entity,
                 'id'     => 0,
                 'seoData' => $seoData,
-                'links' =>  LinkToLinkMapper::getInstance($this->getServiceLocator())->fetchAll(0, \Catalog\Controller\AdminController::INFO_TABLE)
+                'links' =>  LinkToLinkMapper::getInstance($this->getServiceLocator())->fetchAll(0, \Catalog\Controller\AdminController::INFO_TABLE),
+				'isDomainZoneBy' => ApplicationService::isDomainZone('by')
             ));
 
         return $view;

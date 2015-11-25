@@ -1,5 +1,3 @@
-<? $isDomainZoneBy = \Application\Service\ApplicationService::isDomainZone('by'); ?>
-
 <h1>
     <a href="<?= $this->url('zfcadmin/info') ?>">Информация</a>
     > О компании
@@ -222,10 +220,10 @@
 </table>
 
 
-<?
+<? if (!$isDomainZoneBy) {
 $sl = $this->getHelperPluginManager()->getServiceLocator();
 echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
-?>
+} ?>
 
 <script type="text/javascript">
     $(function(){

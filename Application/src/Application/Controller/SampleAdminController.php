@@ -17,7 +17,7 @@ class SampleAdminController extends AbstractActionController
     protected $url;
 	
 	protected $forbiddenUrls = array('by' => array('index','blog','articles','terms','news','solutions','projects','services',
-		'offers','vacancies','clients','banner','showroom','reports','brands','developers','geobanners'));
+		'offers','clients','banner','showroom','reports','brands','developers','geobanners'));
 
     protected function setData()
     {
