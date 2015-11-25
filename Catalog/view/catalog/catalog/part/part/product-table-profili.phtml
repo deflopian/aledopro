@@ -3,7 +3,7 @@ $hierarchies = $this->hierarchies;
 $discounts = $this->discounts;
 
 foreach($products as $product) { 
-	$price = \Catalog\Service\CatalogService::getRegularPriceWithNds($product, false, $hierarchies, $this->requests, true); 
+	$price = \Catalog\Service\CatalogService::getRegularPriceWithNds($product, false, $hierarchies, $this->requests); 
 ?>
 	<div itemscope itemtype="http://schema.org/Product" style="display:none;">
 		<meta itemprop="productID" content="<?= $product->id ?>" />
@@ -25,7 +25,7 @@ if ($user && $user->getIsPartner()) {
 
 $posVals = \Catalog\Service\CatalogService::getValsJSON($products, $filteredFields, $prevProdCount, $params);
 
-$products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS, $hierarchies, $discounts, $filteredFields, true, false, $this->requests, true);
+$products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields, $user, \Catalog\Service\CatalogService::DISPLAY_STYLE_LENTS, $hierarchies, $discounts, $filteredFields, true, false, $this->requests);
 $partialTab = $this->partialTab ? $this->partialTab : false;
 ?>
 

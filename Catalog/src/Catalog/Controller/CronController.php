@@ -447,11 +447,11 @@ class CronController extends BaseController
     public function removeYMLFileAction()
     {
         $token = $this->params()->fromQuery('token', null);
-        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe') {
+        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe' || ApplicationService::isDomainZone('by')) {
             /** @var \Zend\Http\Response $response */
             $response = $this->getResponse();
             $response->setStatusCode(404);
-            return $response;
+            return new ViewModel();
         }
 
         $linePath = $_SERVER['DOCUMENT_ROOT'] . '/aledo-shop.dtd';
@@ -465,11 +465,11 @@ class CronController extends BaseController
     public function removeGMCFileAction()
     {
         $token = $this->params()->fromQuery('token', null);
-        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe') {
+        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe' || ApplicationService::isDomainZone('by')) {
             /** @var \Zend\Http\Response $response */
             $response = $this->getResponse();
             $response->setStatusCode(404);
-            return $response;
+            return new ViewModel();
         }
 
         $linePath = $_SERVER['DOCUMENT_ROOT'] . '/gmc-aledo.dtd';
@@ -483,11 +483,11 @@ class CronController extends BaseController
     public function makeYMLFileAction()
     {
         $token = $this->params()->fromQuery('token', null);
-        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe') {
+        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe' || ApplicationService::isDomainZone('by')) {
             /** @var \Zend\Http\Response $response */
             $response = $this->getResponse();
             $response->setStatusCode(404);
-            return $response;
+            return new ViewModel();
         }
 //        return array();
         $prodsInMarket = $this->getProductInMarketTable()->fetchAll();
@@ -588,11 +588,11 @@ class CronController extends BaseController
     {
 
         $token = $this->params()->fromQuery('token', null);
-        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe') {
+        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe' || ApplicationService::isDomainZone('by')) {
             /** @var \Zend\Http\Response $response */
             $response = $this->getResponse();
             $response->setStatusCode(404);
-            return $response;
+            return new ViewModel();
         }
 //        return array();
         $prodsInMarket = $this->getProductInMarketTable()->fetchAll();
@@ -647,11 +647,11 @@ class CronController extends BaseController
     {
 
         $token = $this->params()->fromQuery('token', null);
-        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe') {
+        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe' || ApplicationService::isDomainZone('by')) {
             /** @var \Zend\Http\Response $response */
             $response = $this->getResponse();
             $response->setStatusCode(404);
-            return $response;
+            return new ViewModel();
         }
 //        return array();
         $prodsInMarket = ElecService::$groups;

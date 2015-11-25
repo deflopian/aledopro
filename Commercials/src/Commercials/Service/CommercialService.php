@@ -75,7 +75,7 @@ class CommercialService {
 			
 				$cm = CatalogMapper::getInstance($serviceLocator);				
 				list($tree, $type_) = $cm->getParentTree($prod->product_id);
-				$price = CatalogService::getTruePriceUser($prod->product->price_without_nds, $priceUser, $tree, $discounts, $prod->product->opt2, $requests, true);
+				$price = CatalogService::getTruePriceUser($prod->product->price_without_nds, $priceUser, $tree, $discounts, $prod->product->opt2, $requests);
                 
 				$count = $prod->count ? $prod->count : 1;
 

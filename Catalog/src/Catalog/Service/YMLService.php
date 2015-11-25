@@ -21,7 +21,7 @@ class YMLService {
         return "
             <name>Aledo</name>
             <company>Aledo</company>
-            <url>http://www.aledo-pro.ru/</url>
+            <url>http://aledo-pro.ru/</url>
             <email>info@aledo-pro.ru</email>
         ";
     }
@@ -130,7 +130,7 @@ class YMLService {
 
         $offer .= '
             <url>http://aledo-pro.ru/catalog/product/' . $product->id . '</url>
-            <price>' . CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests, false) . '</price>
+            <price>' . CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests) . '</price>
             <currencyId>RUR</currencyId>
             <categoryId>' . $categoriesIds[$product->series_id] . '</categoryId >
         ';

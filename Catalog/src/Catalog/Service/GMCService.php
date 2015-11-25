@@ -128,7 +128,7 @@ class GMCService {
         }
         $offer .= '<g:id>' . $product->id . '</g:id>';
         $offer .= '<g:condition>new</g:condition>';
-        $offer .= '<g:price>' . CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests, false) . ' RUB </g:price>';
+        $offer .= '<g:price>' . CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests) . ' RUB </g:price>';
         $offer .= '<g:availability>' . ($product->free_balance ? 'in stock' : 'preorder') . '</g:availability>';
         $offer .= '<g:image_link>http://aledo-pro.ru/images/series/' . $product->series_img . '</g:image_link>';
         $offer .= '<g:brand>' . $product->brand . '</g:brand>';

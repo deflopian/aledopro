@@ -57,7 +57,7 @@ class AdminController extends SampleAdminController
 		
                 $prod = $prodTable->find($relProd->product_id);
                 $relatedProds[$i]->title = $prod->title;
-                $relatedProds[$i]->price = CatalogService::getTruePrice($prod->price_without_nds, null, $tree, null, 0, $requests, true);
+                $relatedProds[$i]->price = CatalogService::getTruePrice($prod->price_without_nds, null, $tree, null, 0, $requests);
             }
             $return['relatedProds'] = $relatedProds;
         }

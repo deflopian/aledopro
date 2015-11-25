@@ -281,12 +281,11 @@ class CartController extends AbstractActionController
                             $hierarchies[$product->id],
                             $discounts,
                             $product->opt2,
-							$requests,
-							true
+							$requests
                         );
 
                     } else {
-                        $truePrice = CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests, true);
+                        $truePrice = CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests);
                     }
 
                     $productData[$id]->price = $truePrice;
