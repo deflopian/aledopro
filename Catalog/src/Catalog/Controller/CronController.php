@@ -13,6 +13,7 @@ use Catalog\Model\SeriesParams;
 use Catalog\Service\ElecService;
 use Catalog\Service\GMCService;
 use Catalog\Service\ProductsAggregator;
+use Catalog\Service\QISDesignService;
 use Catalog\Service\YMLService;
 use News\Model\News;
 use Catalog\Controller\AdminController;
@@ -478,6 +479,23 @@ class CronController extends BaseController
             unlink( $linePath );
         }
         return $this->redirect()->toRoute('zfcadmin/market');
+    }
+	
+	public function makeQISDesignFileAction()
+    {
+        $token = $this->params()->fromQuery('token', null);
+        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe' || ApplicationService::isDomainZone('by')) {
+            /** @var \Zend\Http\Response $response */
+            $response = $this->getResponse();
+            $response->setStatusCode(404);
+            return new ViewModel();
+        }
+
+        $products = $this->getProductTable()->fetchByCond('brand', 'QIS DESIGN', 'id ASC');
+
+		$xmlFile = QISDesignService::makeQISDesignFile($products, $this->getServiceLocator());
+        $result = file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/qis_design.xml', $xmlFile);
+        return new ViewModel();
     }
 
     public function makeYMLFileAction()
