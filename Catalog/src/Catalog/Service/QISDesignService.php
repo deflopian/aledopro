@@ -47,7 +47,7 @@ class QISDesignService {
 ';
         $item .= '            <price>' . CatalogService::getTruePrice($product->price_without_nds, null, $hierarchies[$product->id], null, 0, $requests) . '</price>
 ';
-        $item .= '            <currency>RUB</currency>
+        $item .= '            <currency>RUR</currency>
 ';
 
 
