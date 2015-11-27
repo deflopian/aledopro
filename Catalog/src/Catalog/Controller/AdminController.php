@@ -56,6 +56,7 @@ class AdminController extends SampleAdminController
     const FOOTER_BLOCKS_TABLE = 37;
     const GEOBANNERS_TABLE = 38;
     const PRICE_REQUEST_TABLE = 39;
+    const BY_CATALOG_HIDE_TABLE = 40;
 
     protected $tableImg = 'SeriesImgTable';
     protected $entityImgName = 'Catalog\Model\SeriesImg';
@@ -87,6 +88,7 @@ class AdminController extends SampleAdminController
             'sections' => $sections,
             'treeDataByLvlJson' => $treeDataByLvlJson,
             'seoData'       => $seoData,
+			'isDomainZoneBy' => ApplicationService::isDomainZone('by')
         );
     }
 
@@ -204,7 +206,93 @@ class AdminController extends SampleAdminController
         );
     }
 	
+	public function catalogHideAction()
+    {
+		$sl = $this->getServiceLocator();
+		
+        $byCatalogHideTable = $sl->get('byCatalogHideTable');
+        $sortedDiscounts = $byCatalogHideTable->fetchAllSorted();
+
+
+
+        $cm = CatalogMapper::getInstance($this->getServiceLocator());
+        $sections = $cm->fetchAllSections();
+        $subsections = $cm->fetchAllSubsections(true);
+        $series = $cm->fetchAllSeries(true);
+        $products = $cm->fetchAllProducts(true);
+        $treeDateByLvl = array();
+        $treeHierarchy = array();
+        foreach ($sections as $section) {
+            $discVal = 0;
+            $originalId = 0;
+            if (isset($sortedDiscounts[\Catalog\Controller\AdminController::SECTION_TABLE][$section->id])) {
+                $discVal = $sortedDiscounts[\Catalog\Controller\AdminController::SECTION_TABLE][$section->id]->is_hidden;
+                $originalId = $sortedDiscounts[\Catalog\Controller\AdminController::SECTION_TABLE][$section->id]->id;
+            }
+            $treeDateByLvl[\Catalog\Controller\AdminController::SECTION_TABLE][$section->id] = array('title' => $section->title, 'discount' => $discVal, 'inherited' => 0, 'dId' => ($originalId > 0 ? $originalId : false), 'deleted' => $section->deleted);
+            $treeHierarchy[$section->id] = array();
+        }
+        foreach ($subsections as $subsection) {
+            if (isset($treeHierarchy[$subsection->section_id])) {
+                $treeHierarchy[$subsection->section_id][$subsection->id] = array();
+                $discVal = 0;
+                $inherited = 0;
+                $originalId = 0;
+                if (isset($sortedDiscounts[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$subsection->id])) {
+                    $discVal = $sortedDiscounts[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$subsection->id]->is_hidden;
+                    $originalId = $sortedDiscounts[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$subsection->id]->id;
+                } else {
+                    $discVal = $treeDateByLvl[\Catalog\Controller\AdminController::SECTION_TABLE][$subsection->section_id]['discount'];
+                    $inherited = 1;
+                }
+                $treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$subsection->id] = array('title' => $subsection->title, 'parentId' => $subsection->section_id, 'discount' => $discVal, 'inherited' => $inherited, 'dId' => ($originalId > 0 ? $originalId : false), 'deleted' => $subsection->deleted);
+                if (!$inherited) {
+                    $treeDateByLvl[\Catalog\Controller\AdminController::SECTION_TABLE][$subsection->section_id]['shown'] = true;
+//                    $treeDateByLvl[\Catalog\Controller\AdminController::SECTION_TABLE][$subsection->section_id]['dId'] = $sortedDiscounts[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$subsection->id]->discount;
+
+                }
+            }
+        }
+        foreach ($series as $oneser) {
+
+            $subsection = $treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$oneser->subsection_id];
+            if ($subsection) {
+                $sectionId = $subsection['parentId'];
+                if (isset($treeHierarchy[$sectionId][$oneser->subsection_id])) {
+                    $treeHierarchy[$sectionId][$oneser->subsection_id][$oneser->id] = array();
+                    $discVal = 0;
+                    $originalId = 0;
+                    $inherited = 0;
+                    if (isset($sortedDiscounts[\Catalog\Controller\AdminController::SERIES_TABLE][$oneser->id])) {
+                        $discVal = $sortedDiscounts[\Catalog\Controller\AdminController::SERIES_TABLE][$oneser->id]->is_hidden;
+                        $originalId = $sortedDiscounts[\Catalog\Controller\AdminController::SERIES_TABLE][$oneser->id]->id;
+                    } else {
+                        $discVal = $treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$oneser->subsection_id]['discount'];
+                        $inherited = 1;
+                    }
+                    $treeDateByLvl[\Catalog\Controller\AdminController::SERIES_TABLE][$oneser->id] = array('title' => $oneser->title, 'parentId' => $oneser->subsection_id, 'discount' => $discVal, 'inherited' => $inherited, 'dId' => ($originalId > 0 ? $originalId : false), 'deleted' => $oneser->deleted);
+                    if (!$inherited) {
+                        $treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$oneser->subsection_id]['shown'] = true;
+                        $treeDateByLvl[\Catalog\Controller\AdminController::SECTION_TABLE][$treeDateByLvl[\Catalog\Controller\AdminController::SUBSECTION_TABLE][$oneser->subsection_id]['parentId']]['shown'] = true;
+                    }
+                }
+            }
+        }
+
+        $treeDateByLvlJson = \Zend\Json\Json::encode($treeDateByLvl);
+        $treeHierarchyJson = \Zend\Json\Json::encode($treeHierarchy);
+		
+		return array(
+            'treeDateByLvlJson' => $treeDateByLvlJson,
+			'treeHierarchyJson' => $treeHierarchyJson,
+        );
+    }
+	
     public function getTagsByTypeAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
         $request = $this->getRequest();
         $sl = $this->getServiceLocator();
         if ($request->isXmlHttpRequest()) {
@@ -245,6 +333,10 @@ class AdminController extends SampleAdminController
     }
 
     public function getMinByTypeAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
         $request = $this->getRequest();
         $sl = $this->getServiceLocator();
         if ($request->isXmlHttpRequest()) {
@@ -279,7 +371,11 @@ class AdminController extends SampleAdminController
 
     public function delEntityImgAction()
     {
-        /** @var \Zend\Http\Request $request */
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		/** @var \Zend\Http\Request $request */
         $request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
             $entityId = $request->getPost('id', false);
@@ -325,7 +421,11 @@ class AdminController extends SampleAdminController
 
     public function deleteProdFileAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         $return = array();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
@@ -361,6 +461,10 @@ class AdminController extends SampleAdminController
     }
 
     public function sortparamAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $param = $request->getPost('param', false);
@@ -386,7 +490,11 @@ class AdminController extends SampleAdminController
 
     public function sectionAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('zfcadmin/catalog');
         }
@@ -486,7 +594,11 @@ class AdminController extends SampleAdminController
 
     public function subsectionAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('zfcadmin/catalog');
         }
@@ -539,7 +651,11 @@ class AdminController extends SampleAdminController
 
     public function seriesAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('zfcadmin/catalog');
         }
@@ -628,7 +744,11 @@ class AdminController extends SampleAdminController
 
     public function productAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('zfcadmin/catalog');
         }
@@ -668,7 +788,11 @@ class AdminController extends SampleAdminController
 
     public function addEntityAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $title = $request->getPost('title', false);
             $type = $request->getPost('type', false);
@@ -711,7 +835,11 @@ class AdminController extends SampleAdminController
     }
 
     public function hideEntityAction() {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
             $type = $request->getPost('type', false);
@@ -765,6 +893,10 @@ class AdminController extends SampleAdminController
     }
 
     public function showEntityAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
         $request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
@@ -792,6 +924,10 @@ class AdminController extends SampleAdminController
     }
 	
 	public function sendNotificationAction() {
+		if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
 		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
@@ -822,7 +958,11 @@ class AdminController extends SampleAdminController
 
     public function delEntityAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
             $type = $request->getPost('type', false);
@@ -846,7 +986,11 @@ class AdminController extends SampleAdminController
 
     public function changeOrderAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $order = $request->getPost('order', false);
             $type = $request->getPost('type', false);
@@ -912,7 +1056,11 @@ class AdminController extends SampleAdminController
 
     public function updateEditableAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $post = $request->getPost()->toArray();
             $success = 0;
@@ -941,7 +1089,11 @@ class AdminController extends SampleAdminController
 
     public function saveTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
             $seriesIds = $request->getPost('tagitIds', false);
@@ -1057,7 +1209,11 @@ class AdminController extends SampleAdminController
 
     public function saveLinkTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
 
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -1082,7 +1238,11 @@ class AdminController extends SampleAdminController
 
     public function removeParentTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
             $seriesId = $request->getPost('parentId', false);
@@ -1148,7 +1308,11 @@ class AdminController extends SampleAdminController
 
     public function removeParentLinkTagitAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $link_id_1 = $request->getPost('link_id_1', false);
             $link_id_2 = $request->getPost('link_id_2', false);
@@ -1171,7 +1335,11 @@ class AdminController extends SampleAdminController
 
     public function addDocAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $title = $request->getPost('title', false);
             $parent_id = $request->getPost('parentId', false);
@@ -1205,7 +1373,11 @@ class AdminController extends SampleAdminController
 
     public function addDimAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $title = $request->getPost('title', false);
             $parent_id = $request->getPost('parentId', false);
@@ -1239,7 +1411,11 @@ class AdminController extends SampleAdminController
 
     public function delDocAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
             $success = 0;
@@ -1259,7 +1435,11 @@ class AdminController extends SampleAdminController
 
     public function delDimAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
             $success = 0;
@@ -1279,7 +1459,11 @@ class AdminController extends SampleAdminController
 
     public function viewDocAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('zfcadmin/catalog');
         }
@@ -1303,7 +1487,11 @@ class AdminController extends SampleAdminController
 
     public function viewDimAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('zfcadmin/catalog');
         }
@@ -1327,7 +1515,11 @@ class AdminController extends SampleAdminController
 
     public function saveImgAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
             $type = $request->getPost('type', false);
@@ -1418,7 +1610,11 @@ class AdminController extends SampleAdminController
 
     public function saveProdFileAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($this->getRequest()->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
             $return['success'] = 0;
@@ -1476,7 +1672,11 @@ class AdminController extends SampleAdminController
 
     public function viewDopProdAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('zfcadmin/catalog');
         }
@@ -1530,7 +1730,11 @@ class AdminController extends SampleAdminController
 
     public function setEqualFieldsAction()
     {
-        $request = $this->getRequest();
+        if (ApplicationService::isDomainZone('by')) {
+			return $this->redirect()->toRoute('zfcadmin');
+		}
+		
+		$request = $this->getRequest();
         if ($request->isXmlHttpRequest()) {
             $id = $request->getPost('id', false);
             $fields = $request->getPost('fields', array());

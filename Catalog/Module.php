@@ -24,6 +24,7 @@ use Catalog\Model\SeriesTable;
 use Catalog\Model\ProductTable;
 use Catalog\Model\ProductParamsTable;
 use Catalog\Model\PriceRequestTable;
+use Catalog\Model\ByCatalogHideTable;
 use Terms\Model\Terms;
 use Terms\Model\TermsTable;
 
@@ -185,6 +186,16 @@ class Module
 				'PriceRequestTable' =>  function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $table = new PriceRequestTable($dbAdapter);
+                    return $table;
+                },
+				'Catalog\Model\ByCatalogHideTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table = new ByCatalogHideTable($dbAdapter);
+                    return $table;
+                },
+				'ByCatalogHideTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table = new ByCatalogHideTable($dbAdapter);
                     return $table;
                 },
             ),

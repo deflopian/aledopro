@@ -93,7 +93,7 @@ class CronController extends BaseController
 
     public function getfileAction() {
         $token = $this->params()->fromQuery('token', null);
-        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe') {
+        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe' || ApplicationService::isDomainZone('by')) {
             /** @var \Zend\Http\Response $response */
             $response = $this->getResponse();
             $response->setStatusCode(404);
@@ -182,7 +182,7 @@ class CronController extends BaseController
 
     public function sortAllProductsAction() {
         $token = $this->params()->fromQuery('token', null);
-        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe') {
+        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe' || ApplicationService::isDomainZone('by')) {
             /** @var \Zend\Http\Response $response */
             $response = $this->getResponse();
             $response->setStatusCode(404);
@@ -221,7 +221,7 @@ class CronController extends BaseController
     public function parsexlsAction()
     {
         $token = $this->params()->fromQuery('token', null);
-        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe') {
+        if (is_null($token) || $token != 'fae6e2bf570d0443c8d51cd7b30d49fe' || ApplicationService::isDomainZone('by')) {
             /** @var \Zend\Http\Response $response */
             $response = $this->getResponse();
             $response->setStatusCode(404);

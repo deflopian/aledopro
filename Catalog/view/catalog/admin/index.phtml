@@ -1,6 +1,7 @@
 <h1>Каталог</h1>
-<a href="/admin/catalog/priceRequest/">Цена по запросу</a>
-
+<a href="/admin/catalog/priceRequest/">Цена по запросу</a><br/>
+<? if ($isDomainZoneBy) { ?><a href="/admin/catalog/catalogHide/">Скрыть разделы/подразделы/серии</a><? } ?>
+<? if (!$isDomainZoneBy) { ?>
 <div class="section">
     <h3>Список разделов</h3>
     <div class="addPanel">
@@ -92,12 +93,13 @@
         </script>
     </div>
 </div>
-
-<?
+<? } ?>
+<? if (!$isDomainZoneBy) {
 $sl = $this->getHelperPluginManager()->getServiceLocator();
 echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
-?>
+} ?>
 
+<? if (!$isDomainZoneBy) { ?>
 <script type="text/javascript">
     $(document).ready(function(){
         catalog.type = '<?= \Catalog\Controller\AdminController::SECTION_TABLE ?>';
@@ -107,3 +109,4 @@ echo \Info\Service\SeoService::renderSeoForm($sl, $seoData);
         catalog.init();
     });
 </script>
+<? } ?>

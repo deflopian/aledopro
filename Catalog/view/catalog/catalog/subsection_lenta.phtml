@@ -96,7 +96,7 @@ function mb_ucfirst($text) {
                             <h3 class="catalog_series__h3"><?= $visible_title ?></h3>
                         <? } ?>
                             <div class="row" id="serpopup-table-container">
-                                <div class="col-xs-12" id="testApp_<?= $serr->id ?>" style="overflow-y: hidden; overflow-x: visible; position: static">
+                                <div class="col-xs-12 series-block" id="testApp_<?= $serr->id ?>" style="overflow-y: hidden; overflow-x: visible; position: static" data-id="<?= $serr->id ?>">
 
                                     <?
                                     $tpl = 'product-table-lenti';
@@ -672,6 +672,7 @@ $this->partial('catalog/catalog/part/part/geo-widget.phtml',
 
 <script>
     popup.renderCartedLines();
+    catalogClient.scrollToSeries = <?= $scrollToSeries ? $scrollToSeries : 'false' ?>;
     catalogClient.scrollToProduct = <?= $scrollToProduct ? $scrollToProduct : 'false'  ?>;
 
     $(function() {

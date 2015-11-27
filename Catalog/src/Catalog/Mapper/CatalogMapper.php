@@ -161,7 +161,7 @@ class CatalogMapper {
             $section = (is_array($section) && count($section) > 0) ? reset($section) : $section;
         }
 
-        $section = CatalogService::checkAndPrepareSection($section);
+        $section = CatalogService::checkAndPrepareSection($this->sl, $section);
         if ($getAllProducts) {
             $parentsTree[AdminController::SECTION_TABLE] = $section->id;
         }
@@ -209,7 +209,7 @@ class CatalogMapper {
             return array();
         }
 
-        $subsections = CatalogService::filterSubsections($subsections);
+        $subsections = CatalogService::filterSubsections($this->sl, $subsections);
         if (!$subsections) return array();
 
         if ($getAllSeries) {
@@ -315,7 +315,7 @@ class CatalogMapper {
             return array();
         }
 
-        $series = CatalogService::filterSeries($series);
+        $series = CatalogService::filterSeries($this->sl, $series);
         if (!$series) return array();
 
 
@@ -414,7 +414,7 @@ class CatalogMapper {
             return false;
         }
 
-        $subsection = CatalogService::filterSubsections($subsection);
+        $subsection = CatalogService::filterSubsections($this->sl, $subsection);
 
         if ($getAllSeries) {
             $seAg = SeriesAggregator::getInstance();
@@ -441,7 +441,7 @@ class CatalogMapper {
             return false;
         }
 
-        $series = CatalogService::filterSeries($series);
+        $series = CatalogService::filterSeries($this->sl, $series);
 
         $imgTable = $this->sl->get('Catalog\Model\SeriesImgTable');
         $docsTable = $this->sl->get('Catalog\Model\SeriesDocTable');

@@ -2,6 +2,7 @@
 namespace Search\Controller;
 
 use Application\Service\ApplicationService;
+use Catalog\Service\CatalogService;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 
@@ -91,13 +92,27 @@ class SearchController extends AbstractActionController
         }
         $query = $anyChar . implode($anyChar, $parsedQuery) . $anyChar;
 
-        $hiddenSections = $sectionTable->fetchByCond('deleted', '1');
+        $shownSections = $sectionTable->fetchByCond('deleted', '0');
+		$hiddenSections = $sectionTable->fetchByCond('deleted', '1');
+		
+		foreach ($shownSections as $sec) {
+			if (!CatalogService::isByCatalogHidden($this->getServiceLocator(), $sec->id, 1)) continue;
+			if (!in_array($sec, $hiddenSections)) $hiddenSections[] = $sec;
+		}
+		
         $hiddenSectionsIds = array();
         foreach ($hiddenSections as $hs) {
             $hiddenSectionsIds[$hs->id] = $hs->id;
         }
 
-        $hiddenSubsections = $subsectionTable->fetchByCond('deleted', '1');
+        $shownSubsections = $subsectionTable->fetchByCond('deleted', '0');
+		$hiddenSubsections = $subsectionTable->fetchByCond('deleted', '1');
+		
+		foreach ($shownSubsections as $sub) {
+			if (!CatalogService::isByCatalogHidden($this->getServiceLocator(), $sub->id, 2)) continue;
+			if (!in_array($sub, $hiddenSubsections)) $hiddenSubsections[] = $sub;
+		}
+		
         $inheritHiddenSubsections =$subsectionTable->fetchByCond('section_id', $hiddenSectionsIds);
         $hiddenSubsectionsIds = array();
         foreach ($hiddenSubsections as $hs) {
@@ -107,7 +122,14 @@ class SearchController extends AbstractActionController
             $hiddenSubsectionsIds[$hs->id] = $hs->id;
         }
 
-        $hiddenSeries = $seriesTable->fetchByCond('deleted', '1');
+        $shownSeries = $seriesTable->fetchByCond('deleted', '0');
+		$hiddenSeries = $seriesTable->fetchByCond('deleted', '1');
+		
+		foreach ($shownSeries as $ser) {
+			if (!CatalogService::isByCatalogHidden($this->getServiceLocator(), $ser->id, 3)) continue;
+			if (!in_array($ser, $hiddenSeries)) $hiddenSeries[] = $ser;
+		}
+		
         $inheritHiddenSeries = $seriesTable->fetchByCond('subsection_id', $hiddenSubsectionsIds);
         $hiddenSeriesIds = array();
         foreach ($hiddenSeries as $hs) {
@@ -125,9 +147,30 @@ class SearchController extends AbstractActionController
         $resultsByProducts = $productTable->selectLike('title', $query, '*', $specialCondition);
         $fileTable = $this->getServiceLocator()->get('FilesTable');
 
-        $resultsBySeries = $seriesTable->selectLike(array('title', 'visible_title'), $query, '*', ' AND (`deleted` != 1 OR `deleted` IS NULL)');
-        $resultsBySections = $sectionTable->selectLike('title', $query, '*', ' AND `deleted` != 1');
-        $resultsBySubSections = $subsectionTable->selectLike('title', $query, '*', ' AND `deleted` != 1');
+        $_resultsBySeries = $seriesTable->selectLike(array('title', 'visible_title'), $query, '*', ' AND (`deleted` != 1 OR `deleted` IS NULL)');
+		
+		$resultsBySeries = array();
+		foreach ($_resultsBySeries as $ser) {
+			if (CatalogService::isByCatalogHidden($this->getServiceLocator(), $ser->id, 3))	continue;
+			$resultsBySeries[] = $ser;
+		}
+		
+        $_resultsBySections = $sectionTable->selectLike('title', $query, '*', ' AND `deleted` != 1');
+		
+		$resultsBySections = array();
+		foreach ($_resultsBySections as $sec) {
+			if (CatalogService::isByCatalogHidden($this->getServiceLocator(), $sec->id, 1))	continue;
+			$resultsBySections[] = $sec;
+		}
+		
+        $_resultsBySubSections = $subsectionTable->selectLike('title', $query, '*', ' AND `deleted` != 1');
+		
+		$resultsBySubSections = array();
+		foreach ($_resultsBySubSections as $sub) {
+			if (CatalogService::isByCatalogHidden($this->getServiceLocator(), $sub->id, 2))	continue;
+			$resultsBySubSections[] = $sub;
+		}
+		
         $resultsByArticles = $articlesTable->selectLike('title', $query);
         $resultsByNews = $newsTable->selectLike('title', $query);
         $resultsByProjects = $projectsTable->selectLike('title', $query, '*', ' AND `rubric_id` = 1');

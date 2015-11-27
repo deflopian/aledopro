@@ -3,6 +3,8 @@ namespace Api\Controller;
 
 use Api\Model\File;
 use Api\Model\FileTable;
+use Catalog\Model\ByCatalogHide;
+use Catalog\Model\ByCatalogHideTable;
 use Catalog\Mapper\CatalogMapper;
 use Catalog\Model\FilterField;
 use Catalog\Model\PriceRequest;
@@ -108,6 +110,25 @@ class TreeController extends ApiController
                 $entity = reset($entities);
             } else {
                 $entity = new PriceRequest();
+                $entity->section_id = $options['sectionId'];
+                $entity->section_type = $options['discountType'];
+            }
+
+            foreach ($data as $field => $val) {
+                $entity->$field = $val;
+            }
+
+            $res = $entityTable->save($entity);
+            return $this->response->setContent($res)->setStatusCode(200);
+
+        } elseif ($type == \Catalog\Controller\AdminController::BY_CATALOG_HIDE_TABLE) {
+            $entityTable = $sl->get('ByCatalogHideTable');
+            $entities = $entityTable->fetchByConds(array('section_type' => $options['discountType'], 'section_id' => $options['sectionId']));
+
+            if ($entities) {
+                $entity = reset($entities);
+            } else {
+                $entity = new ByCatalogHide();
                 $entity->section_id = $options['sectionId'];
                 $entity->section_type = $options['discountType'];
             }
@@ -285,6 +306,9 @@ class TreeController extends ApiController
 		
 		if ($params[0] == 39) {
 			$entityTable = $sl->get('PriceRequestTable');
+		}
+		else if ($params[0] == 40) {
+			$entityTable = $sl->get('ByCatalogHideTable');
 		}
 		else {
 			$entityTable = $sl->get('DiscountTable');

@@ -2,6 +2,7 @@
 namespace Contacts\Controller;
 
 use Application\Service\ApplicationService;
+use Catalog\Service\CatalogService;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class ContactsController extends AbstractActionController
@@ -11,21 +12,36 @@ class ContactsController extends AbstractActionController
         $this->layout()->pageTitle = 'Карта сайта';
 
         $sl = $this->getServiceLocator();
-        $sections = ApplicationService::makeIdArrayFromObjectArray($sl->get('Catalog/Model/SectionTable')->fetchByCond('deleted', 0, 'order asc'));
+        $_sections = $sl->get('Catalog/Model/SectionTable')->fetchByCond('deleted', 0, 'order asc');
+		
+		$sections = array();
+		foreach ($_sections as $sec) {
+			if (CatalogService::isByCatalogHidden($this->getServiceLocator(), $sec->id, 1))	continue;
+			$sections[] = $sec;
+		}
+		$sections = ApplicationService::makeIdArrayFromObjectArray($sections);
+		
         $subsections = $sl->get('Catalog/Model/SubsectionTable')->fetchAll();
         $seriesTable = $sl->get('Catalog/Model/SeriesTable');
         $projectsTable = $sl->get('ProjectsTable');
         $strangeIds = array(31, 33);
 
         $sectionsIds = array();
-        foreach ($sections as $onesec) {
+        foreach ($sections as &$onesec) {
             $sectionsIds[] = $onesec->id;
         }
 
         foreach($subsections as $subsec){
             if (in_array($subsec->section_id, $sectionsIds)) {
                 if(in_array($subsec->section_id, $strangeIds)){
-                    $series = $seriesTable->fetchByConds(array('subsection_id' => $subsec->id, 'deleted' => 0 ));
+                    $_series = $seriesTable->fetchByConds(array('subsection_id' => $subsec->id, 'deleted' => 0 ));
+					
+					$series = array();
+					foreach ($_series as $ser) {
+						if (CatalogService::isByCatalogHidden($this->getServiceLocator(), $ser->id, 3))	continue;
+						$series[] = $ser;
+					}
+					
                     $subsec->series = $series;
                 }
                 $sections[$subsec->section_id]->subsecs[] = $subsec;

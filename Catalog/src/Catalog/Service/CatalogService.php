@@ -55,6 +55,8 @@ class CatalogService {
         AdminController::MAINPAGE_BLOCK_IMAGE_TABLE => 'MainPageBlockImagesTable',
         AdminController::FOOTER_BLOCKS_TABLE => 'FooterBlocksTable',
         AdminController::GEOBANNERS_TABLE => 'GeoBannersTable',
+        AdminController::PRICE_REQUEST_TABLE => 'PriceRequestTable',
+        AdminController::BY_CATALOG_HIDE_TABLE => 'ByCatalogHideTable',
     );
 
     const DISPLAY_STYLE_DEFAULT = 0;
@@ -74,8 +76,8 @@ class CatalogService {
      * @param $section \Catalog\Model\Section
      * @return bool | \Catalog\Model\Section
      */
-    public static function checkAndPrepareSection($section) {
-        if ($section && !is_array($section) && (!$section->deleted || CatalogController::$admin)) {
+    public static function checkAndPrepareSection($sl, $section) {
+        if ($section && !is_array($section) && ((!$section->deleted && !self::isByCatalogHidden($sl, $section->id, 1)) || CatalogController::$admin)) {
             return $section;
         } else {
             return false;
@@ -265,7 +267,7 @@ class CatalogService {
      * @param $subsection \Catalog\Model\SubSection|\Catalog\Model\SubSection[]
      * @return bool | \Catalog\Model\SubSection[] | \Catalog\Model\SubSection
      */
-    public static function filterSubsections($subsection) {
+    public static function filterSubsections($sl, $subsection) {
         if (!$subsection) {
             return false;
         }
@@ -273,14 +275,14 @@ class CatalogService {
         if (is_array($subsection)) {
 
             foreach ($subsection as $subKey => $oneSubsection) {
-                if (!$oneSubsection || ($oneSubsection->deleted && CatalogController::$admin === false)) {
+                if (!$oneSubsection || (($oneSubsection->deleted || self::isByCatalogHidden($sl, $oneSubsection->id, 2)) && CatalogController::$admin === false)) {
                     unset($subsection[$subKey]);
                 }
             }
 
             return (count($subsection) > 0) ? $subsection : false;
         } else {
-            return ($subsection && (!$subsection->deleted || CatalogController::$admin)) ? $subsection : false;
+            return ($subsection && ((!$subsection->deleted && !self::isByCatalogHidden($sl, $subsection->id, 2)) || CatalogController::$admin)) ? $subsection : false;
         }
 
     }
@@ -290,7 +292,7 @@ class CatalogService {
      * @param $series \Catalog\Model\Series|\Catalog\Model\Series[]
      * @return bool|\Catalog\Model\Series|\Catalog\Model\Series[]
      */
-    public static function filterSeries($series) {
+    public static function filterSeries($sl, $series) {
         if (!$series) {
             return false;
         }
@@ -298,14 +300,14 @@ class CatalogService {
         if (is_array($series)) {
 
             foreach ($series as $subKey => $oneSeries) {
-                if (!$oneSeries || ($oneSeries->deleted && CatalogController::$admin === false)) {
+                if (!$oneSeries || (($oneSeries->deleted || self::isByCatalogHidden($sl, $oneSeries->id, 3)) && CatalogController::$admin === false)) {
                     unset($series[$subKey]);
                 }
             }
 
             return (count($series) > 0) ? $series : false;
         } else {
-            return ($series && (!$series->deleted || CatalogController::$admin))? $series : false;
+            return ($series && ((!$series->deleted && !self::isByCatalogHidden($sl, $series->id, 3)) || CatalogController::$admin))? $series : false;
         }
 
     }
@@ -801,6 +803,19 @@ RewriteRule ^.*$ index.php [NC,L]
         }
 
         return $status;
+    }
+	
+	public static function isByCatalogHidden($sl, $id, $type) {
+		if (!ApplicationService::isDomainZone('by')) return false;
+		
+		$entities = $sl->get('ByCatalogHideTable')->fetchByConds(array('section_id' => $id, 'section_type' => $type));
+		
+		if (count($entities) > 0) {
+			$entity = reset($entities);
+			return $entity->is_hidden ? true : false;
+		}
+		
+		return false;
     }
 
     public static function renderPopupNav($serviceLocator, $prevEntity, $nextEntity, $folder, $robot = false)

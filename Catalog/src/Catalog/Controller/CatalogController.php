@@ -87,17 +87,28 @@ class CatalogController extends BaseController
     public function indexAction()
     {
         if (self::$admin) {
-            $sections = $this->getSectionTable()->fetchAll('order asc');
-            $subsections = $this->getSubSectionTable()->fetchAll('order asc');
+            $_sections = $this->getSectionTable()->fetchAll('order asc');
+            $_subsections = $this->getSubSectionTable()->fetchAll('order asc');
         } else {
-            $sections = $this->getSectionTable()->fetchByCond('deleted', '0', 'order asc');
-            $subsections = $this->getSubSectionTable()->fetchByCond('deleted', '0', 'order asc');
+            $_sections = $this->getSectionTable()->fetchByCond('deleted', '0', 'order asc');
+            $_subsections = $this->getSubSectionTable()->fetchByCond('deleted', '0', 'order asc');
         }
 
+		$sections = array();
+		foreach ($_sections as $sec) {
+			if (CatalogService::isByCatalogHidden($this->getServiceLocator(), $sec->id, 1) && !self::$admin) continue;
+			$sections[] = $sec;
+		}
+		
+		$subsections = array();
+		foreach ($_subsections as $sub) {
+			if (CatalogService::isByCatalogHidden($this->getServiceLocator(), $sub->id, 2) && !self::$admin) continue;
+			$subsections[] = $sub;
+		}
 
         $foundSeries = array();
         foreach($sections as $sec){
-            if ($sec->display_style == 2 || $sec->display_style == 1) {
+			if ($sec->display_style == 2 || $sec->display_style == 1) {
                 $foundSeries[] = $sec->id;
             }
         }
@@ -106,21 +117,27 @@ class CatalogController extends BaseController
 
         $subsecs = array();
         foreach($subsections as $sub){
-            if (in_array($sub->section_id, $foundSeries)) {
+			if (in_array($sub->section_id, $foundSeries)) {
                 $wantedSubsectionsIds[] = $sub->id;
             }
             $subsecs[$sub->section_id][] = $sub;
         }
         if (self::$admin) {
-            $series = $this->getSeriesTable()->fetchByCond('subsection_id', $wantedSubsectionsIds, 'order asc');
+            $_series = $this->getSeriesTable()->fetchByCond('subsection_id', $wantedSubsectionsIds, 'order asc');
         } else {
-            $series = $this->getSeriesTable()->fetchByConds(array('subsection_id' => $wantedSubsectionsIds, 'deleted' => 0), array(), 'order asc');
-            $series = $this->getSeriesTable()->fetchByConds(array('subsection_id' => $wantedSubsectionsIds, 'deleted' => 0), array(), 'order asc');
+            $_series = $this->getSeriesTable()->fetchByConds(array('subsection_id' => $wantedSubsectionsIds, 'deleted' => 0), array(), 'order asc');
         }
+		
+		$series = array();
+		foreach ($_series as $ser) {
+			if (CatalogService::isByCatalogHidden($this->getServiceLocator(), $ser->id, 3) && !self::$admin) continue;
+			$series[] = $ser;
+		}
+		
         $wantedSeries = array();
         $fileTable = $this->getServiceLocator()->get('FilesTable');
         foreach($series as $ser){
-            if ($ser->preview) {
+			if ($ser->preview) {
                 $file = $fileTable->find($ser->preview);
                 if ($file) {
                     $ser->previewName = $file->name;
@@ -596,6 +613,10 @@ class CatalogController extends BaseController
 			$view = $this->forward()->dispatch('catalog', array('action'=>'renderSubsectionModular', 'id'=>$id));
 		}
 		
+		if ($serId = $this->params()->fromQuery('series')) {
+            $view->setVariable('scrollToSeries', $serId);
+        }
+		
 		if ($prodId = $this->params()->fromQuery('product')) {
             $view->setVariable('scrollToProduct', $prodId);
         }
@@ -819,7 +840,7 @@ class CatalogController extends BaseController
                 break;
 
             case CatalogService::DISPLAY_STYLE_LENTS:
-                $url = $this->url()->fromRoute('catalog', array('action'=>'section', 'id'=>$section->id));
+                $url = $this->url()->fromRoute('catalog', array('action'=>'subsection', 'id'=>$subsection->id));
                 $url .= '?series=' . $series->id;
                 return $this->redirect()->toUrl($url)->setStatusCode(301);
 
@@ -1134,7 +1155,7 @@ class CatalogController extends BaseController
 
                         $hierarchies[$dopProd->id][AdminController::SERIES_TABLE] = $dopseries->id;
                         $dopsubsec = $this->getSubSectionTable()->find($dopseries->subsection_id);
-                        if (!$dopsubsec || !$dopsubsec->section_id || ($dopsubsec->deleted == 1 && self::$admin === false) ) {
+                        if (!$dopsubsec || !$dopsubsec->section_id || (($dopsubsec->deleted == 1 || CatalogService::isByCatalogHidden($sl, $dopsubsec->id, 2)) && self::$admin === false) ) {
                             unset($hierarchies[$dopProd->id]);
                             unset($dopProd);
                             continue;
@@ -1143,7 +1164,7 @@ class CatalogController extends BaseController
                         $hierarchies[$dopProd->id][AdminController::SUBSECTION_TABLE] = $dopsubsec->id;
                         $dopsec = $this->getSectionTable()->find($dopsubsec->section_id);
 
-                        if (!$dopsec || ($dopsec->deleted == 1 && self::$admin === false)) {
+                        if (!$dopsec || (($dopsec->deleted == 1 || CatalogService::isByCatalogHidden($sl, $dopsec->id, 1)) && self::$admin === false)) {
                             unset($hierarchies[$dopProd->id]);
                             unset($dopProd);
                             continue;
@@ -1432,14 +1453,20 @@ class CatalogController extends BaseController
             $subsectionBySectionId = $this->getSubSectionTable()->fetchByCond('section_id', $sectionId, 'order asc');
 
             foreach($subsectionBySectionId as $oneSubsection) {
-                if ($oneSubsection->deleted == 1 && self::$admin === false) {
+                if (($oneSubsection->deleted == 1 || CatalogService::isByCatalogHidden($this->getServiceLocator(), $oneSubsection->id, 2)) && self::$admin === false) {
                     continue;
                 }
                 if (self::$admin) {
-                    $seriesBySubSectionId = $this->getSeriesTable()->fetchByCond('subsection_id', $oneSubsection->id, 'order asc');
+                    $_seriesBySubSectionId = $this->getSeriesTable()->fetchByCond('subsection_id', $oneSubsection->id, 'order asc');
                 } else {
-                    $seriesBySubSectionId = $this->getSeriesTable()->fetchByConds(array('subsection_id' => $oneSubsection->id, 'deleted' => 0), array(), 'order asc');
+                    $_seriesBySubSectionId = $this->getSeriesTable()->fetchByConds(array('subsection_id' => $oneSubsection->id, 'deleted' => 0), array(), 'order asc');
                 }
+				
+				$seriesBySubSectionId = array();
+				foreach ($_seriesBySubSectionId as $ser) {
+					if (CatalogService::isByCatalogHidden($this->getServiceLocator(), $ser->id, 3) && !self::$admin) continue;
+					$seriesBySubSectionId[] = $ser;
+				}
 
                 foreach($seriesBySubSectionId as $oneSeries) {
                     $seriesIds[] = $oneSeries->id;
@@ -1447,13 +1474,19 @@ class CatalogController extends BaseController
             }
         } else {
             if (self::$admin) {
-                $seriesBySubSectionId = $this->getSeriesTable()->fetchByCond('subsection_id', $sectionId, 'order asc');
+                $_seriesBySubSectionId = $this->getSeriesTable()->fetchByCond('subsection_id', $sectionId, 'order asc');
             } else {
-                $seriesBySubSectionId = $this->getSeriesTable()->fetchByConds(array('subsection_id' => $sectionId, 'deleted' => 0), array(), 'order asc');
+                $_seriesBySubSectionId = $this->getSeriesTable()->fetchByConds(array('subsection_id' => $sectionId, 'deleted' => 0), array(), 'order asc');
             }
+			
+			$seriesBySubSectionId = array();
+			foreach ($_seriesBySubSectionId as $ser) {
+				if (CatalogService::isByCatalogHidden($this->getServiceLocator(), $ser->id, 3) && !self::$admin) continue;
+				$seriesBySubSectionId[] = $ser;
+			}
 
             foreach($seriesBySubSectionId as $oneSeries) {
-                $seriesIds[] = $oneSeries->id;
+				$seriesIds[] = $oneSeries->id;
             }
 
         }
@@ -1538,7 +1571,7 @@ class CatalogController extends BaseController
 
             foreach($subsectionBySectionId as $oneSubsection) {
                 $seriesBySubSectionId = $this->getSeriesTable()->fetchByCond('subsection_id', $oneSubsection->id, 'order asc');
-                if ($oneSubsection->deleted == 1 && self::$admin === false) {
+                if (($oneSubsection->deleted == 1 || CatalogService::isByCatalogHidden($this->getServiceLocator(), $oneSubsection->id, 2)) && self::$admin === false) {
                     continue;
                 }
                 foreach($seriesBySubSectionId as $oneSeries) {
@@ -1835,10 +1868,16 @@ class CatalogController extends BaseController
     public static function getSections($sl)
     {
         if (self::$admin) {
-            $sections = $sl->get('Catalog/Model/SectionTable')->fetchAll('order asc');
+            $_sections = $sl->get('Catalog/Model/SectionTable')->fetchAll('order asc');
         } else {
-            $sections = $sl->get('Catalog/Model/SectionTable')->fetchByCond('deleted', '0', 'order asc');
+            $_sections = $sl->get('Catalog/Model/SectionTable')->fetchByCond('deleted', '0', 'order asc');
         }
+		
+		$sections = array();
+		foreach ($_sections as $sec) {
+			if (CatalogService::isByCatalogHidden($sl, $sec->id, 1) && !self::$admin) continue;
+			$sections[] = $sec;
+		}
 
         return $sections;
     }
