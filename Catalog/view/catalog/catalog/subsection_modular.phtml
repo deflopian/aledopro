@@ -27,10 +27,153 @@
         </div>
 		<div style="padding: 15px 0px 15px 0px;">Универсальная светодиодная модульная система MODULAR обладает всеми преимуществами традиционных карданных светильников, но в то же время является более гибкой и многофункциональной. Универсальность и взаимозаменяемость модулей, а также наличие различных цветов отделки рамок и корпусов позволяет создавать невероятное количество уникальных комбинаций для решения множества задач.<br/> 
 Для освещения различных зон желательно использовать светодиодные модули разной цветности (3000К, 4000К, 5700К). Для повышения продаж хлебо-булочных изделий, мясных продуктов, одежды и косметических товаров рекомендуем освещать эти зоны модулями со специальными светодиодными матрицами (доступны под заказ).<br/><br/>
-			<div>
-				<strong>SNOWHITE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AROMA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RUBY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MELA</strong>
 			</div>
-		</div>
+    <div ng-controller="ModularController as modularCtrl">
+      <ul class="b-modular-colors list-unstyled">
+        <li class="b-modular-colors__list-item">
+          <a href="javascript:void(0)" class="b-modular-color" ng-click="modularCtrl.activeColor = 'SNOWHITE'">
+            <svg class="b-modular-color__image" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               viewBox="0 0 25.9 25.9" enable-background="new 0 0 25.9 25.9" xml:space="preserve">
+<circle fill="#C7D9F0" cx="13" cy="13.1" r="10.8"/>
+</svg>
+            <strong class="b-modular-color__text">SNOWHITE</strong>
+          </a>
+        </li>
+        <li class="b-modular-colors__list-item">
+          <a href="javascript:void(0)" class="b-modular-color" ng-click="modularCtrl.activeColor = 'AROMA'">
+            <svg class="b-modular-color__image" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               viewBox="0 0 25.9 25.9" enable-background="new 0 0 25.9 25.9" xml:space="preserve">
+<circle fill="#EAD11F" cx="13" cy="13.1" r="10.8"/>
+</svg>
+            <strong class="b-modular-color__text">AROMA</strong>
+          </a>
+        </li>
+        <li class="b-modular-colors__list-item">
+
+          <a href="javascript:void(0)" class="b-modular-color" ng-click="modularCtrl.activeColor = 'RUBY'">
+            <svg class="b-modular-color__image" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               viewBox="0 0 25.9 25.9" enable-background="new 0 0 25.9 25.9" xml:space="preserve">
+<circle fill="#EEBBBB" cx="13" cy="13.1" r="10.8"/>
+</svg>
+            <strong class="b-modular-color__text">RUBY</strong>
+          </a>
+        </li>
+        <li class="b-modular-colors__list-item">
+          <a href="javascript:void(0)" class="b-modular-color" ng-click="modularCtrl.activeColor = 'MELA'">
+            <svg class="b-modular-color__image" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               viewBox="0 0 25.9 25.9" enable-background="new 0 0 25.9 25.9" xml:space="preserve">
+<circle fill="#E9C5DE" cx="13" cy="13.1" r="10.8"/>
+</svg>
+            <strong class="b-modular-color__text">MELA</strong>
+          </a>
+        </li>
+      </ul>
+      <div class="b-modal-tooltip b-modular-tooltip"  ng-modal-tooltip="{target : '.b-modular-color'}">
+        <a href="javascript:void(0)" class="b-modal-tooltip__close">
+          <img src="/Content/images/icon-close-light.svg" width="35" height="35"/>
+        </a>
+        <i class="b-modal-tooltip__arrow b-modular-tooltip__arrow">
+          
+        </i>
+
+        <div class="b-modal-tooltip__content">
+          <div class="b-modular-table" ng-show="modularCtrl.activeColor == 'SNOWHITE'">
+            <div class="b-modular-table__cell b-modular-table__cell_l">
+              <div class="b-modular-table__image-wrapper">
+                <img class="b-modular-table__image" src="http://aledo-pro.ru/images/subsections/vstraivaemue_561d09b738005.jpg"/>
+              </div>
+            </div>
+            <div class="b-modular-table__cell">
+              <h4 class="b-modular-table__heading">
+                <strong> SNOWHITE</strong>
+              </h4>
+              <p>
+                <strong>Параметры:</strong> CRI 80 Тцв 3000К
+              </p>
+              <p>
+                <strong>Эффект:</strong> Яркий белый свет со спектром, максимально близким к спектру металлогалогенной лампы CDM, отлично подчеркивает белый цвет и максимально естественно передает другие цвета.
+              </p>
+              <p>
+                <strong>Применение:</strong> Освещение одежды, тканей и предметов интерьера
+              </p>
+              <a href="javascript:void(0)">Смотреть подробнее</a>
+            </div>
+          </div>
+
+
+          <div class="b-modular-table" ng-show="modularCtrl.activeColor == 'RUBY'">
+            <div class="b-modular-table__cell b-modular-table__cell_l">
+              <div class="b-modular-table__image-wrapper">
+                <img class="b-modular-table__image" src="http://aledo-pro.ru/images/subsections/vstraivaemue_561d09b738005.jpg"/>
+              </div>
+            </div>
+            <div class="b-modular-table__cell">
+              <h4 class="b-modular-table__heading">
+                <strong> RUBY</strong>
+              </h4>
+              <p>
+                <strong>Параметры:</strong> CRI 80 Тцв 3000К
+              </p>
+              <p>
+                <strong>Эффект:</strong> Яркий белый свет со спектром, максимально близким к спектру металлогалогенной лампы CDM, отлично подчеркивает белый цвет и максимально естественно передает другие цвета.
+              </p>
+              <p>
+                <strong>Применение:</strong> Освещение одежды, тканей и предметов интерьера
+              </p>
+              <a href="javascript:void(0)">Смотреть подробнее</a>
+            </div>
+          </div>
+
+          <div class="b-modular-table" ng-show="modularCtrl.activeColor == 'MELA'">
+            <div class="b-modular-table__cell b-modular-table__cell_l">
+              <div class="b-modular-table__image-wrapper">
+                <img class="b-modular-table__image" src="http://aledo-pro.ru/images/subsections/vstraivaemue_561d09b738005.jpg"/>
+              </div>
+            </div>
+            <div class="b-modular-table__cell">
+              <h4 class="b-modular-table__heading">
+                <strong> MELA</strong>
+              </h4>
+              <p>
+                <strong>Параметры:</strong> CRI 80 Тцв 3000К
+              </p>
+              <p>
+                <strong>Эффект:</strong> Яркий белый свет со спектром, максимально близким к спектру металлогалогенной лампы CDM, отлично подчеркивает белый цвет и максимально естественно передает другие цвета.
+              </p>
+              <p>
+                <strong>Применение:</strong> Освещение одежды, тканей и предметов интерьера
+              </p>
+              <a href="javascript:void(0)">Смотреть подробнее</a>
+            </div>
+          </div>
+          <div class="b-modular-table" ng-show="modularCtrl.activeColor == 'AROMA'">
+            <div class="b-modular-table__cell b-modular-table__cell_l">
+              <div class="b-modular-table__image-wrapper">
+                <img class="b-modular-table__image" src="http://aledo-pro.ru/images/subsections/vstraivaemue_561d09b738005.jpg"/>
+              </div>
+            </div>
+            <div class="b-modular-table__cell">
+              <h4 class="b-modular-table__heading">
+                <strong> AROMA</strong>
+              </h4>
+              <p>
+                <strong>Параметры:</strong> CRI 80 Тцв 3000К
+              </p>
+              <p>
+                <strong>Эффект:</strong> Яркий белый свет со спектром, максимально близким к спектру металлогалогенной лампы CDM, отлично подчеркивает белый цвет и максимально естественно передает другие цвета.
+              </p>
+              <p>
+                <strong>Применение:</strong> Освещение одежды, тканей и предметов интерьера
+              </p>
+              <a href="javascript:void(0)">Смотреть подробнее</a>
+            </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+
+		
 		<hr class="dotted-separator">
         
 		<div class="row">
