@@ -115,9 +115,9 @@ function mb_ucfirst($text) {
             } ?>
             <div class="b-tabs-content b-tabs-content_goods tab-content">
 				<div class="b-tabs-content__item fade in active tab-pane" role="tabpanel" id="goods_1">
-				<? if ($series->show_spec_matrix) { ?>
-				<div style="padding: 10px 0px 10px 0px;"><strong>SNOWHITE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AROMA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RUBY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MELA</strong></div>
-				<? } ?>
+				<? if ($series->show_spec_matrix) {
+					echo $this->partial('catalog/catalog/part/modular-block.phtml', array('padding_top' => true));
+				} ?>
                     <? if ($series->show_scroll_btn == 1) { ?>
                         <div class="attention-block">
                             <span class="attention-block_important">Важно!</span>

@@ -1,0 +1,139 @@
+    <div ng-controller="ModularController as modularCtrl"<? if ($this->padding_top) echo ' style="padding-top: 10px;"'; ?>>
+      <ul class="b-modular-colors list-unstyled">
+        <li class="b-modular-colors__list-item">
+          <a href="javascript:void(0)" class="b-modular-color" ng-click="modularCtrl.activeColor = 'SNOWHITE'">
+            <svg class="b-modular-color__image" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               viewBox="0 0 25.9 25.9" enable-background="new 0 0 25.9 25.9" xml:space="preserve">
+<circle fill="#C7D9F0" cx="13" cy="13.1" r="10.8"/>
+</svg>
+            <strong class="b-modular-color__text">SNOWHITE</strong>
+          </a>
+        </li>
+        <li class="b-modular-colors__list-item">
+          <a href="javascript:void(0)" class="b-modular-color" ng-click="modularCtrl.activeColor = 'AROMA'">
+            <svg class="b-modular-color__image" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               viewBox="0 0 25.9 25.9" enable-background="new 0 0 25.9 25.9" xml:space="preserve">
+<circle fill="#EAD11F" cx="13" cy="13.1" r="10.8"/>
+</svg>
+            <strong class="b-modular-color__text">AROMA</strong>
+          </a>
+        </li>
+        <li class="b-modular-colors__list-item">
+
+          <a href="javascript:void(0)" class="b-modular-color" ng-click="modularCtrl.activeColor = 'RUBY'">
+            <svg class="b-modular-color__image" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               viewBox="0 0 25.9 25.9" enable-background="new 0 0 25.9 25.9" xml:space="preserve">
+<circle fill="#EEBBBB" cx="13" cy="13.1" r="10.8"/>
+</svg>
+            <strong class="b-modular-color__text">RUBY</strong>
+          </a>
+        </li>
+        <li class="b-modular-colors__list-item">
+          <a href="javascript:void(0)" class="b-modular-color" ng-click="modularCtrl.activeColor = 'MELA'">
+            <svg class="b-modular-color__image" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               viewBox="0 0 25.9 25.9" enable-background="new 0 0 25.9 25.9" xml:space="preserve">
+<circle fill="#E9C5DE" cx="13" cy="13.1" r="10.8"/>
+</svg>
+            <strong class="b-modular-color__text">MELA</strong>
+          </a>
+        </li>
+      </ul>
+      <div class="b-modal-tooltip b-modular-tooltip"  ng-modal-tooltip="{target : '.b-modular-color'}">
+        <a href="javascript:void(0)" class="b-modal-tooltip__close">
+          <img src="/Content/images/icon-close-light.svg" width="35" height="35"/>
+        </a>
+        <i class="b-modal-tooltip__arrow b-modular-tooltip__arrow">
+          
+        </i>
+
+        <div class="b-modal-tooltip__content">
+          <div class="b-modular-table" ng-show="modularCtrl.activeColor == 'SNOWHITE'">
+            <div class="b-modular-table__cell b-modular-table__cell_l">
+              <div class="b-modular-table__image-wrapper">
+                <img class="b-modular-table__image" src="/Content/images/modular/Snowhite.jpg"/>
+              </div>
+            </div>
+            <div class="b-modular-table__cell">
+              <h4 class="b-modular-table__heading">
+                <strong> SNOWHITE</strong>
+              </h4>
+			  <p>Повышает продажи одежды, тканей и предметов интерьера</p>
+              <p>
+                <strong>Параметры: </strong>Тцв 3000К
+              </p>
+              <p>
+                <strong>Эффект: </strong>Яркий белый свет со спектром, максимально близким к спектру металлогалогенной лампы CDM, отлично подчеркивает белый цвет и максимально естественно передает другие цвета
+              </p>
+             
+            </div>
+          </div>
+
+
+          <div class="b-modular-table" ng-show="modularCtrl.activeColor == 'RUBY'">
+            <div class="b-modular-table__cell b-modular-table__cell_l">
+              <div class="b-modular-table__image-wrapper">
+                <img class="b-modular-table__image" src="/Content/images/modular/Ruby.jpg"/>
+              </div>
+            </div>
+            <div class="b-modular-table__cell">
+              <h4 class="b-modular-table__heading">
+                <strong> RUBY</strong>
+              </h4>
+			  <p>Повышает продажи мясных продуктов, кулинарии и суши </p>
+              <p>
+                <strong>Параметры: </strong>Тцв 2000К
+              </p>
+              <p>
+                <strong>Эффект: </strong>Свет с увеличенной долей излучения в красной части спектра подчеркивает красный и розовый цвет мясных продуктов, цветов и других товаров
+              </p>
+           
+             
+            </div>
+          </div>
+
+          <div class="b-modular-table" ng-show="modularCtrl.activeColor == 'MELA'">
+            <div class="b-modular-table__cell b-modular-table__cell_l">
+              <div class="b-modular-table__image-wrapper">
+                <img class="b-modular-table__image" src="/Content/images/modular/Mela.jpg"/>
+              </div>
+            </div>
+            <div class="b-modular-table__cell">
+              <h4 class="b-modular-table__heading">
+                <strong> MELA</strong>
+              </h4>
+			  <p>Повышает продажи косметических товаров</p>
+              <p>
+                <strong>Параметры: </strong>Тцв 4500 K
+              </p>
+              <p>
+                <strong>Эффект: </strong>Спектр, наиболее близкий к естественному идеально передает естественные тона кожи, позволяет прекрасно различать даже самые тонкие нюансы цветовых оттенков косметических товаров
+              </p>
+            
+            
+            </div>
+          </div>
+          <div class="b-modular-table" ng-show="modularCtrl.activeColor == 'AROMA'">
+            <div class="b-modular-table__cell b-modular-table__cell_l">
+              <div class="b-modular-table__image-wrapper">
+                <img class="b-modular-table__image" src="/Content/images/modular/Aroma.jpg"/>
+              </div>
+            </div>
+            <div class="b-modular-table__cell">
+              <h4 class="b-modular-table__heading">
+                <strong>AROMA</strong>
+              </h4>
+              <p>Повышает продажи выпечки, сыров, кондитерских изделий и алкоголя</p>
+			  <p>
+                <strong>Параметры: </strong>Тцв 2400К
+              </p>
+              <p>
+                <strong>Эффект: </strong>Теплый белый свет, близкий по спектру к традиционным лампам накаливания выгодно подчеркивает желтые, оранжевые и золотистые оттенки
+              </p>
+            
+             
+            </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
