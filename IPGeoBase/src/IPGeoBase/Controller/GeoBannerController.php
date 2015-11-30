@@ -82,4 +82,49 @@ class GeoBannerController extends AbstractActionController
         $response->setContent(\Zend\Json\Json::encode($res));
         return $response;
     }
+	
+	public function getNoticeDomainAction()
+	{
+		$ip = $_SERVER['REMOTE_ADDR'];
+		$sl = $this->getServiceLocator();
+		
+		$post = $this->getRequest()->getPost()->toArray();
+		$close_id = $post['close_id'];
+		
+		$res = array();
+		$response = $this->getResponse();
+		
+		$hidden_banners = array();
+		if (isset($_COOKIE['geoBanners']) && is_array($_COOKIE['geoBanners']))
+		{
+			foreach ($_COOKIE['geoBanners'] as $key => $val)
+			{
+				if (!$val) continue;
+				$hidden_banners[] = $key;
+			}
+		}
+		
+		if ($banner = GeoService::getGeoBanner($sl, $ip, -1, null, $hidden_banners))
+		{
+			if (!$close_id) {
+				$res = array(
+					'id' => $banner->id,
+					'text' => $banner->text,
+					'link' => $banner->link
+				);
+			}
+			else {
+				$cookie = new SetCookie();
+				$cookie->setName('geoBanners[' . $close_id . ']');
+				$cookie->setValue(1);
+				$cookie->setExpires(time() + 86400);
+				
+				$response->getHeaders()->addHeader($cookie);
+				$res = array('success' => 1);
+			}
+		}
+			
+        $response->setContent(\Zend\Json\Json::encode($res));
+        return $response;
+	}
 }

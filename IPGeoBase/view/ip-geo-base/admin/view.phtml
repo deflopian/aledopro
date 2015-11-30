@@ -38,7 +38,7 @@
         <tr>
             <td>Выберите тип раздела для баннера</td>
             <td>
-                <? $sectionTypes = array('1' => "Раздел", '2' => "Подраздел", '3' => "Серия"); ?>
+                <? $sectionTypes = array('-1' => "Шапка сайта", '1' => "Раздел", '2' => "Подраздел", '3' => "Серия"); ?>
                 <a href="#" data-type="select" data-name="section_type"
                    data-source='<?= \Zend\Json\Json::encode($sectionTypes); ?>'
                    data-value="<?= $entity->section_type; ?>" class="editable-param">

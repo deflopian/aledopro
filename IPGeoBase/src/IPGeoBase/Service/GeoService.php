@@ -1,6 +1,7 @@
 <?php
 namespace IPGeoBase\Service;
 
+use Application\Service\ApplicationService;
 use IPGeoBase\Mapper\GeoBannerMapper;
 
 class GeoService {
@@ -37,7 +38,7 @@ class GeoService {
         return $res;
     }
 	
-	public function getGeoBanner($sl, $ip, $section_type, $section_id, $no_arr = array()) {
+	public static function getGeoBanner($sl, $ip, $section_type, $section_id, $no_arr = array()) {
 		$data = geoip_record_by_name($ip);
 		
         $country = self::$defaultCountry;
@@ -55,6 +56,13 @@ class GeoService {
 				}
 			}
         }
+		
+		if ($section_type == -1) {
+			if ((!ApplicationService::isDomainZone('by') && $country == 'BY') || (ApplicationService::isDomainZone('by') && $country == 'RU')) {
+				$region = '';
+			}
+			else return false;
+		}
 		
 		$geoBannerMapper = GeoBannerMapper::getInstance($sl);
 		$banners = $geoBannerMapper->fetchGeoBanners($country, $region, $section_type, $section_id, $no_arr);
