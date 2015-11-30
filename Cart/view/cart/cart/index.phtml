@@ -31,9 +31,11 @@
                 <td class="b-cart-product-cell  b-cart-product-cell_image">
                     <a href="<?= $this->url('catalog', array('action' => 'product', 'id' => $prod->id)) ?>" class="b-cart-product-cell_image__inner">
                         <?
-                        $src = $prod->preview_img
+						$src = $prod->previewName
+                            ? $this->basePath() . '/images/products/'. $prod->previewName
+                            : ($prod->preview_img
                             ? $this->basePath() . '/images/series/'. $prod->preview_img
-                            : $this->basePath() . '/images/empty-series.png';
+                            : $this->basePath() . '/images/empty-series.png');
                         ?>
                         <img class="b-cart-product-cell__image" src="<?= $src ?>" alt="<?= $prod->title ?>" />
                     </a>

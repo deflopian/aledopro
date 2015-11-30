@@ -50,13 +50,20 @@ class CartController extends AbstractActionController
                 $series = $seriesTable->find($product->series_id);
                 $subsection = $subsectionTable->find($series->subsection_id);
                 $section = $sectionTable->find($subsection->section_id);
+				
+				$file = $fileTable->fetchByCond('uid', $product->id);
+                if ($file) {
+					$file = reset($file);
+                    $product->previewName = $file->name;
+					$product->preview = $file->id;
+                }
 
                 if ($series && $series->preview) {
                     $file = $fileTable->find($series->preview);
                     if ($file) {
                         $series->previewName = $file->name;
                     }
-                }				
+                }
 
 				$hierarchies[$product->id][\Catalog\Controller\AdminController::PRODUCT_TABLE] = $product->id;
 				$hierarchies[$product->id][\Catalog\Controller\AdminController::SERIES_TABLE] = $series->id;
