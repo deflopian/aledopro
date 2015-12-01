@@ -500,6 +500,9 @@ class CatalogController extends BaseController
                 'fourthTabGroups' => $fourthTabGroups,
                 'sl' => $sl
             ));
+			
+		$seoDataSub = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SUBSECTION, $subsection->id);
+		$view->setVariable('imgAlt', ($seoDataSub->img_alt ? $seoDataSub->img_alt . ' ' : '') . $subsection->title);
 		
 		$hierarchies = Hierarchy::getInstance()->getProducts();
 		$view->setVariable('hierarchies', $hierarchies);
@@ -555,6 +558,9 @@ class CatalogController extends BaseController
                 'view' => $view,
                 'sl' => $sl
             ));
+			
+		$seoDataSub = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SUBSECTION, $subsection->id);
+		$view->setVariable('imgAlt', ($seoDataSub->img_alt ? $seoDataSub->img_alt . ' ' : '') . $subsection->title);
 			
         $links = LinkToLinkMapper::getInstance($sl)->fetchCatalogSortedBySectionType($id, AdminController::SUBSECTION_TABLE);
         $view->setVariable('links', $links);
@@ -880,6 +886,10 @@ class CatalogController extends BaseController
             }
 
         }
+		
+		$seoDataSub = $sl->get('SeoDataTable')->find( SeoService::CATALOG_SUBSECTION, $subsection->id);
+		$view->setVariable('imgAlt', ($seoDataSub->img_alt ? $seoDataSub->img_alt . ' ' : '') . trim($series->visible_title ? $series->visible_title : $series->title));
+		
         if ($prodId = $this->params()->fromQuery('product')) {
             $view->setVariable('scrollToProduct', $prodId);
         }

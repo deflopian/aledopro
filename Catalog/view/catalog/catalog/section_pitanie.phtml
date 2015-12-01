@@ -34,9 +34,12 @@ $displayStyle = \Catalog\Service\CatalogService::DISPLAY_STYLE_POWER;
     $serNum = 1;
     foreach($subsections as $subsec){ ?>
         <div id="subsec-<?=$subsec->id?>">
-            <? if ($subsec->url) { ?>
+            <? if ($subsec->url) { 
+				$seoDataSub = $sl->get('SeoDataTable')->find(\Info\Service\SeoService::CATALOG_SUBSECTION, $subsec->id);
+				$imgAlt = ($seoDataSub->img_alt ? $seoDataSub->img_alt . ' ' : '') . $subsec->title;
+			?>
             <div class="series-pics " style="position: relative">
-                <img class="drivers_pic" src="<?= $this->basePath() . '/images/subsections/' . $subsec->url ?>" alt="<?= $subsec->title?>">
+                <img class="drivers_pic" src="<?= $this->basePath() . '/images/subsections/' . $subsec->url ?>" alt="<?= $imgAlt ?>">
                 <div class="absolute-banner-text-block absolute-banner-text-block-alt">
                     <div class="container">
                         <div class="banner-backgrounded-wrapper banner-backgrounded-wrapper-alt">

@@ -53,7 +53,7 @@ function mb_ucfirst($text) {
                 <? $minSrc = $img->url ? $this->basePath() . '/images/series/' . $minUrl : $this->basePath() . '/images/empty-series.png' ?>
 
 
-                    <img class="b-goods-gallery-item__image" src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/series/min_' . $img->url) ? $minSrc : $src ?>" alt="<?= $series->visible_title; ?> url" />
+                    <img class="b-goods-gallery-item__image" src="<?= file_exists($_SERVER['DOCUMENT_ROOT'] . '/images/series/min_' . $img->url) ? $minSrc : $src ?>" alt="<?= $this->imgAlt; ?>" />
 
             </div>
         <? } ?>

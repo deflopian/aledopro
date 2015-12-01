@@ -42,6 +42,15 @@
                 </div>
             </div>
         <? } ?>
+        <? if ($seoData->type == \Info\Service\SeoService::CATALOG_SUBSECTION) { ?>
+            <div class="form-group">
+                <label for="consult-city" class="col-md-2 control-label">Img Alt</label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="consult-city" name="img_alt"
+                           value="<?= htmlspecialchars($seoData->img_alt) ?>">
+                </div>
+            </div>
+        <? } ?>
 
         <div class="form-group">
             <div class="col-md-12">

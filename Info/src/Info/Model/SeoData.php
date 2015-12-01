@@ -12,4 +12,5 @@ class SeoData extends SampleModel
     public $keywords;
     public $seo_title;
     public $seo_text;
+    public $img_alt;
 }
