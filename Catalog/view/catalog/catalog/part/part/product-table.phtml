@@ -139,7 +139,7 @@ $parentSerNum = $this->parentSerNum ? $this->parentSerNum : 0;
             <td class="case_color">{{item.case_color}}</td>
             <td class="color_of_light">{{item.color_of_light}}</td>
             <td class="td-grey luminous_flux">{{item.luminous_flux}}<span ng-if="!(item.luminous_flux.indexOf('лм') + 1)"> лм</span></td>
-            <td class="viewing_angle">{{item.viewing_angle}}°</td>
+            <td class="viewing_angle"><span ng-bind="item.viewing_angle"></span>°</td>
             <td class="td-grey free_balance" style="padding: 0">
                     <div ng-if="item.free_balance">
                         <span ng-if="item.free_balance == -1">
@@ -168,9 +168,7 @@ $parentSerNum = $this->parentSerNum ? $this->parentSerNum : 0;
                 <? if ($user && $user->getIsPartner()) { ?>
                     <td class="td-grey partner-price">
 						<span ng-if="item.is_price_requestable == 0">
-							<span>
-								{{item.partner_price}}
-							</span>
+							<span ng-bind="item.partner_price"></span>
 							<span>
 								<span class="b-rub">Р</span>
 							</span>

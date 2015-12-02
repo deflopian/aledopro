@@ -97,6 +97,8 @@ class BlogController extends AbstractActionController
     {
         $sl = $this->getServiceLocator();
 		
+		$articles = $sl->get('ArticlesTable')->fetchByCond('deleted', 0, 'order ASC');
+		
 		if ($this->zfcUserAuthentication()->getIdentity()) {
 			$uid = $this->zfcUserAuthentication()->getIdentity()->getId();
 			$user = $sl->get('UserTable')->find($uid);
@@ -107,9 +109,6 @@ class BlogController extends AbstractActionController
 			if ($role == 'admin' || $role == 'manager') {
 				$articles = $sl->get('ArticlesTable')->fetchAll('order ASC');
 			}
-		}
-		else {
-			$articles = $sl->get('ArticlesTable')->fetchByCond('deleted', 0, 'order ASC');
 		}
 		
         $fileTable = $this->getServiceLocator()->get('FilesTable');

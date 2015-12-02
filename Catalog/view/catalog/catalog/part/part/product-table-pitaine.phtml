@@ -144,21 +144,21 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
             <span ng-if="!substr(item.i_out, 'Вт')"> Вт</span>
         </td>
         <td class="td-grey <?= $isDriver ? 'i_out' : 'u_out'?>">
-            {{item.<?= $isDriver ? 'i_out' : 'u_out' ?>}}
+            <span ng-bind="item.<?= $isDriver ? 'i_out' : 'u_out' ?>"></span>
             <? if ($isDriver) { ?>
             <span ng-if="!substr(item.i_out, 'А')"> А</span>
             <? } else { ?>
             <span ng-if="!substr(item.u_out, 'В')"> В</span>
             <? } ?>
         </td>
-        <td class="warranty">{{item.warranty}} {{getYearForm(item.warranty)}}</td>
+        <td class="warranty"><span ng-bind="item.warranty"></span> <span ng-bind="getYearForm(item.warranty)"></span></td>
 			<td class="td-grey free_balance">
                     <div ng-if="item.free_balance">
                         <span ng-if="item.free_balance == -1">
                             <div class="icon-daw"></div>
                         </span>
                         <span ng-if="item.free_balance > 0">
-                            {{item.free_balance}}
+                            <span ng-bind="item.free_balance"></span>
                         </span>
 
                     </div>
@@ -170,7 +170,7 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
                 <td class="price-with-nds">
                     <span ng-if="item.is_price_requestable == 0">
 						<span>
-							{{item.price_with_nds}}
+							<span ng-bind="item.price_with_nds"></span>
 						</span>
 						<span>
 							<span class="b-rub">Р</span>
@@ -183,7 +183,7 @@ $products = \Catalog\Service\CatalogService::getProductsJSON($products, $fields,
                     <td class="td-grey partner-price">
 						<span ng-if="item.is_price_requestable == 0">
 							<span>
-								{{item.partner_price}}
+								<span ng-bind="item.partner_price"></span>
 							</span>
 							<span ng-if="item.length > 0">
 								<span class="b-rub">Р</span>/м

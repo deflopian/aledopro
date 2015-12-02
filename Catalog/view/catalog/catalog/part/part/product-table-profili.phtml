@@ -114,7 +114,7 @@ $partialTab = $this->partialTab ? $this->partialTab : false;
                             <div class="icon-daw"></div>
                         </span>
                         <span ng-if="item.free_balance > 0">
-                            {{item.free_balance}}
+                            <span ng-bind="item.free_balance"></span>
                         </span>
 
                     </div>
@@ -125,9 +125,7 @@ $partialTab = $this->partialTab ? $this->partialTab : false;
 
                 <td class="price-with-nds">
 					<span ng-if="item.is_price_requestable == 0">
-						<span>
-							{{item.price_with_nds}}
-						</span>
+						<span ng-bind="item.price_with_nds"></span>
 						<span>
 							<span class="b-rub">Р</span>
 						</span>
@@ -138,9 +136,7 @@ $partialTab = $this->partialTab ? $this->partialTab : false;
                 <? if ($user && $user->getIsPartner()) { ?>
                     <td class="td-grey partner-price">
 						<span ng-if="item.is_price_requestable == 0">
-							<span>
-								{{item.partner_price}}
-							</span>
+							<span ng-bind="item.partner_price"></span>
 							<span>
 								<span class="b-rub">Р</span>
 							</span>
